@@ -1,27 +1,16 @@
-ATLAS FORGE WEBSITE — LOCAL PREVIEW
+ATLAS FORGE HOMEPAGE V2
 
-FASTEST METHOD (Windows)
-1. Extract atlas-website.zip.
-2. Open the atlas-website folder.
+VIEW LOCALLY
+1. Extract the ZIP file.
+2. Open the atlas-forge-homepage-v2 folder.
 3. Double-click index.html.
-4. It will open in your default browser.
 
-BETTER LOCAL SERVER METHOD
-If Python is installed, open Command Prompt in this folder and run:
-    python -m http.server 8000
-Then visit:
-    http://localhost:8000
-
-FILES
-- index.html — main homepage
-- scout-pro.html — Scout Pro product page
-- atlas-media.html — Atlas Media product page
-- thrf.html — THRF research page
-- technology.html — shared technology page
-- about.html — company positioning page
-- contact.html — early access / inquiry form
-- styles.css — shared visual design
-- script.js — animations and demo forms
+UPLOAD TO GITHUB PAGES
+1. Open your atlas-forge-website repository.
+2. Upload index.html, styles.css, script.js, and the assets folder to the repository root.
+3. Replace the existing files when GitHub asks.
+4. Commit the changes.
+5. GitHub Pages will redeploy automatically.
 
 NOTE
-The forms are demonstrations only. They must be connected to an email service, CRM, or backend before public launch.
+The Early Access form is a visual prototype and does not submit data yet.

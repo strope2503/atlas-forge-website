@@ -1,246 +1,190 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Atlas Forge builds next-generation local-first media software for sports analysis, creative editing, and spatial media." />
-  <title>Atlas Forge — Software Without Limits</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Atlas Forge builds breakthrough software for sports intelligence, next-generation media creation, and spatial computing.">
+  <meta name="theme-color" content="#05080f">
+  <title>Atlas Forge — Forge What's Next.</title>
+  <link rel="icon" href="assets/atlas-forge-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="noise"></div>
+  <div class="page-noise" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
   <header class="site-header">
     <a class="brand" href="#top" aria-label="Atlas Forge home">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg>
-      </span>
-      <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
+      <img src="assets/atlas-forge-mark.svg" alt="">
+      <span>Atlas <strong>Forge</strong></span>
     </a>
-    <nav class="desktop-nav" aria-label="Main navigation">
-      <a href="index.html#products">Products</a>
-      <a href="technology.html">Technology</a>
-      <a href="about.html">Why Atlas Forge</a>
-      <a href="technology.html#roadmap">Roadmap</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#products">Products</a>
+      <a href="#technology">Technology</a>
+      <a href="#journey">The Journey</a>
+      <a href="#company">Company</a>
     </nav>
-    <a class="nav-cta" href="contact.html">Join Early Access</a>
-    <button class="menu-button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    <a class="nav-cta" href="#early-access">Early Access</a>
+    <button class="menu-button" aria-label="Open navigation" aria-expanded="false">
+      <span></span><span></span>
+    </button>
   </header>
 
   <main id="top">
-    <section class="hero section-shell">
-      <div class="hero-copy reveal">
-        <div class="eyebrow"><span></span> Local-first media technology</div>
-        <h1>Software<br><em>without limits.</em></h1>
-        <p>Atlas Forge builds next-generation software for coaches, creators, and professionals by rethinking how media is captured, processed, and understood.</p>
-        <div class="hero-actions">
-          <a class="button primary" href="#products">Explore the ecosystem</a>
-          <a class="button secondary" href="#technology">See the technology</a>
+    <section class="hero">
+      <div class="star-field" aria-hidden="true"></div>
+      <div class="wave-floor" aria-hidden="true">
+        <div class="wave wave-a"></div>
+        <div class="wave wave-b"></div>
+        <div class="wave wave-c"></div>
+      </div>
+      <div class="hero-core">
+        <div class="hero-mark-wrap reveal">
+          <img class="hero-mark" src="assets/atlas-forge-mark.svg" alt="Atlas Forge breakthrough mark">
+          <span class="energy-line"></span>
+          <span class="energy-particles"></span>
         </div>
-        <div class="hero-proof">
-          <div><strong>Local-first</strong><span>Your hardware does the work</span></div>
-          <div><strong>Ownership</strong><span>Your files stay yours</span></div>
-          <div><strong>Built to scale</strong><span>One engine, many products</span></div>
+        <p class="kicker reveal delay-1">A new path through impossible problems</p>
+        <h1 class="reveal delay-2">Atlas Forge</h1>
+        <p class="tagline reveal delay-3">Forge What's Next.</p>
+        <p class="hero-copy reveal delay-4">Engineering breakthrough software for sports intelligence, high-performance media, and the next generation of spatial computing.</p>
+        <div class="hero-actions reveal delay-4">
+          <a class="button primary" href="#products">Explore Products</a>
+          <a class="button ghost" href="#journey">See the Vision <span>↗</span></a>
         </div>
       </div>
-
-      <div class="hero-visual reveal delay-1" aria-hidden="true">
-        <div class="orb orb-a"></div>
-        <div class="orb orb-b"></div>
-        <div class="grid-plane"></div>
-        <div class="system-card card-top">
-          <span class="mini-label">SCOUT PRO</span>
-          <strong>Full-field intelligence</strong>
-          <div class="mini-field">
-            <i style="--x:18%;--y:26%"></i><i style="--x:38%;--y:68%"></i><i style="--x:58%;--y:35%"></i><i style="--x:78%;--y:61%"></i>
-            <b></b>
-          </div>
-        </div>
-        <div class="system-card card-center">
-          <span class="mini-label">ATLAS MEDIA</span>
-          <strong>GPU-first creative engine</strong>
-          <div class="timeline"><span></span><span></span><span></span><span></span></div>
-        </div>
-        <div class="system-card card-bottom">
-          <span class="mini-label">THRF™</span>
-          <strong>A new media architecture</strong>
-          <div class="wave"><span></span></div>
-        </div>
-      </div>
+      <a class="scroll-cue" href="#principles" aria-label="Scroll to principles"><span></span></a>
     </section>
 
-    <section class="ticker" aria-label="Atlas Forge capabilities">
-      <div class="ticker-track">
-        <span>LOCAL AI</span><i></i><span>FULL-FIELD CAPTURE</span><i></i><span>GPU-FIRST EDITING</span><i></i><span>SPATIAL MEDIA</span><i></i><span>DATA OWNERSHIP</span><i></i>
-        <span>LOCAL AI</span><i></i><span>FULL-FIELD CAPTURE</span><i></i><span>GPU-FIRST EDITING</span><i></i><span>SPATIAL MEDIA</span><i></i><span>DATA OWNERSHIP</span><i></i>
-      </div>
-    </section>
-
-    <section id="products" class="section-shell products-section">
-      <div class="section-heading reveal">
-        <div class="eyebrow"><span></span> The Atlas Forge ecosystem</div>
-        <h2>One technology platform.<br>Multiple category-defining products.</h2>
-        <p>Atlas Forge combines local processing, modern GPU architecture, and intelligent automation into products built for real-world workflows.</p>
-      </div>
-
-      <article class="product-panel scout reveal">
-        <div class="product-copy">
-          <div class="product-number">01</div>
-          <div class="product-tag">SPORTS INTELLIGENCE</div>
-          <h3>Scout Pro</h3>
-          <p class="product-lead">Professional soccer recording and analysis—without renting your own footage back from the cloud.</p>
-          <ul>
-            <li>Dual-camera full-field capture</li>
-            <li>Seamless panoramic master video</li>
-            <li>AI auto-follow broadcast generation</li>
-            <li>Heatmaps, tactical radar, and player insights</li>
-            <li>Fast recruiting reels and match reports</li>
-          </ul>
-          <div class="product-note">Designed for academies, schools, coaches, and families.</div><a class="text-link" href="scout-pro.html">Explore Scout Pro →</a>
-        </div>
-        <div class="product-art scout-art">
-          <div class="stadium-glow"></div>
-          <div class="pitch">
-            <div class="center-circle"></div><div class="center-line"></div>
-            <div class="box left"></div><div class="box right"></div>
-            <span class="player p1"></span><span class="player p2"></span><span class="player p3"></span><span class="player p4"></span><span class="player p5"></span><span class="ball"></span>
-            <svg class="track-line" viewBox="0 0 600 350" preserveAspectRatio="none"><path d="M90,250 C170,120 290,310 510,100"/></svg>
-          </div>
-          <div class="metric-card m1"><small>PLAYER SPEED</small><strong>19.8 MPH</strong></div>
-          <div class="metric-card m2"><small>FIELD COVERAGE</small><strong>8.6 KM</strong></div>
-        </div>
+    <section id="principles" class="principles section-shell">
+      <article class="principle reveal">
+        <div class="principle-icon target-icon"></div>
+        <h2>Breakthrough</h2>
+        <p>We do not follow established paths. We create new ones.</p>
       </article>
-
-      <article class="product-panel media reveal">
-        <div class="product-copy">
-          <div class="product-number">02</div>
-          <div class="product-tag">CREATIVE SOFTWARE</div>
-          <h3>Atlas Media</h3>
-          <p class="product-lead">A GPU-first editing environment engineered for high-resolution and spatial media workflows.</p>
-          <ul>
-            <li>Professional timeline and multi-cam editing</li>
-            <li>AI captions, reframing, and background tools</li>
-            <li>Layer-based graphics and advanced typography</li>
-            <li>8K and volumetric media ambitions</li>
-            <li>Natural-language Omni-Prompt workflow</li>
-          </ul>
-          <div class="product-note">A modern foundation for the next generation of creators.</div><a class="text-link" href="atlas-media.html">Explore Atlas Media →</a>
-        </div>
-        <div class="product-art editor-art">
-          <div class="editor-window">
-            <div class="editor-top"><i></i><i></i><i></i><span>ATLAS MEDIA</span></div>
-            <div class="editor-body">
-              <aside><span></span><span></span><span></span><span></span></aside>
-              <div class="viewer"><div class="viewer-orb"></div><div class="playhead"></div></div>
-              <div class="editor-timeline">
-                <b></b>
-                <div class="track track-a"></div><div class="track track-b"></div><div class="track track-c"></div>
-              </div>
-            </div>
-          </div>
-          <div class="prompt-chip">⌘K &nbsp; “Create a 30-second vertical cut”</div>
-        </div>
+      <article class="principle reveal delay-1">
+        <div class="principle-icon hex-icon"></div>
+        <h2>Precision</h2>
+        <p>Every detail, architecture choice, and interaction has purpose.</p>
       </article>
-
-      <article class="product-panel thrf reveal">
-        <div class="product-copy">
-          <div class="product-number">03</div>
-          <div class="product-tag">RESEARCH & CORE TECHNOLOGY</div>
-          <h3>THRF™</h3>
-          <p class="product-lead">An experimental spatial media architecture exploring a new way to represent, process, and composite digital video.</p>
-          <ul>
-            <li>Wave-based media representation research</li>
-            <li>Custom .thv container architecture</li>
-            <li>DirectX 12 compute rendering</li>
-            <li>Spatial audio and 6DoF ambitions</li>
-            <li>Modular engine, services, renderer, and studio shell</li>
-          </ul>
-          <div class="product-note caution">Performance figures remain roadmap targets until independently benchmarked.</div><a class="text-link" href="thrf.html">Explore THRF™ →</a>
-        </div>
-        <div class="product-art thrf-art">
-          <div class="hyper-grid"></div>
-          <div class="wave-core"><span></span><span></span><span></span></div>
-          <div class="formula f1">ψ(x,t)</div><div class="formula f2">Σ aₙeⁱᵏˣ</div><div class="formula f3">Poincaré</div>
-        </div>
+      <article class="principle reveal delay-2">
+        <div class="principle-icon layers-icon"></div>
+        <h2>Ownership</h2>
+        <p>Your data. Your hardware. Your work. Your future.</p>
+      </article>
+      <article class="principle reveal delay-3">
+        <div class="principle-icon bolt-icon"></div>
+        <h2>Performance</h2>
+        <p>Speed is not an optional feature. It is the foundation.</p>
       </article>
     </section>
 
-    <section id="technology" class="technology-section">
-      <div class="section-shell tech-grid">
-        <div class="section-heading reveal">
-          <div class="eyebrow"><span></span> The shared foundation</div>
-          <h2>Built locally.<br>Designed differently.</h2>
-          <p>Atlas products are designed around a simple belief: modern computers should do more of the work, while customers keep more control.</p>
+    <section id="products" class="products section-shell">
+      <div class="section-intro reveal">
+        <p class="section-label">The Atlas Forge ecosystem</p>
+        <h2>Three layers.<br>One breakthrough vision.</h2>
+        <p>From real-world sports intelligence to next-generation media systems, every Atlas Forge product is designed to remove limitations—not work around them.</p>
+      </div>
+
+      <div id="journey" class="journey-grid">
+        <article class="journey-card brand-card reveal">
+          <div class="card-visual forge-visual">
+            <img src="assets/atlas-forge-mark.svg" alt="">
+            <span></span>
+          </div>
+          <div class="card-copy"><span>01</span><div><h3>Atlas Forge</h3><p>The journey begins with a belief: impossible is usually just unexplored.</p></div></div>
+        </article>
+
+        <article class="journey-card reveal delay-1">
+          <div class="card-visual field-visual">
+            <div class="field-lines"></div>
+            <i class="player p1"></i><i class="player p2"></i><i class="player p3"></i><i class="player p4"></i><i class="player p5"></i>
+            <i class="ball"></i>
+            <svg viewBox="0 0 500 320" preserveAspectRatio="none" aria-hidden="true"><path d="M68 236 C140 92, 246 258, 432 72"/></svg>
+            <div class="heat h1"></div><div class="heat h2"></div>
+          </div>
+          <div class="card-copy"><span>02</span><div><h3>Scout Pro</h3><p>AI that sees the entire game and turns footage into intelligence.</p></div></div>
+        </article>
+
+        <article class="journey-card reveal delay-2">
+          <div class="card-visual media-visual">
+            <div class="media-top"><b></b><b></b><b></b><em>ATLAS MEDIA</em></div>
+            <div class="media-preview"><div></div></div>
+            <div class="media-tracks"><span></span><span></span><span></span><i></i></div>
+          </div>
+          <div class="card-copy"><span>03</span><div><h3>Atlas Media</h3><p>Create without compromise. Edit high-resolution media without old limits.</p></div></div>
+        </article>
+
+        <article class="journey-card reveal delay-3">
+          <div class="card-visual thrf-visual">
+            <div class="thrf-grid"></div>
+            <div class="thrf-wave"><span></span><span></span><span></span></div>
+            <small>THRF™ / spatial media research</small>
+          </div>
+          <div class="card-copy"><span>04</span><div><h3>THRF™</h3><p>A research architecture exploring a fundamentally new media representation.</p></div></div>
+        </article>
+
+        <article class="journey-card reveal delay-4">
+          <div class="card-visual future-visual">
+            <img src="assets/atlas-forge-mark.svg" alt="">
+            <div class="orbit"></div>
+          </div>
+          <div class="card-copy"><span>05</span><div><h3>Built for What's Next</h3><p>Join the journey and help shape the products others will follow.</p></div></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="technology" class="technology">
+      <div class="section-shell technology-grid">
+        <div class="technology-copy reveal">
+          <p class="section-label">Designed differently</p>
+          <h2>Modern hardware deserves modern software.</h2>
+          <p>Atlas Forge products are being built around local computation, GPU-first workflows, intelligent automation, and user ownership. The goal is simple: let capable computers do the work while customers keep control of their files and data.</p>
+          <a class="text-link" href="#early-access">Follow the development path <span>→</span></a>
         </div>
-        <div class="principle-cards">
-          <article class="reveal"><span>01</span><h3>Local intelligence</h3><p>Run demanding media and AI workflows on the user's own capable Windows hardware instead of depending on continuous cloud processing.</p></article>
-          <article class="reveal delay-1"><span>02</span><h3>GPU-first architecture</h3><p>Design the processing pipeline around modern graphics hardware to reduce unnecessary data movement and improve responsiveness.</p></article>
-          <article class="reveal"><span>03</span><h3>Open hardware mindset</h3><p>Use practical, commercially available components wherever possible instead of locking customers into a single proprietary ecosystem.</p></article>
-          <article class="reveal delay-1"><span>04</span><h3>Customer ownership</h3><p>Keep footage, project files, analytics, and databases under the user's control, with fewer recurring infrastructure costs.</p></article>
+        <div class="technology-stack reveal delay-2">
+          <div class="stack-line"><span>01</span><strong>Local intelligence</strong><small>AI and media processing on user-owned hardware</small></div>
+          <div class="stack-line"><span>02</span><strong>GPU-first systems</strong><small>Architected for modern graphics and compute capabilities</small></div>
+          <div class="stack-line"><span>03</span><strong>Transparent roadmaps</strong><small>Clear separation between available, in development, and research</small></div>
+          <div class="stack-line"><span>04</span><strong>Data ownership</strong><small>Less unnecessary cloud dependence and fewer lock-ins</small></div>
         </div>
       </div>
     </section>
 
-    <section id="principles" class="section-shell ownership-section">
-      <div class="ownership-visual reveal">
-        <div class="rings"><span></span><span></span><span></span></div>
-        <div class="lock-icon"><svg viewBox="0 0 64 64"><rect x="13" y="28" width="38" height="28" rx="8"/><path d="M22 28V19a10 10 0 0 1 20 0v9"/></svg></div>
+    <section id="company" class="manifesto section-shell">
+      <p class="section-label reveal">Why Atlas Forge exists</p>
+      <div class="manifesto-lines">
+        <p class="reveal">We do not improve yesterday.</p>
+        <p class="reveal delay-1">We create tomorrow.</p>
+        <p class="reveal delay-2">We forge the path others will follow.</p>
       </div>
-      <div class="ownership-copy reveal delay-1">
-        <div class="eyebrow"><span></span> Why Atlas</div>
-        <h2>Own your hardware.<br>Own your data.<br>Own your future.</h2>
-        <p>Many media platforms make recurring cloud fees part of the product. Atlas is being built around a different model: durable software, local performance, and meaningful ownership.</p>
-        <div class="comparison">
-          <div class="compare-row head"><span>Traditional cloud model</span><span>Atlas approach</span></div>
-          <div class="compare-row"><span>Upload before processing</span><span>Process locally</span></div>
-          <div class="compare-row"><span>Recurring infrastructure fees</span><span>Lower ongoing platform costs</span></div>
-          <div class="compare-row"><span>Vendor-controlled storage</span><span>User-controlled files</span></div>
-          <div class="compare-row"><span>Proprietary hardware dependence</span><span>Commercial hardware where practical</span></div>
-        </div>
-      </div>
+      <p class="manifesto-note reveal delay-3">Atlas Forge is built around the idea that breakthroughs happen when you stop asking how software has always worked—and start asking how it should work.</p>
     </section>
 
-    <section id="roadmap" class="roadmap-section">
-      <div class="section-shell">
-        <div class="section-heading centered reveal">
-          <div class="eyebrow"><span></span> Built with transparency</div>
-          <h2>Vision is powerful.<br>Proof is essential.</h2>
-          <p>Atlas separates product vision, active development, prototype results, and shipping capabilities so customers and partners always know what is real today.</p>
+    <section id="early-access" class="early-access section-shell">
+      <div class="cta-panel reveal">
+        <div>
+          <p class="section-label">The journey is just beginning</p>
+          <h2>Forge what's next with us.</h2>
+          <p>Join the early-access list for product previews, development updates, and launch announcements.</p>
         </div>
-        <div class="status-grid">
-          <article class="reveal"><div class="status-dot active"></div><h3>In development</h3><p>Core product engineering, workflow validation, and architecture implementation.</p></article>
-          <article class="reveal delay-1"><div class="status-dot"></div><h3>Prototype</h3><p>Features that work in controlled demonstrations but still require broader testing.</p></article>
-          <article class="reveal delay-2"><div class="status-dot"></div><h3>Benchmark target</h3><p>Performance goals that will not be marketed as proven until repeatably measured.</p></article>
-          <article class="reveal delay-3"><div class="status-dot"></div><h3>Shipping</h3><p>Capabilities available to customers with documentation and support.</p></article>
-        </div>
+        <form class="signup-form" action="#" method="post">
+          <label class="sr-only" for="email">Email address</label>
+          <input id="email" type="email" placeholder="you@company.com" required>
+          <button type="submit">Join Early Access</button>
+          <small>This prototype does not submit data yet.</small>
+        </form>
       </div>
-    </section>
-
-    <section id="contact" class="cta-section section-shell reveal">
-      <div>
-        <div class="eyebrow"><span></span> Help shape what comes next</div>
-        <h2>Build the future of media with Atlas.</h2>
-        <p>Join the early-access list for product updates, pilot opportunities, and launch announcements.</p>
-      </div>
-      <form class="signup-form" id="signupForm">
-        <label class="sr-only" for="email">Email address</label>
-        <input id="email" type="email" placeholder="you@example.com" required>
-        <button type="submit">Join Early Access</button>
-        <small id="formMessage">No spam. Only meaningful product updates.</small>
-      </form>
     </section>
   </main>
 
   <footer class="site-footer section-shell">
-    <div class="footer-brand">
-      <a class="brand" href="#top"><span class="brand-mark"><svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg></span><span class="brand-wordmark"><strong>Atlas</strong> Forge</span></a>
-      <p>Next-generation local-first media software.</p>
-    </div>
-    <div class="footer-links"><a href="index.html#products">Products</a><a href="technology.html">Technology</a><a href="technology.html#roadmap">Roadmap</a><a href="#contact">Contact</a></div>
-    <div class="footer-meta"><span>© 2026 Atlas Forge</span><span>Concept website</span></div>
+    <div class="brand footer-brand"><img src="assets/atlas-forge-mark.svg" alt=""><span>Atlas <strong>Forge</strong></span></div>
+    <p>Forge What's Next.</p>
+    <p>Concept website · 2026 Atlas Forge</p>
   </footer>
 
   <script src="script.js"></script>

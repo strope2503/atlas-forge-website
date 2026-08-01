@@ -1,1 +1,29 @@
-const observer = new IntersectionObserver((entries)=>{entries.forEach((entry)=>{if(entry.isIntersecting){entry.target.classList.add('visible');observer.unobserve(entry.target);}});},{threshold:.12});document.querySelectorAll('.reveal').forEach((el)=>observer.observe(el));const header=document.querySelector('.site-header');if(header){window.addEventListener('scroll',()=>{header.style.borderColor=window.scrollY>20?'rgba(255,255,255,.16)':'rgba(255,255,255,.10)';});}const signup=document.getElementById('signupForm');if(signup){signup.addEventListener('submit',(event)=>{event.preventDefault();const email=document.getElementById('email');const message=document.getElementById('formMessage');message.textContent=`Thanks — ${email.value} has been added to the concept waitlist.`;message.style.color='#a9ff6b';email.value='';});}const contact=document.getElementById('contactForm');if(contact){contact.addEventListener('submit',(event)=>{event.preventDefault();const msg=document.getElementById('contactMessage');msg.textContent='Thanks — the demo form is working locally. Connect it to your email or CRM before launch.';msg.style.color='#a9ff6b';});}
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+const glow = document.querySelector('.cursor-glow');
+window.addEventListener('pointermove', (event) => {
+  glow.style.left = `${event.clientX}px`;
+  glow.style.top = `${event.clientY}px`;
+  glow.style.opacity = '1';
+});
+
+const menuButton = document.querySelector('.menu-button');
+const nav = document.querySelector('.nav-links');
+menuButton?.addEventListener('click', () => {
+  const open = menuButton.getAttribute('aria-expanded') === 'true';
+  menuButton.setAttribute('aria-expanded', String(!open));
+  nav.classList.toggle('open', !open);
+});
+
+document.querySelector('.signup-form')?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const button = event.currentTarget.querySelector('button');
+  button.textContent = 'Preview Only';
+  setTimeout(() => button.textContent = 'Join Early Access', 1800);
+});
