@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas Scout Pro — Coach Halftime Telestrator</title>
+  <style>
+    :root {
+      --bg: #05080f;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.1);
+      --accent: #2563eb;
+      --accent-bright: #38bdf8;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+    header {
+      padding: 16px 24px;
+      background: rgba(10, 15, 26, 0.8);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: #fff; }
+    .brand span { color: var(--accent-bright); }
+    .status-badge { background: rgba(37, 99, 235, 0.2); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 20px; font-size: 12px; color: var(--accent-bright); }
+
+    main { display: grid; grid-template-columns: 1fr 320px; gap: 20px; padding: 20px; flex: 1; }
+
+    .canvas-container {
+      position: relative;
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    canvas { display: block; width: 100%; height: 100%; cursor: crosshair; }
+
+    .toolbar {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      background: rgba(10, 15, 26, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      padding: 8px;
+      border-radius: 8px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .tool-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .tool-btn:hover, .tool-btn.active {
+      background: var(--accent);
+      border-color: var(--accent-bright);
+    }
+
+    .color-picker { display: flex; gap: 6px; align-items: center; padding: 0 8px; border-left: 1px solid var(--border); }
+    .color-dot { width: 20px; height: 20px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; }
+    .color-dot.active { border-color: #fff; }
+
+    .sidebar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar h3 { font-size: 16px; color: #fff; margin-bottom: 10px; }
+
+    .clip-list { display: flex; flex-direction: column; gap: 10px; }
+    .clip-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .clip-card:hover { border-color: var(--accent); }
+    .clip-time { font-size: 12px; color: var(--accent-bright); font-weight: 600; }
+    .clip-desc { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    .action-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 48 48" fill="none"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z" fill="#38bdf8"/></svg>
+      Atlas <span>Telestrator</span>
+    </div>
+    <div class="status-badge">HALFTIME MODE — LOCAL EDGE CONNECTED</div>
+  </header>
+
+  <main>
+    <div class="canvas-container" id="canvas-wrap">
+      <canvas id="telestratorCanvas"></canvas>
+      
+      <div class="toolbar">
+        <button class="tool-btn active" id="penTool">Vector Line</button>
+        <button class="tool-btn" id="arrowTool">Arrow</button>
+        <button class="tool-btn" id="clearBtn">Clear Canvas</button>
+        
+        <div class="color-picker">
+          <div class="color-dot active" style="background: #ef4444;" data-color="#ef4444"></div>
+          <div class="color-dot" style="background: #38bdf8;" data-color="#38bdf8"></div>
+          <div class="color-dot" style="background: #eab308;" data-color="#eab308"></div>
+          <div class="color-dot" style="background: #22c55e;" data-color="#22c55e"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div>
+        <h3>Auto-Tagged Halftime Clips</h3>
+        <div class="clip-list">
+          <div class="clip-card">
+            <span class="clip-time">24:12 - 1st Half</span>
+            <div class="clip-desc">Defensive Line Compression & Gap</div>
+          </div>
+          <div class="clip-card">
+            <span class="clip-time">38:05 - 1st Half</span>
+            <div class="clip-desc">Counter Attack Transition</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="action-btn" onclick="alert('Telestrator corrections dispatched directly to player mobile apps!')">Dispatch Clip to Player Phones</button>
+    </div>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('telestratorCanvas');
+    const ctx = canvas.getContext('2d');
+    const wrap = document.getElementById('canvas-wrap');
+
+    function resizeCanvas() {
+      canvas.width = wrap.clientWidth;
+      canvas.height = wrap.clientHeight;
+      drawTacticalField();
+    }
+
+    let drawing = false;
+    let currentColor = '#ef4444';
+    let startX = 0, startY = 0;
+
+    function drawTacticalField() {
+      // Draw background tactical grass grid
+      ctx.fillStyle = '#062012';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw field line boundaries
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+      
+      // Halfway line
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 40);
+      ctx.lineTo(canvas.width / 2, canvas.height - 40);
+      ctx.stroke();
+    }
+
+    canvas.addEventListener('mousedown', (e) => {
+      drawing = true;
+      const rect = canvas.getBoundingClientRect();
+      startX = e.clientX - rect.left;
+      startY = e.clientY - rect.top;
+      ctx.strokeStyle = currentColor;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!drawing) return;
+      const rect = canvas.getBoundingClientRect();
+      ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+      ctx.stroke();
+    });
+
+    canvas.addEventListener('mouseup', () => { drawing = false; });
+
+    document.getElementById('clearBtn').addEventListener('click', drawTacticalField);
+
+    document.querySelectorAll('.color-dot').forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+        e.target.classList.add('active');
+        currentColor = e.target.getAttribute('data-color');
+      });
+    });
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+  </script>
+</body>
+</html>

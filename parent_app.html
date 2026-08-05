@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atlas Scout Pro — Parent Live Stream & Highlights</title>
+  <style>
+    :root {
+      --bg: #05080f;
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.1);
+      --accent: #2563eb;
+      --accent-bright: #38bdf8;
+      --gold: #f59e0b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+
+    /* Mobile Status Header */
+    .app-header {
+      padding: 12px 16px;
+      background: rgba(10, 15, 26, 0.9);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 16px; color: #fff; }
+    .live-tag { background: #ef4444; color: #fff; font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; animation: pulse 1.5s infinite; }
+
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    /* Stream Viewer Window */
+    .stream-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .fake-stream-feed {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0b1d13 0%, #030d07 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* Scoreboard Overlay */
+    .scoreboard-hud {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(5, 8, 15, 0.85);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+      border-radius: 6px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .team-score { display: flex; align-items: center; gap: 6px; }
+    .score-num { background: var(--accent); padding: 2px 6px; border-radius: 4px; color: #fff; }
+
+    /* Action Feed / Highlights */
+    .app-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 16px; }
+
+    .section-title { font-size: 14px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+    .highlight-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .highlight-thumb {
+      width: 80px;
+      height: 50px;
+      background: #1e293b;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--accent-bright);
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .highlight-info { flex: 1; }
+    .highlight-title { font-size: 14px; font-weight: 600; color: #fff; }
+    .highlight-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+    .share-btn {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid var(--accent-bright);
+      color: var(--accent-bright);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Bottom Navigation Bar */
+    .app-nav {
+      background: rgba(10, 15, 26, 0.95);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 10px 0;
+      text-align: center;
+    }
+
+    .nav-item { color: var(--muted); font-size: 11px; text-decoration: none; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+    .nav-item.active { color: var(--accent-bright); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <svg width="20" height="20" viewBox="0 0 48 48" fill="none"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z" fill="#38bdf8"/></svg>
+      Atlas Scout Live
+    </div>
+    <span class="live-tag">LIVE STREAM</span>
+  </header>
+
+  <!-- Real-Time Stream Area -->
+  <div class="stream-container">
+    <div class="fake-stream-feed">
+      <span style="color: var(--muted); font-size: 13px;">[ 1080p Edge Stream Active — Zero Token ]</span>
+      
+      <!-- Scoreboard HUD Overlay -->
+      <div class="scoreboard-hud">
+        <div class="team-score">ATLAS <span class="score-num">2</span></div>
+        <div style="color: var(--muted)">:</div>
+        <div class="team-score"><span class="score-num" style="background:#475569">1</span> RIVALS</div>
+        <div style="color: var(--accent-bright); margin-left: 8px;">34:12 2H</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Body Content -->
+  <div class="app-body">
+    <span class="section-title">Instant Auto-Highlight Feed</span>
+
+    <div class="highlight-card">
+      <div class="highlight-thumb">CLIP 01</div>
+      <div class="highlight-info">
+        <div class="highlight-title">GOAL! #10 Striker Drive</div>
+        <div class="highlight-meta">31:04 — Automated Whistle Trigger</div>
+      </div>
+      <button class="share-btn" onclick="alert('Highlight link copied! Send straight to family & Instagram.')">Share</button>
+    </div>
+
+    <div class="highlight-card">
+      <div class="highlight-thumb">CLIP 02</div>
+      <div class="highlight-info">
+        <div class="highlight-title">Key Save #1 Goalkeeper</div>
+        <div class="highlight-meta">18:22 — AI Action Spike</div>
+      </div>
+      <button class="share-btn" onclick="alert('Highlight link copied!')">Share</button>
+    </div>
+  </div>
+
+  <!-- Bottom Nav -->
+  <nav class="app-nav">
+    <a href="#" class="nav-item active">
+      <span>●</span>
+      <span>Live Feed</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span>★</span>
+      <span>Highlights</span>
+    </a>
+    <a href="#" class="nav-item">
+      <span>⚙</span>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+</body>
+</html>
