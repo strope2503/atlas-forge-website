@@ -3,435 +3,308 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atlas Scout Pro — Halftime Vector Telestrator</title>
+  <title>Vector Halftime Telestrator — Atlas Forge</title>
   <style>
     :root {
-      --bg: #030712;
-      --card: #0f172a;
-      --border: #1e293b;
-      --accent: #2563eb;
-      --accent-bright: #38bdf8;
-      --text: #f8fafc;
+      --bg: #04070d;
+      --card: #0b0f19;
+      --border: #1e2638;
+      --accent: #00f0ff;
+      --green: #00ff66;
+      --red: #ef4444;
+      --text: #e2e8f0;
       --text-muted: #94a3b8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
 
-    nav { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+    nav { width: 100%; max-width: 1200px; display: flex; gap: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; flex-wrap: wrap; align-items: center; }
     nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.15s; }
-    nav a:hover, nav a.active { color: var(--accent-bright); }
+    nav a:hover, nav a.active { color: var(--accent); }
 
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .brand { font-weight: 800; font-size: 20px; color: #fff; }
-    .brand span { color: var(--accent-bright); }
-
-    .main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; max-width: 1400px; margin: 0 auto; }
-
-    .canvas-container {
-      position: relative;
-      background: #064e3b;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      aspect-ratio: 16 / 9;
-    }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
+    .telestrator-container {
       width: 100%;
-      height: 100%;
-      cursor: crosshair;
+      max-width: 1200px;
+      display: grid;
+      grid-template-columns: 3fr 1fr;
+      gap: 24px;
     }
 
-    .toolbar {
-      display: flex;
-      gap: 12px;
-      padding: 12px;
-      background: var(--card);
-      border-top: 1px solid var(--border);
-      align-items: center;
-      flex-wrap: wrap;
+    @media (max-width: 900px) {
+      .telestrator-container { grid-template-columns: 1fr; }
     }
 
-    .tool-btn {
-      background: #1e293b;
-      color: #fff;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 600;
-      transition: all 0.15s;
-    }
-    .tool-btn.active, .tool-btn:hover { background: var(--accent); border-color: var(--accent-bright); }
-
-    .timeline-bar {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 8px 12px;
-      background: #020617;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-top: 8px;
-    }
-
-    .panel {
+    .board-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 20px;
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    .panel h3 { font-size: 16px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-
-    .event-list { display: flex; flex-direction: column; gap: 10px; max-height: 260px; overflow-y: auto; }
-    .event-item {
-      padding: 10px;
-      background: rgba(255,255,255,0.03);
+    .canvas-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #062016;
+      border-radius: 12px;
+      overflow: hidden;
       border: 1px solid var(--border);
+    }
+
+    canvas { width: 100%; height: 100%; cursor: crosshair; }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .tool-btn {
+      background: #1e2638;
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
       border-radius: 6px;
       font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
     }
 
-    .status-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      background: #1e293b;
-      color: var(--text-muted);
+    .tool-btn:hover, .tool-btn.active {
+      background: var(--accent);
+      color: #04070d;
+      border-color: var(--accent);
     }
-    .status-badge.live { background: rgba(16, 185, 129, 0.2); color: #10b981; }
+
+    .side-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .event-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .event-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .event-item:hover { border-color: var(--accent); }
 
     .btn-dispatch {
-      background: #16a34a;
-      color: #fff;
-      padding: 12px;
+      background: var(--green);
+      color: #04070d;
       border: none;
-      border-radius: 6px;
+      padding: 14px;
+      border-radius: 8px;
       font-weight: 700;
       cursor: pointer;
+      text-align: center;
+      transition: opacity 0.15s;
       margin-top: auto;
     }
-    .btn-dispatch:hover { background: #15803d; }
+
+    .btn-dispatch:hover { opacity: 0.9; }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="index.html">← Back to Overview</a>
+    <a href="index.html" style="color: #00f0ff; font-weight: 700;">← Return to Main Website</a>
+    <a href="coach_portal.html">Coach AR Film Room</a>
     <a href="telestrator.html" class="active">Halftime Telestrator</a>
     <a href="parent_app.html">Parent Companion Stream</a>
     <a href="scout-pro.html">Scout Pro Details</a>
-    <a href="technology.html">DataMesh Technology</a>
+    <a href="technology.html">Technology</a>
   </nav>
 
-  <header>
-    <div class="brand">Atlas <span>Halftime Telestrator</span></div>
-    <div>
-      <span class="status-badge" id="wsStatus">WebSocket: Disconnected</span>
-      <span style="font-size: 13px; color: var(--text-muted); margin-left: 10px;">Atlas FC vs Rival SC</span>
-    </div>
-  </header>
+  <div class="telestrator-container">
+    <div class="board-card">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2 style="font-size: 18px; color: #fff;">Tactical Halftime Canvas — Vector Telestrator</h2>
+        <span style="font-size: 12px; color: var(--green); background: rgba(0, 255, 102, 0.1); padding: 4px 10px; border-radius: 20px; font-weight: 600;">LIVE DRAWING ACTIVE</span>
+      </div>
 
-  <div class="main-grid">
-    <div>
-      <div class="canvas-container">
-        <canvas id="telestratorCanvas" width="1280" height="720"></canvas>
+      <div class="canvas-wrapper">
+        <canvas id="telestratorCanvas" width="800" height="450"></canvas>
       </div>
 
       <div class="toolbar">
-        <button class="tool-btn active" id="btnPen" onclick="setMode('pen')">✏️ Freehand Vector</button>
-        <button class="tool-btn" id="btnArrow" onclick="setMode('arrow')">➡️ Pass Vector</button>
-        <button class="tool-btn" id="btnSpotlight" onclick="setMode('spotlight')">🔍 Spotlight Player</button>
-        <input type="color" id="drawColor" value="#38bdf8" style="background:none; border:none; width:32px; height:32px; cursor:pointer;" />
-        <button class="tool-btn" onclick="resetBoard()" style="margin-left: auto; background: #991b1b;">🗑️ Clear Annotations</button>
-      </div>
-
-      <!-- Offline Scrubber Control -->
-      <div class="timeline-bar">
-        <button class="tool-btn" id="btnPlayPause" onclick="togglePlayPause()">⏸ Pause Feed</button>
-        <span style="font-size: 12px; color: var(--text-muted);">Match Frame Timeline:</span>
-        <input type="range" id="frameScrubber" min="1" max="100" value="100" style="flex:1; cursor:pointer;" oninput="scrubTimeline(this.value)">
-        <span style="font-size: 12px; color: #fff; font-weight:700;" id="frameDisplay">Frame #100</span>
+        <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">VECTOR TOOLS:</span>
+        <button class="tool-btn active" id="btnArrow">Pass Arrow</button>
+        <button class="tool-btn" id="btnZone">Spotlight Zone</button>
+        <button class="tool-btn" id="btnFreehand">Freehand</button>
+        <button class="tool-btn" id="btnClear" style="margin-left: auto; background: rgba(239, 68, 68, 0.2); color: var(--red); border-color: var(--red);">Clear Canvas</button>
       </div>
     </div>
 
-    <div class="panel">
-      <h3>Live Telemetry Stream</h3>
-      <div style="font-size: 12px; color: var(--text-muted); background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
-        <div>FPS: <strong id="valFps" style="color:#fff;">0.0</strong></div>
-        <div>Tracked Players: <strong id="valPlayers" style="color:#fff;">0</strong></div>
-        <div>Player #1 Knee Angle: <strong id="valKnee" style="color:#fff;">0.0°</strong></div>
+    <div class="side-panel">
+      <h3 style="color: #fff; font-size: 16px;">Tagged Halftime Clips</h3>
+
+      <div class="event-list">
+        <div class="event-item">
+          <div>
+            <strong style="font-size: 13px; color: #fff; display: block;">42' Counter Defense</strong>
+            <span style="font-size: 11px; color: var(--text-muted);">Involving #10 Alex Vance</span>
+          </div>
+          <span style="color: var(--accent); font-weight: 700; font-size: 12px;">REVIEW</span>
+        </div>
+
+        <div class="event-item">
+          <div>
+            <strong style="font-size: 13px; color: #fff; display: block;">28' High Press Overload</strong>
+            <span style="font-size: 11px; color: var(--text-muted);">Attacking Third Opening</span>
+          </div>
+          <span style="color: var(--accent); font-weight: 700; font-size: 12px;">REVIEW</span>
+        </div>
       </div>
 
-      <h3>Auto-Tagged Match Events</h3>
-      <div class="event-list" id="eventList">
-        <div class="event-item">⚽ <strong>38:12 Goal</strong> — Dynamic Overload Left Flank</div>
-        <div class="event-item">🛡️ <strong>12:40 Turnover</strong> — High Press Counter</div>
+      <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 14px; border-radius: 10px;">
+        <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px;">Dispatch Target</span>
+        <strong style="font-size: 13px; color: #fff;">Selected Players: #10 Alex Vance, #07, #04</strong>
       </div>
 
-      <h3>Dispatch Clip</h3>
-      <p style="font-size: 12px; color: var(--text-muted);">Send annotated 15s vector clip directly to player devices before 2nd half kickoff.</p>
-      <button class="btn-dispatch" onclick="alert('Vector annotation clip dispatched to Player #10 mobile app!')">
-        📲 Send to Player Phones
-      </button>
+      <button class="btn-dispatch" onclick="alert('Dispatching 15-second vector correction clips directly to player devices...')">Dispatch 15-Sec Clip to Player Phones</button>
     </div>
   </div>
 
   <script>
     const canvas = document.getElementById('telestratorCanvas');
     const ctx = canvas.getContext('2d');
-    let drawing = false;
-    let mode = 'pen';
+    let isDrawing = false;
     let startX = 0, startY = 0;
-    let userDrawings = [];
-    let liveTelemetryData = null;
-    let isLivePaused = false;
-    let telemetryHistory = [];
+    let mode = 'arrow';
+    let paths = [];
 
-    const wsStatus = document.getElementById('wsStatus');
-    const valFps = document.getElementById('valFps');
-    const valPlayers = document.getElementById('valPlayers');
-    const valKnee = document.getElementById('valKnee');
-    const eventList = document.getElementById('eventList');
-    const frameScrubber = document.getElementById('frameScrubber');
-    const frameDisplay = document.getElementById('frameDisplay');
+    function drawField() {
+      ctx.fillStyle = '#062016';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    function connectEdgeServer() {
-      const ws = new WebSocket('ws://localhost:8000/ws/telemetry');
-
-      ws.onopen = () => {
-        wsStatus.textContent = 'WebSocket: Connected (10 Hz)';
-        wsStatus.classList.add('live');
-      };
-
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        telemetryHistory.push(data);
-        if (telemetryHistory.length > 100) telemetryHistory.shift();
-
-        if (!isLivePaused) {
-          liveTelemetryData = data;
-          frameScrubber.value = telemetryHistory.length;
-          frameDisplay.textContent = `Frame #${data.frame}`;
-          updateTelemetryHUD(data);
-          redrawAll();
-        }
-      };
-
-      ws.onclose = () => {
-        wsStatus.textContent = 'WebSocket: Offline (Mock Mode)';
-        wsStatus.classList.remove('live');
-        setTimeout(connectEdgeServer, 3000);
-      };
-    }
-
-    function updateTelemetryHUD(data) {
-      valFps.textContent = data.fps;
-      valPlayers.textContent = data.tracked_players;
-      valKnee.textContent = data.left_knee_deg + '°';
-
-      if (data.whistle_detected) {
-        const item = document.createElement('div');
-        item.className = 'event-item';
-        item.style.borderColor = '#38bdf8';
-        item.innerHTML = `🔊 <strong>Frame #${data.frame}</strong> — Whistle Frequency Trigger Detected`;
-        eventList.prepend(item);
-      }
-
-      valKnee.style.color = data.pose_warning ? '#ef4444' : '#10b981';
-    }
-
-    function togglePlayPause() {
-      isLivePaused = !isLivePaused;
-      const btn = document.getElementById('btnPlayPause');
-      btn.textContent = isLivePaused ? '▶ Resume Live' : '⏸ Pause Feed';
-      btn.style.background = isLivePaused ? '#16a34a' : '#1e293b';
-    }
-
-    function scrubTimeline(val) {
-      isLivePaused = true;
-      document.getElementById('btnPlayPause').textContent = '▶ Resume Live';
-      document.getElementById('btnPlayPause').style.background = '#16a34a';
-
-      const idx = Math.max(0, Math.min(val - 1, telemetryHistory.length - 1));
-      if (telemetryHistory[idx]) {
-        liveTelemetryData = telemetryHistory[idx];
-        frameDisplay.textContent = `Frame #${liveTelemetryData.frame}`;
-        updateTelemetryHUD(liveTelemetryData);
-        redrawAll();
-      }
-    }
-
-    connectEdgeServer();
-
-    function drawSoccerPitch() {
-      const w = canvas.width;
-      const h = canvas.height;
-      ctx.fillStyle = '#064e3b';
-      ctx.fillRect(0, 0, w, h);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
-      ctx.lineWidth = 3;
-      const p = 40;
-      ctx.strokeRect(p, p, w - 2 * p, h - 2 * p);
-      ctx.beginPath();
-      ctx.moveTo(w / 2, p);
-      ctx.lineTo(w / 2, h - p);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(w / 2, h / 2, 80, 0, 2 * Math.PI);
-      ctx.stroke();
-      ctx.strokeRect(p, h / 2 - 160, 180, 320);
-      ctx.strokeRect(w - p - 180, h / 2 - 160, 180, 320);
-    }
-
-    function renderLiveTelemetryOverlay() {
-      if (!liveTelemetryData) return;
-
-      const bmx = liveTelemetryData.ball_metric[0];
-      const bmy = liveTelemetryData.ball_metric[1];
-      const bpx = (bmx / 105.0) * (canvas.width - 80) + 40;
-      const bpy = (bmy / 68.0) * (canvas.height - 80) + 40;
-
-      ctx.fillStyle = '#facc15';
-      ctx.beginPath();
-      ctx.arc(bpx, bpy, 8, 0, 2 * Math.PI);
-      ctx.fill();
-
-      const pmx = liveTelemetryData.sample_player_metric[1];
-      const pmy = liveTelemetryData.sample_player_metric[2];
-      const ppx = (pmx / 105.0) * (canvas.width - 80) + 40;
-      const ppy = (pmy / 68.0) * (canvas.height - 80) + 40;
-
-      ctx.fillStyle = '#38bdf8';
-      ctx.beginPath();
-      ctx.arc(ppx, ppy, 12, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.strokeStyle = '#ffffff';
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
       ctx.lineWidth = 2;
+      ctx.strokeRect(30, 20, canvas.width - 60, canvas.height - 40);
+      ctx.beginPath();
+      ctx.moveTo(canvas.width / 2, 20);
+      ctx.lineTo(canvas.width / 2, canvas.height - 20);
+      ctx.arc(canvas.width / 2, canvas.height / 2, 50, 0, Math.PI * 2);
       ctx.stroke();
 
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText('P1', ppx - 7, ppy + 4);
-    }
+      // Static Tactical Players
+      drawPlayer(200, 150, '#00f0ff', '#10 Alex Vance');
+      drawPlayer(320, 220, '#00f0ff', '#07');
+      drawPlayer(450, 180, '#ef4444', 'Defender');
+      drawPlayer(550, 280, '#ef4444', 'Defender');
 
-    function redrawAll() {
-      drawSoccerPitch();
-      renderLiveTelemetryOverlay();
-
-      userDrawings.forEach(d => {
-        if (d.type === 'line') {
-          ctx.strokeStyle = d.color;
-          ctx.lineWidth = 4;
-          ctx.beginPath();
-          ctx.moveTo(d.pts[0].x, d.pts[0].y);
-          d.pts.forEach(pt => ctx.lineTo(pt.x, pt.y));
-          ctx.stroke();
-        } else if (d.type === 'arrow') {
-          drawArrow(d.fromX, d.fromY, d.toX, d.toY, d.color);
-        } else if (d.type === 'spotlight') {
-          ctx.beginPath();
-          ctx.arc(d.x, d.y, 60, 0, 2 * Math.PI);
-          ctx.strokeStyle = d.color;
-          ctx.lineWidth = 3;
-          ctx.setLineDash([6, 6]);
-          ctx.stroke();
-          ctx.setLineDash([]);
-        }
+      // Draw stored vector elements
+      paths.forEach(p => {
+        if (p.type === 'arrow') drawArrow(p.x1, p.y1, p.x2, p.y2);
+        if (p.type === 'zone') drawSpotlight(p.x1, p.y1, p.x2, p.y2);
       });
     }
 
-    function setMode(m) {
-      mode = m;
-      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
-      if(m==='pen') document.getElementById('btnPen').classList.add('active');
-      if(m==='arrow') document.getElementById('btnArrow').classList.add('active');
-      if(m==='spotlight') document.getElementById('btnSpotlight').classList.add('active');
-    }
-
-    let currentPath = [];
-
-    canvas.addEventListener('mousedown', (e) => {
-      drawing = true;
-      const rect = canvas.getBoundingClientRect();
-      startX = (e.clientX - rect.left) * (canvas.width / rect.width);
-      startY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      if (mode === 'pen') currentPath = [{x: startX, y: startY}];
-    });
-
-    canvas.addEventListener('mousemove', (e) => {
-      if (!drawing) return;
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left) * (canvas.width / rect.width);
-      const y = (e.clientY - rect.top) * (canvas.height / rect.height);
-      const color = document.getElementById('drawColor').value;
-
-      if (mode === 'pen') {
-        currentPath.push({x, y});
-        redrawAll();
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 4;
-        ctx.beginPath();
-        ctx.moveTo(currentPath[0].x, currentPath[0].y);
-        currentPath.forEach(pt => ctx.lineTo(pt.x, pt.y));
-        ctx.stroke();
-      }
-    });
-
-    canvas.addEventListener('mouseup', (e) => {
-      if (!drawing) return;
-      drawing = false;
-      const rect = canvas.getBoundingClientRect();
-      const endX = (e.clientX - rect.left) * (canvas.width / rect.width);
-      const endY = (e.clientY - rect.top) * (canvas.height / rect.height);
-      const color = document.getElementById('drawColor').value;
-
-      if (mode === 'pen') {
-        userDrawings.push({type: 'line', pts: currentPath, color: color});
-      } else if (mode === 'arrow') {
-        userDrawings.push({type: 'arrow', fromX: startX, fromY: startY, toX: endX, toY: endY, color: color});
-      } else if (mode === 'spotlight') {
-        userDrawings.push({type: 'spotlight', x: endX, y: endY, color: color});
-      }
-      redrawAll();
-    });
-
-    function drawArrow(fromx, fromy, tox, toy, color) {
-      const headlen = 16;
-      const angle = Math.atan2(toy - fromy, tox - fromx);
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 5;
-      ctx.beginPath();
-      ctx.moveTo(fromx, fromy);
-      ctx.lineTo(tox, toy);
-      ctx.stroke();
-
+    function drawPlayer(x, y, color, label) {
       ctx.fillStyle = color;
       ctx.beginPath();
-      ctx.moveTo(tox, toy);
-      ctx.lineTo(tox - headlen * Math.cos(angle - Math.PI / 6), toy - headlen * Math.sin(angle - Math.PI / 6));
-      ctx.lineTo(tox - headlen * Math.cos(angle + Math.PI / 6), toy - headlen * Math.sin(angle + Math.PI / 6));
+      ctx.arc(x, y, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#fff';
+      ctx.font = '11px Inter, sans-serif';
+      ctx.fillText(label, x - 15, y - 14);
+    }
+
+    function drawArrow(x1, y1, x2, y2) {
+      ctx.strokeStyle = '#00ff66';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      ctx.fillStyle = '#00ff66';
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x2 - 12 * Math.cos(angle - Math.PI / 6), y2 - 12 * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(x2 - 12 * Math.cos(angle + Math.PI / 6), y2 - 12 * Math.sin(angle + Math.PI / 6));
       ctx.fill();
     }
 
-    function resetBoard() {
-      userDrawings = [];
-      redrawAll();
+    function drawSpotlight(x1, y1, x2, y2) {
+      const radius = Math.hypot(x2 - x1, y2 - y1);
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.25)';
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(x1, y1, radius, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
     }
 
-    drawSoccerPitch();
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      startX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      startY = (e.clientY - rect.top) * (canvas.height / rect.height);
+      isDrawing = true;
+    });
+
+    canvas.addEventListener('mouseup', (e) => {
+      if (!isDrawing) return;
+      const rect = canvas.getBoundingClientRect();
+      const endX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const endY = (e.clientY - rect.top) * (canvas.height / rect.height);
+      isDrawing = false;
+
+      paths.push({ type: mode, x1: startX, y1: startY, x2: endX, y2: endY });
+      drawField();
+    });
+
+    document.getElementById('btnClear').addEventListener('click', () => {
+      paths = [];
+      drawField();
+    });
+
+    document.getElementById('btnArrow').addEventListener('click', (e) => {
+      mode = 'arrow';
+      setActiveBtn(e.target);
+    });
+
+    document.getElementById('btnZone').addEventListener('click', (e) => {
+      mode = 'zone';
+      setActiveBtn(e.target);
+    });
+
+    function setActiveBtn(btn) {
+      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    drawField();
   </script>
 </body>
 </html>
