@@ -3,240 +3,280 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Coach AR Film Room — Atlas Forge</title>
+  <title>Atlas Scout Pro — Unified Coach Film Room & AR Analytics</title>
   <style>
     :root {
-      --bg: #04070d;
-      --card: #0b0f19;
-      --border: #1e2638;
-      --accent: #00f0ff;
-      --green: #00ff66;
-      --text: #e2e8f0;
+      --bg: #030712;
+      --card: #0f172a;
+      --border: #1e293b;
+      --accent: #2563eb;
+      --accent-bright: #38bdf8;
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #f8fafc;
       --text-muted: #94a3b8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; }
 
-    nav { width: 100%; max-width: 1200px; display: flex; gap: 20px; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 16px; flex-wrap: wrap; align-items: center; }
+    nav { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
     nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.15s; }
-    nav a:hover, nav a.active { color: var(--accent); }
+    nav a:hover, nav a.active { color: var(--accent-bright); }
 
-    .portal-container {
-      width: 100%;
-      max-width: 1200px;
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 24px;
-    }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .brand { font-weight: 800; font-size: 20px; color: #fff; }
+    .brand span { color: var(--accent-bright); }
 
-    @media (max-width: 900px) {
-      .portal-container { grid-template-columns: 1fr; }
-    }
+    .portal-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; max-width: 1400px; margin: 0 auto; }
 
-    .video-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-
-    .canvas-wrapper {
+    .video-container {
       position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      background: #020408;
+      background: #000;
+      border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
-      border: 1px solid var(--border);
+      aspect-ratio: 16 / 9;
     }
 
-    canvas { width: 100%; height: 100%; cursor: pointer; }
-
-    .stats-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .player-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 16px;
-    }
-
-    .avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      background: rgba(0, 240, 255, 0.1);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      display: flex;
-      align-items: justify;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 18px;
-    }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .metric-box {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      padding: 14px;
-      border-radius: 10px;
-    }
-
-    .metric-box span { font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 4px; }
-    .metric-box strong { font-size: 18px; color: #fff; font-weight: 700; }
-
-    .btn {
-      background: var(--accent);
-      color: #04070d;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-weight: 700;
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       cursor: pointer;
-      text-align: center;
-      transition: opacity 0.15s;
     }
-    .btn:hover { opacity: 0.9; }
+
+    .ar-stat-card {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 260px;
+      background: rgba(15, 23, 42, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--accent-bright);
+      border-radius: 10px;
+      padding: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
+      display: none;
+      z-index: 10;
+    }
+
+    .ar-stat-card h4 { font-size: 16px; color: #fff; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .ar-stat-card .role { font-size: 11px; color: var(--accent-bright); text-transform: uppercase; font-weight: 700; margin-bottom: 12px; }
+
+    .stat-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .stat-row strong { color: #fff; }
+
+    .playlist-section { margin-top: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .playlist-section h3 { font-size: 15px; color: #fff; margin-bottom: 12px; }
+
+    .clip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+    .clip-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .clip-item:hover { border-color: var(--accent-bright); background: rgba(56, 189, 248, 0.05); }
+    .clip-item h5 { font-size: 13px; color: #fff; margin-bottom: 4px; }
+    .clip-item p { font-size: 11px; color: var(--text-muted); }
+
+    .side-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+    .side-panel h3 { font-size: 16px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+
+    .roster-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; }
+    .roster-card {
+      padding: 10px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .roster-card:hover { border-color: var(--accent); }
+    .roster-info h5 { font-size: 13px; color: #fff; }
+    .roster-info p { font-size: 11px; color: var(--text-muted); }
   </style>
 </head>
 <body>
 
   <nav>
-    <a href="index.html" style="color: #00f0ff; font-weight: 700;">← Return to Main Website</a>
+    <a href="index.html">← Back to Overview</a>
     <a href="coach_portal.html" class="active">Coach AR Film Room</a>
     <a href="telestrator.html">Halftime Telestrator</a>
     <a href="parent_app.html">Parent Companion Stream</a>
     <a href="scout-pro.html">Scout Pro Details</a>
-    <a href="technology.html">Technology</a>
+    <a href="technology.html">DataMesh Technology</a>
   </nav>
 
-  <div class="portal-container">
-    <div class="video-card">
-      <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2 style="font-size: 18px; color: #fff;">Interactive Match Film — AR Overlays</h2>
-        <span style="font-size: 12px; color: var(--accent); background: rgba(0, 240, 255, 0.1); padding: 4px 10px; border-radius: 20px; font-weight: 600;">CLICK ATHLETE ON CANVAS</span>
+  <header>
+    <div class="brand">Atlas Scout Pro <span>Unified Coach Film Room</span></div>
+    <div style="font-size: 13px; color: var(--text-muted);">Match Review: Atlas FC vs Rival SC (Full 90' Vector Archive)</div>
+  </header>
+
+  <div class="portal-grid">
+    <div>
+      <div class="video-container">
+        <canvas id="filmCanvas" width="1280" height="720"></canvas>
+
+        <!-- Floating AR Stat Overlay -->
+        <div class="ar-stat-card" id="arCard">
+          <h4><span id="cardName">Player #10</span> <span style="font-size: 12px; color: #10b981;">#10</span></h4>
+          <div class="role" id="cardRole">Midfielder / Captain</div>
+          <div class="stat-row"><span>Top Speed:</span> <strong id="cardSpeed">18.4 mph</strong></div>
+          <div class="stat-row"><span>Distance Run:</span> <strong id="cardDist">4.8 miles</strong></div>
+          <div class="stat-row"><span>Completed Passes:</span> <strong id="cardPasses">32 / 36 (88%)</strong></div>
+          <div class="stat-row"><span>Shots / Steals:</span> <strong id="cardShots">3 Shots / 4 Steals</strong></div>
+          <div class="stat-row"><span>Left Knee Angle:</span> <strong id="cardKnee" style="color:#10b981;">172.4° (Safe)</strong></div>
+        </div>
       </div>
-      <div class="canvas-wrapper">
-        <canvas id="filmCanvas" width="800" height="450"></canvas>
+
+      <!-- AI Event Playlists -->
+      <div class="playlist-section">
+        <h3>AI-Generated Match Playlists</h3>
+        <div class="clip-grid">
+          <div class="clip-item" onclick="selectClip('Goal #1 (62\')')">
+            <h5>⚽ Goal #1 (62')</h5>
+            <p>Overload Left Flank • Top Speed 18.4mph</p>
+          </div>
+          <div class="clip-item" onclick="selectClip('Key Turnover (41\')')">
+            <h5>🛡️ Key Turnover (41')</h5>
+            <p>High Press Counter • Player #08</p>
+          </div>
+          <div class="clip-item" onclick="selectClip('Shot on Goal (28\')')">
+            <h5>🎯 Shot on Target (28')</h5>
+            <p>24yd Strike • Player #10</p>
+          </div>
+          <div class="clip-item" onclick="selectClip('Defensive Clearance (12\')')">
+            <h5>🧱 Goal Line Save (12')</h5>
+            <p>Header Clearance • Player #04</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="stats-card">
-      <div class="player-header">
-        <div class="avatar">#10</div>
-        <div>
-          <h3 style="color: #fff; font-size: 18px;">Alex Vance</h3>
-          <p style="color: var(--text-muted); font-size: 13px;">Midfielder • Atlas Academy</p>
+    <!-- Right Side Active Roster & Stats -->
+    <div class="side-panel">
+      <h3>Active Squad Roster</h3>
+      <div class="roster-list">
+        <div class="roster-card" onclick="selectPlayer(10)">
+          <div class="roster-info">
+            <h5>#10 Justin Hindmand</h5>
+            <p>Midfielder • 4.8 mi • 18.4 mph</p>
+          </div>
+          <span style="color: #10b981; font-size: 12px; font-weight:700;">ACTIVE</span>
+        </div>
+
+        <div class="roster-card" onclick="selectPlayer(8)">
+          <div class="roster-info">
+            <h5>#08 Marcus Vance</h5>
+            <p>Forward • 3.9 mi • 19.1 mph</p>
+          </div>
+          <span style="color: #10b981; font-size: 12px; font-weight:700;">ACTIVE</span>
+        </div>
+
+        <div class="roster-card" onclick="selectPlayer(4)">
+          <div class="roster-info">
+            <h5>#04 David Miller</h5>
+            <p>Defender • 3.2 mi • 16.2 mph</p>
+          </div>
+          <span style="color: #10b981; font-size: 12px; font-weight:700;">ACTIVE</span>
         </div>
       </div>
-
-      <div class="metric-grid">
-        <div class="metric-box">
-          <span>Sprint Velocity</span>
-          <strong id="topSpeed">18.4 mph</strong>
-        </div>
-        <div class="metric-box">
-          <span>Distance Covered</span>
-          <strong id="distance">4.8 Miles</strong>
-        </div>
-        <div class="metric-box">
-          <span>Pass Completion</span>
-          <strong style="color: var(--green);">89.2%</strong>
-        </div>
-        <div class="metric-box">
-          <span>ACL Knee Strain</span>
-          <strong style="color: var(--green);">Low (172°)</strong>
-        </div>
-      </div>
-
-      <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 14px; border-radius: 10px;">
-        <span style="font-size: 12px; color: var(--text-muted); display: block; margin-bottom: 6px;">Automated ReID Profile Tag</span>
-        <p style="font-size: 13px; color: #cbd5e1;">Feature embeddings locked across 3 wide-angle camera feeds. Zero tracking loss during box plays.</p>
-      </div>
-
-      <button class="btn" onclick="alert('Exporting Alex Vance #10 Match Telemetry PDF...')">Export Player Telemetry Report</button>
     </div>
   </div>
 
   <script>
     const canvas = document.getElementById('filmCanvas');
     const ctx = canvas.getContext('2d');
-    let frame = 0;
+    const arCard = document.getElementById('arCard');
+
+    let selectedPlayerId = 10;
+
+    const mockPlayers = {
+      10: { name: "Justin Hindmand", number: "#10", role: "Midfielder / Captain", speed: "18.4 mph", dist: "4.8 miles", passes: "32 / 36 (88%)", shots: "3 Shots / 4 Steals", knee: "172.4° (Safe)", x: 640, y: 360 },
+      8: { name: "Marcus Vance", number: "#08", role: "Striker", speed: "19.1 mph", dist: "3.9 miles", passes: "14 / 18 (77%)", shots: "5 Shots / 1 Steal", knee: "168.1° (Safe)", x: 820, y: 280 },
+      4: { name: "David Miller", number: "#04", role: "Center Back", speed: "16.2 mph", dist: "3.2 miles", passes: "22 / 24 (91%)", shots: "0 Shots / 7 Steals", knee: "175.0° (Safe)", x: 380, y: 440 }
+    };
 
     function renderFilmRoom() {
-      frame++;
-      ctx.fillStyle = '#062016';
+      // Draw Pitch Viewport Background
+      ctx.fillStyle = '#064e3b';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Field Lines
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(40, 30, canvas.width - 80, canvas.height - 60);
+      // Lines
+      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
       ctx.beginPath();
-      ctx.moveTo(canvas.width / 2, 30);
-      ctx.lineTo(canvas.width / 2, canvas.height - 30);
-      ctx.arc(canvas.width / 2, canvas.height / 2, 60, 0, 2 * Math.PI);
+      ctx.moveTo(canvas.width / 2, 40);
+      ctx.lineTo(canvas.width / 2, canvas.height - 40);
       ctx.stroke();
 
-      // Ball
-      const bx = canvas.width / 2 + Math.sin(frame * 0.04) * 200;
-      const by = canvas.height / 2 + Math.cos(frame * 0.04) * 100;
-      ctx.fillStyle = '#facc15';
-      ctx.beginPath();
-      ctx.arc(bx, by, 6, 0, Math.PI * 2);
-      ctx.fill();
+      // Render Players
+      Object.keys(mockPlayers).forEach(id => {
+        const p = mockPlayers[id];
+        ctx.fillStyle = (parseInt(id) === selectedPlayerId) ? '#38bdf8' : '#ffffff';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 16, 0, 2 * Math.PI);
+        ctx.fill();
 
-      // Alex Vance #10 Player Node
-      const px = canvas.width / 2 + Math.sin(frame * 0.02) * 120;
-      const py = canvas.height / 2 + Math.cos(frame * 0.02) * 60;
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText(p.number, p.x - 10, p.y + 4);
 
-      // AR Bounding Box & Target Line
-      ctx.strokeStyle = '#00f0ff';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(px - 18, py - 24, 36, 48);
-
-      ctx.fillStyle = '#00f0ff';
-      ctx.beginPath();
-      ctx.arc(px, py, 10, 0, Math.PI * 2);
-      ctx.fill();
-
-      // AR Tag Overlay
-      ctx.fillStyle = 'rgba(11, 15, 25, 0.9)';
-      ctx.fillRect(px + 24, py - 30, 110, 42);
-      ctx.strokeStyle = '#00f0ff';
-      ctx.strokeRect(px + 24, py - 30, 110, 42);
-
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 11px Inter, sans-serif';
-      ctx.fillText('#10 Alex Vance', px + 30, py - 14);
-      ctx.fillStyle = '#00ff66';
-      ctx.font = '10px Inter, sans-serif';
-      ctx.fillText('18.4 mph | 89%', px + 30, py - 2);
-
-      requestAnimationFrame(renderFilmRoom);
+        if (parseInt(id) === selectedPlayerId) {
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 24, 0, 2 * Math.PI);
+          ctx.stroke();
+        }
+      });
     }
 
-    renderFilmRoom();
+    function selectPlayer(id) {
+      selectedPlayerId = id;
+      const p = mockPlayers[id];
+      document.getElementById('cardName').textContent = `${p.name} (${p.number})`;
+      document.getElementById('cardRole').textContent = p.role;
+      document.getElementById('cardSpeed').textContent = p.speed;
+      document.getElementById('cardDist').textContent = p.dist;
+      document.getElementById('cardPasses').textContent = p.passes;
+      document.getElementById('cardShots').textContent = p.shots;
+      document.getElementById('cardKnee').textContent = p.knee;
+      arCard.style.display = 'block';
+      renderFilmRoom();
+    }
+
+    function selectClip(title) {
+      alert(`Loading AI Playlist Clip: ${title}`);
+    }
+
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = (e.clientX - rect.left) * (canvas.width / rect.width);
+      const clickY = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+      let found = false;
+      Object.keys(mockPlayers).forEach(id => {
+        const p = mockPlayers[id];
+        const dist = Math.hypot(clickX - p.x, clickY - p.y);
+        if (dist < 30) {
+          selectPlayer(parseInt(id));
+          found = true;
+        }
+      });
+      if (!found) arCard.style.display = 'none';
+    });
+
+    selectPlayer(10);
   </script>
 </body>
 </html>
