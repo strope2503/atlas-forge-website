@@ -3,150 +3,441 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Atlas Scout Pro V8.0 autonomous AI camera and sports intelligence system.">
-    <title>Scout Pro — Atlas Forge</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>Atlas Scout Pro V8.0 | Atlas Forge</title>
+    <style>
+        :root {
+            --bg-obsidian: #0B0E14;
+            --panel-gray: #161B22;
+            --border-dark: #21262D;
+            --accent-cyan: #00F2FE;
+            --accent-green: #10B981;
+            --accent-gold: #F59E0B;
+            --text-main: #F0F6FC;
+            --text-muted: #8B949E;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-obsidian);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+        }
+
+        /* Unified Navigation Header */
+        .atlas-header {
+            height: 70px;
+            background: var(--panel-gray);
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            background: transparent;
+            border: none;
+        }
+        .brand-text {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #F0F6FC;
+            letter-spacing: 1px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.2s ease;
+        }
+        .nav-item:hover, .nav-item.active { color: var(--accent-cyan); }
+
+        /* Main Page Content Container */
+        .container {
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 24px;
+        }
+
+        .product-header {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .badge {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .price-tag {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--accent-green);
+            margin-bottom: 20px;
+        }
+
+        .section-box {
+            background: var(--panel-gray);
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border-dark);
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #F0F6FC;
+            margin: 20px 0 10px 0;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+
+        .feature-list {
+            list-style-type: none;
+            display: grid;
+            gap: 14px;
+            margin-top: 15px;
+        }
+
+        .feature-list li {
+            background: #0B0E14;
+            border: 1px solid var(--border-dark);
+            padding: 16px;
+            border-radius: 8px;
+            color: var(--text-muted);
+        }
+
+        .feature-list strong {
+            color: var(--text-main);
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .spec-item {
+            background: #0B0E14;
+            border: 1px solid var(--border-dark);
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .spec-title {
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 4px;
+        }
+
+        /* Demo Trigger Buttons */
+        .demo-btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn-demo {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-demo:hover {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        /* Pricing & Add-ons Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-dark);
+            font-size: 0.95rem;
+        }
+
+        th { color: var(--accent-cyan); font-weight: 700; }
+        td { color: var(--text-muted); }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        .modal-card {
+            background: var(--panel-gray);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .modal-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+        }
+    </style>
 </head>
-<body class="bg-[#04070D] text-slate-200">
-    <div class="noise"></div>
-    <header class="site-header">
-        <a class="brand" href="index.html" aria-label="Atlas Forge home">
-            <span class="brand-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg>
-            </span>
-            <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
-        </a>
-        <nav class="desktop-nav" aria-label="Main navigation">
-            <a href="index.html" style="color: #00F0FF; font-weight: 700;">← Main Site</a>
-            <a href="scout-pro.html" class="active">Scout Pro</a>
-            <a href="atlas-media.html">Media Suite</a>
-            <a href="thrf.html">THRF™ Spatial</a>
-            <a href="contact.html">Contact</a>
-        </nav>
-        <a class="nav-cta" href="contact.html">Contact Sales</a>
-        <button class="menu-button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+<body>
+
+    <header class="atlas-header">
+        <div class="nav-container">
+            <a href="index.html" class="brand-link">
+                <img src="atlas_logo.PNG" alt="Atlas Logo" class="brand-logo">
+                <span class="brand-text">ATLAS FORGE</span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="scout_pro.html" class="nav-item active">Atlas Scout Pro</a>
+                <a href="forge_ledger.html" class="nav-item">The Forge Ledger</a>
+                <a href="coregrid.html" class="nav-item">CoreGrid™</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <section class="inner-hero section-shell" style="padding-top: 120px;">
-            <div class="inner-copy reveal">
-                <div class="eyebrow"><span></span> ATLAS SPORTS INTELLIGENCE</div>
-                <h1>Every player.<br>Every touch.<br><em>Hands-Free AI.</em></h1>
-                <p>Atlas Scout Pro V8.0 is the ultimate hands-free AI camera and sports intelligence system. Built with a zero-token edge architecture, virtual PTZ director, automated face profile tracking, and a custom spatial codec that reduces data by 99%.</p>
-                <div class="hero-actions">
-                    <a class="button primary" href="contact.html">Request Hardware Demo</a>
-                    <a class="button secondary" href="#capabilities">Explore AI Features</a>
-                </div>
-            </div>
-            <div class="feature-visual field-demo reveal delay-1">
-                <div class="pitch">
-                    <div class="center-circle"></div>
-                    <div class="center-line"></div>
-                    <span class="player p1"></span>
-                    <span class="player p2"></span>
-                    <span class="player p3"></span>
-                    <span class="player p4"></span>
-                    <span class="player p5"></span>
-                    <span class="ball"></span>
-                    <svg class="track-line" viewBox="0 0 600 350" preserveAspectRatio="none"><path d="M90,250 C170,120 290,310 510,100"/></svg>
-                </div>
-            </div>
-        </section>
-
-        <!-- HARDWARE TIERS SECTION -->
-        <section class="content-section section-shell" style="padding: 60px 0;">
-            <div class="section-heading reveal">
-                <div class="eyebrow"><span></span> HARDWARE BUILD TIERS</div>
-                <h2>Choose your competitive edge.</h2>
-                <p>Industrial-grade enclosures, onboard NVIDIA Jetson Orin compute, and absolute power-loss immunity.</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8 reveal delay-1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px;">
-                <div style="background: #0B0F19; border: 1px solid #1E2638; padding: 30px; border-radius: 12px; display:flex; flex-direction:column; justify-content:space-between;">
-                    <div>
-                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:20px;">
-                            <div>
-                                <h3 style="color:#fff; font-size:22px; margin-bottom:4px;">Base Edition</h3>
-                                <p style="color:#94a3b8; font-size:13px;">For Travel Clubs & High Schools</p>
-                            </div>
-                            <span style="color:#00F0FF; font-size:28px; font-weight:800;">$2,500</span>
-                        </div>
-                        <ul style="color:#94a3b8; font-size:14px; list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
-                            <li>✓ 3x Weather-proof 4K Network Cameras</li>
-                            <li>✓ Onboard NVIDIA Jetson Edge AI GPU</li>
-                            <li>✓ 20ft Aerodynamic Mast & Guy-Wire Rigging</li>
-                            <li>✓ Read-Only Power-Loss Immune OverlayFS OS</li>
-                            <li>✓ LiFePO4 All-Day Field Power Station</li>
-                        </ul>
-                    </div>
-                    <a href="contact.html" class="button primary" style="text-align:center;">Select Base Package</a>
-                </div>
-
-                <div style="background: #0B0F19; border: 2px solid #00F0FF; padding: 30px; border-radius: 12px; position:relative; display:flex; flex-direction:column; justify-content:space-between;">
-                    <div style="position:absolute; top:0; right:0; background:#00F0FF; color:#000; font-size:11px; font-weight:800; text-transform:uppercase; padding:4px 12px; border-bottom-left-radius:8px;">Recommended</div>
-                    <div>
-                        <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:20px;">
-                            <div>
-                                <h3 style="color:#fff; font-size:22px; margin-bottom:4px;">Elite Academy Edition</h3>
-                                <p style="color:#94a3b8; font-size:13px;">For Colleges & Professional Academies</p>
-                            </div>
-                            <span style="color:#10b981; font-size:28px; font-weight:800;">$3,700</span>
-                        </div>
-                        <ul style="color:#94a3b8; font-size:14px; list-style:none; padding:0; display:flex; flex-direction:column; gap:10px; margin-bottom:24px;">
-                            <li>✓ 3x Luxonis Spatial AI Depth Cameras</li>
-                            <li>✓ Active IR & Onboard VPU Processing</li>
-                            <li>✓ Advanced Biomechanical & ACL Safety Analytics</li>
-                            <li>✓ High-Grade Ruggedized Apache Transport Case</li>
-                            <li>✓ All Base Edition Compute & Rigging Included</li>
-                        </ul>
-                    </div>
-                    <a href="contact.html" class="button primary" style="text-align:center;">Select Elite Package</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- CAPABILITIES MATRIX -->
-        <section id="capabilities" class="content-section section-shell" style="padding: 60px 0;">
-            <div class="section-heading reveal">
-                <div class="eyebrow"><span></span> SYSTEM CAPABILITIES</div>
-                <h2>Complete Autonomous Workflow & Intelligence</h2>
-            </div>
-            <div class="technology-stack reveal">
-                <div class="stack-line"><span>01</span><strong>Zero-Token Virtual PTZ Director</strong><small>Runs entirely on local NVIDIA Jetson hardware with zero cloud API token costs.</small></div>
-                <div class="stack-line"><span>02</span><strong>Parent & Family Live Companion App</strong><small>Streams live 1080p video with scorebugs and pushes instant highlight clips straight to phones.</small></div>
-                <div class="stack-line"><span>03</span><strong>Coach Halftime Telestrator Suite</strong><small>Live 180° tactical overviews, vector playline drawing, and visual correction clips.</small></div>
-                <div class="stack-line"><span>04</span><strong>Automated Face Storage & ReID Tracking</strong><small>Locks onto player profiles like #10 Alex Vance automatically across multiple camera angles.</small></div>
-                <div class="stack-line"><span>05</span><strong>Automated Stats & Injury Recognition</strong><small>Tracks speed, goal assists, defense, steals, and provides 3D skeletal knee flexion fatigue alerts.</small></div>
-            </div>
-        </section>
-
-        <section class="cta-section section-shell reveal" style="padding: 60px 0 100px 0;">
-            <div>
-                <div class="eyebrow"><span></span> DEPLOYMENT READY</div>
-                <h2>Ready to deploy Atlas Scout Pro?</h2>
-                <p>Lock in your hardware package and schedule your live demonstration.</p>
-            </div>
-            <a class="button primary" href="contact.html">Schedule Demo & Join Waitlist</a>
-        </section>
-    </main>
-
-    <footer class="site-footer section-shell">
-        <div class="footer-brand">
-            <a class="brand" href="index.html">
-                <span class="brand-mark"><svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg></span>
-                <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
-            </a>
-            <p>Next-generation local-first media software.</p>
+    <div class="container">
+        
+        <div class="product-header">
+            <div class="badge">Flagship Hardware & Ecosystem</div>
+            <h1>Atlas Scout Pro V8.0</h1>
+            <div class="price-tag">Standard Hardware Build: ~$1,582.68</div>
+            <p>The ultimate autonomous sideline recording and spatial telemetry station. Built for parents, coaches, and sports clubs who demand professional-grade video and AI tracking without high cloud subscription fees.</p>
         </div>
-        <div class="footer-links">
-            <a href="scout-pro.html">Scout Pro</a>
-            <a href="atlas-media.html">Media Suite</a>
-            <a href="thrf.html">THRF™ Spatial</a>
-            <a href="contact.html">Contact</a>
+
+        <div class="section-box">
+            <h2>Product Overview & What It Does</h2>
+            <p><strong>Atlas Scout Pro V8.0</strong> is a rugged, all-weather portable camera station housed inside a rolling hard case with an elevated 20ft air-cushioned mast. It captures the entire soccer field using a 3-camera 4K array, instantly processing live video on an onboard NVIDIA supercomputer. It broadcasts crystal-clear 1080p live streams and tactical analytics directly to parent smartphones and coach tablets over local cellular or Wi-Fi hotspots.</p>
         </div>
-    </footer>
-    <script src="script.js"></script>
+
+        <div class="section-box">
+            <h2>Core Features & AI Analytics Capabilities</h2>
+            <ul class="feature-list">
+                <li><strong>180° Panoramic Field Capture:</strong> Utilizes 3x Reolink CX810 4K cameras with F1.0 super-aperture lenses to stitch together a flawless, distortion-free view of the entire pitch.</li>
+                <li><strong>The Calibration Stick (Corner-Flag Homography Grid):</strong> A physical field tool planted at key pitch reference points during setup. The onboard computer instantly detects it to map camera pixels into precise 2D metric coordinates (105m x 68m) in under 3 seconds.</li>
+                <li><strong>Autonomous Player Tracking (BoT-SORT ReID):</strong> Automatically locks onto player jerseys and maintains persistent IDs across overlapping camera angles so you never lose track of your athlete.</li>
+                <li><strong>3D Skeletal Biomechanics & ACL Fatigue Alerts:</strong> Extracts 17 joint keypoints per player in real-time, calculating knee flexion angles and flagging high-risk deceleration G-force spikes before injuries happen.</li>
+                <li><strong>Kinetic-Entropy VFR (Variable Framerate):</strong> Automatically scales recording speed from 1 FPS during dead balls up to 60 FPS during fast breakaways, slashing video storage footprints by 99% (under 50MB per 90-minute match).</li>
+                <li><strong>Rugged Power Plant:</strong> Powered by a Newport 12V 50Ah AGM marine battery providing 8 to 10+ hours of continuous game recording with active cooling and internal fuse protection.</li>
+            </ul>
+        </div>
+
+        <div class="section-box">
+            <h2>Integrated Ecosystem Software Suites & Live Demos</h2>
+            <p>Experience the interactive software features built directly into the Scout Pro ecosystem:</p>
+            
+            <div class="demo-btn-group">
+                <button class="btn-demo" onclick="openModal('coach')">🖥️ Launch Coach App Demo</button>
+                <button class="btn-demo" onclick="openModal('parent')">📱 Launch Parent App Demo</button>
+                <button class="btn-demo" onclick="openModal('telestrator')">⚽ Launch Halftime Telestrator Demo</button>
+            </div>
+
+            <h3 style="margin-top:25px;">1. Coach AR Film Room (Sideline Tactical Suite)</h3>
+            <p>Designed for soccer coaches. Features instant sideline hotkey tagging for goals and formations, a halftime vector telestration drawing canvas, and voice-controlled tactical clip dispatches straight to player phones. Includes a high-contrast sunlight viewing mode.</p>
+
+            <h3>2. Parent App Pro (Family Fan Companion)</h3>
+            <p>Delivers live 1080p match streaming with real-time speed badges floating over players (e.g., `#10 J. Martinez - 16.8 mph`), individual distance tracking, and a 1-click vertical 9:16 social highlight reel video exporter. ($9.99/mo).</p>
+        </div>
+
+        <div class="section-box">
+            <h2>Pricing, Builds & Hardware Add-ons</h2>
+            <p>Configure your Atlas Scout Pro system with optional professional upgrades and field add-ons:</p>
+            <table>
+                <tr>
+                    <th>Component / Add-on Option</th>
+                    <th>Description</th>
+                    <th>Estimated Cost</th>
+                </tr>
+                <tr>
+                    <td><strong>Standard Scout Pro Base Build</strong></td>
+                    <td>Apache 5800 case, Jetson Orin Nano, 3x CX810 Cameras, 20ft Mast, 50Ah AGM Battery.</td>
+                    <td><strong>$1,582.68</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>GoPro Goalpost Camera Kit (Add-on)</strong></td>
+                    <td>Rigid magnetic goalpost mounts with wide-angle action cameras for point-blank penalty box and net-angle angles.</td>
+                    <td><strong>+$249.00</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Solar Field Trickle Charger (Add-on)</strong></td>
+                    <td>100W foldable solar panel array with MPPT charge controller for multi-day tournament deployments.</td>
+                    <td><strong>+$189.00</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Parent App Pro Subscription</strong></td>
+                    <td>Real-time speed badges, biometric match summaries, and 1-click vertical video export.</td>
+                    <td><strong>$9.99 / month</strong></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section-box">
+            <h2>Technical Specifications (For Engineers)</h2>
+            <div class="specs-grid">
+                <div class="spec-item"><div class="spec-title">Compute Engine</div><p>NVIDIA Jetson Orin Nano Super Dev Kit (8GB)</p></div>
+                <div class="spec-item"><div class="spec-title">Storage Drive</div><p>Samsung 990 PRO 1TB PCIe 4.0 NVMe SSD</p></div>
+                <div class="spec-item"><div class="spec-title">Mast Assembly</div><p>Glide Gear TST 20 Sky High 20ft Air-Cushioned Stand</p></div>
+                <div class="spec-item"><div class="spec-title">Enclosure Case</div><p>Harbor Freight Apache 5800 IP65 Waterproof Rolling Case</p></div>
+                <div class="spec-item"><div class="spec-title">Power Supply</div><p>Newport 12V 50Ah AGM Marine Battery & Tatida 6-Way Fuse Block</p></div>
+                <div class="spec-item"><div class="spec-title">Network & Protocol</div><p>Lcantve Industrial PoE+ Switch with SVG-C / WebSocket Edge Broker</p></div>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <h2>Competitive Comparison Matrix</h2>
+            <table>
+                <tr>
+                    <th>Feature / Metric</th>
+                    <th>Atlas Scout Pro V8.0</th>
+                    <th>Legacy Systems (Veo / Hudl Focus)</th>
+                </tr>
+                <tr>
+                    <td><strong>Cloud Token Fees</strong></td>
+                    <td>$0 (100% Local Edge Processing)</td>
+                    <td>High Annual Cloud Subscription Fees</td>
+                </tr>
+                <tr>
+                    <td><strong>Data Footprint (90 min)</strong></td>
+                    <td>&lt; 50 MB (SVG-C Vector Logs)</td>
+                    <td>10 GB to 30 GB Raw Video Files</td>
+                </tr>
+                <tr>
+                    <td><strong>Live Telemetry Latency</strong></td>
+                    <td>Sub-200ms Local WebSocket Relay</td>
+                    <td>Delayed Cloud Upload Required</td>
+                </tr>
+                <tr>
+                    <td><strong>Biomechanical Safety</strong></td>
+                    <td>Real-time 17-point ACL fatigue alerts</td>
+                    <td>None (Post-game video scrubbing only)</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section-box">
+            <h2>Stress Test & Field Reliability Data</h2>
+            <p><strong>Thermal Stress Test:</strong> Tested in direct Texas sun at 95°F ambient temperature. The push-pull ANVISION IP67 fan wind tunnel paired with QINGRONG Gore-tex pressure vents kept internal GPU junction temperatures stable at 54°C (well below the 80°C throttle threshold).</p>
+            <p><strong>Wind Stability Test:</strong> Deployed on the 20ft Glide Gear TST 20 mast with 3-point Gear Aid reflective guylines and RIY 12-inch steel stakes. Withstood sustained wind gusts of 32+ mph with zero horizontal horizon drift on homography coordinate mapping.</p>
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="demoModal">
+        <div class="modal-card">
+            <div class="modal-close" onclick="closeModal()">&times;</div>
+            <div class="modal-title" id="modalTitle">Demo Preview</div>
+            <p id="modalDesc" style="color: var(--text-main); margin-bottom: 20px;"></p>
+            <button class="btn-demo" onclick="closeModal()">Close Preview</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal(type) {
+            const modal = document.getElementById("demoModal");
+            const title = document.getElementById("modalTitle");
+            const desc = document.getElementById("modalDesc");
+
+            if (type === 'coach') {
+                title.innerText = "🖥️ Coach AR Film Room Preview";
+                desc.innerText = "Active Sideline Mode: Zero-mouse hotkey tagging active. Halftime telestrator canvas ready for tactical vector drawing over multi-angle match clips.";
+            } else if (type === 'parent') {
+                title.innerText = "📱 Parent App Pro Preview";
+                desc.innerText = "Live Stream Active (1080p @ 30 FPS). Tracking #10 J. Martinez — Current Sprint Speed: 16.8 mph. 1-click social reel export ready.";
+            } else if (type === 'telestrator') {
+                title.innerText = "⚽ Halftime Telestrator Preview";
+                desc.innerText = "Tactical drawing board active. Select vector line color, draw passing lanes over defensive shapes, and dispatch instant clips to player mobile apps.";
+            }
+
+            modal.style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("demoModal").style.display = "none";
+        }
+    </script>
+
 </body>
 </html>
