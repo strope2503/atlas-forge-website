@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Atlas Forge builds ownership-oriented local-first media, financial, and sports software.">
+    <meta name="description" content="Atlas builds ownership-oriented local-first media software.">
     <title>Why Atlas Forge — Atlas Forge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,30 +12,91 @@
 </head>
 <body class="bg-[#04070D] text-slate-200">
     <div class="noise"></div>
-    <header class="site-header">
-        <a class="brand" href="index.html" aria-label="Atlas Forge home">
-            <span class="brand-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg>
-            </span>
-            <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
+    <header class="atlas-header">
+    <div class="nav-container">
+        <a href="index.html" class="brand-link">
+            <img src="image_dda4b1.jpg" alt="Atlas Forge Mechanical Compass Logo" class="brand-logo">
+            <span class="brand-text">ATLAS FORGE</span>
         </a>
-        <nav class="desktop-nav" aria-label="Main navigation">
-            <a href="index.html" style="color: #00F0FF; font-weight: 700;">← Main Site</a>
-            <a href="scout-pro.html">Scout Pro</a>
-            <a href="atlas-media.html">Media Suite</a>
-            <a href="thrf.html">THRF™ Spatial</a>
-            <a href="about.html" class="active">Why Atlas Forge</a>
+        <nav class="nav-links">
+            <a href="index.html" class="nav-item">Home</a>
+            <a href="technology.html" class="nav-item">Technology</a>
+            <a href="coach_portal.html" class="nav-item highlight">Coach Portal</a>
+            <a href="telestrator.html" class="nav-item">Telestrator</a>
+            <a href="about.html" class="nav-item">About Us</a>
         </nav>
-        <a class="nav-cta" href="contact.html">Contact Sales</a>
-        <button class="menu-button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
-    </header>
+    </div>
+</header>
+
+<style>
+    .atlas-header {
+        height: 70px;
+        background: #161B22;
+        border-bottom: 1px solid #21262D;
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        position: relative;
+        z-index: 1000;
+    }
+    .nav-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .brand-link {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+    }
+    .brand-logo {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
+        border-radius: 50%;
+        border: 1.5px solid #00F2FE;
+    }
+    .brand-text {
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #F0F6FC;
+        letter-spacing: 1px;
+    }
+    .nav-links {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    .nav-item {
+        color: #8B949E;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: color 0.2s ease;
+    }
+    .nav-item:hover {
+        color: #00F2FE;
+    }
+    .nav-item.highlight {
+        background: rgba(0, 242, 254, 0.1);
+        border: 1px solid #00F2FE;
+        color: #00F2FE;
+        padding: 6px 14px;
+        border-radius: 20px;
+    }
+</style>
+
 
     <main>
         <section class="inner-hero compact-hero section-shell" style="padding-top: 120px;">
             <div class="inner-copy reveal">
                 <div class="eyebrow"><span></span> WHY ATLAS FORGE</div>
                 <h1>Technology should<br>expand ownership.</h1>
-                <p>Atlas Forge exists to build ambitious software that gives coaches, creators, and businesses maximum performance without unnecessary dependence on closed hardware or recurring cloud subscription infrastructure.</p>
+                <p>Atlas Forge exists to build ambitious desktop software that gives coaches, creators, and professionals more capability without unnecessary dependence on closed hardware or recurring cloud infrastructure[cite: 1].</p>
             </div>
             <div class="feature-visual manifesto reveal delay-1">
                 <span>OWN YOUR HARDWARE</span>
@@ -48,23 +109,23 @@
             <div class="section-heading reveal">
                 <div class="eyebrow"><span></span> THE COMPANY</div>
                 <h2>One platform, built to serve distinct industries.</h2>
-                <p>Atlas Scout Pro applies edge intelligence to sports. Atlas Financial OS powers edge cash management. Atlas Media Suite transforms desktop editing. Atlas THRF™ explores spatial media architectures.</p>
+                <p>Atlas Scout Pro applies edge intelligence to sports[cite: 10, 11]. Atlas Media applies it to creative work[cite: 1, 2]. Atlas THRF explores the deeper media architecture that could power future products[cite: 1, 7].</p>
             </div>
             <div class="feature-grid three" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 30px;">
                 <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">SPORTS</div>
+                    <div class="product-tag">PRODUCT 01</div>
                     <h3>Atlas Scout Pro</h3>
-                    <p style="color: #94a3b8; font-size: 14px;">Autonomous sports capture, AI player tracking, and real-time intelligence for clubs, coaches, and families.</p>
+                    <p style="color: #94a3b8; font-size: 14px;">Practical sports capture, AI tracking, and intelligence for clubs, schools, coaches, and families[cite: 1, 10, 11].</p>
                 </article>
                 <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">FINANCE</div>
-                    <h3>Atlas Financial OS</h3>
-                    <p style="color: #94a3b8; font-size: 14px;">Ultra-low-latency cash management, Safe-to-Spend algorithms, and on-device paper receipt OCR.</p>
+                    <div class="product-tag">PRODUCT 02</div>
+                    <h3>Atlas Media</h3>
+                    <p style="color: #94a3b8; font-size: 14px;">A modern editing environment for professional, social, and spatial workflows[cite: 1, 2].</p>
                 </article>
                 <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">CREATIVE</div>
-                    <h3>Atlas Media Suite</h3>
-                    <p style="color: #94a3b8; font-size: 14px;">Direct-to-GPU professional desktop editing featuring natural language Omni-Prompt (⌘K) controls.</p>
+                    <div class="product-tag">CORE RESEARCH</div>
+                    <h3>Atlas THRF™</h3>
+                    <p style="color: #94a3b8; font-size: 14px;">Experimental codec, compositing, and spatial-media architecture[cite: 1, 7].</p>
                 </article>
             </div>
         </section>
@@ -74,7 +135,7 @@
                 <div class="reveal">
                     <div class="eyebrow"><span></span> BRAND PROMISE</div>
                     <h2>Bold ambition. Honest evidence.</h2>
-                    <p>Atlas Forge delivers category-defining vision grounded in practical edge compute engineering. We put full hardware and data ownership back into the hands of our customers.</p>
+                    <p>Atlas Forge can communicate a category-changing vision without presenting future targets as finished facts. Credibility becomes part of the product[cite: 1].</p>
                 </div>
                 <div class="quote-panel reveal delay-1" style="background: #0B0F19; border: 1px solid #1E2638; padding: 30px; border-radius: 12px; font-size: 18px; font-style: italic; color: #00F0FF;">
                     “Build the future boldly. Label the present precisely.”
@@ -98,12 +159,12 @@
                 <span class="brand-mark"><svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg></span>
                 <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
             </a>
-            <p>Forge What's Next. · © 2026 Atlas Forge LLC</p>
+            <p>Next-generation local-first media software[cite: 1].</p>
         </div>
         <div class="footer-links">
             <a href="scout-pro.html">Scout Pro</a>
-            <a href="atlas-media.html">Media Suite</a>
-            <a href="thrf.html">THRF™ Spatial</a>
+            <a href="atlas-media.html">Atlas Media</a>
+            <a href="thrf.html">THRF™</a>
             <a href="contact.html">Contact</a>
         </div>
     </footer>
