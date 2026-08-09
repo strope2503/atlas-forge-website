@@ -11,6 +11,7 @@
             --border-dark: #21262D;
             --accent-cyan: #00F2FE;
             --accent-green: #10B981;
+            --accent-gold: #F59E0B;
             --text-main: #F0F6FC;
             --text-muted: #8B949E;
         }
@@ -24,6 +25,7 @@
             line-height: 1.6;
         }
 
+        /* Unified Navigation Header */
         .atlas-header {
             height: 70px;
             background: var(--panel-gray);
@@ -76,6 +78,7 @@
         }
         .nav-item:hover, .nav-item.active { color: var(--accent-cyan); }
 
+        /* Main Page Content Container */
         .container {
             max-width: 1000px;
             margin: 50px auto;
@@ -182,6 +185,7 @@
             margin-bottom: 4px;
         }
 
+        /* Demo Trigger Link Buttons */
         .demo-btn-group {
             display: flex;
             gap: 12px;
@@ -193,10 +197,11 @@
             background: rgba(0, 242, 254, 0.1);
             border: 1px solid var(--accent-cyan);
             color: var(--accent-cyan);
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 25px;
             font-weight: 700;
-            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
             transition: all 0.2s ease;
         }
 
@@ -206,6 +211,7 @@
             box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
         }
 
+        /* Pricing & Add-ons Table */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -221,39 +227,6 @@
 
         th { color: var(--accent-cyan); font-weight: 700; }
         td { color: var(--text-muted); }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            padding: 20px;
-        }
-        .modal-card {
-            background: var(--panel-gray);
-            border: 1px solid var(--accent-cyan);
-            border-radius: 16px;
-            padding: 30px;
-            max-width: 500px;
-            width: 100%;
-            position: relative;
-        }
-        .modal-close {
-            position: absolute;
-            top: 15px; right: 20px;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        .modal-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: var(--accent-cyan);
-            margin-bottom: 12px;
-        }
     </style>
 </head>
 <body>
@@ -300,20 +273,20 @@
         </div>
 
         <div class="section-box">
-            <h2>Integrated Ecosystem Software Suites & Live Demos</h2>
-            <p>Experience the interactive software features built directly into the Scout Pro ecosystem:</p>
+            <h2>Integrated Ecosystem Software Suites & Interactive Demos</h2>
+            <p>Click below to launch the live interactive software demos directly in your browser:</p>
             
             <div class="demo-btn-group">
-                <button class="btn-demo" onclick="openModal('coach')">🖥️ Launch Coach App Demo</button>
-                <button class="btn-demo" onclick="openModal('parent')">📱 Launch Parent App Demo</button>
-                <button class="btn-demo" onclick="openModal('telestrator')">⚽ Launch Halftime Telestrator Demo</button>
+                <a href="coach_portal.html" class="btn-demo" target="_blank">🖥️ Open Live Coach App Portal</a>
+                <a href="parent_app.html" class="btn-demo" target="_blank">📱 Open Live Parent App Portal</a>
+                <a href="telestrator.html" class="btn-demo" target="_blank">⚽ Open Live Halftime Telestrator</a>
             </div>
 
             <h3 style="margin-top:25px;">1. Coach AR Film Room (Sideline Tactical Suite)</h3>
             <p>Designed for soccer coaches. Features instant sideline hotkey tagging for goals and formations, a halftime vector telestration drawing canvas, and voice-controlled tactical clip dispatches straight to player phones. Includes a high-contrast sunlight viewing mode.</p>
 
             <h3>2. Parent App Pro (Family Fan Companion)</h3>
-            <p>Delivers live 1080p match streaming with real-time speed badges floating over players (e.g., `#10 J. Martinez - 16.8 mph`), individual distance tracking, and a 1-click vertical 9:16 social highlight reel video exporter. ($9.99/mo).</p>
+            <p>Delivers live 1080p match streaming with real-time speed badges floating over players (e.g., `#10 J. Martinez - 16.8 mph`), individual distance tracking, and a 1-click vertical 9:16 social highlight reel video exporter ($9.99/mo).</p>
         </div>
 
         <div class="section-box">
@@ -398,40 +371,6 @@
         </div>
 
     </div>
-
-    <div class="modal-overlay" id="demoModal">
-        <div class="modal-card">
-            <div class="modal-close" onclick="closeModal()">&times;</div>
-            <div class="modal-title" id="modalTitle">Demo Preview</div>
-            <p id="modalDesc" style="color: var(--text-main); margin-bottom: 20px;"></p>
-            <button class="btn-demo" onclick="closeModal()">Close Preview</button>
-        </div>
-    </div>
-
-    <script>
-        function openModal(type) {
-            const modal = document.getElementById("demoModal");
-            const title = document.getElementById("modalTitle");
-            const desc = document.getElementById("modalDesc");
-
-            if (type === 'coach') {
-                title.innerText = "🖥️ Coach AR Film Room Preview";
-                desc.innerText = "Active Sideline Mode: Zero-mouse hotkey tagging active. Halftime telestrator canvas ready for tactical vector drawing over multi-angle match clips.";
-            } else if (type === 'parent') {
-                title.innerText = "📱 Parent App Pro Preview";
-                desc.innerText = "Live Stream Active (1080p @ 30 FPS). Tracking #10 J. Martinez — Current Sprint Speed: 16.8 mph. 1-click social reel export ready.";
-            } else if (type === 'telestrator') {
-                title.innerText = "⚽ Halftime Telestrator Preview";
-                desc.innerText = "Tactical drawing board active. Select vector line color, draw passing lanes over defensive shapes, and dispatch instant clips to player mobile apps.";
-            }
-
-            modal.style.display = "flex";
-        }
-
-        function closeModal() {
-            document.getElementById("demoModal").style.display = "none";
-        }
-    </script>
 
 </body>
 </html>
