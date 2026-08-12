@@ -3,17 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Forge Ledger | Atlas Forge</title>
+    <title>Atlas Ledger | Atlas Forge</title>
     <style>
         :root {
-            --bg-obsidian: #000000;
-            --bg-panel: rgba(22, 27, 34, 0.7);
+            /* Brand Identity Colors */
+            --bg-obsidian: #121212;
+            --bg-panel: #1E1E1E;
             --border-dark: rgba(255, 255, 255, 0.1);
-            --accent-green: #10B981;
-            --accent-green-glow: rgba(16, 185, 129, 0.4);
-            --accent-blue: #00F2FE;
-            --text-main: #F0F6FC;
-            --text-muted: #8B949E;
+            
+            /* Neon Accents */
+            --accent-cyan: #00F0FF;
+            --accent-green: #00FF87;
+            --accent-orange: #FFB800;
+            --accent-pink: #FF0055;
+            --accent-purple: #9D00FF;
+
+            --text-main: #FFFFFF;
+            --text-muted: #A0A0A0;
             --glass-blur: blur(16px);
         }
 
@@ -26,8 +32,8 @@
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(16, 185, 129, 0.08), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(0, 242, 254, 0.08), transparent 25%);
+                radial-gradient(circle at 15% 50%, rgba(0, 240, 255, 0.05), transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(157, 0, 255, 0.05), transparent 30%);
         }
 
         /* Animations */
@@ -42,7 +48,7 @@
         /* Header */
         .atlas-header {
             height: 70px;
-            background: rgba(0,0,0,0.8);
+            background: rgba(18, 18, 18, 0.8);
             backdrop-filter: var(--glass-blur);
             border-bottom: 1px solid var(--border-dark);
             display: flex;
@@ -79,15 +85,15 @@
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: 60vw; height: 60vw;
-            background: radial-gradient(circle, var(--accent-green-glow) 0%, transparent 60%);
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 60%);
             z-index: -1;
-            opacity: 0.3;
+            opacity: 0.6;
         }
 
         .badge {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid var(--accent-green);
-            color: var(--accent-green);
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
             padding: 8px 16px;
             border-radius: 30px;
             font-weight: 800;
@@ -95,7 +101,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 24px;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
         }
 
         .hero h1 {
@@ -103,17 +109,18 @@
             font-weight: 800;
             line-height: 1.1;
             letter-spacing: -2px;
-            background: linear-gradient(to right, #fff, #8B949E);
+            background: linear-gradient(to right, #ffffff, #A0A0A0);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 24px;
+            max-width: 900px;
         }
 
-        .hero p { font-size: 1.3rem; color: var(--text-muted); max-width: 700px; margin-bottom: 40px; }
+        .hero p { font-size: 1.3rem; color: var(--text-muted); max-width: 750px; margin-bottom: 40px; }
 
         .btn-buy {
-            background: linear-gradient(90deg, var(--accent-green), #059669);
-            color: #fff;
+            background: linear-gradient(90deg, var(--accent-cyan), #00A3FF);
+            color: #000;
             padding: 16px 40px;
             border-radius: 30px;
             font-size: 1.2rem;
@@ -123,13 +130,13 @@
             transition: transform 0.2s, box-shadow 0.2s;
             border: none;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 10px 20px rgba(0, 240, 255, 0.2);
         }
-        .btn-buy:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4); }
+        .btn-buy:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 240, 255, 0.4); }
 
         /* Glass Panel */
         .glass-panel {
-            background: var(--bg-panel);
+            background: rgba(30, 30, 30, 0.7);
             backdrop-filter: var(--glass-blur);
             border: 1px solid var(--border-dark);
             border-radius: 24px;
@@ -139,109 +146,127 @@
             position: relative;
             overflow: hidden;
         }
-        .glass-panel::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-        }
 
         h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; letter-spacing: -1px; }
         .text-lg { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px; }
+        
+        .section-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
 
         /* Mock Dashboard */
         .dashboard-mockup {
-            background: #0D1117;
+            background: #121212;
             border: 1px solid var(--border-dark);
             border-radius: 16px;
-            padding: 20px;
+            padding: 24px;
             margin-top: 40px;
-            position: relative;
-            overflow: hidden;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
         }
         .dash-header {
-            display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border-dark); padding-bottom: 15px;
+            display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border-dark); padding-bottom: 15px; justify-content: space-between; align-items: center;
         }
+        .dash-dots { display: flex; gap: 8px; }
         .dash-dot { width: 12px; height: 12px; border-radius: 50%; background: #30363D; }
-        .dash-dot:nth-child(1) { background: #FF5F56; }
-        .dash-dot:nth-child(2) { background: #FFBD2E; }
-        .dash-dot:nth-child(3) { background: #27C93F; }
-
-        .ocr-animation {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-        }
-        .ocr-pulse {
-            width: 100px; height: 4px; background: rgba(16, 185, 129, 0.3); border-radius: 2px; position: relative; overflow: hidden;
-        }
-        .ocr-pulse::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: var(--accent-green); animation: scanline 2s infinite linear;
-        }
-        @keyframes scanline {
-            0% { left: -100%; }
-            100% { left: 100%; }
-        }
-        .ocr-text { font-family: monospace; color: var(--accent-green); font-size: 0.9rem; }
-
-        /* Vs Grid */
-        .vs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        .vs-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 30px;
-            border-radius: 16px;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
-        }
-        .vs-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+        .dash-dot:nth-child(1) { background: var(--accent-pink); }
+        .dash-dot:nth-child(2) { background: var(--accent-orange); }
+        .dash-dot:nth-child(3) { background: var(--accent-green); }
         
-        .vs-card.winner {
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px solid var(--accent-green);
-            position: relative;
+        .toggle-switch {
+            display: flex;
+            background: #1E1E1E;
+            border: 1px solid var(--border-dark);
+            border-radius: 20px;
+            overflow: hidden;
         }
-        .vs-card.winner::before {
-            content: 'OUR OS'; position: absolute; top: -12px; right: 20px;
-            background: var(--accent-green); color: #000; font-size: 0.7rem; font-weight: 800; padding: 4px 10px; border-radius: 12px;
-        }
-        .vs-card h4 { font-size: 1.3rem; margin-bottom: 15px; }
-        .vs-card ul { list-style: none; color: var(--text-muted); }
-        .vs-card li { margin-bottom: 10px; padding-left: 20px; position: relative; }
-        .vs-card li::before { content: '→'; position: absolute; left: 0; color: #ff5f56; font-weight: bold; }
-        .vs-card.winner li::before { content: '✓'; color: var(--accent-green); }
+        .toggle-btn { padding: 8px 16px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
+        .toggle-btn.active { background: var(--accent-cyan); color: #000; }
 
+        .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .dash-grid { grid-template-columns: 1fr; } }
+        
+        .dash-card {
+            background: #1A1A1A;
+            border: 1px solid var(--border-dark);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .ai-analysis {
+            background: rgba(157, 0, 255, 0.05);
+            border: 1px solid rgba(157, 0, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .ai-header { display: flex; align-items: center; gap: 10px; color: var(--accent-purple); font-weight: 700; margin-bottom: 10px; }
+        .ai-pulse { width: 8px; height: 8px; background: var(--accent-purple); border-radius: 50%; box-shadow: 0 0 10px var(--accent-purple); animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
+
+        .transaction-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .transaction-row:last-child { border-bottom: none; }
+        .tx-left { display: flex; align-items: center; gap: 12px; }
+        .tx-icon { font-size: 1.5rem; background: #2A2A2A; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; }
+        .tx-name { font-weight: 600; font-size: 0.95rem; }
+        .tx-cat { font-size: 0.8rem; color: var(--text-muted); }
+        .tx-amt { font-weight: 700; }
+        
         /* Features Grid */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 30px;
             margin-top: 40px;
         }
         .feature-box {
-            background: #0B0E14;
+            background: #1A1A1A;
             border: 1px solid var(--border-dark);
+            padding: 35px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        .feature-box:hover { transform: translateY(-5px); }
+        
+        .feature-box.cyan:hover { border-color: var(--accent-cyan); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1); }
+        .feature-box.green:hover { border-color: var(--accent-green); box-shadow: 0 10px 30px rgba(0, 255, 135, 0.1); }
+        .feature-box.pink:hover { border-color: var(--accent-pink); box-shadow: 0 10px 30px rgba(255, 0, 85, 0.1); }
+        .feature-box.purple:hover { border-color: var(--accent-purple); box-shadow: 0 10px 30px rgba(157, 0, 255, 0.1); }
+        .feature-box.orange:hover { border-color: var(--accent-orange); box-shadow: 0 10px 30px rgba(255, 184, 0, 0.1); }
+
+        .feature-icon { font-size: 2.5rem; margin-bottom: 20px; }
+        .feature-box h3 { font-size: 1.4rem; margin-bottom: 15px; color: #fff; }
+        .feature-box p { color: var(--text-muted); font-size: 1rem; }
+
+        /* Audience Grid */
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) { .audience-grid { grid-template-columns: 1fr; } }
+        .audience-card {
+            background: #1A1A1A;
             padding: 30px;
             border-radius: 16px;
-            transition: border-color 0.3s, background 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            text-align: center;
         }
-        .feature-box:hover {
-            border-color: rgba(255,255,255,0.3);
-            background: #11151d;
-        }
-        .feature-box h3 { color: var(--accent-green); font-size: 1.4rem; margin-bottom: 15px; }
-        
-        .price { font-size: 4.5rem; font-weight: 900; color: #fff; margin: 20px 0; text-align: center; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
-        .price span { font-size: 1.5rem; color: var(--text-muted); font-weight: 500; }
+        .audience-card h4 { font-size: 1.2rem; color: var(--accent-cyan); margin-bottom: 10px; }
+
     </style>
 </head>
 <body>
@@ -257,7 +282,7 @@
                     <img src="ATLAS_SCOUT_LOGO.png" alt="Scout Logo"> Scout Pro V8.0
                 </a>
                 <a href="forge_ledger.html" class="nav-item active">
-                    <img src="ATLAS_LEDGER_LOGO.png" alt="Ledger Logo"> The Forge Ledger™
+                    <img src="ATLAS_LEDGER_LOGO.png" alt="Ledger Logo"> Atlas Ledger
                 </a>
                 <a href="contact.html" class="nav-item">Contact</a>
             </nav>
@@ -265,107 +290,166 @@
     </header>
 
     <section class="hero">
-        <img src="ATLAS_LEDGER_LOGO.png" alt="Forge Ledger" style="height: 80px; margin-bottom: 20px;" class="reveal">
-        <div class="badge reveal">Enterprise Financial OS</div>
-        <h1 class="reveal delay-1">Audit-Ready Bookkeeping. <span style="color: var(--accent-green);">Zero Bloat.</span></h1>
-        <p class="reveal delay-2">Secure, lightning-fast financial tracking built for grassroots sports clubs and growing businesses. Automate your tax categorization without paying corporate software prices.</p>
-        <div class="reveal delay-2">
-            <a href="contact.html" class="btn-buy">Start Your Free Trial</a>
+        <img src="ATLAS_LEDGER_LOGO.png" alt="Atlas Ledger" style="height: 100px; margin-bottom: 25px;" class="reveal">
+        <div class="badge reveal">The AI-Powered Engine for Your Finances</div>
+        <h1 class="reveal delay-1">Personal and Business Finances, <span style="color: var(--accent-cyan);">Finally in One Place.</span></h1>
+        <p class="reveal delay-2">Atlas Ledger is your automated financial co-pilot. Replace manual budgeting with a high-performance engine that tracks expenses, analyzes affordability, predicts payoffs, and secures your household.</p>
+        <div class="reveal delay-2" style="margin-top: 20px;">
+            <a href="contact.html" class="btn-buy">Start Your Automated Journey</a>
         </div>
     </section>
 
     <div class="container">
         
         <section class="glass-panel reveal">
-            <div class="text-center">
-                <h2>The Competition Showdown</h2>
-                <p class="text-lg">Don't pay for features you don't use. We stripped away the corporate bloat to give you exactly what small businesses and sports clubs need.</p>
-            </div>
-            
-            <div class="vs-grid">
-                <div class="vs-card">
-                    <h4 style="color: #ff5f56;">Vs. QuickBooks & Expensify</h4>
-                    <ul>
-                        <li>Charge $30 to $90+ every single month.</li>
-                        <li>Force you into tiered pricing just to scan receipts.</li>
-                        <li>Generic corporate charts of accounts that don't fit sports clubs.</li>
-                        <li>Cloud-dependent databases prone to data breaches.</li>
-                    </ul>
-                </div>
-                <div class="vs-card winner">
-                    <h4 style="color: var(--accent-green);">The Forge Ledger Advantage</h4>
-                    <ul>
-                        <li><strong>Flat $5.00/month pricing.</strong> No hidden tiers.</li>
-                        <li><strong>Free Receipt OCR.</strong> Unlimited scanning included.</li>
-                        <li><strong>Built for Clubs.</strong> Native tracking for tournament fees and team expense splits.</li>
-                        <li><strong>Local-First Security.</strong> Your financial data is encrypted and cached locally.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section class="glass-panel reveal">
-            <h2>Under The Hood Capabilities</h2>
-            <p class="text-lg">We built The Forge Ledger to automate the most painful parts of running a business or sports organization. Forward any receipt to <code>*@ledger.atlasforge.tech</code> and watch it categorize instantly.</p>
+            <div class="section-badge" style="background: rgba(157, 0, 255, 0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple);">Interactive Overview</div>
+            <h2>Meet Your Financial Co-Pilot</h2>
+            <p class="text-lg">Toggle seamlessly between Personal and Business modes, and ask our AI engine real-time financial questions before you swipe your card.</p>
             
             <!-- Animated Dashboard Mockup -->
             <div class="dashboard-mockup">
                 <div class="dash-header">
-                    <div class="dash-dot"></div>
-                    <div class="dash-dot"></div>
-                    <div class="dash-dot"></div>
+                    <div class="dash-dots">
+                        <div class="dash-dot"></div>
+                        <div class="dash-dot"></div>
+                        <div class="dash-dot"></div>
+                    </div>
+                    <div class="toggle-switch">
+                        <div class="toggle-btn active">Personal 🏠</div>
+                        <div class="toggle-btn">Business 💻</div>
+                    </div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
-                    <div>
-                        <h5 style="color: var(--text-muted); margin-bottom: 10px;">INCOMING RECEIPTS (Auto-Forward)</h5>
-                        <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem;">
-                            Amazon.com - Game Balls
+                <div class="dash-grid">
+                    <!-- Left: AI Assistant -->
+                    <div class="dash-card">
+                        <div class="ai-analysis">
+                            <div class="ai-header">
+                                <div class="ai-pulse"></div>
+                                AI "Can I Afford It?" Analysis
+                            </div>
+                            <p style="font-size: 0.9rem; color: var(--text-main); margin-bottom: 10px;">
+                                <strong>Query:</strong> "Can I afford $1,200 for Kids Travel Sports next month?"
+                            </p>
+                            <div style="background: #121212; padding: 12px; border-radius: 8px; border-left: 3px solid var(--accent-orange); font-size: 0.85rem; color: var(--text-muted);">
+                                <span style="color: var(--accent-orange); font-weight: bold;">Moderate Risk.</span> You have $2,400 in upcoming fixed bills. This purchase will dip your buffer below your $500 target. Recommendation: Delay by 2 weeks until your next deposit.
+                            </div>
                         </div>
-                        <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem;">
-                            Home Depot - Field Paint
+                        
+                        <div style="margin-top: 20px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                                <span style="font-size: 0.85rem; color: var(--text-muted);">Credit Snowball: Auto Loan</span>
+                                <span style="font-size: 0.85rem; color: var(--accent-pink); font-weight: bold;">14 Months Left 🔴</span>
+                            </div>
+                            <div style="width: 100%; height: 6px; background: #2A2A2A; border-radius: 3px; overflow: hidden;">
+                                <div style="width: 65%; height: 100%; background: var(--accent-pink);"></div>
+                            </div>
                         </div>
                     </div>
-                    <div>
-                        <h5 style="color: var(--text-muted); margin-bottom: 10px;">DUAL-OPTION RESOLVER LIVE OCR</h5>
-                        <div class="ocr-animation">
-                            <div><span style="color:#fff; font-size: 0.9rem;">Processing Amazon Receipt...</span></div>
-                            <div class="ocr-pulse"></div>
-                            <div class="ocr-text">[MATCH: $124.99 -> Equip Expense]</div>
-                        </div>
-                        <div class="ocr-animation" style="opacity: 0.5;">
-                            <div><span style="color:#fff; font-size: 0.9rem;">Processing Home Depot...</span></div>
-                            <div class="ocr-text">[PENDING OCR SCAN]</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="features-grid">
-                <div class="feature-box">
-                    <h3>S-Corp Section 179 Automation</h3>
-                    <p class="text-muted">Instantly sort expenditures to maximize business deductions. Our tax categorization engine is built specifically to streamline your year-end tax prep.</p>
-                </div>
-                <div class="feature-box">
-                    <h3>Dual-Option Amazon Resolver</h3>
-                    <p class="text-muted">Never lose an Amazon receipt again. Either Auto-Sync via OAuth, or use your free Catch-All Forwarding Alias (<code>*@ledger.atlasforge.tech</code>) for instant OCR matching.</p>
-                </div>
-                <div class="feature-box">
-                    <h3>Live Bank Integration</h3>
-                    <p class="text-muted">Securely sync transaction feeds across multiple business and personal accounts in real-time. Easily split transactions to separate personal versus business expenses.</p>
-                </div>
-                <div class="feature-box">
-                    <h3>Local-First Encryption</h3>
-                    <p class="text-muted">High-performance local SQLite database caching backed by military-grade encryption to protect your highly sensitive financial records.</p>
+                    <!-- Right: Transactions -->
+                    <div class="dash-card">
+                        <h4 style="margin-bottom: 15px; font-size: 1rem; color: var(--text-muted);">Recent Activity (Plaid Synced 🟢)</h4>
+                        
+                        <div class="transaction-row">
+                            <div class="tx-left">
+                                <div class="tx-icon">🛒</div>
+                                <div>
+                                    <div class="tx-name">Whole Foods Market</div>
+                                    <div class="tx-cat" style="color: var(--accent-cyan);">Groceries</div>
+                                </div>
+                            </div>
+                            <div class="tx-amt">-$142.50</div>
+                        </div>
+                        
+                        <div class="transaction-row">
+                            <div class="tx-left">
+                                <div class="tx-icon">💻</div>
+                                <div>
+                                    <div class="tx-name">AWS Cloud Services</div>
+                                    <div class="tx-cat" style="color: var(--accent-orange);">Business Exp</div>
+                                </div>
+                            </div>
+                            <div class="tx-amt">-$45.00</div>
+                        </div>
+
+                        <div class="transaction-row">
+                            <div class="tx-left">
+                                <div class="tx-icon">💳</div>
+                                <div>
+                                    <div class="tx-name">Chase Credit Card</div>
+                                    <div class="tx-cat" style="color: var(--accent-green);">Payment</div>
+                                </div>
+                            </div>
+                            <div class="tx-amt" style="color: var(--accent-green);">+$500.00</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section class="glass-panel reveal" style="text-align: center;">
-            <h2>Simple, Honest Pricing.</h2>
-            <div class="price">$5.00 <span>/ Month per User</span></div>
-            <p class="text-lg" style="margin-bottom: 30px;">That's $60 a year. No tiers. No limits.</p>
-            <a href="contact.html" class="btn-buy">Get Started</a>
+        <section class="reveal">
+            <h2 style="text-align: center; margin-bottom: 10px;">The Six Pillars of the Forge</h2>
+            <p class="text-lg" style="text-align: center; margin-bottom: 30px;">Engineered to automate your financial life securely.</p>
+            
+            <div class="features-grid">
+                <div class="feature-box cyan">
+                    <div class="feature-icon">🔄</div>
+                    <h3 style="color: var(--accent-cyan);">Dual Engine Mode</h3>
+                    <p>Seamlessly toggle between "Personal" and "Business" modes with a single tap. The dashboard, expense wheels, and data instantly swap contexts. Perfect for freelancers.</p>
+                </div>
+                
+                <div class="feature-box purple">
+                    <div class="feature-icon">🧠</div>
+                    <h3 style="color: var(--accent-purple);">AI Affordability Engine</h3>
+                    <p>Input an item you want to buy. The AI analyzes your budget, upcoming bills, and debt goals to provide a real-time risk assessment before you spend.</p>
+                </div>
+
+                <div class="feature-box green">
+                    <div class="feature-icon">📸</div>
+                    <h3 style="color: var(--accent-green);">Smart Receipt Scanner</h3>
+                    <p>Snap a photo of any receipt or invoice. Our AI automatically parses the vendor, amount, and date, intelligently categorizing the expense for tax season.</p>
+                </div>
+
+                <div class="feature-box pink">
+                    <div class="feature-icon">🤝</div>
+                    <h3 style="color: var(--accent-pink);">Household Sync</h3>
+                    <p>Couples can securely link their accounts via SMS verification. View a combined "Household Mode" so both partners are always on the same page.</p>
+                </div>
+
+                <div class="feature-box orange">
+                    <div class="feature-icon">⚡</div>
+                    <h3 style="color: var(--accent-orange);">Automated Intelligence</h3>
+                    <p>Secure Plaid integration pulls your history while AI automatically detects recurring subscriptions and calculates your optimal credit snowball payoffs.</p>
+                </div>
+
+                <div class="feature-box cyan">
+                    <div class="feature-icon">🍩</div>
+                    <h3 style="color: var(--accent-cyan);">Dynamic Expense Wheels</h3>
+                    <p>Visualize your spending with a beautiful interactive Donut Chart. Create custom categories that instantly map to a theme-matching neon color and custom emoji.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-panel reveal" style="margin-top: 60px;">
+            <div style="text-align: center;">
+                <h2>Who Is Atlas Ledger For?</h2>
+                <p class="text-lg">Designed from the ground up for the modern economy.</p>
+            </div>
+            <div class="audience-grid">
+                <div class="audience-card">
+                    <h4>Tech-Savvy Millennials</h4>
+                    <p class="text-muted" style="font-size: 0.95rem;">A modern, highly capable alternative to legacy budgeting apps that feel stuck in 2010.</p>
+                </div>
+                <div class="audience-card">
+                    <h4>Freelancers & Hustlers</h4>
+                    <p class="text-muted" style="font-size: 0.95rem;">Finally, a simple way to separate business expenses from your personal life without two apps.</p>
+                </div>
+                <div class="audience-card">
+                    <h4>Couples & Households</h4>
+                    <p class="text-muted" style="font-size: 0.95rem;">A seamless way to manage household finances together, eliminating friction and surprises.</p>
+                </div>
+            </div>
         </section>
 
     </div>
