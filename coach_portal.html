@@ -6,37 +6,58 @@
   <title>Atlas Scout Pro — Unified Coach Film Room & AR Analytics</title>
   <style>
     :root {
-      --bg: #030712;
-      --card: #0f172a;
-      --border: #1e293b;
-      --accent: #2563eb;
-      --accent-bright: #38bdf8;
+      --bg-obsidian: #000000;
+      --bg-panel: rgba(22, 27, 34, 0.7);
+      --border-dark: rgba(255, 255, 255, 0.1);
+      --accent-bright: #00F2FE;
       --green: #10b981;
       --red: #ef4444;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
+      --text: #F0F6FC;
+      --text-muted: #8B949E;
+      --glass-blur: blur(16px);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; }
+    body { background: var(--bg-obsidian); color: var(--text); padding-bottom: 24px; min-height: 100vh; overflow-x: hidden; }
 
-    nav { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.15s; }
-    nav a:hover, nav a.active { color: var(--accent-bright); }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent-bright); }
 
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .brand { font-weight: 800; font-size: 20px; color: #fff; }
-    .brand span { color: var(--accent-bright); }
+    /* Header */
+    .atlas-header {
+        height: 70px;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: var(--glass-blur);
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        margin-bottom: 30px;
+    }
+    .nav-container { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .brand-link { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo { height: 40px; object-fit: contain; }
+    .nav-links { display: flex; gap: 25px; align-items: center; }
+    .nav-item { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease; display: flex; align-items: center; gap: 8px; }
+    .nav-item img { height: 20px; }
+    .nav-item:hover, .nav-item.active { color: var(--text); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-    .portal-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; max-width: 1400px; margin: 0 auto; }
+    .portal-grid { display: grid; grid-template-columns: 1fr 360px; gap: 24px; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
 
     .video-container {
       position: relative;
-      background: #000;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      background: #020617;
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
       overflow: hidden;
       aspect-ratio: 16 / 9;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
     canvas {
@@ -52,147 +73,97 @@
       position: absolute;
       top: 20px;
       right: 20px;
-      width: 260px;
-      background: rgba(15, 23, 42, 0.92);
-      backdrop-filter: blur(10px);
+      width: 280px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
       border: 1px solid var(--accent-bright);
-      border-radius: 10px;
-      padding: 16px;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5);
-      display: none;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0, 242, 254, 0.2);
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
       z-index: 10;
+      pointer-events: none;
+    }
+    .ar-stat-card.visible {
+      opacity: 1; transform: translateY(0); pointer-events: auto;
     }
 
-    .ar-stat-card h4 { font-size: 16px; color: #fff; margin-bottom: 4px; display: flex; justify-content: space-between; }
-    .ar-stat-card .role { font-size: 11px; color: var(--accent-bright); text-transform: uppercase; font-weight: 700; margin-bottom: 12px; }
+    .ar-stat-card h4 { font-size: 18px; color: #fff; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+    .ar-stat-card h4 span.num { color: var(--accent-bright); font-size: 14px; background: rgba(0,242,254,0.1); padding: 2px 8px; border-radius: 10px; }
+    .ar-stat-card .role { font-size: 12px; color: var(--accent-bright); text-transform: uppercase; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.5px; }
 
-    .stat-row { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-muted); padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .stat-row { display: flex; justify-content: space-between; font-size: 14px; color: var(--text-muted); padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .stat-row:last-child { border-bottom: none; }
     .stat-row strong { color: #fff; }
+    .stat-row strong.glow { color: var(--green); text-shadow: 0 0 5px rgba(16, 185, 129, 0.5); }
 
-    .playlist-section { margin-top: 20px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
-    .playlist-section h3 { font-size: 15px; color: #fff; margin-bottom: 12px; }
+    .playlist-section { margin-top: 24px; background: var(--bg-panel); backdrop-filter: var(--glass-blur); border: 1px solid var(--border-dark); border-radius: 16px; padding: 20px; }
+    .playlist-section h3 { font-size: 16px; color: #fff; margin-bottom: 15px; letter-spacing: 0.5px; }
 
-    .clip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+    .clip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
     .clip-item {
       background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
+      padding: 12px;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .clip-item:hover { border-color: var(--accent-bright); background: rgba(56, 189, 248, 0.05); }
-    .clip-item h5 { font-size: 13px; color: #fff; margin-bottom: 4px; }
-    .clip-item p { font-size: 11px; color: var(--text-muted); }
+    .clip-item:hover { border-color: var(--accent-bright); background: rgba(0, 242, 254, 0.05); transform: translateY(-3px); }
+    .clip-item h5 { font-size: 14px; color: #fff; margin-bottom: 4px; }
+    .clip-item p { font-size: 12px; color: var(--text-muted); }
 
-    .side-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px; }
-    .side-panel h3 { font-size: 16px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .side-panel { background: var(--bg-panel); backdrop-filter: var(--glass-blur); border: 1px solid var(--border-dark); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+    .side-panel h3 { font-size: 18px; color: #fff; border-bottom: 1px solid var(--border-dark); padding-bottom: 12px; letter-spacing: 0.5px; }
 
-    .roster-list { display: flex; flex-direction: column; gap: 8px; max-height: 420px; overflow-y: auto; }
+    .roster-list { display: flex; flex-direction: column; gap: 10px; max-height: 500px; overflow-y: auto; padding-right: 5px; }
     .roster-card {
-      padding: 10px;
+      padding: 12px;
       background: rgba(255,255,255,0.02);
-      border: 1px solid var(--border);
-      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       cursor: pointer;
+      transition: all 0.2s;
     }
-    .roster-card:hover { border-color: var(--accent); }
-    .roster-info h5 { font-size: 13px; color: #fff; }
-    .roster-info p { font-size: 11px; color: var(--text-muted); }
+    .roster-card:hover, .roster-card.active { border-color: var(--accent-bright); background: rgba(0, 242, 254, 0.05); }
+    .roster-info h5 { font-size: 14px; color: #fff; margin-bottom: 2px; }
+    .roster-info p { font-size: 12px; color: var(--text-muted); }
+    
+    .status-active { color: var(--green); font-size: 11px; font-weight:800; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 10px; border: 1px solid var(--green); text-shadow: 0 0 5px rgba(16, 185, 129, 0.3); }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 900px) {
+      .portal-grid { grid-template-columns: 1fr; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+      .atlas-header { height: auto; padding: 15px 20px; }
+      .nav-container { flex-direction: column; gap: 15px; }
+      .ar-stat-card {
+        width: calc(100% - 40px);
+        left: 20px; right: 20px;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html">← Back to Overview</a>
-    <a href="coach_portal.html" class="active">Coach AR Film Room</a>
-    <a href="telestrator.html">Halftime Telestrator</a>
-    <a href="parent_app.html">Parent Companion Stream</a>
-    <a href="scout-pro.html">Scout Pro Details</a>
-    <a href="technology.html">DataMesh Technology</a>
-  </nav>
-
   <header class="atlas-header">
-    <div class="nav-container">
-        <a href="index.html" class="brand-link">
-            <img src="image_dda4b1.jpg" alt="Atlas Forge Mechanical Compass Logo" class="brand-logo">
-            <span class="brand-text">ATLAS FORGE</span>
-        </a>
-        <nav class="nav-links">
-            <a href="index.html" class="nav-item">Home</a>
-            <a href="technology.html" class="nav-item">Technology</a>
-            <a href="coach_portal.html" class="nav-item highlight">Coach Portal</a>
-            <a href="telestrator.html" class="nav-item">Telestrator</a>
-            <a href="about.html" class="nav-item">About Us</a>
-        </nav>
-    </div>
-</header>
-
-<style>
-    .atlas-header {
-        height: 70px;
-        background: #161B22;
-        border-bottom: 1px solid #21262D;
-        display: flex;
-        align-items: center;
-        padding: 0 24px;
-        position: relative;
-        z-index: 1000;
-    }
-    .nav-container {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .brand-link {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-    }
-    .brand-logo {
-        width: 48px;
-        height: 48px;
-        object-fit: contain;
-        border-radius: 50%;
-        border: 1.5px solid #00F2FE;
-    }
-    .brand-text {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #F0F6FC;
-        letter-spacing: 1px;
-    }
-    .nav-links {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-    }
-    .nav-item {
-        color: #8B949E;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: color 0.2s ease;
-    }
-    .nav-item:hover {
-        color: #00F2FE;
-    }
-    .nav-item.highlight {
-        background: rgba(0, 242, 254, 0.1);
-        border: 1px solid #00F2FE;
-        color: #00F2FE;
-        padding: 6px 14px;
-        border-radius: 20px;
-    }
-</style>
-
+      <div class="nav-container">
+          <a href="index_v2.html" class="brand-link">
+              <img src="ATLAS_FORGE_LOGO.png" alt="Atlas Forge Logo" class="brand-logo">
+          </a>
+          <nav class="nav-links">
+              <a href="index_v2.html" class="nav-item">Home</a>
+              <a href="coach_portal.html" class="nav-item active">Coach Portal</a>
+              <a href="telestrator.html" class="nav-item">Telestrator</a>
+              <a href="parent_app.html" class="nav-item">Parent App</a>
+          </nav>
+      </div>
+  </header>
 
   <div class="portal-grid">
     <div>
@@ -201,13 +172,13 @@
 
         <!-- Floating AR Stat Overlay -->
         <div class="ar-stat-card" id="arCard">
-          <h4><span id="cardName">Player #10</span> <span style="font-size: 12px; color: #10b981;">#10</span></h4>
-          <div class="role" id="cardRole">Midfielder / Captain</div>
-          <div class="stat-row"><span>Top Speed:</span> <strong id="cardSpeed">18.4 mph</strong></div>
-          <div class="stat-row"><span>Distance Run:</span> <strong id="cardDist">4.8 miles</strong></div>
-          <div class="stat-row"><span>Completed Passes:</span> <strong id="cardPasses">32 / 36 (88%)</strong></div>
-          <div class="stat-row"><span>Shots / Steals:</span> <strong id="cardShots">3 Shots / 4 Steals</strong></div>
-          <div class="stat-row"><span>Left Knee Angle:</span> <strong id="cardKnee" style="color:#10b981;">172.4° (Safe)</strong></div>
+          <h4><span id="cardName">Player Name</span> <span class="num" id="cardNumber">#00</span></h4>
+          <div class="role" id="cardRole">Role</div>
+          <div class="stat-row"><span>Top Speed:</span> <strong id="cardSpeed">0 mph</strong></div>
+          <div class="stat-row"><span>Distance Run:</span> <strong id="cardDist">0 miles</strong></div>
+          <div class="stat-row"><span>Completed Passes:</span> <strong id="cardPasses">0</strong></div>
+          <div class="stat-row"><span>Shots / Steals:</span> <strong id="cardShots">0</strong></div>
+          <div class="stat-row"><span>Left Knee Angle:</span> <strong class="glow" id="cardKnee">0° (Safe)</strong></div>
         </div>
       </div>
 
@@ -239,28 +210,28 @@
     <div class="side-panel">
       <h3>Active Squad Roster</h3>
       <div class="roster-list">
-        <div class="roster-card" onclick="selectPlayer(10)">
+        <div class="roster-card" onclick="selectPlayer(10)" id="roster-10">
           <div class="roster-info">
             <h5>#10 Justin Hindmand</h5>
             <p>Midfielder • 4.8 mi • 18.4 mph</p>
           </div>
-          <span style="color: #10b981; font-size: 12px; font-weight:700;">ACTIVE</span>
+          <span class="status-active">LIVE</span>
         </div>
 
-        <div class="roster-card" onclick="selectPlayer(8)">
+        <div class="roster-card" onclick="selectPlayer(8)" id="roster-8">
           <div class="roster-info">
             <h5>#08 Marcus Vance</h5>
             <p>Forward • 3.9 mi • 19.1 mph</p>
           </div>
-          <span style="color: #10b981; font-size: 12px; font-weight:700;">ACTIVE</span>
+          <span class="status-active">LIVE</span>
         </div>
 
-        <div class="roster-card" onclick="selectPlayer(4)">
+        <div class="roster-card" onclick="selectPlayer(4)" id="roster-4">
           <div class="roster-info">
             <h5>#04 David Miller</h5>
             <p>Defender • 3.2 mi • 16.2 mph</p>
           </div>
-          <span style="color: #10b981; font-size: 12px; font-weight:700;">ACTIVE</span>
+          <span class="status-active">LIVE</span>
         </div>
       </div>
     </div>
@@ -280,12 +251,15 @@
     };
 
     function renderFilmRoom() {
-      // Draw Pitch Viewport Background
-      ctx.fillStyle = '#064e3b';
+      // Draw Pitch Viewport Background (simulate video feed)
+      const grad = ctx.createRadialGradient(canvas.width/2, canvas.height/2, 100, canvas.width/2, canvas.height/2, 800);
+      grad.addColorStop(0, '#064e3b');
+      grad.addColorStop(1, '#022c22');
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Lines
-      ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
       ctx.lineWidth = 3;
       ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
       ctx.beginPath();
@@ -296,37 +270,53 @@
       // Render Players
       Object.keys(mockPlayers).forEach(id => {
         const p = mockPlayers[id];
-        ctx.fillStyle = (parseInt(id) === selectedPlayerId) ? '#38bdf8' : '#ffffff';
+        const isSelected = parseInt(id) === selectedPlayerId;
+        
+        ctx.fillStyle = isSelected ? '#00F2FE' : '#ffffff';
         ctx.beginPath();
         ctx.arc(p.x, p.y, 16, 0, 2 * Math.PI);
         ctx.fill();
 
-        ctx.fillStyle = '#0f172a';
-        ctx.font = 'bold 12px sans-serif';
-        ctx.fillText(p.number, p.x - 10, p.y + 4);
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 12px Inter';
+        ctx.fillText(p.number.replace('#',''), p.x - 7, p.y + 4);
 
-        if (parseInt(id) === selectedPlayerId) {
-          ctx.strokeStyle = '#38bdf8';
+        if (isSelected) {
+          // Glow effect
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = '#00F2FE';
+          ctx.strokeStyle = '#00F2FE';
           ctx.lineWidth = 3;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, 24, 0, 2 * Math.PI);
+          ctx.arc(p.x, p.y, 26, 0, 2 * Math.PI);
           ctx.stroke();
+          ctx.shadowBlur = 0; // reset
         }
       });
     }
 
     function selectPlayer(id) {
       selectedPlayerId = id;
+      
+      // Update UI Sidebar
+      document.querySelectorAll('.roster-card').forEach(el => el.classList.remove('active'));
+      document.getElementById('roster-' + id).classList.add('active');
+
       const p = mockPlayers[id];
-      document.getElementById('cardName').textContent = `${p.name} (${p.number})`;
+      document.getElementById('cardName').textContent = p.name;
+      document.getElementById('cardNumber').textContent = p.number;
       document.getElementById('cardRole').textContent = p.role;
       document.getElementById('cardSpeed').textContent = p.speed;
       document.getElementById('cardDist').textContent = p.dist;
       document.getElementById('cardPasses').textContent = p.passes;
       document.getElementById('cardShots').textContent = p.shots;
       document.getElementById('cardKnee').textContent = p.knee;
-      arCard.style.display = 'block';
-      renderFilmRoom();
+      
+      arCard.classList.remove('visible');
+      setTimeout(() => {
+          arCard.classList.add('visible');
+          renderFilmRoom();
+      }, 50);
     }
 
     function selectClip(title) {
@@ -347,9 +337,15 @@
           found = true;
         }
       });
-      if (!found) arCard.style.display = 'none';
+      if (!found) {
+          arCard.classList.remove('visible');
+          selectedPlayerId = null;
+          document.querySelectorAll('.roster-card').forEach(el => el.classList.remove('active'));
+          renderFilmRoom();
+      }
     });
 
+    // Init
     selectPlayer(10);
   </script>
 </body>

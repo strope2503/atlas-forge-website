@@ -6,35 +6,55 @@
   <title>Atlas Scout Pro — Halftime Vector Telestrator</title>
   <style>
     :root {
-      --bg: #030712;
-      --card: #0f172a;
-      --border: #1e293b;
-      --accent: #2563eb;
-      --accent-bright: #38bdf8;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
+      --bg-obsidian: #000000;
+      --bg-panel: rgba(22, 27, 34, 0.7);
+      --border-dark: rgba(255, 255, 255, 0.1);
+      --accent-bright: #00F2FE;
+      --green: #10b981;
+      --text: #F0F6FC;
+      --text-muted: #8B949E;
+      --glass-blur: blur(16px);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    body { background: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; }
+    body { background: var(--bg-obsidian); color: var(--text); padding-bottom: 24px; min-height: 100vh; overflow-x: hidden; }
 
-    nav { display: flex; gap: 16px; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-    nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 600; transition: color 0.15s; }
-    nav a:hover, nav a.active { color: var(--accent-bright); }
+    /* Header */
+    .atlas-header {
+        height: 70px;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: var(--glass-blur);
+        border-bottom: 1px solid var(--border-dark);
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        margin-bottom: 30px;
+    }
+    .nav-container { width: 100%; max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .brand-link { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo { height: 40px; object-fit: contain; }
+    .nav-links { display: flex; gap: 25px; align-items: center; }
+    .nav-item { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s ease; display: flex; align-items: center; gap: 8px; }
+    .nav-item:hover, .nav-item.active { color: var(--text); text-shadow: 0 0 10px rgba(255,255,255,0.3); }
 
-    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .brand { font-weight: 800; font-size: 20px; color: #fff; }
-    .brand span { color: var(--accent-bright); }
-
-    .main-grid { display: grid; grid-template-columns: 1fr 320px; gap: 24px; max-width: 1400px; margin: 0 auto; }
+    .main-grid { display: grid; grid-template-columns: 1fr 340px; gap: 24px; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
 
     .canvas-container {
       position: relative;
-      background: #064e3b;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      background: #020617;
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
       overflow: hidden;
       aspect-ratio: 16 / 9;
+      box-shadow: 0 20px 40px rgba(0, 242, 254, 0.05);
+    }
+    .canvas-container::after {
+        content: ''; position: absolute; top:0; left:0; right:0; bottom:0;
+        box-shadow: inset 0 0 50px rgba(0,242,254,0.1);
+        pointer-events: none;
     }
 
     canvas {
@@ -46,214 +66,187 @@
       cursor: crosshair;
     }
 
+    /* macOS Style Floating Dock */
     .toolbar {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
       display: flex;
       gap: 12px;
-      padding: 12px;
-      background: var(--card);
-      border-top: 1px solid var(--border);
+      padding: 12px 20px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 30px;
       align-items: center;
-      flex-wrap: wrap;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      z-index: 10;
     }
 
     .tool-btn {
-      background: #1e293b;
-      color: #fff;
-      border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 6px;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      padding: 8px 16px;
+      border-radius: 20px;
       cursor: pointer;
       font-size: 13px;
       font-weight: 600;
-      transition: all 0.15s;
+      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .tool-btn.active, .tool-btn:hover { background: var(--accent); border-color: var(--accent-bright); }
+    .tool-btn:hover { background: rgba(255,255,255,0.1); color: #fff; transform: translateY(-2px); }
+    .tool-btn.active { background: rgba(0, 242, 254, 0.15); border-color: var(--accent-bright); color: var(--accent-bright); }
+    .tool-btn.danger { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: transparent; }
+    .tool-btn.danger:hover { background: #ef4444; color: #000; }
+
+    .color-picker {
+        width: 30px; height: 30px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; padding: 0;
+        background: none; outline: none; -webkit-appearance: none;
+    }
+    .color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+    .color-picker::-webkit-color-swatch { border: none; border-radius: 50%; }
 
     .timeline-bar {
       width: 100%;
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 8px 12px;
-      background: #020617;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      margin-top: 8px;
+      padding: 12px 20px;
+      background: var(--bg-panel);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-dark);
+      border-radius: 12px;
+      margin-top: 16px;
     }
+    .timeline-bar input[type="range"] {
+        accent-color: var(--accent-bright);
+    }
+
+    .btn-play {
+        background: #00F2FE; color: #000; border: none; padding: 8px 16px; border-radius: 20px; font-weight: 800; cursor: pointer; transition: transform 0.2s;
+    }
+    .btn-play:hover { transform: scale(1.05); }
 
     .panel {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
+      background: var(--bg-panel);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--border-dark);
+      border-radius: 16px;
+      padding: 24px;
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 20px;
     }
 
-    .panel h3 { font-size: 16px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .panel h3 { font-size: 16px; color: #fff; border-bottom: 1px solid var(--border-dark); padding-bottom: 8px; letter-spacing: 0.5px; }
+
+    /* Animated Telemetry HUD */
+    .telemetry-hud {
+        font-size: 13px; color: var(--text-muted); background: rgba(0,0,0,0.3); padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);
+    }
+    .hud-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+    .hud-row:last-child { margin-bottom: 0; }
+    .val-active { color: var(--accent-bright); font-weight: 700; text-shadow: 0 0 5px rgba(0, 242, 254, 0.4); }
 
     .event-list { display: flex; flex-direction: column; gap: 10px; max-height: 260px; overflow-y: auto; }
     .event-item {
-      padding: 10px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid var(--border);
-      border-radius: 6px;
+      padding: 12px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-left: 3px solid var(--accent-bright);
+      border-radius: 8px;
       font-size: 13px;
+      color: #ccc;
     }
-
-    .status-badge {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      background: #1e293b;
-      color: var(--text-muted);
-    }
-    .status-badge.live { background: rgba(16, 185, 129, 0.2); color: #10b981; }
 
     .btn-dispatch {
-      background: #16a34a;
+      background: linear-gradient(135deg, var(--green), #059669);
       color: #fff;
-      padding: 12px;
+      padding: 14px;
       border: none;
-      border-radius: 6px;
-      font-weight: 700;
+      border-radius: 10px;
+      font-weight: 800;
       cursor: pointer;
       margin-top: auto;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .btn-dispatch:hover { background: #15803d; }
+    .btn-dispatch:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3); }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .nav-links { flex-wrap: wrap; justify-content: center; gap: 10px; }
+      .atlas-header { height: auto; padding: 15px 20px; }
+      .nav-container { flex-direction: column; gap: 15px; }
+      .toolbar { 
+        width: 90%; 
+        flex-wrap: wrap; 
+        justify-content: center; 
+        bottom: 10px; 
+      }
+      .timeline-bar { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html">← Back to Overview</a>
-    <a href="telestrator.html" class="active">Halftime Telestrator</a>
-    <a href="parent_app.html">Parent Companion Stream</a>
-    <a href="scout-pro.html">Scout Pro Details</a>
-    <a href="technology.html">DataMesh Technology</a>
-  </nav>
-
   <header class="atlas-header">
-    <div class="nav-container">
-        <a href="index.html" class="brand-link">
-            <img src="image_dda4b1.jpg" alt="Atlas Forge Mechanical Compass Logo" class="brand-logo">
-            <span class="brand-text">ATLAS FORGE</span>
-        </a>
-        <nav class="nav-links">
-            <a href="index.html" class="nav-item">Home</a>
-            <a href="technology.html" class="nav-item">Technology</a>
-            <a href="coach_portal.html" class="nav-item highlight">Coach Portal</a>
-            <a href="telestrator.html" class="nav-item">Telestrator</a>
-            <a href="about.html" class="nav-item">About Us</a>
-        </nav>
-    </div>
-</header>
-
-<style>
-    .atlas-header {
-        height: 70px;
-        background: #161B22;
-        border-bottom: 1px solid #21262D;
-        display: flex;
-        align-items: center;
-        padding: 0 24px;
-        position: relative;
-        z-index: 1000;
-    }
-    .nav-container {
-        width: 100%;
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .brand-link {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-    }
-    .brand-logo {
-        width: 48px;
-        height: 48px;
-        object-fit: contain;
-        border-radius: 50%;
-        border: 1.5px solid #00F2FE;
-    }
-    .brand-text {
-        font-size: 1.2rem;
-        font-weight: 800;
-        color: #F0F6FC;
-        letter-spacing: 1px;
-    }
-    .nav-links {
-        display: flex;
-        gap: 20px;
-        align-items: center;
-    }
-    .nav-item {
-        color: #8B949E;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 0.9rem;
-        transition: color 0.2s ease;
-    }
-    .nav-item:hover {
-        color: #00F2FE;
-    }
-    .nav-item.highlight {
-        background: rgba(0, 242, 254, 0.1);
-        border: 1px solid #00F2FE;
-        color: #00F2FE;
-        padding: 6px 14px;
-        border-radius: 20px;
-    }
-</style>
-
+      <div class="nav-container">
+          <a href="index_v2.html" class="brand-link">
+              <img src="ATLAS_FORGE_LOGO.png" alt="Atlas Forge Logo" class="brand-logo">
+          </a>
+          <nav class="nav-links">
+              <a href="index_v2.html" class="nav-item">Home</a>
+              <a href="coach_portal.html" class="nav-item">Coach Portal</a>
+              <a href="telestrator.html" class="nav-item active">Telestrator</a>
+              <a href="parent_app.html" class="nav-item">Parent App</a>
+          </nav>
+      </div>
+  </header>
 
   <div class="main-grid">
     <div>
       <div class="canvas-container">
         <canvas id="telestratorCanvas" width="1280" height="720"></canvas>
-      </div>
-
-      <div class="toolbar">
-        <button class="tool-btn active" id="btnPen" onclick="setMode('pen')">✏️ Freehand Vector</button>
-        <button class="tool-btn" id="btnArrow" onclick="setMode('arrow')">➡️ Pass Vector</button>
-        <button class="tool-btn" id="btnSpotlight" onclick="setMode('spotlight')">🔍 Spotlight Player</button>
-        <input type="color" id="drawColor" value="#38bdf8" style="background:none; border:none; width:32px; height:32px; cursor:pointer;" />
-        <button class="tool-btn" onclick="resetBoard()" style="margin-left: auto; background: #991b1b;">🗑️ Clear Annotations</button>
+        
+        <!-- Floating macOS Style Dock -->
+        <div class="toolbar">
+          <button class="tool-btn active" id="btnPen" onclick="setMode('pen')">✏️ Pen</button>
+          <button class="tool-btn" id="btnArrow" onclick="setMode('arrow')">➡️ Arrow</button>
+          <button class="tool-btn" id="btnSpotlight" onclick="setMode('spotlight')">🔍 Spotlight</button>
+          <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 8px;"></div>
+          <input type="color" id="drawColor" value="#00F2FE" class="color-picker" />
+          <div style="width: 1px; height: 24px; background: rgba(255,255,255,0.2); margin: 0 8px;"></div>
+          <button class="tool-btn danger" onclick="resetBoard()">🗑️ Clear</button>
+        </div>
       </div>
 
       <!-- Offline Scrubber Control -->
       <div class="timeline-bar">
-        <button class="tool-btn" id="btnPlayPause" onclick="togglePlayPause()">⏸ Pause Feed</button>
-        <span style="font-size: 12px; color: var(--text-muted);">Match Frame Timeline:</span>
+        <button class="btn-play" id="btnPlayPause" onclick="togglePlayPause()">⏸ Pause</button>
+        <span style="font-size: 13px; color: var(--text-muted);">Match Timeline:</span>
         <input type="range" id="frameScrubber" min="1" max="100" value="100" style="flex:1; cursor:pointer;" oninput="scrubTimeline(this.value)">
-        <span style="font-size: 12px; color: #fff; font-weight:700;" id="frameDisplay">Frame #100</span>
+        <span style="font-size: 13px; color: #fff; font-weight:700; min-width: 80px; text-align: right;" id="frameDisplay">Frame 100</span>
       </div>
     </div>
 
     <div class="panel">
       <h3>Live Telemetry Stream</h3>
-      <div style="font-size: 12px; color: var(--text-muted); background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border: 1px solid var(--border);">
-        <div>FPS: <strong id="valFps" style="color:#fff;">0.0</strong></div>
-        <div>Tracked Players: <strong id="valPlayers" style="color:#fff;">0</strong></div>
-        <div>Player #1 Knee Angle: <strong id="valKnee" style="color:#fff;">0.0°</strong></div>
+      <div class="telemetry-hud">
+        <div class="hud-row"><span>Engine FPS:</span> <span class="val-active" id="valFps">60.0</span></div>
+        <div class="hud-row"><span>Tracked Entities:</span> <span class="val-active" id="valPlayers">22</span></div>
+        <div class="hud-row"><span>Player #10 Knee Load:</span> <span class="val-active" id="valKnee" style="color:var(--green);">172.4°</span></div>
       </div>
 
-      <h3>Auto-Tagged Match Events</h3>
+      <h3>Auto-Tagged Events</h3>
       <div class="event-list" id="eventList">
         <div class="event-item">⚽ <strong>38:12 Goal</strong> — Dynamic Overload Left Flank</div>
         <div class="event-item">🛡️ <strong>12:40 Turnover</strong> — High Press Counter</div>
       </div>
 
-      <h3>Dispatch Clip</h3>
-      <p style="font-size: 12px; color: var(--text-muted);">Send annotated 15s vector clip directly to player devices before 2nd half kickoff.</p>
+      <h3>Vector Clip Dispatch</h3>
+      <p style="font-size: 12px; color: var(--text-muted);">Sync annotated 15s vector clip instantly to player devices before 2nd half kickoff.</p>
       <button class="btn-dispatch" onclick="alert('Vector annotation clip dispatched to Player #10 mobile app!')">
         📲 Send to Player Phones
       </button>
@@ -267,92 +260,44 @@
     let mode = 'pen';
     let startX = 0, startY = 0;
     let userDrawings = [];
-    let liveTelemetryData = null;
-    let isLivePaused = false;
-    let telemetryHistory = [];
 
-    const wsStatus = document.getElementById('wsStatus');
-    const valFps = document.getElementById('valFps');
-    const valPlayers = document.getElementById('valPlayers');
-    const valKnee = document.getElementById('valKnee');
-    const eventList = document.getElementById('eventList');
-    const frameScrubber = document.getElementById('frameScrubber');
-    const frameDisplay = document.getElementById('frameDisplay');
-
-    function connectEdgeServer() {
-      const ws = new WebSocket('ws://localhost:8000/ws/telemetry');
-
-      ws.onopen = () => {
-        wsStatus.textContent = 'WebSocket: Connected (10 Hz)';
-        wsStatus.classList.add('live');
-      };
-
-      ws.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        telemetryHistory.push(data);
-        if (telemetryHistory.length > 100) telemetryHistory.shift();
-
-        if (!isLivePaused) {
-          liveTelemetryData = data;
-          frameScrubber.value = telemetryHistory.length;
-          frameDisplay.textContent = `Frame #${data.frame}`;
-          updateTelemetryHUD(data);
-          redrawAll();
-        }
-      };
-
-      ws.onclose = () => {
-        wsStatus.textContent = 'WebSocket: Offline (Mock Mode)';
-        wsStatus.classList.remove('live');
-        setTimeout(connectEdgeServer, 3000);
-      };
-    }
-
-    function updateTelemetryHUD(data) {
-      valFps.textContent = data.fps;
-      valPlayers.textContent = data.tracked_players;
-      valKnee.textContent = data.left_knee_deg + '°';
-
-      if (data.whistle_detected) {
-        const item = document.createElement('div');
-        item.className = 'event-item';
-        item.style.borderColor = '#38bdf8';
-        item.innerHTML = `🔊 <strong>Frame #${data.frame}</strong> — Whistle Frequency Trigger Detected`;
-        eventList.prepend(item);
-      }
-
-      valKnee.style.color = data.pose_warning ? '#ef4444' : '#10b981';
-    }
+    // Simulate Live Telemetry loop for visual effect
+    setInterval(() => {
+        const fps = (59.0 + Math.random() * 1.5).toFixed(1);
+        document.getElementById('valFps').textContent = fps;
+        
+        const load = (170.0 + Math.random() * 5.0).toFixed(1);
+        document.getElementById('valKnee').textContent = load + '°';
+    }, 800);
 
     function togglePlayPause() {
-      isLivePaused = !isLivePaused;
-      const btn = document.getElementById('btnPlayPause');
-      btn.textContent = isLivePaused ? '▶ Resume Live' : '⏸ Pause Feed';
-      btn.style.background = isLivePaused ? '#16a34a' : '#1e293b';
+        const btn = document.getElementById('btnPlayPause');
+        if(btn.innerText.includes('Pause')) {
+            btn.innerHTML = '▶ Play';
+            btn.style.background = '#10B981';
+        } else {
+            btn.innerHTML = '⏸ Pause';
+            btn.style.background = '#00F2FE';
+        }
     }
 
     function scrubTimeline(val) {
-      isLivePaused = true;
-      document.getElementById('btnPlayPause').textContent = '▶ Resume Live';
-      document.getElementById('btnPlayPause').style.background = '#16a34a';
-
-      const idx = Math.max(0, Math.min(val - 1, telemetryHistory.length - 1));
-      if (telemetryHistory[idx]) {
-        liveTelemetryData = telemetryHistory[idx];
-        frameDisplay.textContent = `Frame #${liveTelemetryData.frame}`;
-        updateTelemetryHUD(liveTelemetryData);
-        redrawAll();
-      }
+      document.getElementById('frameDisplay').textContent = `Frame ${val}`;
+      const btn = document.getElementById('btnPlayPause');
+      btn.innerHTML = '▶ Play';
+      btn.style.background = '#10B981';
     }
-
-    connectEdgeServer();
 
     function drawSoccerPitch() {
       const w = canvas.width;
       const h = canvas.height;
-      ctx.fillStyle = '#064e3b';
+      const grad = ctx.createRadialGradient(w/2, h/2, 50, w/2, h/2, 600);
+      grad.addColorStop(0, '#064e3b');
+      grad.addColorStop(1, '#022c22');
+      ctx.fillStyle = grad;
       ctx.fillRect(0, 0, w, h);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
       ctx.lineWidth = 3;
       const p = 40;
       ctx.strokeRect(p, p, w - 2 * p, h - 2 * p);
@@ -365,42 +310,16 @@
       ctx.stroke();
       ctx.strokeRect(p, h / 2 - 160, 180, 320);
       ctx.strokeRect(w - p - 180, h / 2 - 160, 180, 320);
-    }
-
-    function renderLiveTelemetryOverlay() {
-      if (!liveTelemetryData) return;
-
-      const bmx = liveTelemetryData.ball_metric[0];
-      const bmy = liveTelemetryData.ball_metric[1];
-      const bpx = (bmx / 105.0) * (canvas.width - 80) + 40;
-      const bpy = (bmy / 68.0) * (canvas.height - 80) + 40;
-
-      ctx.fillStyle = '#facc15';
-      ctx.beginPath();
-      ctx.arc(bpx, bpy, 8, 0, 2 * Math.PI);
-      ctx.fill();
-
-      const pmx = liveTelemetryData.sample_player_metric[1];
-      const pmy = liveTelemetryData.sample_player_metric[2];
-      const ppx = (pmx / 105.0) * (canvas.width - 80) + 40;
-      const ppy = (pmy / 68.0) * (canvas.height - 80) + 40;
-
-      ctx.fillStyle = '#38bdf8';
-      ctx.beginPath();
-      ctx.arc(ppx, ppy, 12, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      ctx.stroke();
-
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 12px sans-serif';
-      ctx.fillText('P1', ppx - 7, ppy + 4);
+      
+      // Draw fake players
+      ctx.fillStyle = '#00F2FE';
+      ctx.beginPath(); ctx.arc(w/2 + 100, h/2 - 50, 12, 0, 2*Math.PI); ctx.fill();
+      ctx.fillStyle = '#10B981';
+      ctx.beginPath(); ctx.arc(w/2 - 150, h/2 + 20, 12, 0, 2*Math.PI); ctx.fill();
     }
 
     function redrawAll() {
       drawSoccerPitch();
-      renderLiveTelemetryOverlay();
 
       userDrawings.forEach(d => {
         if (d.type === 'line') {
@@ -426,7 +345,9 @@
 
     function setMode(m) {
       mode = m;
-      document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.toolbar .tool-btn').forEach(b => {
+          if(!b.classList.contains('danger')) b.classList.remove('active');
+      });
       if(m==='pen') document.getElementById('btnPen').classList.add('active');
       if(m==='arrow') document.getElementById('btnArrow').classList.add('active');
       if(m==='spotlight') document.getElementById('btnSpotlight').classList.add('active');
