@@ -2,440 +2,568 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Atlas Forge | Parent Live Fan Companion</title>
-    
-    <!-- PWA & iOS Home Screen Tags -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Parent App">
-    <link rel="apple-touch-icon" href="ATLAS_SCOUT_LOGO.png">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Velocity Track</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-obsidian: #000000;
-            --panel-gray: rgba(22, 27, 34, 0.7);
-            --border-dark: rgba(255, 255, 255, 0.1);
-            --accent-cyan: #00F2FE;
-            --accent-gold: #F59E0B;
-            --text-main: #F0F6FC;
-            --text-muted: #8B949E;
-            --glass-blur: blur(16px);
+            --bg: #070e17;
+            --panel-bg: #121c2a;
+            --text-main: #ffffff;
+            --text-muted: #8d98aa;
+            --accent-cyan: #00f0ff;
+            --accent-green: #37ff6c;
+            --font: "Inter", sans-serif;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: var(--font); }
 
         body {
-            background-color: var(--bg-obsidian);
+            margin: 0;
+            background: var(--bg);
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-image: radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.1), transparent 50%);
-        }
-
-        /* Mobile Device Frame for Desktop View */
-        .mobile-frame {
-            width: 100%;
-            max-width: 420px;
-            height: 90vh;
-            max-height: 850px;
-            background: #020617;
-            border-radius: 40px;
-            border: 8px solid #1e293b;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 0 10px rgba(255,255,255,0.1);
-            position: relative;
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-        }
-        
-        /* Dynamic Island Notch */
-        .notch {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 25px;
-            background: #000;
-            border-radius: 20px;
-            z-index: 1000;
-        }
-
-        /* Top Navigation Header */
-        .app-header {
-            height: 80px;
-            padding: 35px 20px 10px 20px;
-            background: rgba(2, 6, 23, 0.8);
-            backdrop-filter: var(--glass-blur);
-            border-bottom: 1px solid var(--border-dark);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .brand-block {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
-        }
-
-        .brand-logo {
-            width: 30px;
-            height: 30px;
-            object-fit: contain;
-            border-radius: 50%;
-            border: 1.5px solid var(--accent-cyan);
-        }
-
-        .tier-badge {
-            background: linear-gradient(135deg, var(--accent-gold), #b45309);
-            color: #000;
-            font-weight: 800;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: transform 0.2s ease, box-shadow 0.2s;
-            box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
-        }
-
-        .tier-badge:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(245, 158, 11, 0.5); }
-
-        /* Video Stream Container */
-        .stream-viewport {
-            width: 100%;
-            height: 240px;
-            background: #000;
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            height: 100vh;
             overflow: hidden;
-            border-bottom: 1px solid var(--border-dark);
-        }
-        
-        .stream-bg {
-            position: absolute;
-            top:0; left:0; right:0; bottom:0;
-            background: radial-gradient(circle, #064e3b 0%, #022c22 100%);
-            opacity: 0.8;
         }
 
-        .stream-placeholder-text {
-            color: var(--text-main);
-            font-size: 0.85rem;
+        /* Top Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 10px;
+            z-index: 10;
+        }
+
+        .time {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .status-icons div {
+            background: #fff;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 24px;
+        }
+
+        .brand {
+            font-size: 20px;
             font-weight: 700;
+            color: var(--accent-cyan);
             display: flex;
             align-items: center;
             gap: 8px;
-            z-index: 10;
-            background: rgba(0,0,0,0.5);
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            letter-spacing: -0.5px;
+        }
+        
+        .brand-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--accent-cyan);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
         }
 
-        .live-dot {
-            width: 10px;
-            height: 10px;
-            background: #EF4444;
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
             border-radius: 50%;
-            animation: pulse-red 1.5s infinite;
+            position: relative;
         }
-
-        @keyframes pulse-red {
-            0% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-            50% { opacity: 0.4; transform: scale(1.2); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        /* Overlay Speed Badges */
-        .player-speed-tag {
+        .search-icon::after {
+            content: '';
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 242, 254, 0.9);
-            color: #000;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 800;
-            font-size: 0.8rem;
+            bottom: -4px;
+            right: -4px;
+            width: 8px;
+            height: 2px;
+            background: var(--text-muted);
+            transform: rotate(45deg);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: url('https://i.pravatar.cc/100?img=11') center/cover;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Main Content Scroll */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 100px; /* space for bottom nav */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .content::-webkit-scrollbar { display: none; }
+
+        /* Hero Image */
+        .hero {
+            width: 100%;
+            height: 380px;
+            border-radius: var(--radius-lg);
+            background: url('companion-apps/assets/parent_bg.jpg') center/cover;
+            position: relative;
+            box-shadow: inset 0 -60px 40px rgba(7, 14, 23, 0.8);
+        }
+
+        /* Floating Stat */
+        .floating-stat {
+            position: absolute;
+            right: -10px;
+            top: 40%;
+            background: rgba(13, 21, 34, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 255, 108, 0.4);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            box-shadow: 0 10px 30px rgba(55, 255, 108, 0.15);
+        }
+
+        .stat-main {
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--accent-green);
+            line-height: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .stat-unit {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .stat-label {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
             display: flex;
             align-items: center;
             gap: 6px;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
-            pointer-events: none;
-            z-index: 10;
-            animation: pulse-badge 2s infinite;
         }
-        
-        @keyframes pulse-badge {
-            0% { box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(0, 242, 254, 0.8); }
-            100% { box-shadow: 0 0 10px rgba(0, 242, 254, 0.4); }
+        .trend-line {
+            width: 40px;
+            height: 15px;
+            margin-left: auto;
         }
 
-        .speed-val { background: #000; color: var(--accent-cyan); padding: 2px 6px; border-radius: 10px; font-size: 0.75rem; }
-
-        /* Telemetry Metrics Panel */
-        .scrollable-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
+        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
             gap: 12px;
-            margin-bottom: 20px;
         }
 
-        .stat-card {
-            background: rgba(255,255,255,0.03);
+        .stat-box {
+            background: var(--panel-bg);
             border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             padding: 16px;
-            text-align: center;
-            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .stat-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
 
-        .stat-label {
+        .box-large {
+            grid-row: span 2;
+        }
+
+        .box-title {
             color: var(--text-muted);
-            font-size: 0.75rem;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .box-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            line-height: 1;
+        }
+        .box-value.small {
+            font-size: 22px;
+        }
+        .box-unit {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .progress-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 240, 255, 0.2);
+            border-top-color: var(--accent-cyan);
+            align-self: flex-end;
+            margin-top: -30px;
+        }
+        
+        .box-value-green {
+            color: var(--accent-green);
+        }
+
+        /* Highlights */
+        .highlights-section {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 4px;
+        }
+
+        .h-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .h-title {
+            font-size: 12px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 6px;
+        }
+        .h-count {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-left: 6px;
+            font-weight: 400;
+            text-transform: none;
+        }
+        .h-view-all {
+            color: var(--accent-cyan);
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
         }
 
-        .stat-value {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #fff;
+        .h-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
         }
-        
-        .stat-value.cyan { color: var(--accent-cyan); text-shadow: 0 0 10px rgba(0, 242, 254, 0.3); }
+        .h-scroll::-webkit-scrollbar { display: none; }
 
-        .stat-unit { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; }
+        .h-card {
+            min-width: 110px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
 
-        /* Highlight Export Button */
-        .btn-export {
-            background: linear-gradient(135deg, var(--accent-cyan), #00A8FF);
-            color: #000;
-            border: none;
-            padding: 16px;
+        .h-thumb {
             width: 100%;
-            border-radius: 16px;
-            font-weight: 800;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0, 242, 254, 0.3);
-            transition: transform 0.2s ease, box-shadow 0.2s;
-            display: flex; justify-content: center; align-items: center; gap: 10px;
-        }
-        .btn-export:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(0, 242, 254, 0.5); }
-
-        /* Modal Overlay - Glassmorphism */
-        .modal-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: var(--glass-blur);
-            display: none;
+            height: 65px;
+            border-radius: var(--radius-sm);
+            background: #2a3441;
+            position: relative;
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
-            padding: 20px;
+            overflow: hidden;
+            border: 1px solid transparent;
         }
-
-        .modal-card {
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(245, 158, 11, 0.5);
-            border-radius: 24px;
-            padding: 30px 20px;
+        
+        .h-card.active .h-thumb {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+        
+        .h-thumb img {
             width: 100%;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(245, 158, 11, 0.1);
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .modal-overlay.active .modal-card {
-            transform: translateY(0); opacity: 1;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
         }
 
-        .modal-close {
+        .play-icon {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            color: var(--text-muted);
-            font-size: 1.5rem;
-            cursor: pointer;
-            width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; background: rgba(255,255,255,0.1);
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-icon::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 6px solid white;
+            margin-left: 2px;
         }
 
-        .modal-title {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: var(--accent-gold);
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        .modal-desc {
-            font-size: 0.95rem;
+        .h-label {
+            font-size: 11px;
+            font-weight: 600;
             color: var(--text-main);
-            margin-bottom: 24px;
-            line-height: 1.6;
         }
 
-        .btn-subscribe {
-            background: linear-gradient(90deg, var(--accent-gold), #b45309);
-            color: #000;
-            border: none;
-            padding: 16px;
-            border-radius: 30px;
-            font-weight: 900;
+        .h-progress {
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
             width: 100%;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.3);
-            transition: transform 0.2s;
         }
-        .btn-subscribe:hover { transform: translateY(-2px); }
+        .h-card.active .h-progress-bar {
+            height: 100%;
+            background: var(--accent-cyan);
+            width: 60%;
+        }
+        .h-card:nth-child(2) .h-progress-bar { background: var(--text-muted); width: 100%; }
+        .h-card:nth-child(3) .h-progress-bar { background: var(--accent-green); width: 40%; }
 
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            body { 
-                align-items: flex-start; 
-                padding: 0; 
-            }
-            .mobile-frame { 
-                max-width: 100%; 
-                height: 100vh; 
-                max-height: none; 
-                border-radius: 0; 
-                border: none; 
-                box-shadow: none; 
-            }
-            .notch { display: none; }
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 80px;
+            background: var(--panel-bg);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
         }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 500;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--accent-green);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            width: 40px;
+            height: 3px;
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid currentColor;
+            border-radius: 4px;
+        }
+        .nav-item:nth-child(2) .nav-icon {
+            border: none;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            width: 18px;
+        }
+        .nav-item:nth-child(2) .nav-icon span {
+            background: currentColor;
+            width: 4px;
+            border-radius: 1px;
+        }
+        .nav-item:nth-child(2) .nav-icon span:nth-child(1) { height: 10px; }
+        .nav-item:nth-child(2) .nav-icon span:nth-child(2) { height: 16px; }
+        .nav-item:nth-child(2) .nav-icon span:nth-child(3) { height: 12px; }
+        
+        .nav-item:nth-child(3) .nav-icon { border-radius: 50%; }
+        .nav-item:nth-child(3) .nav-icon::after {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            border: 1.5px solid currentColor;
+            border-radius: 50%;
+        }
+
+        .nav-item:nth-child(4) .nav-icon { border: none; background: currentColor; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+        
+        .nav-item:nth-child(5) .nav-icon { border: none; }
+        .nav-item:nth-child(5) .nav-icon::before {
+            content:''; position: absolute; top:0; left:4px; width:12px; height:12px; border:1.5px solid currentColor; border-radius:50%;
+        }
+        .nav-item:nth-child(5) .nav-icon::after {
+            content:''; position: absolute; bottom:0; left:0; right:0; height:7px; border:1.5px solid currentColor; border-bottom:none; border-radius: 8px 8px 0 0;
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="mobile-frame">
-        <div class="notch"></div>
-        
-        <header class="app-header">
-            <div class="brand-block">
-                <img src="ATLAS_FORGE_LOGO.png" alt="Atlas Forge Logo" class="brand-logo">
-                <span>FAN PRO</span>
+    <header>
+        <div class="time">8:42 PM</div>
+        <div class="status-icons">
+            <div style="width:3px;height:6px;"></div>
+            <div style="width:3px;height:8px;"></div>
+            <div style="width:3px;height:10px;"></div>
+            <div style="width:3px;height:12px;"></div>
+            <div style="width:16px;height:8px; border-radius: 2px; border: 1px solid #fff; background: transparent; position:relative; margin-left:4px;">
+                <div style="position:absolute;left:1px;top:1px;bottom:1px;width:10px;background:#fff;border-radius:1px;"></div>
             </div>
-            <div class="tier-badge" onclick="openProModal()">UPGRADE ($9.99/MO)</div>
-        </header>
+        </div>
+    </header>
 
-        <div class="stream-viewport">
-            <div class="stream-bg"></div>
-            <div class="stream-placeholder-text">
-                <div class="live-dot"></div>
-                <span>LIVE 1080p SVG-C FEED</span>
-            </div>
+    <div class="nav-bar">
+        <div class="brand">
+            <div class="brand-icon"></div>
+            Velocity Track
+        </div>
+        <div class="profile-section">
+            <div class="search-icon"></div>
+            <div class="avatar"></div>
+        </div>
+    </div>
 
-            <div class="player-speed-tag" id="speedTag">
-                <span>#10 J. Hindmand</span>
-                <span class="speed-val" id="speedValue">16.8 mph</span>
+    <div class="content">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="floating-stat">
+                <div class="stat-main">18.2 <span class="stat-unit">mph</span></div>
+                <div class="stat-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Max Sprint
+                    <svg class="trend-line" viewBox="0 0 40 15" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M0 10 L10 8 L20 12 L30 4 L40 0" stroke="var(--accent-green)"/>
+                    </svg>
+                </div>
             </div>
         </div>
 
-        <div class="scrollable-content">
-            <h4 style="margin-bottom: 12px; font-size: 1rem; color: #fff;">Live Player Telemetry</h4>
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-box box-large">
+                <div class="box-title">Total Distance<br>Covered</div>
+                <div class="progress-circle"></div>
+                <div style="margin-top: 20px;">
+                    <div class="box-value">3.48 <span class="box-unit">mi</span></div>
+                </div>
+            </div>
             
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-label">Top Sprint</div>
-                    <div class="stat-value cyan" id="topSpeed">18.4 <span class="stat-unit">mph</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Distance</div>
-                    <div class="stat-value" id="distanceCovered">4.8 <span class="stat-unit">mi</span></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Sprints</div>
-                    <div class="stat-value">14 <span class="stat-unit">bursts</span></div>
-                </div>
-                <div class="stat-card" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.05);">
-                    <div class="stat-label">ACL Risk</div>
-                    <div class="stat-value" style="color:#10B981; text-shadow: 0 0 10px rgba(16,185,129,0.3);">LOW</div>
-                </div>
+            <div class="stat-box">
+                <div class="box-title" style="margin-bottom: 4px;">Current Pace</div>
+                <div class="box-value small">9:12 <span class="box-unit">/mi</span></div>
             </div>
-
-            <button class="btn-export" onclick="exportHighlightReel()">
-                <span>🎬</span> Export 9:16 Social Reel
-            </button>
-            <p style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px;">Generates TikTok/Reel clip with speed overlay</p>
+            
+            <div class="stat-box">
+                <div class="box-title" style="margin-bottom: 4px;">Calories</div>
+                <div class="box-value small box-value-green">412 <span class="box-unit">kcal</span></div>
+            </div>
         </div>
 
-        <div class="modal-overlay" id="proModal">
-            <div class="modal-card">
-                <div class="modal-close" onclick="closeProModal()">&times;</div>
-                <div class="modal-title">ATLAS PRO FAN PASS</div>
-                <div class="modal-desc">
-                    Unlock real-time 1080p multi-angle field camera switching, live speed overlays, player heatmaps, and instant 1-click social highlight exports.
+        <!-- Highlights Section -->
+        <div class="highlights-section">
+            <div class="h-header">
+                <div class="h-title">Auto-Highlights <span class="h-count">5 Reels</span></div>
+                <div style="display: flex; gap: 10px;">
+                    <a href="#" class="h-view-all" onclick="alert('⚡ Reel-Forge Exporter: 9:16 vertical clip rendered & pushed to camera roll!')">Export All</a>
+                    <a href="#" class="h-view-all" onclick="alert('🔗 Link copied to clipboard! Share with family and friends.')">Share</a>
                 </div>
-                <button class="btn-subscribe" onclick="alert('Subscription activated! Pro telemetry features unlocked.')">Upgrade Now — $9.99 / Month</button>
+            </div>
+            <div class="h-scroll">
+                <div class="h-card active">
+                    <div class="h-thumb">
+                        <img src="companion-apps/assets/parent_bg.jpg" alt="Highlight 1">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">Max Sprint</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
+                <div class="h-card">
+                    <div class="h-thumb">
+                        <img src="companion-apps/assets/cameraman_bg.jpg" alt="Highlight 2">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">Dribble Goal</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
+                <div class="h-card">
+                    <div class="h-thumb">
+                        <img src="companion-apps/assets/coach_bg.jpg" alt="Highlight 3">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">assist</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
+                <div class="h-card">
+                    <div class="h-thumb">
+                        <img src="companion-apps/assets/parent_bg.jpg" alt="Highlight 4">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">Skill</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        function startSimulatedTelemetry() {
-            setInterval(() => {
-                const randomSpeed = (14.0 + Math.random() * 4.5).toFixed(1);
-                document.getElementById("speedValue").innerText = randomSpeed + " mph";
-            }, 1000);
-        }
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Feed
+        </a>
+        <a href="#" class="nav-item active">
+            <div class="nav-icon"><span></span><span></span><span></span></div>
+            Stats
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Record
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Teams
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Profile
+        </a>
+    </div>
 
-        function openProModal() {
-            const overlay = document.getElementById("proModal");
-            overlay.style.display = "flex";
-            // Trigger animation frame for CSS transition
-            requestAnimationFrame(() => {
-                overlay.classList.add('active');
-            });
-        }
-
-        function closeProModal() {
-            const overlay = document.getElementById("proModal");
-            overlay.classList.remove('active');
-            setTimeout(() => {
-                overlay.style.display = "none";
-            }, 300);
-        }
-
-        function exportHighlightReel() {
-            alert("🎬 Generating 9:16 vertical highlight clip with speed badge overlays... Download ready in 5 seconds!");
-        }
-
-        // Initialize on load
-        window.onload = startSimulatedTelemetry;
-    </script>
 </body>
 </html>
