@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Velocity Track</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070e17;
+            --panel-bg: #121c2a;
+            --text-main: #ffffff;
+            --text-muted: #8d98aa;
+            --accent-cyan: #00f0ff;
+            --accent-green: #37ff6c;
+            --font: "Inter", sans-serif;
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 8px;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: var(--font); }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Top Bar */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px 10px;
+            z-index: 10;
+        }
+
+        .time {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .status-icons div {
+            background: #fff;
+            height: 10px;
+            border-radius: 2px;
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 24px;
+        }
+
+        .brand {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .brand-icon {
+            width: 20px;
+            height: 20px;
+            background: var(--accent-cyan);
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0% 100%);
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            position: relative;
+        }
+        .search-icon::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            width: 8px;
+            height: 2px;
+            background: var(--text-muted);
+            transform: rotate(45deg);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: url('https://i.pravatar.cc/100?img=11') center/cover;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Main Content Scroll */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 20px 100px; /* space for bottom nav */
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .content::-webkit-scrollbar { display: none; }
+
+        /* Hero Image */
+        .hero {
+            width: 100%;
+            height: 380px;
+            border-radius: var(--radius-lg);
+            background: url('assets/parent_bg.jpg') center/cover;
+            position: relative;
+            box-shadow: inset 0 -60px 40px rgba(7, 14, 23, 0.8);
+        }
+
+        /* Floating Stat */
+        .floating-stat {
+            position: absolute;
+            right: -10px;
+            top: 40%;
+            background: rgba(13, 21, 34, 0.5);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 255, 108, 0.4);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            box-shadow: 0 10px 30px rgba(55, 255, 108, 0.15);
+        }
+
+        .stat-main {
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--accent-green);
+            line-height: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .stat-unit {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .stat-label {
+            color: #fff;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .trend-line {
+            width: 40px;
+            height: 15px;
+            margin-left: auto;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 12px;
+        }
+
+        .stat-box {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .box-large {
+            grid-row: span 2;
+        }
+
+        .box-title {
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .box-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            line-height: 1;
+        }
+        .box-value.small {
+            font-size: 22px;
+        }
+        .box-unit {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .progress-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 240, 255, 0.2);
+            border-top-color: var(--accent-cyan);
+            align-self: flex-end;
+            margin-top: -30px;
+        }
+        
+        .box-value-green {
+            color: var(--accent-green);
+        }
+
+        /* Highlights */
+        .highlights-section {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-top: 4px;
+        }
+
+        .h-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .h-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .h-count {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-left: 6px;
+            font-weight: 400;
+            text-transform: none;
+        }
+        .h-view-all {
+            color: var(--accent-cyan);
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .h-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        .h-scroll::-webkit-scrollbar { display: none; }
+
+        .h-card {
+            min-width: 110px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .h-thumb {
+            width: 100%;
+            height: 65px;
+            border-radius: var(--radius-sm);
+            background: #2a3441;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid transparent;
+        }
+        
+        .h-card.active .h-thumb {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+        
+        .h-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .play-icon {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .play-icon::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 6px solid white;
+            margin-left: 2px;
+        }
+
+        .h-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .h-progress {
+            height: 2px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            width: 100%;
+        }
+        .h-card.active .h-progress-bar {
+            height: 100%;
+            background: var(--accent-cyan);
+            width: 60%;
+        }
+        .h-card:nth-child(2) .h-progress-bar { background: var(--text-muted); width: 100%; }
+        .h-card:nth-child(3) .h-progress-bar { background: var(--accent-green); width: 40%; }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            height: 80px;
+            background: var(--panel-bg);
+            border-top: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+            font-size: 10px;
+            font-weight: 500;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-item.active {
+            color: var(--accent-green);
+        }
+
+        .nav-item.active::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            width: 40px;
+            height: 3px;
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid currentColor;
+            border-radius: 4px;
+        }
+        .nav-item:nth-child(2) .nav-icon {
+            border: none;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            width: 18px;
+        }
+        .nav-item:nth-child(2) .nav-icon span {
+            background: currentColor;
+            width: 4px;
+            border-radius: 1px;
+        }
+        .nav-item:nth-child(2) .nav-icon span:nth-child(1) { height: 10px; }
+        .nav-item:nth-child(2) .nav-icon span:nth-child(2) { height: 16px; }
+        .nav-item:nth-child(2) .nav-icon span:nth-child(3) { height: 12px; }
+        
+        .nav-item:nth-child(3) .nav-icon { border-radius: 50%; }
+        .nav-item:nth-child(3) .nav-icon::after {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            border: 1.5px solid currentColor;
+            border-radius: 50%;
+        }
+
+        .nav-item:nth-child(4) .nav-icon { border: none; background: currentColor; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); }
+        
+        .nav-item:nth-child(5) .nav-icon { border: none; }
+        .nav-item:nth-child(5) .nav-icon::before {
+            content:''; position: absolute; top:0; left:4px; width:12px; height:12px; border:1.5px solid currentColor; border-radius:50%;
+        }
+        .nav-item:nth-child(5) .nav-icon::after {
+            content:''; position: absolute; bottom:0; left:0; right:0; height:7px; border:1.5px solid currentColor; border-bottom:none; border-radius: 8px 8px 0 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="time">8:42 PM</div>
+        <div class="status-icons">
+            <div style="width:3px;height:6px;"></div>
+            <div style="width:3px;height:8px;"></div>
+            <div style="width:3px;height:10px;"></div>
+            <div style="width:3px;height:12px;"></div>
+            <div style="width:16px;height:8px; border-radius: 2px; border: 1px solid #fff; background: transparent; position:relative; margin-left:4px;">
+                <div style="position:absolute;left:1px;top:1px;bottom:1px;width:10px;background:#fff;border-radius:1px;"></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="nav-bar">
+        <div class="brand">
+            <div class="brand-icon"></div>
+            Velocity Track
+        </div>
+        <div class="profile-section">
+            <div class="search-icon"></div>
+            <div class="avatar"></div>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="floating-stat">
+                <div class="stat-main">18.2 <span class="stat-unit">mph</span></div>
+                <div class="stat-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Max Sprint
+                    <svg class="trend-line" viewBox="0 0 40 15" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M0 10 L10 8 L20 12 L30 4 L40 0" stroke="var(--accent-green)"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-box box-large">
+                <div class="box-title">Total Distance<br>Covered</div>
+                <div class="progress-circle"></div>
+                <div style="margin-top: 20px;">
+                    <div class="box-value">3.48 <span class="box-unit">mi</span></div>
+                </div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="box-title" style="margin-bottom: 4px;">Current Pace</div>
+                <div class="box-value small">9:12 <span class="box-unit">/mi</span></div>
+            </div>
+            
+            <div class="stat-box">
+                <div class="box-title" style="margin-bottom: 4px;">Calories</div>
+                <div class="box-value small box-value-green">412 <span class="box-unit">kcal</span></div>
+            </div>
+        </div>
+
+        <!-- Highlights Section -->
+        <div class="highlights-section">
+            <div class="h-header">
+                <div class="h-title">Auto-Highlights <span class="h-count">5 Reels</span></div>
+                <a href="#" class="h-view-all">View All</a>
+            </div>
+            <div class="h-scroll">
+                <div class="h-card active">
+                    <div class="h-thumb">
+                        <img src="assets/parent_bg.jpg" alt="Highlight 1">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">Max Sprint</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
+                <div class="h-card">
+                    <div class="h-thumb">
+                        <img src="assets/cameraman_bg.jpg" alt="Highlight 2">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">Dribble Goal</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
+                <div class="h-card">
+                    <div class="h-thumb">
+                        <img src="assets/coach_bg.jpg" alt="Highlight 3">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">assist</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
+                <div class="h-card">
+                    <div class="h-thumb">
+                        <img src="assets/parent_bg.jpg" alt="Highlight 4">
+                        <div class="play-icon"></div>
+                    </div>
+                    <div class="h-label">Skill</div>
+                    <div class="h-progress"><div class="h-progress-bar"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Feed
+        </a>
+        <a href="#" class="nav-item active">
+            <div class="nav-icon"><span></span><span></span><span></span></div>
+            Stats
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Record
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Teams
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            Profile
+        </a>
+    </div>
+
+</body>
+</html>

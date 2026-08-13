@@ -17,10 +17,16 @@
             --accent-orange: #FFB800;
             --accent-pink: #FF0055;
             --accent-purple: #9D00FF;
-
             --text-main: #FFFFFF;
             --text-muted: #A0A0A0;
             --glass-blur: blur(16px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #B4F481, #10B981, #00F2FE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,6 +46,11 @@
         @keyframes fadeUp {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
         .reveal { opacity: 0; animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .delay-1 { animation-delay: 0.2s; }
@@ -246,7 +257,13 @@
         .feature-box.purple:hover { border-color: var(--accent-purple); box-shadow: 0 10px 30px rgba(157, 0, 255, 0.1); }
         .feature-box.orange:hover { border-color: var(--accent-orange); box-shadow: 0 10px 30px rgba(255, 184, 0, 0.1); }
 
-        .feature-icon { font-size: 2.5rem; margin-bottom: 20px; }
+        .feature-icon { font-size: 3.5rem; margin-bottom: 20px; animation: float 4s ease-in-out infinite; display: inline-block; }
+        .feature-box.cyan .feature-icon { filter: drop-shadow(0 0 15px var(--accent-cyan)); }
+        .feature-box.green .feature-icon { filter: drop-shadow(0 0 15px var(--accent-green)); }
+        .feature-box.pink .feature-icon { filter: drop-shadow(0 0 15px var(--accent-pink)); }
+        .feature-box.purple .feature-icon { filter: drop-shadow(0 0 15px var(--accent-purple)); }
+        .feature-box.orange .feature-icon { filter: drop-shadow(0 0 15px var(--accent-orange)); }
+        
         .feature-box h3 { font-size: 1.4rem; margin-bottom: 15px; color: #fff; }
         .feature-box p { color: var(--text-muted); font-size: 1rem; }
 
@@ -292,7 +309,7 @@
     <section class="hero">
         <img src="ATLAS_LEDGER_LOGO.png" alt="Atlas Ledger" style="height: 100px; margin-bottom: 25px;" class="reveal">
         <div class="badge reveal">The AI-Powered Engine for Your Finances</div>
-        <h1 class="reveal delay-1">Personal and Business Finances, <span style="color: var(--accent-cyan);">Finally in One Place.</span></h1>
+        <h1 class="reveal delay-1 gradient-text">Personal and Business Finances, <span style="color: var(--accent-cyan);">Finally in One Place.</span></h1>
         <p class="reveal delay-2">Atlas Ledger is your automated financial co-pilot. Replace manual budgeting with a high-performance engine that tracks expenses, analyzes affordability, predicts payoffs, and secures your household.</p>
         <div class="reveal delay-2" style="margin-top: 20px;">
             <a href="contact.html" class="btn-buy">Start Your Automated Journey</a>
@@ -389,7 +406,7 @@
         </section>
 
         <section class="reveal">
-            <h2 style="text-align: center; margin-bottom: 10px;">The Six Pillars of the Forge</h2>
+            <h2 class="gradient-text" style="text-align: center; margin-bottom: 10px; display: block;">The Six Pillars of the Forge</h2>
             <p class="text-lg" style="text-align: center; margin-bottom: 30px;">Engineered to automate your financial life securely.</p>
             
             <div class="features-grid">

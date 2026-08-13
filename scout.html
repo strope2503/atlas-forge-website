@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas Scout Pro V8.0 — Atlas Forge LLC</title>
+    <style>
+        :root {
+            --bg-primary: #05080F;
+            --bg-secondary: #0F1423;
+            --border-color: #242C42;
+            --text-main: #94A3B8;
+            --text-heading: #F8FAFC;
+            --accent-cyan: #00F2FE;
+            --accent-green: #10B981;
+            --accent-gold: #D4AF37;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-primary); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+
+        /* Navigation */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 24px 48px; border-bottom: 1px solid var(--border-color); background: rgba(5, 8, 15, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; }
+        .logo { color: var(--text-heading); font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
+        .logo span { color: var(--accent-cyan); }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.9rem; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent-cyan); }
+
+        /* Scout Hero */
+        .scout-hero { text-align: center; padding: 100px 20px 40px; max-width: 900px; margin: 0 auto; }
+        .hero-badge { display: inline-block; padding: 6px 14px; background: rgba(0, 242, 254, 0.1); color: var(--accent-cyan); border: 1px solid var(--accent-cyan); border-radius: 20px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 24px; }
+        .scout-hero h1 { color: var(--text-heading); font-size: 4.5rem; letter-spacing: -1px; margin-bottom: 20px; line-height: 1.1; }
+        .scout-hero h1 span { background: linear-gradient(90deg, #10B981, #00F2FE); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .scout-hero p { font-size: 1.25rem; color: #CBD5E1; margin-bottom: 40px; }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #B4F481, #10B981, #00F2FE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Features Section */
+        .features-section { padding: 40px 20px 100px; text-align: center; }
+        .features-header { display: flex; align-items: baseline; justify-content: center; gap: 20px; margin-bottom: 60px; flex-wrap: wrap; }
+        .features-header h2 { color: var(--text-heading); font-size: 2.2rem; display: none; }
+        .features-header h1 { 
+            font-size: 5.5rem; 
+            font-weight: 800;
+            background: linear-gradient(90deg, #B4F481, #10B981, #00F2FE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 1250px; margin: 0 auto; }
+        .glass-card {
+            background: linear-gradient(180deg, rgba(30,40,60,0.3) 0%, rgba(10,15,30,0.7) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 40px 24px 30px;
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        /* Card Borders and Glows */
+        .card-cyan { border: 2px solid rgba(0, 242, 254, 0.2); box-shadow: 0 0 20px rgba(0, 242, 254, 0.05), inset 0 0 20px rgba(0, 242, 254, 0.05); }
+        .card-green { border: 2px solid rgba(16, 185, 129, 0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.05), inset 0 0 20px rgba(16, 185, 129, 0.05); }
+        
+        .glass-card:hover { transform: translateY(-12px); }
+        .card-cyan:hover { box-shadow: 0 15px 40px rgba(0, 242, 254, 0.15), inset 0 0 30px rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.6); }
+        .card-green:hover { box-shadow: 0 15px 40px rgba(16, 185, 129, 0.15), inset 0 0 30px rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.6); }
+
+        .icon-container { height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; animation: float 4s ease-in-out infinite; }
+        .neon-svg-cyan svg { filter: drop-shadow(0 0 12px rgba(0,242,254,0.6)); color: var(--accent-cyan); }
+        .neon-svg-green svg { filter: drop-shadow(0 0 12px rgba(16,185,129,0.6)); color: var(--accent-green); }
+        
+        .glass-card h4 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 700; }
+        .glass-card p { font-size: 0.95rem; color: #94A3B8; margin-bottom: 35px; line-height: 1.6; flex-grow: 1; padding: 0 10px; }
+        
+        .learn-more { 
+            display: inline-block; padding: 10px 28px; 
+            border: 1px solid rgba(255,255,255,0.15); 
+            border-radius: 30px; font-size: 0.85rem; 
+            color: #94A3B8; text-decoration: none; 
+            background: rgba(255,255,255,0.03);
+            transition: all 0.3s ease; 
+        }
+        .learn-more:hover { background: rgba(255,255,255,0.1); color: #FFF; border-color: rgba(255,255,255,0.3); }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border-color); padding: 48px 20px; text-align: center; color: #64748B; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">ATLAS <span>FORGE</span></div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="index.html#ecosystem">Ecosystem</a></li>
+            <li><a href="scout.html">Scout Pro V8.0</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section class="scout-hero">
+        <span class="hero-badge">THE ULTIMATE SIDELINE STATION</span>
+        <h1>Atlas Scout Pro <span class="gradient-text">V8.0</span></h1>
+        <p>Autonomous sideline recording for all ages and skill levels, with edge-AI analytics, zero-token local processing, and unparalleled tactical insights.</p>
+    </section>
+
+    <section class="features-section" id="features">
+        <div class="features-header">
+            <h1 class="gradient-text">Features</h1>
+        </div>
+
+        <div class="grid-4">
+            <div class="glass-card card-cyan">
+                <div class="icon-container neon-svg-cyan">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18h6" />
+                        <path d="M10 22h4" />
+                        <path d="M12 2a8 8 0 0 0-8 8c0 1.5.5 2.9 1.4 4l.6.8c.2.2.3.5.3.8v2.4a2 2 0 0 0 2 2h7.4a2 2 0 0 0 2-2v-2.4c0-.3.1-.6.3-.8l.6-.8A8 8 0 0 0 12 2Z" />
+                    </svg>
+                </div>
+                <h4 class="gradient-text">AI Assistant Coach</h4>
+                <p>AI-driven real-time coaching insights, personalized training drills, and tactical feedback to elevate player performance.</p>
+            </div>
+            
+            <div class="glass-card card-green">
+                <div class="icon-container neon-svg-green">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                    </svg>
+                </div>
+                <h4 class="gradient-text">Auto-Stat Tracking</h4>
+                <p>Automatic, real-time capture of all game stats, player heatmaps, and performance analytics for accurate player evaluation.</p>
+            </div>
+
+            <div class="glass-card card-cyan">
+                <div class="icon-container neon-svg-cyan">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                </div>
+                <h4 class="gradient-text">Practice Mode</h4>
+                <p>Advanced drills, skill-specific training modules, and progress tracking to optimize practice sessions and skill development.</p>
+            </div>
+
+            <div class="glass-card card-green">
+                <div class="icon-container neon-svg-green">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="23 7 16 12 23 17 23 7" />
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                    </svg>
+                </div>
+                <h4 class="gradient-text">Parent Stream</h4>
+                <p>Secure, high-quality live streaming of games for parents and scouts, with instant replays and player highlights.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Atlas Forge LLC (Texas, USA). All Rights Reserved. Master Architecture V8.0.</p>
+    </footer>
+
+</body>
+</html>
