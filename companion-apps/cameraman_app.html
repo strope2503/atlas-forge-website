@@ -365,8 +365,7 @@
             Operator Deck
         </div>
         
-        <div class="header-center">
-            <div class="nav-item active">Cam 1</div>
+        
             <div class="nav-item">Cam 2</div>
             <div class="nav-item">Drone</div>
             <div class="nav-item">Tactical</div>
@@ -408,18 +407,42 @@
             </div>
             </div>
 
-            <!-- Lens Control -->
+                        <!-- Live Telemetry Stream -->
             <div class="glass-panel">
                 <div class="panel-header">
-                    <h3 class="panel-title">Lens Control</h3>
+                    <h3 class="panel-title">Live Telemetry</h3>
                 </div>
-                
-                                <div class="slider-wrap">
-                    <div class="slider-label">Zoom <span id="valZoom">2.4x</span></div>
-                    <div class="slider-track" id="trackZoom" onmousedown="startDrag(event, 'Zoom')">
-                        <div class="slider-fill" id="fillZoom" style="width: 40%; pointer-events:none;"></div>
-                        <div class="slider-thumb" id="thumbZoom" style="left: 40%; pointer-events:none;"></div>
+                <div class="stat-grid" style="grid-template-columns: 1fr;">
+                    <div class="stat-item" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="stat-label" style="margin:0;">Engine FPS</span>
+                        <span class="stat-value" id="valFps">60.0</span>
                     </div>
+                    <div class="stat-item" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="stat-label" style="margin:0;">Tracked Entities</span>
+                        <span class="stat-value" id="valPlayers">22</span>
+                    </div>
+                    <div class="stat-item" style="display:flex; justify-content:space-between; align-items:center;">
+                        <span class="stat-label" style="margin:0;">Player #10 Knee Load</span>
+                        <span class="stat-value" id="valKnee" style="color:var(--accent-green);">172.4°</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Offline Scrubber -->
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Match Timeline</h3>
+                </div>
+                <div style="display:flex; flex-direction:column; gap: 12px;">
+                    <div class="big-action-btn" id="btnPlayPause" onclick="togglePlayPause()" style="justify-content:center; background: rgba(0,240,255,0.1); border-color: var(--accent-cyan); color: var(--accent-cyan);">
+                        ⏸ Pause
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <input type="range" id="frameScrubber" min="1" max="100" value="100" style="flex:1; cursor:pointer; accent-color: var(--accent-cyan);" oninput="scrubTimeline(this.value)">
+                        <span style="font-size: 13px; font-weight:700; width:70px; text-align:right;" id="frameDisplay">Frame 100</span>
+                    </div>
+                </div>
+            </div>
                 </div>
                 </div>
                 
@@ -483,6 +506,23 @@
                 </div>
             </div>
 
+                        <!-- Auto-Tagged Events -->
+            <div class="glass-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Auto-Tagged Events</h3>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; font-size:12px;">
+                        ⚽ <strong style="color:var(--text-main);">38:12 Goal</strong><br>
+                        <span style="color:var(--text-muted);">Dynamic Overload Left Flank</span>
+                    </div>
+                    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; font-size:12px;">
+                        🛡️ <strong style="color:var(--text-main);">12:40 Turnover</strong><br>
+                        <span style="color:var(--text-muted);">High Press Counter</span>
+                    </div>
+                </div>
+            </div>
+
             <!-- Actions -->
             <div class="glass-panel" style="flex:1;">
                 <div class="panel-header">
@@ -500,6 +540,9 @@
                 <div class="big-action-btn danger" style="margin-top: 40px;" onclick="if(confirm('Are you sure you want to stop the live stream?')) alert('Stream Stopped.');">
                     Stop Stream <span>⏹</span>
                 </div>
+                                <div class="big-action-btn" onclick="alert('📲 Vector annotation clip dispatched to Player #10 mobile app!')" style="background: rgba(55,255,108,0.1); border-color: rgba(55,255,108,0.3); color: var(--accent-green);">
+                    Send to Phones <span>📲</span>
+                </div>
                 
             </div>
         </div>
@@ -508,6 +551,44 @@
 
 
 <script>
+    
+    // Telemetry loop
+    setInterval(() => {
+        const fps = (59.0 + Math.random() * 1.5).toFixed(1);
+        const fpsEl = document.getElementById('valFps');
+        if(fpsEl) fpsEl.textContent = fps;
+        
+        const load = (170.0 + Math.random() * 5.0).toFixed(1);
+        const loadEl = document.getElementById('valKnee');
+        if(loadEl) loadEl.textContent = load + '°';
+    }, 800);
+
+    // Scrubber Logic
+    function togglePlayPause() {
+        const btn = document.getElementById('btnPlayPause');
+        if(btn.innerText.includes('Pause')) {
+            btn.innerHTML = '▶ Play';
+            btn.style.background = 'rgba(55,255,108,0.1)';
+            btn.style.borderColor = 'var(--accent-green)';
+            btn.style.color = 'var(--accent-green)';
+        } else {
+            btn.innerHTML = '⏸ Pause';
+            btn.style.background = 'rgba(0,240,255,0.1)';
+            btn.style.borderColor = 'var(--accent-cyan)';
+            btn.style.color = 'var(--accent-cyan)';
+        }
+    }
+
+    function scrubTimeline(val) {
+      document.getElementById('frameDisplay').textContent = `Frame ${val}`;
+      const btn = document.getElementById('btnPlayPause');
+      btn.innerHTML = '▶ Play';
+      btn.style.background = 'rgba(55,255,108,0.1)';
+      btn.style.borderColor = 'var(--accent-green)';
+      btn.style.color = 'var(--accent-green)';
+    }
+
+
     // Cam Mode Toggle
     function setCamMode(btn) {
         document.querySelectorAll('#modeControls .control-btn').forEach(b => b.classList.remove('active'));
