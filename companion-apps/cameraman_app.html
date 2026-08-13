@@ -387,24 +387,25 @@
                 <div class="panel-header">
                     <h3 class="panel-title">Tracking Mode</h3>
                 </div>
-                <div class="cam-controls">
-                    <div class="control-btn active">
+                                <div class="cam-controls" id="modeControls">
+                    <div class="control-btn active" onclick="setCamMode(this)">
                         <span class="control-icon">🎯</span>
                         Auto
                     </div>
-                    <div class="control-btn">
+                    <div class="control-btn" onclick="setCamMode(this)">
                         <span class="control-icon">👋</span>
                         Manual
                     </div>
-                    <div class="control-btn">
+                    <div class="control-btn" onclick="setCamMode(this)">
                         <span class="control-icon">🏃</span>
                         Follow
                     </div>
-                    <div class="control-btn">
+                    <div class="control-btn" onclick="setCamMode(this)">
                         <span class="control-icon">⚽</span>
                         Ball
                     </div>
                 </div>
+            </div>
             </div>
 
             <!-- Lens Control -->
@@ -413,28 +414,31 @@
                     <h3 class="panel-title">Lens Control</h3>
                 </div>
                 
-                <div class="slider-wrap">
-                    <div class="slider-label">Zoom <span>2.4x</span></div>
-                    <div class="slider-track">
-                        <div class="slider-fill" style="width: 40%;"></div>
-                        <div class="slider-thumb" style="left: 40%;"></div>
+                                <div class="slider-wrap">
+                    <div class="slider-label">Zoom <span id="valZoom">2.4x</span></div>
+                    <div class="slider-track" id="trackZoom" onmousedown="startDrag(event, 'Zoom')">
+                        <div class="slider-fill" id="fillZoom" style="width: 40%; pointer-events:none;"></div>
+                        <div class="slider-thumb" id="thumbZoom" style="left: 40%; pointer-events:none;"></div>
                     </div>
                 </div>
-                
-                <div class="slider-wrap">
-                    <div class="slider-label">Focus <span>Auto</span></div>
-                    <div class="slider-track">
-                        <div class="slider-fill" style="width: 75%; background: var(--text-muted);"></div>
-                        <div class="slider-thumb" style="left: 75%;"></div>
-                    </div>
                 </div>
                 
-                <div class="slider-wrap" style="margin-bottom:0;">
-                    <div class="slider-label">Iris <span>f/4.0</span></div>
-                    <div class="slider-track">
-                        <div class="slider-fill" style="width: 60%; background: var(--text-muted);"></div>
-                        <div class="slider-thumb" style="left: 60%;"></div>
+                                <div class="slider-wrap">
+                    <div class="slider-label">Focus <span id="valFocus">Auto</span></div>
+                    <div class="slider-track" id="trackFocus" onmousedown="startDrag(event, 'Focus')">
+                        <div class="slider-fill" id="fillFocus" style="width: 75%; background: var(--text-muted); pointer-events:none;"></div>
+                        <div class="slider-thumb" id="thumbFocus" style="left: 75%; pointer-events:none;"></div>
                     </div>
+                </div>
+                </div>
+                
+                                <div class="slider-wrap" style="margin-bottom:0;">
+                    <div class="slider-label">Iris <span id="valIris">f/4.0</span></div>
+                    <div class="slider-track" id="trackIris" onmousedown="startDrag(event, 'Iris')">
+                        <div class="slider-fill" id="fillIris" style="width: 60%; background: var(--text-muted); pointer-events:none;"></div>
+                        <div class="slider-thumb" id="thumbIris" style="left: 60%; pointer-events:none;"></div>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -485,15 +489,15 @@
                     <h3 class="panel-title">Actions</h3>
                 </div>
                 
-                <div class="big-action-btn">
+                <div class="big-action-btn" onclick="alert('⭐ Highlight Marked! Dispatched to Coach & Parents.')">
                     Mark Highlight <span>★</span>
                 </div>
                 
-                <div class="big-action-btn">
+                <div class="big-action-btn" onclick="alert('📸 Still Captured! Saved to Atlas Forge drive.')">
                     Capture Still <span>📷</span>
                 </div>
                 
-                <div class="big-action-btn danger" style="margin-top: 40px;">
+                <div class="big-action-btn danger" style="margin-top: 40px;" onclick="if(confirm('Are you sure you want to stop the live stream?')) alert('Stream Stopped.');">
                     Stop Stream <span>⏹</span>
                 </div>
                 
@@ -502,5 +506,69 @@
         
     </div>
 
+
+<script>
+    // Cam Mode Toggle
+    function setCamMode(btn) {
+        document.querySelectorAll('#modeControls .control-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    // Slider Logic
+    let activeSlider = null;
+    let trackRect = null;
+
+    function startDrag(e, type) {
+        activeSlider = type;
+        const track = document.getElementById('track' + type);
+        trackRect = track.getBoundingClientRect();
+        updateSlider(e);
+        document.addEventListener('mousemove', dragSlider);
+        document.addEventListener('mouseup', stopDrag);
+    }
+
+    function dragSlider(e) {
+        if (!activeSlider) return;
+        updateSlider(e);
+    }
+
+    function stopDrag() {
+        activeSlider = null;
+        document.removeEventListener('mousemove', dragSlider);
+        document.removeEventListener('mouseup', stopDrag);
+    }
+
+    function updateSlider(e) {
+        let x = e.clientX - trackRect.left;
+        let pct = x / trackRect.width;
+        if (pct < 0) pct = 0;
+        if (pct > 1) pct = 1;
+        
+        const pctStr = (pct * 100) + '%';
+        document.getElementById('fill' + activeSlider).style.width = pctStr;
+        document.getElementById('thumb' + activeSlider).style.left = pctStr;
+
+        // Update Label
+        if (activeSlider === 'Zoom') {
+            const val = (1.0 + pct * 9.0).toFixed(1);
+            document.getElementById('valZoom').textContent = val + 'x';
+            document.getElementById('fillZoom').style.background = 'var(--accent-cyan)';
+        } else if (activeSlider === 'Focus') {
+            if (pct > 0.9) {
+                document.getElementById('valFocus').textContent = 'Auto';
+                document.getElementById('fillFocus').style.background = 'var(--text-muted)';
+            } else {
+                const val = Math.round(pct * 100);
+                document.getElementById('valFocus').textContent = val + '%';
+                document.getElementById('fillFocus').style.background = 'var(--accent-cyan)';
+            }
+        } else if (activeSlider === 'Iris') {
+            const val = (1.4 + pct * 20.6).toFixed(1);
+            document.getElementById('valIris').textContent = 'f/' + val;
+            document.getElementById('fillIris').style.background = 'var(--accent-cyan)';
+        }
+    }
+</script>
 </body>
+
 </html>
