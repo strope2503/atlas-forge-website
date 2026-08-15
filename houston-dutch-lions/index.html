@@ -71,6 +71,18 @@
 
   <main class="max-w-4xl mx-auto px-4 py-5 space-y-8">
 
+    <!-- PWA INSTALL BANNER (Hidden by default, shown via JS on iOS) -->
+    <div id="ios-install-banner" class="hidden bg-slate-900 border border-blue-900/50 rounded-xl p-3 text-[11px] sm:text-xs text-slate-300 flex items-start gap-3 shadow-lg">
+      <div class="bg-blue-600/20 p-2 rounded-lg text-blue-400 shrink-0">
+        <i data-lucide="smartphone" class="w-5 h-5"></i>
+      </div>
+      <div>
+        <strong class="text-white block mb-0.5">Install Team App</strong>
+        To install this app on your iPhone, tap the <span class="inline-block mx-0.5 px-1 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></span> Share icon in Safari and select <strong class="text-white">"Add to Home Screen"</strong>.
+      </div>
+      <button onclick="document.getElementById('ios-install-banner').style.display='none'" class="text-slate-500 hover:text-white shrink-0 transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
+    </div>
+
     <!-- HERO: NEXT MATCH -->
     <section class="scroll-animate glass-card glow-orange rounded-2xl p-5 relative border-l-4 border-l-orange-500">
       <div class="flex justify-between items-start mb-3">
@@ -743,6 +755,48 @@
                    <p class="text-white text-xs font-semibold">${formattedDate}</p>`;
       }
       
+      if (eventType === 'scrimmage' || isPractice) {
+        const timeHour = eventType === 'scrimmage' ? 19 : 18; // 7PM or 6PM
+        
+        // Add Advanced Weather Placeholder
+        content += `<div id="hourly-weather" class="mt-3 p-2 bg-slate-900/80 border border-slate-800 rounded-lg text-[11px] text-slate-300 flex items-center justify-center shadow-inner">
+            <i data-lucide="loader" class="w-3 h-3 animate-spin text-orange-400"></i> <span class="ml-2">Analyzing game-time weather...</span>
+        </div>`;
+        
+        // Add Carpool / Snack Buttons (Frictionless Mailto Links)
+        content += `<div class="grid grid-cols-2 gap-2 mt-3">
+          <a href="mailto:?subject=Volunteer: Snacks for ${formattedDate}&body=I would like to bring snacks/drinks for the game on ${formattedDate}." class="p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
+            <i data-lucide="cookie" class="w-4 h-4"></i> Snacks & Drinks
+          </a>
+          <a href="mailto:?subject=Carpool Request for ${formattedDate}&body=I am looking to coordinate a carpool for ${formattedDate}." class="p-2 bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white rounded-lg border border-purple-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
+            <i data-lucide="car" class="w-4 h-4"></i> Carpool Setup
+          </a>
+        </div>`;
+
+        // Add Interactive Weather Radar
+        content += `<iframe width="100%" height="150" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=8&overlay=radar&product=radar&crosshair=marker&lat=30.3119&lon=-95.4561" frameborder="0" class="rounded-xl mt-3 border border-slate-700/50 opacity-90 hover:opacity-100 transition-opacity shadow-lg"></iframe>`;
+        
+        // Fetch specific hourly weather
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=30.3119&longitude=-95.4561&hourly=temperature_2m,precipitation_probability&temperature_unit=fahrenheit&timezone=America%2FChicago&start_date=${dateStr}&end_date=${dateStr}`;
+        fetch(weatherUrl).then(res => res.json()).then(data => {
+            if(data && data.hourly) {
+                const temp = Math.round(data.hourly.temperature_2m[timeHour]);
+                const rain = data.hourly.precipitation_probability[timeHour];
+                const wBox = document.getElementById('hourly-weather');
+                if(wBox) {
+                    wBox.innerHTML = `<div class="flex justify-around w-full items-center">
+                        <div class="flex items-center gap-1"><i data-lucide="thermometer" class="w-4 h-4 text-orange-400"></i> <span>Est. Temp: <strong class="text-white">${temp}°F</strong></span></div>
+                        <div class="flex items-center gap-1"><i data-lucide="cloud-rain" class="w-4 h-4 text-blue-400"></i> <span>Rain Chance: <strong class="text-white">${rain}%</strong></span></div>
+                    </div>`;
+                    lucide.createIcons();
+                }
+            }
+        }).catch(() => {
+            const wBox = document.getElementById('hourly-weather');
+            if(wBox) wBox.style.display = 'none';
+        });
+      }
+      
       detailsBox.innerHTML = content;
       detailsBox.classList.remove('hidden');
       lucide.createIcons();
@@ -862,13 +916,21 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
     
-    // PWA Service Worker Registration
+    // PWA Service Worker Registration & iOS Banner
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js').catch(err => {
           console.warn('Service Worker registration failed: ', err);
         });
       });
+    }
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test(userAgent);
+    };
+    const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+    if (isIos() && !isInStandaloneMode()) {
+      document.getElementById('ios-install-banner').classList.remove('hidden');
     }
 
     // Initial render
