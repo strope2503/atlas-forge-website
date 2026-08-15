@@ -1,0 +1,20 @@
+{
+  "name": "Houston Dutch Lions 2014 Elite",
+  "short_name": "HDL 2014 Elite",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a0f1d",
+  "theme_color": "#0a0f1d",
+  "icons": [
+    {
+      "src": "https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

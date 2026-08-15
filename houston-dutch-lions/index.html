@@ -11,6 +11,10 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Papa Parse -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png">
+  <meta name="theme-color" content="#0a0f1d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <style>
     @keyframes orangeGlow {
       0%, 100% { box-shadow: 0 0 15px rgba(234, 88, 12, 0.2); }
@@ -22,6 +26,16 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(30, 58, 138, 0.35);
+    }
+    /* Scroll Animation Base Classes */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-animate.show {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
@@ -50,19 +64,29 @@
   </header>
 
   <!-- FIELD STATUS BANNER -->
-  <div class="bg-blue-950/80 border-y border-blue-800/40 px-4 py-1.5 text-center text-xs font-semibold text-blue-200 flex items-center justify-center space-x-2">
-    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-    <span data-i18n="field_status_text">HDL Soccer Facility: All Fields OPEN & Playable.</span>
+  <div id="field-status-banner" class="bg-blue-950/80 border-y border-blue-800/40 px-4 py-1.5 text-center text-xs font-semibold text-blue-200 flex items-center justify-center space-x-2 transition-colors duration-500">
+    <span id="field-status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+    <span id="field-status-text" data-i18n="field_status_text">HDL Soccer Facility: All Fields OPEN & Playable.</span>
   </div>
 
-  <main class="max-w-4xl mx-auto px-4 py-5 space-y-6">
+  <main class="max-w-4xl mx-auto px-4 py-5 space-y-8">
 
     <!-- HERO: NEXT MATCH -->
-    <section class="glass-card glow-orange rounded-2xl p-5 relative border-l-4 border-l-orange-500">
+    <section class="scroll-animate glass-card glow-orange rounded-2xl p-5 relative border-l-4 border-l-orange-500">
       <div class="flex justify-between items-start mb-3">
         <span class="px-2.5 py-0.5 bg-orange-500/20 text-orange-400 border border-orange-500/40 text-[10px] font-bold rounded uppercase tracking-wider" data-i18n="next_match_badge">Next Match</span>
         <span class="text-xs font-semibold text-slate-400">Thursday, Aug 20</span>
       </div>
+      
+      <!-- LIVE COUNTDOWN TICKER -->
+      <div class="bg-slate-900/60 rounded-lg py-1.5 px-3 border border-slate-700/50 flex justify-center items-center gap-1.5 font-mono text-xs sm:text-sm text-slate-300 shadow-inner mb-4">
+        <span class="text-[10px] text-slate-400 uppercase tracking-widest mr-2" data-i18n="kickoff_in">KICKOFF IN:</span>
+        <span id="cd-d" class="font-bold text-orange-400">00</span>d <span class="opacity-50">:</span>
+        <span id="cd-h" class="font-bold text-orange-400">00</span>h <span class="opacity-50">:</span>
+        <span id="cd-m" class="font-bold text-orange-400">00</span>m <span class="opacity-50">:</span>
+        <span id="cd-s" class="font-bold text-orange-400">00</span>s
+      </div>
+
       <div class="grid grid-cols-3 items-center text-center my-3">
         <div>
           <div class="text-sm sm:text-lg font-black text-white">HDL ELITE 2013</div>
@@ -88,7 +112,7 @@
     </section>
 
     <!-- SECTION: CALENDAR & UPCOMING EVENTS -->
-    <section id="schedule-section" class="space-y-3">
+    <section id="schedule-section" class="scroll-animate space-y-3">
       <div class="flex items-center justify-between">
         <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
           <i data-lucide="calendar" class="w-4 h-4 text-orange-400"></i>
@@ -226,13 +250,6 @@
       </div>
     </section>
 
-    <!-- SECTION: PARENT DIRECTORY -->
-    <section id="directory-section" class="glass-card p-4 rounded-2xl space-y-3 border border-blue-900/40">
-      <div class="flex items-center justify-between">
-        <div>
-          <h2 class="text-sm sm:text-base font-black tracking-tight text-white flex items-center gap-2">
-            <i data-lucide="shield-check" class="w-4 h-4 text-orange-400"></i>
-            <span data-i18n="directory_title">Parent Contact Directory</span>
           </h2>
           <p class="text-[11px] text-slate-400" data-i18n="directory_subtitle">Private team phone & carpool roster.</p>
         </div>
@@ -245,7 +262,7 @@
     </section>
 
     <!-- SECTION: MEDIA & SOCIALS -->
-    <section id="media-section" class="space-y-3">
+    <section id="media-section" class="scroll-animate space-y-3">
       <div>
         <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
           <i data-lucide="image" class="w-4 h-4 text-orange-400"></i>
@@ -517,10 +534,10 @@
                     posEn: position || 'Player',
                     posEs: position || 'Jugador',
                     initials: initials,
-                    goals: 0,
-                    assists: 0,
-                    cleanSheets: 0,
-                    isMvp: false
+                    goals: row['Goals'] ? parseInt(row['Goals']) : 0,
+                    assists: row['Assists'] ? parseInt(row['Assists']) : 0,
+                    cleanSheets: row['Clean Sheets'] ? parseInt(row['Clean Sheets']) : 0,
+                    isMvp: row['MVP'] === 'Yes'
                 });
             }
             
@@ -585,7 +602,11 @@
       document.getElementById('langLabel').innerText = currentLang === 'en' ? 'Español' : 'English';
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (translations[currentLang][key]) el.innerText = translations[currentLang][key];
+        if (el.hasAttribute('data-' + currentLang)) {
+          el.innerText = el.getAttribute('data-' + currentLang);
+        } else if (translations[currentLang][key]) {
+          el.innerText = translations[currentLang][key];
+        }
       });
       selectPosition(activePosition);
       if (globalRosterData.length > 0) {
@@ -746,10 +767,46 @@
             
             // Map simple weather codes to lucide icons
             let iconName = "cloud-sun";
-            if (code <= 3) iconName = "sun"; // clear
-            else if (code >= 51 && code <= 67) iconName = "cloud-rain"; // rain
-            else if (code >= 71 && code <= 77) iconName = "snowflake"; // snow
-            else if (code >= 95) iconName = "cloud-lightning"; // storm
+            let statusTextEn = "HDL Soccer Facility: All Fields OPEN & Playable.";
+            let statusTextEs = "Centro HDL: Todos los campos ABIERTOS.";
+            let statusColor = "emerald-400";
+            let bannerBg = "bg-blue-950/80";
+            
+            if (code <= 3) {
+              iconName = "sun"; // clear
+            } else if (code >= 51 && code <= 67) {
+              iconName = "cloud-rain"; // rain
+              statusTextEn = "HDL Soccer Facility: Field Status UNDER REVIEW (Rain).";
+              statusTextEs = "Centro HDL: Estado de campos EN REVISIÓN (Lluvia).";
+              statusColor = "yellow-400";
+              bannerBg = "bg-yellow-900/60";
+            } else if (code >= 71 && code <= 77) {
+              iconName = "snowflake"; // snow
+              statusTextEn = "HDL Soccer Facility: CLOSED due to freeze.";
+              statusTextEs = "Centro HDL: CERRADO por clima frío.";
+              statusColor = "red-500";
+              bannerBg = "bg-red-950/80";
+            } else if (code >= 95) {
+              iconName = "cloud-lightning"; // storm
+              statusTextEn = "HDL Soccer Facility: CLOSED due to storms/lightning.";
+              statusTextEs = "Centro HDL: CERRADO por tormentas eléctricas.";
+              statusColor = "red-500";
+              bannerBg = "bg-red-950/80";
+            }
+            
+            if (index === 0) { // Today's weather determines banner
+              const banner = document.getElementById('field-status-banner');
+              const dot = document.getElementById('field-status-dot');
+              const textEl = document.getElementById('field-status-text');
+              if(banner && dot && textEl) {
+                banner.className = `${bannerBg} border-y border-blue-800/40 px-4 py-1.5 text-center text-xs font-semibold text-blue-200 flex items-center justify-center space-x-2 transition-colors duration-500`;
+                dot.className = `w-2 h-2 rounded-full bg-${statusColor} animate-ping`;
+                textEl.innerText = currentLang === 'en' ? statusTextEn : statusTextEs;
+                // Store translations for toggle
+                textEl.setAttribute('data-en', statusTextEn);
+                textEl.setAttribute('data-es', statusTextEs);
+              }
+            }
             
             const el = document.getElementById(`weather-${dateStr}`);
             if (el) {
@@ -765,6 +822,53 @@
           });
           lucide.createIcons();
         });
+    }
+
+    // Scroll Animations Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
+
+    // Live Countdown Logic (August 20, 2026 19:00:00 CDT)
+    const kickoffDate = new Date('2026-08-20T19:00:00-05:00').getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = kickoffDate - now;
+
+      if (distance < 0) {
+        document.getElementById('cd-d').innerText = "00";
+        document.getElementById('cd-h').innerText = "00";
+        document.getElementById('cd-m').innerText = "00";
+        document.getElementById('cd-s').innerText = "00";
+        return;
+      }
+
+      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('cd-d').innerText = d.toString().padStart(2, '0');
+      document.getElementById('cd-h').innerText = h.toString().padStart(2, '0');
+      document.getElementById('cd-m').innerText = m.toString().padStart(2, '0');
+      document.getElementById('cd-s').innerText = s.toString().padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('Service Worker registration failed: ', err);
+        });
+      });
     }
 
     // Initial render
