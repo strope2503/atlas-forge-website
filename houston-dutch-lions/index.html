@@ -76,10 +76,10 @@
         <div><strong class="text-slate-400 block" data-i18n="kickoff_time">Kick-Off:</strong> 9:00 AM</div>
         <div><strong class="text-orange-400 block" data-i18n="arrival_time">Arrival / Call:</strong> 8:15 AM (45 min prior)</div>
         <div><strong class="text-slate-400 block" data-i18n="uniform_color">Uniform:</strong> Orange Kit / Blue Socks</div>
-        <div><strong class="text-slate-400 block" data-i18n="field_location">Location:</strong> HDL Complex Field #1</div>
+        <div><strong class="text-slate-400 block" data-i18n="field_location">Location:</strong> 14562 Interstate 45 S, Conroe, TX 77384</div>
       </div>
       <div class="mt-4 flex gap-2">
-        <a href="https://maps.google.com" target="_blank" class="flex-1 bg-blue-700 hover:bg-blue-600 text-white py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition">
+        <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="flex-1 bg-blue-700 hover:bg-blue-600 text-white py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition">
           <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> <span data-i18n="btn_maps">Field Map</span>
         </a>
         <button onclick="rsvpEvent()" id="rsvpBtn" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition">
@@ -106,9 +106,9 @@
           <div class="space-y-0.5">
             <div class="flex items-center gap-2">
               <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-[10px] font-bold rounded" data-i18n="practice_badge">PRACTICE</span>
-              <span class="text-xs font-bold text-white">Thursday, Aug 20</span>
+              <span class="text-xs font-bold text-white">Mon, Tue, Thu (Weekly)</span>
             </div>
-            <p class="text-xs text-slate-300">6:00 PM - 7:30 PM • HDL Complex Field #2</p>
+            <p class="text-xs text-slate-300">6:45 PM - 8:00 PM • HDL Complex Field</p>
             <p class="text-[11px] text-slate-400" data-i18n="practice_focus">Focus: 11v11 Tactical Positioning & Ball Circulation</p>
           </div>
           <button onclick="downloadCalendarICS()" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-orange-400 hover:bg-slate-800">
@@ -241,28 +241,8 @@
 
   <!-- JAVASCRIPT & ROSTER DATA -->
   <script>
-    // ==========================================
-    // 16 PLAYER ROSTER PLACEHOLDER DATA
-    // (Edit names, numbers, positions, stats, & parents here)
-    // ==========================================
-    const rosterData = [
-      { id: 1, number: "1", name: "Player 1", posKey: "pos_gk", posEn: "Goalkeeper", posEs: "Arquero / Portero", initials: "P1", goals: 0, assists: 0, cleanSheets: 3, parentName: "Parent Name 1", phone: "555-0101", isMvp: false },
-      { id: 2, number: "2", name: "Player 2", posKey: "pos_rb", posEn: "Right Back", posEs: "Lateral Derecho", initials: "P2", goals: 1, assists: 2, cleanSheets: 3, parentName: "Parent Name 2", phone: "555-0102", isMvp: false },
-      { id: 3, number: "3", name: "Player 3", posKey: "pos_lb", posEn: "Left Back", posEs: "Lateral Izquierdo", initials: "P3", goals: 0, assists: 1, cleanSheets: 3, parentName: "Parent Name 3", phone: "555-0103", isMvp: false },
-      { id: 4, number: "4", name: "Player 4", posKey: "pos_cb", posEn: "Center Back", posEs: "Defensa Central", initials: "P4", goals: 1, assists: 0, cleanSheets: 4, parentName: "Parent Name 4", phone: "555-0104", isMvp: false },
-      { id: 5, number: "5", name: "Player 5", posKey: "pos_cb", posEn: "Center Back", posEs: "Defensa Central", initials: "P5", goals: 0, assists: 1, cleanSheets: 4, parentName: "Parent Name 5", phone: "555-0105", isMvp: false },
-      { id: 6, number: "6", name: "Player 6", posKey: "pos_cdm", posEn: "Defensive Mid", posEs: "Volante Central / Pivote", initials: "P6", goals: 2, assists: 3, cleanSheets: 2, parentName: "Parent Name 6", phone: "555-0106", isMvp: false },
-      { id: 7, number: "7", name: "Player 7", posKey: "pos_rw", posEn: "Right Winger", posEs: "Extremo Derecho", initials: "P7", goals: 4, assists: 3, cleanSheets: 0, parentName: "Parent Name 7", phone: "555-0107", isMvp: false },
-      { id: 8, number: "8", name: "Player 8", posKey: "pos_cm", posEn: "Central Mid", posEs: "Volante Mixto", initials: "P8", goals: 3, assists: 4, cleanSheets: 2, parentName: "Parent Name 8", phone: "555-0108", isMvp: false },
-      { id: 9, number: "9", name: "Player 9", posKey: "pos_st", posEn: "Striker", posEs: "Delantero Centro", initials: "P9", goals: 7, assists: 2, cleanSheets: 0, parentName: "Parent Name 9", phone: "555-0109", isMvp: true },
-      { id: 10, number: "10", name: "Player 10", posKey: "pos_cam", posEn: "Attacking Mid", posEs: "Volante Ofensivo / Enganche", initials: "P10", goals: 5, assists: 6, cleanSheets: 1, parentName: "Justin & Kristy Hindmand", phone: "555-0110", isMvp: false },
-      { id: 11, number: "11", name: "Player 11", posKey: "pos_lw", posEn: "Left Winger", posEs: "Extremo Izquierdo", initials: "P11", goals: 3, assists: 5, cleanSheets: 0, parentName: "Parent Name 11", phone: "555-0111", isMvp: false },
-      { id: 12, number: "12", name: "Player 12", posKey: "pos_sub", posEn: "Midfield / Sub", posEs: "Mediocampista / Relevo", initials: "P12", goals: 1, assists: 1, cleanSheets: 1, parentName: "Parent Name 12", phone: "555-0112", isMvp: false },
-      { id: 13, number: "14", name: "Player 13", posKey: "pos_sub", posEn: "Defender / Sub", posEs: "Defensor / Relevo", initials: "P13", goals: 0, assists: 0, cleanSheets: 2, parentName: "Parent Name 13", phone: "555-0113", isMvp: false },
-      { id: 14, number: "17", name: "Player 14", posKey: "pos_sub", posEn: "Forward / Sub", posEs: "Delantero / Relevo", initials: "P14", goals: 2, assists: 1, cleanSheets: 0, parentName: "Parent Name 14", phone: "555-0114", isMvp: false },
-      { id: 15, number: "19", name: "Player 15", posKey: "pos_sub", posEn: "Midfield / Sub", posEs: "Mediocampista / Relevo", initials: "P15", goals: 1, assists: 2, cleanSheets: 1, parentName: "Parent Name 15", phone: "555-0115", isMvp: false },
-      { id: 16, number: "21", name: "Player 16", posKey: "pos_gk_sub", posEn: "GK / Utility", posEs: "Arquero / Polifuncional", initials: "P16", goals: 0, assists: 0, cleanSheets: 1, parentName: "Parent Name 16", phone: "555-0116", isMvp: false }
-    ];
+    // Global dynamic roster data
+    let globalRosterData = [];
 
     // ==========================================
     // TRANSLATION DICTIONARY
@@ -342,14 +322,13 @@
 
     let currentLang = 'en';
 
-    function renderRosterAndDirectory() {
+    function renderRosterGrid(data) {
       const grid = document.getElementById('rosterGrid');
       grid.innerHTML = '';
 
-      rosterData.forEach(p => {
+      data.forEach(p => {
         const posText = currentLang === 'en' ? p.posEn : p.posEs;
         
-        // Render Roster Card
         const card = document.createElement('div');
         card.className = "glass-card p-2.5 rounded-2xl border border-blue-900/30 hover:border-orange-500/50 transition flex flex-col justify-between";
         card.innerHTML = `
@@ -388,16 +367,50 @@
           const dirList = document.getElementById('directoryList');
           dirList.innerHTML = '';
           
+          let rosterMap = new Map();
+          
           results.data.forEach(row => {
             const firstName = row['First Name'] ? row['First Name'].replace(/ -$/, '').trim() : '';
-            const lastName = row['Last name'] ? row['Last name'].trim() : '';
+            const lastNameField = row['Last name'] ? row['Last name'].trim() : '';
             const phone = row['Phone'] ? row['Phone'].trim() : '';
             const email = row['Email'] ? row['Email'].trim() : '';
+            const position = row['Postion'] ? row['Postion'].trim() : '';
             
-            if (!firstName && !lastName) return;
+            if (!firstName && !lastNameField) return;
             
-            const fullName = (firstName + " " + lastName).trim();
+            // Extract player info
+            let playerName = 'Unknown';
+            let playerNumber = '0';
+            const match = lastNameField.match(/(.*?)\s*#(\d+)/);
+            if (match) {
+                playerName = match[1].trim();
+                playerNumber = match[2];
+            } else {
+                playerName = lastNameField.split('-')[0].trim();
+            }
             
+            const playerKey = playerNumber + '-' + playerName;
+            if (!rosterMap.has(playerKey)) {
+                let initials = playerName.substring(0, 2).toUpperCase();
+                let names = playerName.split(' ');
+                if (names.length >= 2) {
+                    initials = names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+                }
+                rosterMap.set(playerKey, {
+                    number: playerNumber,
+                    name: playerName,
+                    posEn: position || 'Player',
+                    posEs: position || 'Jugador',
+                    initials: initials,
+                    goals: 0,
+                    assists: 0,
+                    cleanSheets: 0,
+                    isMvp: false
+                });
+            }
+            
+            // Render directory card
+            const fullName = (firstName + " " + lastNameField).trim();
             const card = document.createElement('div');
             card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
             
@@ -420,6 +433,11 @@
             `;
             dirList.appendChild(card);
           });
+          
+          globalRosterData = Array.from(rosterMap.values());
+          // Sort by number
+          globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
+          renderRosterGrid(globalRosterData);
           lucide.createIcons();
         }
       });
@@ -433,7 +451,9 @@
         if (translations[currentLang][key]) el.innerText = translations[currentLang][key];
       });
       selectPosition(activePosition);
-      renderRosterAndDirectory();
+      if (globalRosterData.length > 0) {
+        renderRosterGrid(globalRosterData);
+      }
     }
 
     const positionData = {
@@ -500,7 +520,6 @@
     }
 
     // Initial render
-    renderRosterAndDirectory();
     fetchAndRenderDirectory();
   </script>
 </body>
