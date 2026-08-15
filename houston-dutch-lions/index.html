@@ -309,7 +309,9 @@
         nav_schedule: "Schedule",
         nav_skills: "Skills",
         nav_roster: "Roster",
-        nav_contacts: "Contacts"
+        nav_contacts: "Contacts",
+        rel_dad: "- Dad",
+        rel_mom: "- Mom"
       },
       es: {
         field_status_text: "Complejo HDL: Todas las Canchas ABIERTAS y en juego.",
@@ -343,7 +345,9 @@
         nav_schedule: "Calendario",
         nav_skills: "Habilidades",
         nav_roster: "Plantel",
-        nav_contacts: "Contactos"
+        nav_contacts: "Contactos",
+        rel_dad: "- Papá",
+        rel_mom: "- Mamá"
       }
     };
 
@@ -441,6 +445,12 @@
             
             // Render directory card
             const fullName = (firstName + " " + lastNameField).trim();
+            const relDadText = translations[currentLang].rel_dad;
+            const relMomText = translations[currentLang].rel_mom;
+            const displayNameHTML = fullName
+                .replace('- Dad', `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_dad">${relDadText}</span>`)
+                .replace('- Mom', `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_mom">${relMomText}</span>`);
+                
             const card = document.createElement('div');
             card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
             
@@ -449,7 +459,7 @@
             
             card.innerHTML = `
               <div>
-                <strong class="text-white block text-xs sm:text-sm">${fullName}</strong>
+                <strong class="text-white block text-xs sm:text-sm">${displayNameHTML}</strong>
                 <span class="text-slate-400 text-[10px] sm:text-xs">${email || 'No email provided'}</span>
               </div>
               <div class="flex gap-1.5 items-center self-end sm:self-auto">
