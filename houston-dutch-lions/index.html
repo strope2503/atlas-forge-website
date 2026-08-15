@@ -483,12 +483,27 @@
             }
             
             // Render directory card
+            let relSuffixHTML = "";
+            let cleanLastName = lastNameField;
+            if (cleanLastName.toLowerCase().includes("- dad")) {
+                relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_dad">${translations[currentLang].rel_dad}</span>`;
+                cleanLastName = cleanLastName.replace(/\s*-\s*Dad/i, '');
+            } else if (cleanLastName.toLowerCase().includes("- mom")) {
+                relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_mom">${translations[currentLang].rel_mom}</span>`;
+                cleanLastName = cleanLastName.replace(/\s*-\s*Mom/i, '');
+            }
+            cleanLastName = cleanLastName.trim();
+
+            let displayNameHTML = "";
+            if (firstName && cleanLastName) {
+                displayNameHTML = `${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName})</span> ${relSuffixHTML}`;
+            } else if (firstName) {
+                displayNameHTML = `${firstName} ${relSuffixHTML}`;
+            } else {
+                displayNameHTML = `${cleanLastName} ${relSuffixHTML}`;
+            }
+            
             const fullName = (firstName + " " + lastNameField).trim();
-            const relDadText = translations[currentLang].rel_dad;
-            const relMomText = translations[currentLang].rel_mom;
-            const displayNameHTML = fullName
-                .replace('- Dad', `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_dad">${relDadText}</span>`)
-                .replace('- Mom', `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_mom">${relMomText}</span>`);
                 
             const card = document.createElement('div');
             card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
