@@ -334,15 +334,15 @@
         card.innerHTML = `
           <div>
             <div class="flex justify-between items-start">
-              <span class="w-5 h-5 rounded bg-orange-600/30 text-orange-400 border border-orange-500/40 flex items-center justify-center font-black text-[10px]">#${p.number}</span>
-              ${p.isMvp ? '<span class="px-1 py-0.2 bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[8px] font-black rounded">MVP</span>' : ''}
+              <span class="w-5 h-5 rounded bg-orange-600/40 text-orange-200 border border-orange-400/50 flex items-center justify-center font-black text-[10px] shadow-sm">#${p.number}</span>
+              ${p.isMvp ? '<span class="px-1 py-0.2 bg-orange-500/20 text-orange-300 border border-orange-500/30 text-[8px] font-black rounded">MVP</span>' : ''}
             </div>
             <div class="mt-1.5 text-center">
-              <div class="w-10 h-10 mx-auto rounded-full bg-slate-900 border border-orange-500/60 flex items-center justify-center font-black text-white text-[11px] mb-1 shadow">
+              <div class="w-10 h-10 mx-auto rounded-full bg-slate-900 border border-orange-400/60 flex items-center justify-center font-black text-white text-[11px] mb-1 shadow">
                 ${p.initials}
               </div>
               <h4 class="font-bold text-xs text-white truncate">${p.name}</h4>
-              <p class="text-[9px] text-orange-400 font-medium truncate">${posText}</p>
+              <p class="text-[9px] text-orange-300 font-bold tracking-wide truncate">${posText}</p>
             </div>
           </div>
           <div class="mt-2 pt-1.5 border-t border-slate-800 grid grid-cols-3 text-center text-[8px] text-slate-400">
@@ -377,6 +377,9 @@
             const position = row['Postion'] ? row['Postion'].trim() : '';
             
             if (!firstName && !lastNameField) return;
+            
+            // Skip coaches
+            if (firstName.toLowerCase().includes('coach') || position.toLowerCase() === 'coach') return;
             
             // Extract player info
             let playerName = 'Unknown';
