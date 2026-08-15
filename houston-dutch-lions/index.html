@@ -79,12 +79,9 @@
         <div><strong class="text-slate-400 block" data-i18n="field_location">Location:</strong> 14562 Interstate 45 S, Conroe, TX 77384</div>
       </div>
       <div class="mt-4 flex gap-2">
-        <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="flex-1 bg-blue-700 hover:bg-blue-600 text-white py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition">
+        <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition shadow">
           <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> <span data-i18n="btn_maps">Field Map</span>
         </a>
-        <button onclick="rsvpEvent()" id="rsvpBtn" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition">
-          <i data-lucide="check-circle" class="w-3.5 h-3.5 text-orange-400"></i> <span id="rsvpLabel" data-i18n="btn_rsvp">Confirm RSVP</span>
-        </button>
       </div>
     </section>
 
@@ -290,9 +287,8 @@
         uniform_color: "Uniform:",
         field_location: "Location:",
         btn_maps: "Field Map",
-        btn_rsvp: "Confirm RSVP",
         upcoming_events_title: "Upcoming Schedule",
-        subscribe_calendar: "Subscribe (.ICS)",
+        subscribe_calendar: "Click to subscribe and add all events to your calendar",
         practice_badge: "PRACTICE",
         league_game_badge: "LEAGUE GAME",
         practice_focus: "Focus: 11v11 Tactical Positioning & Ball Circulation",
@@ -325,9 +321,8 @@
         uniform_color: "Indumentaria:",
         field_location: "Ubicación / Cancha:",
         btn_maps: "Mapa de la Cancha",
-        btn_rsvp: "Confirmar Asistencia",
         upcoming_events_title: "Calendario de Partidos y Prácticas",
-        subscribe_calendar: "Sincronizar (.ICS)",
+        subscribe_calendar: "Sincronizar Calendario",
         practice_badge: "ENTRENAMIENTO",
         league_game_badge: "PARTIDO DE LIGA",
         practice_focus: "Enfoque: Posicionamiento táctico y circulación del balón",
@@ -529,18 +524,6 @@
       document.getElementById('drillRoleSummary').innerText = data.summary;
       document.getElementById('drillSkills').innerText = data.skills;
       document.getElementById('drillHome').innerText = data.home;
-    }
-
-    function rsvpEvent() {
-      const btn = document.getElementById('rsvpBtn');
-      const label = document.getElementById('rsvpLabel');
-      if (label.innerText.includes('Confirmed') || label.innerText.includes('Confirmado')) {
-        label.innerText = translations[currentLang].btn_rsvp;
-        btn.className = 'flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition';
-      } else {
-        label.innerText = currentLang === 'en' ? 'Confirmed (Attending)' : 'Confirmado (Asistiré)';
-        btn.className = 'flex-1 bg-orange-700 text-white border border-orange-500 py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition';
-      }
     }
 
     function downloadCalendarICS() {
