@@ -551,7 +551,8 @@
             card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
             
             const vcardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${fullName}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
-            const vcardUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcardData);
+            const vcardBlob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
+            const vcardUrl = window.URL.createObjectURL(vcardBlob);
             
             card.innerHTML = `
               <div>
