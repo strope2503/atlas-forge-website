@@ -530,7 +530,7 @@
                 playerName = match[1].trim();
                 playerNumber = match[2];
             } else {
-                playerName = lastNameField.split('-')[0].trim();
+                playerName = lastNameField.split('-')[0].replace(/\s*#\s*$/, '').trim();
             }
             
             const playerKey = playerNumber + '-' + playerName;
@@ -563,7 +563,7 @@
                 relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_mom">${translations[currentLang].rel_mom}</span>`;
                 cleanLastName = cleanLastName.replace(/\s*-\s*Mom/i, '');
             }
-            cleanLastName = cleanLastName.trim();
+            cleanLastName = cleanLastName.replace(/\s*#\d*/, '').trim();
 
             let displayNameHTML = "";
             if (firstName && cleanLastName) {
