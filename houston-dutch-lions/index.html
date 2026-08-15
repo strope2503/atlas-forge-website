@@ -88,7 +88,7 @@
       </div>
     </section>
 
-    <!-- SECTION: NEXT 4 UPCOMING EVENTS -->
+    <!-- SECTION: CALENDAR & UPCOMING EVENTS -->
     <section id="schedule-section" class="space-y-3">
       <div class="flex items-center justify-between">
         <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
@@ -100,35 +100,67 @@
         </button>
       </div>
 
-      <div class="grid gap-2.5">
-        <!-- Event 1 -->
-        <div class="glass-card p-3.5 rounded-xl flex items-center justify-between hover:border-orange-500/40 transition">
+      <!-- VISUAL CALENDAR GRID -->
+      <div class="glass-card p-3 rounded-xl">
+        <div class="flex justify-between items-center mb-2 px-1">
+          <button onclick="changeMonth(-1)" class="text-slate-400 hover:text-white p-1"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+          <h3 id="month-year" class="text-white font-bold text-sm tracking-wide">August 2026</h3>
+          <button onclick="changeMonth(1)" class="text-slate-400 hover:text-white p-1"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-500 mb-1.5">
+          <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+        </div>
+        <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-xs">
+          <!-- Populated via JS -->
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-800/50 flex justify-center gap-3 text-[9px] font-bold tracking-wider">
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500/40 border border-blue-400/50"></span><span class="text-slate-400">PRACTICE</span></div>
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-orange-500/40 border border-orange-400/50"></span><span class="text-slate-400">SCRIMMAGE</span></div>
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500/40 border border-emerald-400/50"></span><span class="text-slate-400">GAME</span></div>
+        </div>
+      </div>
+
+      <div class="grid gap-2.5" id="event-list">
+        <!-- Event 1: Practice -->
+        <div class="glass-card p-3.5 rounded-xl flex items-center justify-between hover:border-blue-500/40 transition">
           <div class="space-y-0.5">
-            <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-[10px] font-bold rounded" data-i18n="practice_badge">PRACTICE</span>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 border border-blue-500/30 text-[10px] font-bold rounded">PRACTICE</span>
               <span class="text-xs font-bold text-white">Mon, Tue, Thu (Weekly)</span>
             </div>
             <p class="text-xs text-slate-300">6:45 PM - 8:00 PM • HDL Complex Field</p>
-            <p class="text-[11px] text-slate-400" data-i18n="practice_focus">Focus: 11v11 Tactical Positioning & Ball Circulation</p>
+            <p class="text-[11px] text-slate-400">Focus: 11v11 Tactical Positioning & Ball Circulation</p>
           </div>
-          <button onclick="downloadCalendarICS()" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-orange-400 hover:bg-slate-800">
-            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
-          </button>
         </div>
 
-        <!-- Event 2 -->
-        <div class="glass-card p-3.5 rounded-xl flex items-center justify-between hover:border-orange-500/40 transition">
-          <div class="space-y-0.5">
+        <!-- Event 2: Scrimmage -->
+        <div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-orange-500/40 transition">
+          <div class="flex items-start justify-between mb-1">
             <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 bg-orange-500/20 text-orange-400 text-[10px] font-bold rounded" data-i18n="league_game_badge">LEAGUE GAME</span>
+              <span class="px-2 py-0.5 bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[10px] font-bold rounded">SCRIMMAGE</span>
+              <span class="text-xs font-bold text-white">Thursday, Aug 20</span>
+            </div>
+            <div id="weather-2026-08-20" class="text-[10px] font-bold text-slate-400 flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
+              <i data-lucide="cloud-sun" class="w-3 h-3 text-slate-400"></i> Fetching...
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 mb-0.5">7:00 PM - 8:30 PM • HDL Complex Field</p>
+          <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Bring Both, Wear Orange</p>
+        </div>
+
+        <!-- Event 3: Game -->
+        <div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-emerald-500/40 transition">
+          <div class="flex items-start justify-between mb-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-bold rounded">LEAGUE GAME</span>
               <span class="text-xs font-bold text-white">Saturday, Aug 22</span>
             </div>
-            <p class="text-xs text-slate-300">9:00 AM vs Storm SC • HDL Complex Field #1</p>
-            <p class="text-[11px] text-orange-400" data-i18n="event_call_time">Call Time: 8:15 AM | Orange Jersey</p>
+            <div id="weather-2026-08-22" class="text-[10px] font-bold text-slate-400 flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
+              <i data-lucide="cloud-sun" class="w-3 h-3 text-slate-400"></i> Fetching...
+            </div>
           </div>
-          <button onclick="downloadCalendarICS()" class="p-2 rounded-lg bg-slate-900 border border-slate-800 text-orange-400 hover:bg-slate-800">
-            <i data-lucide="calendar-plus" class="w-4 h-4"></i>
-          </button>
+          <p class="text-xs text-slate-300 mb-0.5">9:00 AM vs Storm SC • HDL Complex Field #1</p>
+          <p class="text-[11px] text-orange-400 font-bold">Call Time: 8:15 AM | Orange Jersey</p>
         </div>
       </div>
     </section>
@@ -522,8 +554,105 @@
       document.body.removeChild(link);
     }
 
+    // ==========================================
+    // CALENDAR & WEATHER LOGIC
+    // ==========================================
+    let currentDate = new Date('2026-08-15T12:00:00'); // Baseline to August 2026 for simulation
+
+    const specificEvents = {
+      '2026-08-20': 'scrimmage',
+      '2026-08-22': 'game'
+    };
+
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      document.getElementById('month-year').innerText = `${monthNames[month]} ${year}`;
+      
+      const grid = document.getElementById('calendar-grid');
+      grid.innerHTML = '';
+      
+      // Blank days before 1st
+      for (let i = 0; i < firstDay.getDay(); i++) {
+        grid.innerHTML += `<div class="p-1.5 opacity-0"></div>`;
+      }
+      
+      // Days of month
+      for (let d = 1; d <= lastDay.getDate(); d++) {
+        const dateStr = `${year}-${String(month+1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const dayOfWeek = new Date(year, month, d).getDay();
+        
+        let colorClasses = "text-slate-300 hover:bg-slate-800";
+        
+        // Check recurring practice (Mon=1, Tue=2, Thu=4)
+        let isPractice = (dayOfWeek === 1 || dayOfWeek === 2 || dayOfWeek === 4);
+        
+        if (specificEvents[dateStr] === 'game') {
+          colorClasses = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-bold";
+        } else if (specificEvents[dateStr] === 'scrimmage') {
+          colorClasses = "bg-orange-500/20 text-orange-400 border border-orange-500/30 font-bold";
+        } else if (isPractice) {
+          colorClasses = "bg-blue-500/20 text-blue-400 border border-blue-500/30 font-bold";
+        }
+        
+        // Highlight today
+        if (dateStr === '2026-08-15') {
+          colorClasses += " ring-2 ring-white/50";
+        }
+
+        grid.innerHTML += `<div class="p-1.5 rounded-lg flex items-center justify-center transition-colors cursor-default ${colorClasses}">${d}</div>`;
+      }
+      lucide.createIcons();
+    }
+
+    function changeMonth(delta) {
+      currentDate.setMonth(currentDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function fetchWeather() {
+      // Free Open-Meteo API for Conroe, TX
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=30.3119&longitude=-95.4561&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=America%2FChicago";
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (!data || !data.daily) return;
+          
+          data.daily.time.forEach((dateStr, index) => {
+            const maxT = Math.round(data.daily.temperature_2m_max[index]);
+            const code = data.daily.weathercode[index];
+            
+            // Map simple weather codes to lucide icons
+            let iconName = "cloud-sun";
+            if (code <= 3) iconName = "sun"; // clear
+            else if (code >= 51 && code <= 67) iconName = "cloud-rain"; // rain
+            else if (code >= 71 && code <= 77) iconName = "snowflake"; // snow
+            else if (code >= 95) iconName = "cloud-lightning"; // storm
+            
+            const el = document.getElementById(`weather-${dateStr}`);
+            if (el) {
+              el.innerHTML = `<i data-lucide="${iconName}" class="w-3.5 h-3.5 ${iconName==='sun'?'text-yellow-400':'text-blue-300'}"></i> ${maxT}°F`;
+            }
+          });
+          lucide.createIcons();
+        })
+        .catch(err => {
+          console.error("Weather fetch failed", err);
+          document.querySelectorAll('[id^="weather-"]').forEach(el => {
+            el.innerHTML = `<i data-lucide="cloud-off" class="w-3 h-3"></i> N/A`;
+          });
+          lucide.createIcons();
+        });
+    }
+
     // Initial render
     fetchAndRenderDirectory();
+    renderCalendar();
+    fetchWeather();
   </script>
 </body>
 </html>
