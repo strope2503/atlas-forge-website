@@ -9,6 +9,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Papa Parse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <style>
     @keyframes orangeGlow {
       0%, 100% { box-shadow: 0 0 15px rgba(234, 88, 12, 0.2); }
@@ -342,9 +344,7 @@
 
     function renderRosterAndDirectory() {
       const grid = document.getElementById('rosterGrid');
-      const dirList = document.getElementById('directoryList');
       grid.innerHTML = '';
-      dirList.innerHTML = '';
 
       rosterData.forEach(p => {
         const posText = currentLang === 'en' ? p.posEn : p.posEs;
@@ -373,24 +373,56 @@
           </div>
         `;
         grid.appendChild(card);
-
-        // Render Directory Row
-        const row = document.createElement('div');
-        row.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex items-center justify-between text-xs";
-        row.innerHTML = `
-          <div>
-            <strong class="text-white block text-xs">${p.parentName}</strong>
-            <span class="text-slate-400 text-[10px]">${p.name} (#${p.number})</span>
-          </div>
-          <div class="flex gap-1.5">
-            <a href="tel:${p.phone}" class="p-1.5 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg transition"><i data-lucide="phone" class="w-3.5 h-3.5"></i></a>
-            <a href="sms:${p.phone}" class="p-1.5 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition"><i data-lucide="message-square" class="w-3.5 h-3.5"></i></a>
-          </div>
-        `;
-        dirList.appendChild(row);
       });
 
       lucide.createIcons();
+    }
+
+    function fetchAndRenderDirectory() {
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/export?format=csv';
+      Papa.parse(csvUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          const dirList = document.getElementById('directoryList');
+          dirList.innerHTML = '';
+          
+          results.data.forEach(row => {
+            const firstName = row['First Name'] ? row['First Name'].replace(/ -$/, '').trim() : '';
+            const lastName = row['Last name'] ? row['Last name'].trim() : '';
+            const phone = row['Phone'] ? row['Phone'].trim() : '';
+            const email = row['Email'] ? row['Email'].trim() : '';
+            
+            if (!firstName && !lastName) return;
+            
+            const fullName = (firstName + " " + lastName).trim();
+            
+            const card = document.createElement('div');
+            card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
+            
+            const vcardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${fullName}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+            const vcardUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcardData);
+            
+            card.innerHTML = `
+              <div>
+                <strong class="text-white block text-xs sm:text-sm">${fullName}</strong>
+                <span class="text-slate-400 text-[10px] sm:text-xs">${email || 'No email provided'}</span>
+              </div>
+              <div class="flex gap-1.5 items-center self-end sm:self-auto">
+                ${phone ? `<a href="tel:${phone}" class="p-2 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg transition" title="Call"><i data-lucide="phone" class="w-4 h-4"></i></a>` : ''}
+                ${phone ? `<a href="sms:${phone}" class="p-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition" title="Text"><i data-lucide="message-square" class="w-4 h-4"></i></a>` : ''}
+                ${phone ? `<a href="${vcardUrl}" download="${fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.vcf" class="py-2 px-3 border border-slate-600 hover:border-slate-400 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition flex items-center gap-1.5 ml-1" title="Save Contact">
+                  <i data-lucide="user-plus" class="w-4 h-4"></i>
+                  <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Save</span>
+                </a>` : ''}
+              </div>
+            `;
+            dirList.appendChild(card);
+          });
+          lucide.createIcons();
+        }
+      });
     }
 
     function toggleLanguage() {
@@ -469,6 +501,7 @@
 
     // Initial render
     renderRosterAndDirectory();
+    fetchAndRenderDirectory();
   </script>
 </body>
 </html>
