@@ -498,6 +498,38 @@
       lucide.createIcons();
     }
 
+    let signupsMap = new Map();
+
+    function fetchSignups() {
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK1tZfpsKKJlJz9CsM0du5W8C2kP0BDWbZrGYe9lYprTt20bm7Q3REXRaMVvZnVgaNur-yaI3Ob1Ja/pub?output=csv';
+      Papa.parse(csvUrl, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          signupsMap.clear();
+          results.data.forEach(row => {
+            const name = row['Parent Name'] ? row['Parent Name'].trim() : '';
+            const date = row['Game Date'] ? row['Game Date'].trim() : '';
+            const role = row['What are you volunteering for?'] ? row['What are you volunteering for?'].trim() : '';
+            
+            if (!name || !date || !role) return;
+            
+            if (!signupsMap.has(date)) {
+              signupsMap.set(date, { snacks: [], carpool: [] });
+            }
+            
+            const entry = signupsMap.get(date);
+            if (role.toLowerCase().includes('snack')) {
+              entry.snacks.push(name);
+            } else if (role.toLowerCase().includes('carpool')) {
+              entry.carpool.push(name);
+            }
+          });
+        }
+      });
+    }
+
     function fetchAndRenderDirectory() {
       const csvUrl = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/export?format=csv';
       Papa.parse(csvUrl, {
@@ -763,12 +795,36 @@
             <i data-lucide="loader" class="w-3 h-3 animate-spin text-orange-400"></i> <span class="ml-2">Analyzing game-time weather...</span>
         </div>`;
         
-        // Add Carpool / Snack Buttons (Frictionless Mailto Links)
+        // Check if anyone signed up for this date
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const lookupDate = monthNames[parseInt(m, 10) - 1] + " " + parseInt(d, 10);
+        
+        let signupHTML = '';
+        if (signupsMap.has(lookupDate)) {
+            const signups = signupsMap.get(lookupDate);
+            if (signups.snacks.length > 0) {
+                signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-emerald-300 bg-emerald-900/30 p-2 rounded border border-emerald-800/50">
+                    <i data-lucide="cookie" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <span><strong>Snacks provided by:</strong> ${signups.snacks.join(', ')}</span>
+                </div>`;
+            }
+            if (signups.carpool.length > 0) {
+                signupHTML += `<div class="flex items-start gap-2 mt-1.5 text-[11px] text-purple-300 bg-purple-900/30 p-2 rounded border border-purple-800/50">
+                    <i data-lucide="car" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <span><strong>Carpool offered by:</strong> ${signups.carpool.join(', ')}</span>
+                </div>`;
+            }
+        }
+        if (signupHTML) {
+            content += `<div class="mt-3 border-t border-slate-700/50 pt-2">${signupHTML}</div>`;
+        }
+
+        // Add Carpool / Snack Buttons (Google Form Link)
         content += `<div class="grid grid-cols-2 gap-2 mt-3">
-          <a href="mailto:?subject=Volunteer: Snacks for ${formattedDate}&body=I would like to bring snacks/drinks for the game on ${formattedDate}." class="p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
             <i data-lucide="cookie" class="w-4 h-4"></i> Snacks & Drinks
           </a>
-          <a href="mailto:?subject=Carpool Request for ${formattedDate}&body=I am looking to coordinate a carpool for ${formattedDate}." class="p-2 bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white rounded-lg border border-purple-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="p-2 bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white rounded-lg border border-purple-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
             <i data-lucide="car" class="w-4 h-4"></i> Carpool Setup
           </a>
         </div>`;
@@ -934,6 +990,7 @@
     }
 
     // Initial render
+    fetchSignups();
     fetchAndRenderDirectory();
     renderCalendar();
     fetchWeather();
