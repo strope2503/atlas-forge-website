@@ -69,25 +69,10 @@
     </div>
   </header>
 
-  <!-- FIELD STATUS BANNER -->
-  <div id="field-status-banner" class="bg-blue-950/80 border-y border-blue-800/40 px-4 py-1.5 text-center text-xs font-semibold text-blue-200 flex items-center justify-center space-x-2 transition-colors duration-500">
-    <span id="field-status-dot" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-    <span id="field-status-text" data-i18n="field_status_text">HDL Soccer Facility: All Fields OPEN & Playable.</span>
-  </div>
 
   <main class="max-w-4xl mx-auto px-4 py-5 space-y-8">
 
-    <!-- PWA INSTALL BANNER (Hidden by default, shown via JS on iOS) -->
-    <div id="ios-install-banner" class="hidden bg-slate-900 border border-blue-900/50 rounded-xl p-3 text-[11px] sm:text-xs text-slate-300 flex items-start gap-3 shadow-lg">
-      <div class="bg-blue-600/20 p-2 rounded-lg text-blue-400 shrink-0">
-        <i data-lucide="smartphone" class="w-5 h-5"></i>
-      </div>
-      <div>
-        <strong class="text-white block mb-0.5">Install Team App</strong>
-        To install this app on your iPhone, tap the <span class="inline-block mx-0.5 px-1 py-0.5 bg-slate-800 rounded border border-slate-700 text-slate-200"><svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></span> Share icon in Safari and select <strong class="text-white">"Add to Home Screen"</strong>.
-      </div>
-      <button onclick="document.getElementById('ios-install-banner').style.display='none'" class="text-slate-500 hover:text-white shrink-0 transition-colors"><i data-lucide="x" class="w-4 h-4"></i></button>
-    </div>
+
 
     <!-- HERO: NEXT MATCH -->
     <section class="scroll-animate glass-card glow-orange rounded-2xl p-5 relative border-l-4 border-l-orange-500">
@@ -610,12 +595,13 @@
             cleanLastName = cleanLastName.replace(/\s*#\d*/, '').trim();
 
             let displayNameHTML = "";
+            let numHTML = playerNumber !== '0' ? `<span class="text-orange-400 font-mono">#${playerNumber}</span> ` : '';
             if (firstName && cleanLastName) {
-                displayNameHTML = `${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName})</span> ${relSuffixHTML}`;
+                displayNameHTML = `${numHTML}${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName})</span> ${relSuffixHTML}`;
             } else if (firstName) {
-                displayNameHTML = `${firstName} ${relSuffixHTML}`;
+                displayNameHTML = `${numHTML}${firstName} ${relSuffixHTML}`;
             } else {
-                displayNameHTML = `${cleanLastName} ${relSuffixHTML}`;
+                displayNameHTML = `${numHTML}${cleanLastName} ${relSuffixHTML}`;
             }
             
             const fullName = (firstName + " " + lastNameField).trim();
