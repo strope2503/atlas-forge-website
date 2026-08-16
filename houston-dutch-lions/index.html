@@ -293,6 +293,14 @@
         </div>
       </div>
 
+      <!-- Upload Portal -->
+      <div class="mb-6">
+        <a href="https://drive.google.com/open?id=1gsg9oirm_aehrZ42WnEJGuu00pBQlkG3&usp=drive_fs" target="_blank" class="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02]">
+          <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+          <span data-i18n="upload_photos">Upload Game Photos & Videos</span>
+        </a>
+      </div>
+
       <!-- VIDEO TIMELINE -->
       <div class="relative border-l-2 border-blue-900/50 pl-4 space-y-6 mt-4 ml-1">
         
@@ -340,6 +348,56 @@
           </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- TACTICS BOARD SECTION -->
+    <section id="tactics-section" class="hidden animate-fade-in p-4 sm:p-6 max-w-2xl mx-auto mb-20">
+      <div class="mb-4">
+        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-orange-400"></i>
+          <span data-i18n="tactics_title">Interactive Tactics Board</span>
+        </h2>
+        <p class="text-[11px] text-slate-400">Drag and drop players to visualize formations and drills.</p>
+      </div>
+
+      <div class="glass-card p-4 rounded-2xl border border-blue-900/40 relative overflow-hidden">
+        <!-- Pitch Background -->
+        <div class="relative w-full aspect-[2/3] bg-emerald-700/80 border-2 border-white/50 rounded overflow-hidden select-none" id="tactics-pitch">
+          <!-- Field Lines -->
+          <div class="absolute inset-0 border-2 border-white/30 pointer-events-none"></div>
+          <!-- Center Circle -->
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-24 sm:h-24 border-2 border-white/30 rounded-full pointer-events-none"></div>
+          <!-- Center Line -->
+          <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-white/30 pointer-events-none"></div>
+          <!-- Penalty Areas -->
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[15%] border-b-2 border-x-2 border-white/30 pointer-events-none"></div>
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[15%] border-t-2 border-x-2 border-white/30 pointer-events-none"></div>
+
+          <!-- Tokens (4-3-3 Orange) -->
+          <!-- GK -->
+          <div class="absolute top-[5%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-zinc-400 border-2 border-zinc-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-black shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-gk">GK</div>
+          <!-- Def -->
+          <div class="absolute top-[20%] left-[10%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-lb">LB</div>
+          <div class="absolute top-[18%] left-[32%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cb1">CB</div>
+          <div class="absolute top-[18%] left-[58%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cb2">CB</div>
+          <div class="absolute top-[20%] left-[80%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-rb">RB</div>
+          <!-- Mid -->
+          <div class="absolute top-[35%] left-[25%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cm1">CM</div>
+          <div class="absolute top-[40%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cdm">CDM</div>
+          <div class="absolute top-[35%] left-[65%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cm2">CM</div>
+          <!-- Fwd -->
+          <div class="absolute top-[50%] left-[15%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-lw">LW</div>
+          <div class="absolute top-[45%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-st">ST</div>
+          <div class="absolute top-[50%] left-[75%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-rw">RW</div>
+          
+          <!-- Ball -->
+          <div class="absolute top-[60%] left-[45%] w-4 h-4 sm:w-5 sm:h-5 bg-white border border-slate-800 rounded-full shadow-lg cursor-grab active:cursor-grabbing" draggable="true" ondragstart="dragStart(event)" id="token-ball">⚽</div>
+        </div>
+        
+        <div class="mt-3 text-center">
+           <button onclick="resetTactics()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 px-4 rounded-full border border-slate-700 transition">Reset Positions</button>
+        </div>
       </div>
     </section>
 
@@ -415,7 +473,9 @@
         rel_mom: "- Mom",
         media_title: "Media & Highlights",
         media_subtitle: "Game day photos, videos, and team social updates.",
-        nav_media: "Media"
+        nav_media: "Media",
+        upload_photos: "Upload Game Photos & Videos",
+        tactics_title: "Interactive Tactics Board"
       },
       es: {
         field_status_text: "Complejo HDL: Todas las Canchas ABIERTAS y en juego.",
@@ -454,7 +514,9 @@
         rel_mom: "- Mamá",
         media_title: "Medios y Destacados",
         media_subtitle: "Fotos de partidos, videos y redes sociales.",
-        nav_media: "Medios"
+        nav_media: "Medios",
+        upload_photos: "Subir Fotos y Videos del Partido",
+        tactics_title: "Pizarra Táctica Interactiva"
       }
     };
 
@@ -713,7 +775,7 @@
     let currentDate = new Date('2026-08-15T12:00:00'); // Baseline to August 2026 for simulation
 
     const specificEvents = {
-      '2026-08-20': 'scrimmage'
+      '2026-08-20': { type: 'scrimmage', opponent: 'Huntsville Eclipse', time: '7:00 PM - 8:30 PM', home: true, uniform: 'Blue Jerseys, White Shorts', bring: 'White alternate, both cleats & flats', location: 'HDL Complex Field' }
     };
 
     function renderCalendar() {
@@ -743,7 +805,10 @@
         // Check recurring practice (Mon=1, Tue=2, Thu=4)
         let isPractice = (dayOfWeek === 1 || dayOfWeek === 2 || dayOfWeek === 4);
         
-        if (specificEvents[dateStr] === 'scrimmage') {
+        let evObj = specificEvents[dateStr];
+        let evType = evObj ? evObj.type : '';
+        
+        if (evType === 'scrimmage') {
           colorClasses = "bg-orange-500/20 text-orange-400 border border-orange-500/30 font-bold";
         } else if (isPractice) {
           colorClasses = "bg-blue-500/20 text-blue-400 border border-blue-500/30 font-bold";
@@ -754,25 +819,47 @@
           colorClasses += " ring-2 ring-white/50";
         }
 
-        grid.innerHTML += `<div class="p-1.5 rounded-lg flex items-center justify-center transition-colors cursor-pointer hover:scale-105 ${colorClasses}" onclick="showEventDetails('${dateStr}', ${isPractice}, '${specificEvents[dateStr] || ''}')">${d}</div>`;
+        let emojiIndicators = '';
+        const lookupDate = monthNames[month] + " " + parseInt(d, 10);
+        if (signupsMap.has(lookupDate)) {
+            const signups = signupsMap.get(lookupDate);
+            if (signups.snacks.length > 0) emojiIndicators += '🥨';
+            if (signups.carpool.length > 0) emojiIndicators += '🚗';
+        }
+        
+        let displayHtml = d;
+        if (emojiIndicators) {
+           displayHtml = `<div class="relative">${d}<span class="absolute -top-1.5 -right-3 text-[10px] drop-shadow-md tracking-tighter">${emojiIndicators}</span></div>`;
+        }
+
+        const evData = evObj ? JSON.stringify(evObj).replace(/"/g, '&quot;') : '';
+        grid.innerHTML += `<div class="p-1.5 rounded-lg flex items-center justify-center transition-colors cursor-pointer hover:scale-105 ${colorClasses}" onclick="showEventDetails('${dateStr}', ${isPractice}, '${evData}')">${displayHtml}</div>`;
       }
       lucide.createIcons();
     }
 
-    function showEventDetails(dateStr, isPractice, eventType) {
+    function showEventDetails(dateStr, isPractice, eventDataStr) {
       const detailsBox = document.getElementById('selected-date-details');
       let content = '';
       
       const [y, m, d] = dateStr.split('-');
       const formattedDate = new Date(y, m - 1, d).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'es-ES', { weekday: 'long', month: 'short', day: 'numeric' });
       
+      let ev = eventDataStr ? JSON.parse(eventDataStr.replace(/&quot;/g, '"')) : null;
+      let eventType = ev ? ev.type : '';
+      
       if (eventType === 'scrimmage') {
         content = `<h4 class="text-orange-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO'}</h4>
                    <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
-                   <p class="text-slate-300 text-xs mb-1">7:00 PM - 8:30 PM vs Huntsville Eclipse</p>
-                   <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition">
-                     <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
-                   </a>`;
+                   <p class="text-slate-300 text-xs mb-1">${ev.time} vs ${ev.opponent}</p>
+                   <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition mb-2.5">
+                     <i data-lucide="map-pin" class="w-3 h-3"></i> ${ev.location}
+                   </a>
+                   <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/80 mb-2">
+                     <strong class="text-orange-400 text-[10px] uppercase tracking-widest block mb-1.5 flex items-center gap-1.5"><i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Game Day Checklist</strong>
+                     <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform}</p>
+                     <p class="text-[11px] text-slate-300 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring}</p>
+                   </div>`;
       } else if (isPractice) {
         content = `<h4 class="text-blue-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO'}</h4>
                    <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
@@ -992,6 +1079,92 @@
     fetchAndRenderDirectory();
     renderCalendar();
     fetchWeather();
+
+    // ==========================================
+    // TACTICS BOARD DRAG AND DROP (MOUSE + TOUCH)
+    // ==========================================
+    const pitch = document.getElementById('tactics-pitch');
+    let draggedToken = null;
+    let initialX, initialY, currentX, currentY, xOffset = 0, yOffset = 0;
+
+    // Save default positions for reset
+    const defaultPositions = {};
+    document.querySelectorAll('[id^="token-"]').forEach(token => {
+      defaultPositions[token.id] = { top: token.style.top, left: token.style.left };
+      
+      // Touch events
+      token.addEventListener('touchstart', dragStart, {passive: false});
+      token.addEventListener('touchend', dragEnd, {passive: false});
+      token.addEventListener('touchmove', drag, {passive: false});
+      
+      // Mouse events
+      token.addEventListener('mousedown', dragStart, false);
+    });
+
+    document.addEventListener('mouseup', dragEnd, false);
+    document.addEventListener('mousemove', drag, false);
+
+    function dragStart(e) {
+      if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX;
+        initialY = e.touches[0].clientY;
+        draggedToken = e.target;
+      } else {
+        initialX = e.clientX;
+        initialY = e.clientY;
+        if(e.target.id.startsWith('token-')) {
+          draggedToken = e.target;
+        }
+      }
+      
+      if(draggedToken) {
+          // Bring to front
+          document.querySelectorAll('[id^="token-"]').forEach(t => t.style.zIndex = "10");
+          draggedToken.style.zIndex = "20";
+      }
+    }
+
+    function drag(e) {
+      if (draggedToken) {
+        e.preventDefault();
+      
+        if (e.type === "touchmove") {
+          currentX = e.touches[0].clientX - initialX;
+          currentY = e.touches[0].clientY - initialY;
+          initialX = e.touches[0].clientX;
+          initialY = e.touches[0].clientY;
+        } else {
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+          initialX = e.clientX;
+          initialY = e.clientY;
+        }
+
+        const rect = pitch.getBoundingClientRect();
+        const tokenRect = draggedToken.getBoundingClientRect();
+        
+        let newLeft = draggedToken.offsetLeft + currentX;
+        let newTop = draggedToken.offsetTop + currentY;
+        
+        // Boundaries
+        newLeft = Math.max(0, Math.min(newLeft, rect.width - tokenRect.width));
+        newTop = Math.max(0, Math.min(newTop, rect.height - tokenRect.height));
+
+        draggedToken.style.left = (newLeft / rect.width) * 100 + "%";
+        draggedToken.style.top = (newTop / rect.height) * 100 + "%";
+      }
+    }
+
+    function dragEnd(e) {
+      draggedToken = null;
+    }
+
+    function resetTactics() {
+       document.querySelectorAll('[id^="token-"]').forEach(token => {
+          token.style.top = defaultPositions[token.id].top;
+          token.style.left = defaultPositions[token.id].left;
+       });
+    }
   </script>
 </body>
 </html>
