@@ -565,5 +565,38 @@
         </a>
     </div>
 
+
+    <script>
+        // Connect to Jetson WebSocket
+        const host = window.location.hostname || "127.0.0.1";
+        const ws = new WebSocket(`ws://${host}:8000/ws/telemetry`);
+        
+        ws.onopen = () => {
+            console.log("Connected to Atlas Edge Server");
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            
+            // Update common telemetry if elements exist
+            const fpsEl = document.getElementById('valFps');
+            if(fpsEl) fpsEl.textContent = data.fps.toFixed(1);
+            
+            const playersEl = document.getElementById('valPlayers');
+            if(playersEl) playersEl.textContent = data.tracked_players;
+            
+            const kneeEl = document.getElementById('valKnee');
+            if(kneeEl) kneeEl.textContent = data.left_knee_deg.toFixed(1) + '°';
+        };
+
+        function sendCommand(action, payload={}) {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ action, ...payload }));
+            } else {
+                console.warn("WebSocket not connected. Command ignored.");
+            }
+        }
+    </script>
+
 </body>
 </html>

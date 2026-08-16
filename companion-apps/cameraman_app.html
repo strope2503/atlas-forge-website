@@ -540,7 +540,7 @@
                 <div class="big-action-btn danger" style="margin-top: 40px;" onclick="if(confirm('Are you sure you want to stop the live stream?')) alert('Stream Stopped.');">
                     Stop Stream <span>⏹</span>
                 </div>
-                                <div class="big-action-btn" onclick="alert('📲 Vector annotation clip dispatched to Player #10 mobile app!')" style="background: rgba(55,255,108,0.1); border-color: rgba(55,255,108,0.3); color: var(--accent-green);">
+                                <div class="big-action-btn" onclick="sendCommand('DISPATCH_CLIP', {target: 'Player_10'})" style="background: rgba(55,255,108,0.1); border-color: rgba(55,255,108,0.3); color: var(--accent-green);">
                     Send to Phones <span>📲</span>
                 </div>
                 
@@ -552,16 +552,7 @@
 
 <script>
     
-    // Telemetry loop
-    setInterval(() => {
-        const fps = (59.0 + Math.random() * 1.5).toFixed(1);
-        const fpsEl = document.getElementById('valFps');
-        if(fpsEl) fpsEl.textContent = fps;
-        
-        const load = (170.0 + Math.random() * 5.0).toFixed(1);
-        const loadEl = document.getElementById('valKnee');
-        if(loadEl) loadEl.textContent = load + '°';
-    }, 800);
+    
 
     // Scrubber Logic
     function togglePlayPause() {
@@ -570,12 +561,12 @@
             btn.innerHTML = '▶ Play';
             btn.style.background = 'rgba(55,255,108,0.1)';
             btn.style.borderColor = 'var(--accent-green)';
-            btn.style.color = 'var(--accent-green)';
+            btn.style.color = 'var(--accent-green)'; sendCommand('RESUME_STREAM');
         } else {
             btn.innerHTML = '⏸ Pause';
             btn.style.background = 'rgba(0,240,255,0.1)';
             btn.style.borderColor = 'var(--accent-cyan)';
-            btn.style.color = 'var(--accent-cyan)';
+            btn.style.color = 'var(--accent-cyan)'; sendCommand('PAUSE_STREAM');
         }
     }
 
@@ -585,7 +576,7 @@
       btn.innerHTML = '▶ Play';
       btn.style.background = 'rgba(55,255,108,0.1)';
       btn.style.borderColor = 'var(--accent-green)';
-      btn.style.color = 'var(--accent-green)';
+      btn.style.color = 'var(--accent-green)'; sendCommand('RESUME_STREAM');
     }
 
 
@@ -650,6 +641,39 @@
         }
     }
 </script>
+
+    <script>
+        // Connect to Jetson WebSocket
+        const host = window.location.hostname || "127.0.0.1";
+        const ws = new WebSocket(`ws://${host}:8000/ws/telemetry`);
+        
+        ws.onopen = () => {
+            console.log("Connected to Atlas Edge Server");
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            
+            // Update common telemetry if elements exist
+            const fpsEl = document.getElementById('valFps');
+            if(fpsEl) fpsEl.textContent = data.fps.toFixed(1);
+            
+            const playersEl = document.getElementById('valPlayers');
+            if(playersEl) playersEl.textContent = data.tracked_players;
+            
+            const kneeEl = document.getElementById('valKnee');
+            if(kneeEl) kneeEl.textContent = data.left_knee_deg.toFixed(1) + '°';
+        };
+
+        function sendCommand(action, payload={}) {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ action, ...payload }));
+            } else {
+                console.warn("WebSocket not connected. Command ignored.");
+            }
+        }
+    </script>
+
 </body>
 
 </html>
