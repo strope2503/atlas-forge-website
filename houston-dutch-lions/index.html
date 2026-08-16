@@ -657,13 +657,13 @@
             cleanLastName = cleanLastName.replace(/\s*#\d*/, '').trim();
 
             let displayNameHTML = "";
-            let numHTML = playerNumber !== '0' ? `<span class="text-orange-400 font-mono">#${playerNumber}</span> ` : '';
+            let numHTML = playerNumber !== '0' ? ` <span class="text-orange-400 font-mono">#${playerNumber}</span>` : '';
             if (firstName && cleanLastName) {
-                displayNameHTML = `${numHTML}${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName})</span> ${relSuffixHTML}`;
+                displayNameHTML = `${firstName}${numHTML} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName})</span> ${relSuffixHTML}`;
             } else if (firstName) {
-                displayNameHTML = `${numHTML}${firstName} ${relSuffixHTML}`;
+                displayNameHTML = `${firstName}${numHTML} ${relSuffixHTML}`;
             } else {
-                displayNameHTML = `${numHTML}${cleanLastName} ${relSuffixHTML}`;
+                displayNameHTML = `${cleanLastName}${numHTML} ${relSuffixHTML}`;
             }
             
             const fullName = (firstName + " " + lastNameField).trim();
