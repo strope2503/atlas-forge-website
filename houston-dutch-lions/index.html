@@ -244,7 +244,7 @@
           </h2>
           <p class="text-[11px] text-slate-400" data-i18n="roster_subtitle">Houston Dutch Lions Elite 2013 Official Squad</p>
         </div>
-        <span class="text-xs font-bold px-2 py-1 bg-slate-900 border border-blue-900/50 rounded-lg text-orange-400" id="rosterCountBadge">16 Players</span>
+        <span class="text-xs font-bold px-2 py-1 bg-slate-900 border border-blue-900/50 rounded-lg text-orange-400" id="rosterCountBadge">...</span>
       </div>
 
       <!-- Player Cards Container (Populated via JS) -->
@@ -525,6 +525,11 @@
     function renderRosterGrid(data) {
       const grid = document.getElementById('rosterGrid');
       grid.innerHTML = '';
+
+      const badge = document.getElementById('rosterCountBadge');
+      if (badge) {
+        badge.innerText = `${data.length} ${currentLang === 'en' ? 'Players' : 'Jugadores'}`;
+      }
 
       data.forEach(p => {
         const posText = currentLang === 'en' ? p.posEn : p.posEs;
