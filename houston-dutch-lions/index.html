@@ -605,7 +605,7 @@
                 ${p.initials}
               </div>
               <h4 class="font-bold text-xs text-white truncate">${p.name}</h4>
-              <p class="text-[9px] text-slate-400 mb-0.5">🎂 TBD</p>
+              <p class="text-[9px] text-slate-400 mb-0.5">🎂 ${p.birthday || 'TBD'}</p>
               <p class="text-[9px] text-orange-300 font-bold tracking-wide truncate">${posText}</p>
             </div>
           </div>
@@ -733,6 +733,22 @@
             if (names.length >= 2) {
                 initials = names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
             }
+            
+            const hardcodedBirthdays = {
+                "Cole Hindmand": "02-22-15",
+                "Vinny Joslin": "12-22-15"
+            };
+            let bdayRaw = row['Birthday'] ? String(row['Birthday']).trim() : (hardcodedBirthdays[playerName] || "");
+            let bdayMMDD = "";
+            let bdayDisplay = "TBD";
+            if (bdayRaw) {
+                bdayDisplay = bdayRaw;
+                let bMatch = bdayRaw.match(/^(\d{1,2})[\/\-](\d{1,2})/);
+                if (bMatch) {
+                    bdayMMDD = bMatch[1].padStart(2, '0') + '-' + bMatch[2].padStart(2, '0');
+                }
+            }
+            
             rosterMap.set(playerKey, {
                 number: playerNumber,
                 name: playerName,
@@ -742,7 +758,9 @@
                 goals: row['Goals'] ? parseInt(row['Goals']) : 0,
                 assists: row['Assists'] ? parseInt(row['Assists']) : 0,
                 cleanSheets: row['Clean Sheets'] ? parseInt(row['Clean Sheets']) : 0,
-                isMvp: row['MVP'] === 'Yes'
+                isMvp: row['MVP'] === 'Yes',
+                birthday: bdayDisplay,
+                birthdayMMDD: bdayMMDD
             });
         }
         
@@ -798,6 +816,7 @@
       // Sort by number
       globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
       renderRosterGrid(globalRosterData);
+      renderCalendar();
       lucide.createIcons();
     };
 
@@ -934,6 +953,15 @@
             if (signups.drinks && signups.drinks.length > 0) emojiIndicators += '🧃';
         }
         
+        const dStr = String(d).padStart(2, '0');
+        const mStr = String(month+1).padStart(2, '0');
+        const dateMMDD = mStr + '-' + dStr;
+        let hasBday = false;
+        if (typeof globalRosterData !== 'undefined') {
+             hasBday = globalRosterData.some(p => p.birthdayMMDD === dateMMDD);
+        }
+        if (hasBday) emojiIndicators += '🎂';
+        
         let displayHtml = d;
         if (emojiIndicators) {
            displayHtml = `<div class="relative">${d}<span class="absolute -top-1.5 -right-3 text-[10px] drop-shadow-md tracking-tighter">${emojiIndicators}</span></div>`;
@@ -950,6 +978,18 @@
       let content = '';
       
       const [y, m, d] = dateStr.split('-');
+      const dateMMDD = m + '-' + d;
+      let bdayNames = [];
+      if (typeof globalRosterData !== 'undefined') {
+          globalRosterData.forEach(p => {
+              if (p.birthdayMMDD === dateMMDD) bdayNames.push(p.name);
+          });
+      }
+      
+      if (bdayNames.length > 0) {
+          content += `<div class="mb-3 text-pink-400 font-bold bg-pink-900/20 p-2.5 rounded-lg border border-pink-800/40 flex items-center justify-center gap-2 shadow-inner"><i data-lucide="cake" class="w-5 h-5 animate-bounce"></i> Happy Birthday, ${bdayNames.join(' & ')}! 🥳</div>`;
+      }
+      
       const formattedDate = new Date(y, m - 1, d).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'es-ES', { weekday: 'long', month: 'short', day: 'numeric' });
       
       let ev = eventDataStr ? JSON.parse(eventDataStr.replace(/&quot;/g, '"')) : null;
