@@ -326,7 +326,20 @@
       </div>
 
       <!-- Directory Container (Populated via JS) -->
-      <div id="directory-unlocked-view" class="space-y-2">
+      <div id="directory-lock-view" class="bg-slate-900/50 p-6 rounded-xl border border-slate-800 flex flex-col items-center justify-center text-center space-y-3">
+        <i data-lucide="lock" class="w-8 h-8 text-slate-500"></i>
+        <div>
+            <h3 class="text-white font-bold text-sm" data-i18n="secured_directory">Secured Directory</h3>
+            <p class="text-xs text-slate-400 max-w-xs mt-1" data-i18n="secured_directory_desc">Please enter the team PIN to view parent contact information.</p>
+        </div>
+        <div class="flex items-center gap-2 mt-2 w-full max-w-[200px]">
+            <input type="password" id="directory-pin" onkeydown="if(event.key === 'Enter') checkDirectoryPin()" placeholder="PIN" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm font-bold text-center tracking-widest focus:outline-none focus:border-orange-500">
+        </div>
+        <button onclick="checkDirectoryPin()" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold py-2 px-6 rounded-lg transition shadow-lg shadow-orange-900/20">Unlock</button>
+        <p id="directory-pin-error" class="text-red-400 text-xs hidden mt-1">Incorrect PIN.</p>
+      </div>
+      
+      <div id="directory-unlocked-view" class="space-y-2 hidden">
         <div id="directoryList" class="space-y-2"></div>
       </div>
     </section>
@@ -686,6 +699,30 @@
         })
         .catch(err => console.error('Error fetching signups:', err));
     }
+
+    function checkDirectoryPin() {
+      const pin = document.getElementById('directory-pin').value;
+      if (pin === '2013') {
+          localStorage.setItem('hdl_directory_unlocked', 'true');
+          document.getElementById('directory-lock-view').classList.add('hidden');
+          document.getElementById('directory-unlocked-view').classList.remove('hidden');
+      } else {
+          document.getElementById('directory-pin-error').classList.remove('hidden');
+          document.getElementById('directory-pin').value = '';
+      }
+    }
+
+    // Auto-unlock if previously unlocked
+    document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem('hdl_directory_unlocked') === 'true') {
+            const lockView = document.getElementById('directory-lock-view');
+            const unlockedView = document.getElementById('directory-unlocked-view');
+            if (lockView && unlockedView) {
+                lockView.classList.add('hidden');
+                unlockedView.classList.remove('hidden');
+            }
+        }
+    });
 
     window.processRosterData = function(json) {
       const dirList = document.getElementById('directoryList');
