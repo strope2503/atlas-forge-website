@@ -191,7 +191,10 @@
               <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
             </a>
           </p>
-          <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Bring Both, Wear Orange</p>
+          <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Blue alternate</p>
+          <div id="drink-status-Aug20" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="underline ml-1">Volunteer</a>
+          </div>
         </div>
 
         <!-- Event 3: Scrimmage -->
@@ -212,6 +215,9 @@
             </a>
           </p>
           <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Bring Both, Wear Orange</p>
+          <div id="drink-status-Aug27" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="underline ml-1">Volunteer</a>
+          </div>
         </div>
 
         <!-- Event 4: Scrimmage -->
@@ -232,6 +238,9 @@
             </a>
           </p>
           <p class="text-[11px] text-orange-400 font-bold">Call Time: 8:45 AM | Bring Both, Wear Orange</p>
+          <div id="drink-status-Aug29" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="underline ml-1">Volunteer</a>
+          </div>
         </div>
       </div>
     </section>
@@ -638,6 +647,24 @@
               entry.drinks.push(name);
             }
           });
+          
+          // Update event list drink statuses
+          const dates = ["Aug20", "Aug27", "Aug29"];
+          dates.forEach(d => {
+              const el = document.getElementById('drink-status-' + d);
+              if(el) {
+                  const dayNum = d.replace('Aug', '');
+                  if (signupsMap.has('August ' + dayNum)) {
+                      const s = signupsMap.get('August ' + dayNum);
+                      if(s.drinks && s.drinks.length > 0) {
+                          el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40";
+                          el.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${s.drinks.join(', ')}`;
+                          if(window.lucide) lucide.createIcons();
+                      }
+                  }
+              }
+          });
+          
         }
       });
     }
