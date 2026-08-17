@@ -193,7 +193,7 @@
           </p>
           <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Blue alternate</p>
           <div id="drink-status-Aug20" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
-            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="underline ml-1">Volunteer</a>
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August 20'); return false;" class="underline ml-1">Volunteer</a>
           </div>
         </div>
 
@@ -216,7 +216,7 @@
           </p>
           <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Bring Both, Wear Orange</p>
           <div id="drink-status-Aug27" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
-            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="underline ml-1">Volunteer</a>
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August 27'); return false;" class="underline ml-1">Volunteer</a>
           </div>
         </div>
 
@@ -239,7 +239,7 @@
           </p>
           <p class="text-[11px] text-orange-400 font-bold">Call Time: 8:45 AM | Bring Both, Wear Orange</p>
           <div id="drink-status-Aug29" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
-            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="underline ml-1">Volunteer</a>
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August 29'); return false;" class="underline ml-1">Volunteer</a>
           </div>
         </div>
       </div>
@@ -992,9 +992,9 @@
         // Add Drinks Button (Google Form Link) ONLY for Scrimmages if NOT covered
         if (eventType === 'scrimmage' && !drinksCovered) {
             content += `<div class="mt-3">
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="w-full p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
+              <button onclick="openVolunteerModal('${lookupDate}')" class="w-full p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
                 <i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks
-              </a>
+              </button>
             </div>`;
         }
 
@@ -1254,6 +1254,113 @@
           token.style.top = defaultPositions[token.id].top;
           token.style.left = defaultPositions[token.id].left;
        });
+    }
+  </script>
+  <!-- Volunteer Modal -->
+  <div id="volunteer-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-xl overflow-hidden shadow-2xl">
+      <div class="p-4 bg-slate-800 border-b border-slate-700 flex justify-between items-center">
+        <h3 class="text-orange-400 font-bold flex items-center gap-2"><i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks</h3>
+        <button onclick="closeVolunteerModal()" class="text-slate-400 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-5">
+        <p class="text-sm text-slate-300 mb-4 leading-relaxed">Thank you for volunteering! Your drinks are greatly appreciated, especially during hot days.</p>
+        <form id="volunteer-form" onsubmit="submitVolunteerForm(event)">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Parent/Volunteer Name</label>
+              <input type="text" id="vol-name" required class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-orange-500 transition" placeholder="e.g. Jane Doe">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Role</label>
+              <input type="text" value="Drinks" disabled class="w-full bg-slate-800/50 border border-slate-700 rounded p-2 text-sm text-slate-400 cursor-not-allowed">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Scrimmage Date</label>
+              <select id="vol-date" required class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-orange-500 transition appearance-none">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+            <button type="submit" id="vol-submit-btn" class="w-full mt-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded transition flex justify-center items-center gap-2">
+              Submit Signup
+            </button>
+            <p id="vol-status" class="text-xs text-center hidden mt-2"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openVolunteerModal(preselectDate) {
+      document.getElementById('volunteer-modal').classList.remove('hidden');
+      const select = document.getElementById('vol-date');
+      select.innerHTML = '<option value="" disabled selected>Select a date...</option>';
+      
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      
+      // We read specificEvents which is a global variable
+      for (const [dateStr, ev] of Object.entries(window.specificEvents || specificEvents)) {
+          if (ev.type === 'scrimmage') {
+              const [y, m, d] = dateStr.split('-');
+              const friendlyDate = monthNames[parseInt(m, 10) - 1] + " " + parseInt(d, 10);
+              const option = document.createElement('option');
+              option.value = friendlyDate;
+              option.textContent = friendlyDate;
+              if (friendlyDate === preselectDate) {
+                  option.selected = true;
+              }
+              select.appendChild(option);
+          }
+      }
+    }
+
+    function closeVolunteerModal() {
+      document.getElementById('volunteer-modal').classList.add('hidden');
+      document.getElementById('volunteer-form').reset();
+      document.getElementById('vol-status').className = 'hidden';
+      const btn = document.getElementById('vol-submit-btn');
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Signup';
+    }
+
+    function submitVolunteerForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('vol-name').value;
+      const date = document.getElementById('vol-date').value;
+      const role = "Drinks";
+
+      const btn = document.getElementById('vol-submit-btn');
+      const status = document.getElementById('vol-status');
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Submitting...';
+      lucide.createIcons();
+
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec";
+      
+      fetch(scriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({ name, date, role })
+      }).then(() => {
+        status.textContent = "Success! Drinks are covered.";
+        status.className = "text-xs text-center text-emerald-400 mt-2 block font-bold";
+        btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Submitted!';
+        lucide.createIcons();
+        setTimeout(() => {
+          closeVolunteerModal();
+        }, 2000);
+      }).catch(err => {
+        status.textContent = "Error submitting. Please try again.";
+        status.className = "text-xs text-center text-red-400 mt-2 block font-bold";
+        btn.disabled = false;
+        btn.innerHTML = 'Submit Signup';
+        console.error(err);
+      });
     }
   </script>
 </body>
