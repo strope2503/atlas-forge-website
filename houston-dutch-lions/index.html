@@ -61,11 +61,20 @@
         </div>
       </div>
       
-      <!-- BILINGUAL TOGGLE -->
-      <button onclick="toggleLanguage()" class="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-blue-800/60 px-3 py-1.5 rounded-full text-xs font-bold transition shadow">
-        <i data-lucide="globe" class="w-3.5 h-3.5 text-orange-400"></i>
-        <span id="langLabel">Español</span>
-      </button>
+      <div class="flex items-center gap-2">
+        <!-- TEAM STORE -->
+        <a href="https://www.aretyn.store/houston-dutch-lions-fc" target="_blank" class="flex items-center space-x-1.5 bg-orange-600/90 hover:bg-orange-500 text-white border border-orange-500/50 px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition shadow">
+          <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-white"></i>
+          <span class="hidden sm:inline">Team Store</span>
+          <span class="sm:hidden">Store</span>
+        </a>
+        <!-- BILINGUAL TOGGLE -->
+        <button onclick="toggleLanguage()" class="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-blue-800/60 px-3 py-1.5 rounded-full text-xs font-bold transition shadow">
+          <i data-lucide="globe" class="w-3.5 h-3.5 text-orange-400"></i>
+          <span id="langLabel" class="hidden sm:inline">Español</span>
+          <span class="sm:hidden">ES</span>
+        </button>
+      </div>
     </div>
   </header>
 
