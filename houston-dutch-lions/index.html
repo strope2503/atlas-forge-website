@@ -587,6 +587,7 @@
                 ${p.initials}
               </div>
               <h4 class="font-bold text-xs text-white truncate">${p.name}</h4>
+              <p class="text-[9px] text-slate-400 mb-0.5">🎂 TBD</p>
               <p class="text-[9px] text-orange-300 font-bold tracking-wide truncate">${posText}</p>
             </div>
           </div>
@@ -620,14 +621,12 @@
             if (!name || !date || !role) return;
             
             if (!signupsMap.has(date)) {
-              signupsMap.set(date, { snacks: [], carpool: [] });
+              signupsMap.set(date, { drinks: [] });
             }
             
             const entry = signupsMap.get(date);
-            if (role.toLowerCase().includes('snack')) {
-              entry.snacks.push(name);
-            } else if (role.toLowerCase().includes('carpool')) {
-              entry.carpool.push(name);
+            if (role.toLowerCase().includes('drink') || role.toLowerCase().includes('snack') || role.toLowerCase().includes('water')) {
+              entry.drinks.push(name);
             }
           });
         }
@@ -870,8 +869,7 @@
         const lookupDate = monthNames[month] + " " + parseInt(d, 10);
         if (signupsMap.has(lookupDate)) {
             const signups = signupsMap.get(lookupDate);
-            if (signups.snacks.length > 0) emojiIndicators += '🥨';
-            if (signups.carpool.length > 0) emojiIndicators += '🚗';
+            if (signups.drinks && signups.drinks.length > 0) emojiIndicators += '🧃';
         }
         
         let displayHtml = d;
@@ -934,16 +932,10 @@
         let signupHTML = '';
         if (signupsMap.has(lookupDate)) {
             const signups = signupsMap.get(lookupDate);
-            if (signups.snacks.length > 0) {
+            if (signups.drinks && signups.drinks.length > 0) {
                 signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-emerald-300 bg-emerald-900/30 p-2 rounded border border-emerald-800/50">
-                    <i data-lucide="cookie" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
-                    <span><strong>Snacks provided by:</strong> ${signups.snacks.join(', ')}</span>
-                </div>`;
-            }
-            if (signups.carpool.length > 0) {
-                signupHTML += `<div class="flex items-start gap-2 mt-1.5 text-[11px] text-purple-300 bg-purple-900/30 p-2 rounded border border-purple-800/50">
-                    <i data-lucide="car" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
-                    <span><strong>Carpool offered by:</strong> ${signups.carpool.join(', ')}</span>
+                    <i data-lucide="cup-soda" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <span><strong>Drinks provided by:</strong> ${signups.drinks.join(', ')}</span>
                 </div>`;
             }
         }
@@ -951,15 +943,14 @@
             content += `<div class="mt-3 border-t border-slate-700/50 pt-2">${signupHTML}</div>`;
         }
 
-        // Add Carpool / Snack Buttons (Google Form Link)
-        content += `<div class="grid grid-cols-2 gap-2 mt-3">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
-            <i data-lucide="cookie" class="w-4 h-4"></i> Snacks & Drinks
-          </a>
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="p-2 bg-purple-600/20 text-purple-400 hover:bg-purple-600 hover:text-white rounded-lg border border-purple-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
-            <i data-lucide="car" class="w-4 h-4"></i> Carpool Setup
-          </a>
-        </div>`;
+        // Add Drinks Button (Google Form Link) ONLY for Scrimmages
+        if (eventType === 'scrimmage') {
+            content += `<div class="mt-3">
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="w-full p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
+                <i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks
+              </a>
+            </div>`;
+        }
 
         // Add Interactive Weather Radar
         content += `<iframe width="100%" height="150" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=11&overlay=radar&product=radar&crosshair=marker&lat=30.2975&lon=-95.4655" frameborder="0" class="rounded-xl mt-3 border border-slate-700/50 opacity-90 hover:opacity-100 transition-opacity shadow-lg"></iframe>`;
@@ -970,12 +961,18 @@
             if(data && data.hourly) {
                 const temp = Math.round(data.hourly.temperature_2m[timeHour]);
                 const rain = data.hourly.precipitation_probability[timeHour];
+                
+                let hotWarning = '';
+                if(temp >= 90 && eventType === 'scrimmage') {
+                    hotWarning = `<div class="w-full mt-2 text-center text-red-400 font-bold bg-red-900/30 border border-red-800 rounded py-1.5 px-2 text-[10px]">⚠️ Drinks are greatly appreciated on hot days over 90°F!</div>`;
+                }
+
                 const wBox = document.getElementById('hourly-weather');
                 if(wBox) {
                     wBox.innerHTML = `<div class="flex justify-around w-full items-center">
                         <div class="flex items-center gap-1"><i data-lucide="thermometer" class="w-4 h-4 text-orange-400"></i> <span>Est. Temp: <strong class="text-white">${temp}°F</strong></span></div>
                         <div class="flex items-center gap-1"><i data-lucide="cloud-rain" class="w-4 h-4 text-blue-400"></i> <span>Rain Chance: <strong class="text-white">${rain}%</strong></span></div>
-                    </div>`;
+                    </div>${hotWarning}`;
                     lucide.createIcons();
                 }
             }
