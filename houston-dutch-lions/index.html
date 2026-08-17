@@ -1008,8 +1008,7 @@
           }
       }
 
-      renderCalendar();
-      lucide.createIcons();
+      fetchEventsData();
     };
 
     function fetchAndRenderDirectory() {
@@ -1017,6 +1016,58 @@
       script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json;responseHandler:processRosterData&headers=1&gid=313460202';
       document.body.appendChild(script);
     }
+
+    function fetchEventsData() {
+      const script = document.createElement('script');
+      script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json;responseHandler:processEventsData&headers=1&gid=1253580532';
+      document.body.appendChild(script);
+    }
+
+    window.processEventsData = function(json) {
+        specificEvents = {};
+        if (json && json.table && json.table.rows) {
+            json.table.rows.forEach(r => {
+                const row = {};
+                json.table.cols.forEach((c, idx) => {
+                    if (c && c.label) row[c.label] = r.c[idx] ? r.c[idx].v : '';
+                });
+
+                const dateVal = row['Date'] ? String(row['Date']).trim() : '';
+                if (!dateVal) return;
+                
+                // Fix date format from Google Sheets if it comes back as Date(YYYY,MM,DD)
+                let dateStr = dateVal;
+                if (dateVal.toString().startsWith('Date(')) {
+                    const parts = dateVal.match(/Date\((\d+),(\d+),(\d+)/);
+                    if (parts) {
+                        const y = parts[1];
+                        const m = String(parseInt(parts[2]) + 1).padStart(2, '0');
+                        const d = String(parts[3]).padStart(2, '0');
+                        dateStr = `${y}-${m}-${d}`;
+                    }
+                }
+
+                let startersParsed = null;
+                if (row['Starters']) {
+                    try { startersParsed = JSON.parse(row['Starters']); } catch(e) { console.error("Error parsing starters JSON:", e); }
+                }
+
+                specificEvents[dateStr] = {
+                    type: row['Type'] ? row['Type'].toLowerCase() : 'practice',
+                    opponent: row['Opponent'] || '',
+                    time: row['Time'] || '',
+                    home: true, // simplified
+                    uniform: row['Uniform'] || '',
+                    bring: row['Bring'] || '',
+                    location: row['Location'] || '',
+                    formation: row['Formation'] || '',
+                    starters: startersParsed
+                };
+            });
+        }
+        renderCalendar();
+        lucide.createIcons();
+    };
 
     function toggleLanguage() {
       currentLang = currentLang === 'en' ? 'es' : 'en';
@@ -1091,11 +1142,7 @@
     // ==========================================
     let currentDate = new Date('2026-08-15T12:00:00'); // Baseline to August 2026 for simulation
 
-    const specificEvents = {
-      '2026-08-20': { type: 'scrimmage', opponent: 'Huntsville Eclipse', time: '7:00 PM - 8:30 PM', home: true, uniform: 'Orange Jersey', bring: 'Blue alternate', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'2', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } },
-      '2026-08-27': { type: 'scrimmage', opponent: 'Cleveland FC', time: '7:00 PM (Call: 6:30 PM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'15', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } },
-      '2026-08-29': { type: 'scrimmage', opponent: 'CMavericks FC', time: '9:15 AM (Call: 8:45 AM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'2', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } }
-    };
+    let specificEvents = {};
 
     function renderCalendar() {
       const year = currentDate.getFullYear();
