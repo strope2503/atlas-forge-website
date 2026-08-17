@@ -624,7 +624,7 @@
     let signupsMap = new Map();
 
     function fetchSignups() {
-      const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec";
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec?_cb=" + new Date().getTime();
       
       fetch(scriptUrl)
         .then(response => response.json())
@@ -685,7 +685,7 @@
     }
 
     function fetchAndRenderDirectory() {
-      const csvUrl = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/export?format=csv&gid=313460202';
+      const csvUrl = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/export?format=csv&gid=313460202&_cb=' + new Date().getTime();
       Papa.parse(csvUrl, {
         download: true,
         header: true,
@@ -754,9 +754,9 @@
             let displayNameHTML = "";
             let numHTML = playerNumber !== '0' ? ` <span class="text-orange-400 font-mono">#${playerNumber}</span>` : '';
             if (firstName && cleanLastName) {
-                displayNameHTML = `${firstName}${numHTML} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName})</span> ${relSuffixHTML}`;
+                displayNameHTML = `${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName}${numHTML})</span> ${relSuffixHTML}`;
             } else if (firstName) {
-                displayNameHTML = `${firstName}${numHTML} ${relSuffixHTML}`;
+                displayNameHTML = `${firstName} ${relSuffixHTML}`;
             } else {
                 displayNameHTML = `${cleanLastName}${numHTML} ${relSuffixHTML}`;
             }
