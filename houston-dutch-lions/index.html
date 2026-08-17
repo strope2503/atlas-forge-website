@@ -803,7 +803,7 @@
 
     function fetchAndRenderDirectory() {
       const script = document.createElement('script');
-      script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json&gid=313460202&tq&callback=processRosterData';
+      script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json;responseHandler:processRosterData&gid=313460202';
       document.body.appendChild(script);
     }
 
