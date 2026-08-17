@@ -113,7 +113,7 @@
       <div class="bg-slate-950/70 rounded-xl p-3 grid grid-cols-2 gap-2 text-xs border border-slate-800 text-slate-300 mt-3">
         <div><strong class="text-slate-400 block" data-i18n="kickoff_time">Kick-Off:</strong> 7:00 PM</div>
         <div><strong class="text-orange-400 block" data-i18n="arrival_time">Arrival / Call:</strong> 6:30 PM (30 min prior)</div>
-        <div><strong class="text-slate-400 block" data-i18n="uniform_color">Uniform:</strong> Blue alternate</div>
+        <div><strong class="text-slate-400 block" data-i18n="uniform_color">Uniform:</strong> Bring Both, Wear Orange</div>
         <div><strong class="text-slate-400 block" data-i18n="field_location">Location:</strong> 14562 Interstate 45 S, Conroe, TX 77384</div>
       </div>
       <div class="mt-4 flex gap-2">
@@ -191,7 +191,7 @@
               <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
             </a>
           </p>
-          <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Blue alternate</p>
+          <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Bring Both, Wear Orange</p>
           <div id="drink-status-Aug20" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
             <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August 20'); return false;" class="underline ml-1">Volunteer</a>
           </div>
@@ -633,11 +633,17 @@
           
           if (Array.isArray(data)) {
             data.forEach(row => {
-              const name = row.name ? row.name.trim() : '';
-              const date = row.date ? row.date.trim() : '';
-              const role = row.role ? row.role.trim() : '';
+              const name = row.name ? String(row.name).trim() : '';
+              let date = row.date ? String(row.date).trim() : '';
+              const role = row.role ? String(row.role).trim() : '';
               
               if (!name || !date || !role) return;
+              
+              if (date.includes('T')) {
+                  const dObj = new Date(date);
+                  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                  date = monthNames[dObj.getUTCMonth()] + " " + dObj.getUTCDate();
+              }
               
               if (!signupsMap.has(date)) {
                 signupsMap.set(date, { drinks: [] });
