@@ -684,117 +684,127 @@
         .catch(err => console.error('Error fetching signups:', err));
     }
 
-    function fetchAndRenderDirectory() {
-      // Use gviz endpoint instead of export to avoid 302 redirects that Safari blocks
-      const csvUrl = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:csv&gid=313460202';
-      Papa.parse(csvUrl, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
-          const dirList = document.getElementById('directoryList');
-          dirList.innerHTML = '';
-          
-          let rosterMap = new Map();
-          
-          results.data.forEach(row => {
-            const firstName = row['First Name'] ? row['First Name'].replace(/ -$/, '').trim() : '';
-            const lastNameField = row['Last name'] ? row['Last name'].trim() : '';
-            const phone = row['Phone'] ? row['Phone'].trim() : '';
-            const email = row['Email'] ? row['Email'].trim() : '';
-            const position = row['Postion'] ? row['Postion'].trim() : '';
-            
-            if (!firstName && !lastNameField) return;
-            
-            // Skip coaches
-            if (firstName.toLowerCase().includes('coach') || position.toLowerCase() === 'coach') return;
-            
-            // Extract player info
-            let playerName = 'Unknown';
-            let playerNumber = '0';
-            const match = lastNameField.match(/(.*?)\s*#(\d+)/);
-            if (match) {
-                playerName = match[1].trim();
-                playerNumber = match[2];
-            } else {
-                playerName = lastNameField.split('-')[0].replace(/\s*#\s*$/, '').trim();
-            }
-            
-            const playerKey = playerNumber + '-' + playerName;
-            if (!rosterMap.has(playerKey)) {
-                let initials = playerName.substring(0, 2).toUpperCase();
-                let names = playerName.split(' ');
-                if (names.length >= 2) {
-                    initials = names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+    window.processRosterData = function(json) {
+      const dirList = document.getElementById('directoryList');
+      dirList.innerHTML = '';
+      
+      let rosterMap = new Map();
+      
+      const cols = json.table.cols;
+      json.table.rows.forEach(r => {
+        let row = {};
+        cols.forEach((col, i) => {
+            if (col && col.label) {
+                let cell = r.c[i];
+                if (cell) {
+                   row[col.label] = cell.f ? cell.f : (cell.v !== null ? String(cell.v) : "");
+                } else {
+                   row[col.label] = "";
                 }
-                rosterMap.set(playerKey, {
-                    number: playerNumber,
-                    name: playerName,
-                    posEn: position || 'Player',
-                    posEs: position || 'Jugador',
-                    initials: initials,
-                    goals: row['Goals'] ? parseInt(row['Goals']) : 0,
-                    assists: row['Assists'] ? parseInt(row['Assists']) : 0,
-                    cleanSheets: row['Clean Sheets'] ? parseInt(row['Clean Sheets']) : 0,
-                    isMvp: row['MVP'] === 'Yes'
-                });
             }
-            
-            // Render directory card
-            let relSuffixHTML = "";
-            let cleanLastName = lastNameField;
-            if (cleanLastName.toLowerCase().includes("- dad")) {
-                relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_dad">${translations[currentLang].rel_dad}</span>`;
-                cleanLastName = cleanLastName.replace(/\s*-\s*Dad/i, '');
-            } else if (cleanLastName.toLowerCase().includes("- mom")) {
-                relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_mom">${translations[currentLang].rel_mom}</span>`;
-                cleanLastName = cleanLastName.replace(/\s*-\s*Mom/i, '');
-            }
-            cleanLastName = cleanLastName.replace(/\s*#\d*/, '').trim();
-
-            let displayNameHTML = "";
-            let numHTML = playerNumber !== '0' ? ` <span class="text-orange-400 font-mono">#${playerNumber}</span>` : '';
-            if (firstName && cleanLastName) {
-                displayNameHTML = `${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName}${numHTML})</span> ${relSuffixHTML}`;
-            } else if (firstName) {
-                displayNameHTML = `${firstName} ${relSuffixHTML}`;
-            } else {
-                displayNameHTML = `${cleanLastName}${numHTML} ${relSuffixHTML}`;
-            }
-            
-            const fullName = (firstName + " " + lastNameField).trim();
-                
-            const card = document.createElement('div');
-            card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
-            
-            const vcardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${fullName}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
-            const vcardBlob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
-            const vcardUrl = window.URL.createObjectURL(vcardBlob);
-            
-            card.innerHTML = `
-              <div>
-                <strong class="text-white block text-xs sm:text-sm">${displayNameHTML}</strong>
-                <span class="text-slate-400 text-[10px] sm:text-xs">${email || 'No email provided'}</span>
-              </div>
-              <div class="flex gap-1.5 items-center self-end sm:self-auto">
-                ${phone ? `<a href="tel:${phone}" class="p-2 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg transition" title="Call"><i data-lucide="phone" class="w-4 h-4"></i></a>` : ''}
-                ${phone ? `<a href="sms:${phone}" class="p-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition" title="Text"><i data-lucide="message-square" class="w-4 h-4"></i></a>` : ''}
-                ${phone ? `<a href="${vcardUrl}" download="${fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.vcf" class="py-2 px-3 border border-slate-600 hover:border-slate-400 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition flex items-center gap-1.5 ml-1" title="Save Contact">
-                  <i data-lucide="user-plus" class="w-4 h-4"></i>
-                  <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Save</span>
-                </a>` : ''}
-              </div>
-            `;
-            dirList.appendChild(card);
-          });
-          
-          globalRosterData = Array.from(rosterMap.values());
-          // Sort by number
-          globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
-          renderRosterGrid(globalRosterData);
-          lucide.createIcons();
+        });
+        
+        const firstName = row['First Name'] ? row['First Name'].replace(/ -$/, '').trim() : '';
+        const lastNameField = row['Last name'] ? row['Last name'].trim() : '';
+        const phone = row['Phone'] ? row['Phone'].trim() : '';
+        const email = row['Email'] ? row['Email'].trim() : '';
+        const position = row['Postion'] ? row['Postion'].trim() : '';
+        
+        if (!firstName && !lastNameField) return;
+        
+        // Skip coaches
+        if (firstName.toLowerCase().includes('coach') || position.toLowerCase() === 'coach') return;
+        
+        // Extract player info
+        let playerName = 'Unknown';
+        let playerNumber = '0';
+        const match = lastNameField.match(/(.*?)\s*#(\d+)/);
+        if (match) {
+            playerName = match[1].trim();
+            playerNumber = match[2];
+        } else {
+            playerName = lastNameField.split('-')[0].replace(/\s*#\s*$/, '').trim();
         }
+        
+        const playerKey = playerNumber + '-' + playerName;
+        if (!rosterMap.has(playerKey)) {
+            let initials = playerName.substring(0, 2).toUpperCase();
+            let names = playerName.split(' ');
+            if (names.length >= 2) {
+                initials = names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+            }
+            rosterMap.set(playerKey, {
+                number: playerNumber,
+                name: playerName,
+                posEn: position || 'Player',
+                posEs: position || 'Jugador',
+                initials: initials,
+                goals: row['Goals'] ? parseInt(row['Goals']) : 0,
+                assists: row['Assists'] ? parseInt(row['Assists']) : 0,
+                cleanSheets: row['Clean Sheets'] ? parseInt(row['Clean Sheets']) : 0,
+                isMvp: row['MVP'] === 'Yes'
+            });
+        }
+        
+        // Render directory card
+        let relSuffixHTML = "";
+        let cleanLastName = lastNameField;
+        if (cleanLastName.toLowerCase().includes("- dad")) {
+            relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_dad">${translations[currentLang].rel_dad}</span>`;
+            cleanLastName = cleanLastName.replace(/\s*-\s*Dad/i, '');
+        } else if (cleanLastName.toLowerCase().includes("- mom")) {
+            relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_mom">${translations[currentLang].rel_mom}</span>`;
+            cleanLastName = cleanLastName.replace(/\s*-\s*Mom/i, '');
+        }
+        cleanLastName = cleanLastName.replace(/\s*#\d*/, '').trim();
+
+        let displayNameHTML = "";
+        let numHTML = playerNumber !== '0' ? ` <span class="text-orange-400 font-mono">#${playerNumber}</span>` : '';
+        if (firstName && cleanLastName) {
+            displayNameHTML = `${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName}${numHTML})</span> ${relSuffixHTML}`;
+        } else if (firstName) {
+            displayNameHTML = `${firstName} ${relSuffixHTML}`;
+        } else {
+            displayNameHTML = `${cleanLastName}${numHTML} ${relSuffixHTML}`;
+        }
+        
+        const fullName = (firstName + " " + lastNameField).trim();
+            
+        const card = document.createElement('div');
+        card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
+        
+        const vcardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${fullName}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+        const vcardBlob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
+        const vcardUrl = window.URL.createObjectURL(vcardBlob);
+        
+        card.innerHTML = `
+          <div>
+            <strong class="text-white block text-xs sm:text-sm">${displayNameHTML}</strong>
+            <span class="text-slate-400 text-[10px] sm:text-xs">${email || 'No email provided'}</span>
+          </div>
+          <div class="flex gap-1.5 items-center self-end sm:self-auto">
+            ${phone ? `<a href="tel:${phone}" class="p-2 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg transition" title="Call"><i data-lucide="phone" class="w-4 h-4"></i></a>` : ''}
+            ${phone ? `<a href="sms:${phone}" class="p-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition" title="Text"><i data-lucide="message-square" class="w-4 h-4"></i></a>` : ''}
+            ${phone ? `<a href="${vcardUrl}" download="${fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.vcf" class="py-2 px-3 border border-slate-600 hover:border-slate-400 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition flex items-center gap-1.5 ml-1" title="Save Contact">
+              <i data-lucide="user-plus" class="w-4 h-4"></i>
+              <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Save</span>
+            </a>` : ''}
+          </div>
+        `;
+        dirList.appendChild(card);
       });
+      
+      globalRosterData = Array.from(rosterMap.values());
+      // Sort by number
+      globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
+      renderRosterGrid(globalRosterData);
+      lucide.createIcons();
+    };
+
+    function fetchAndRenderDirectory() {
+      const script = document.createElement('script');
+      script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json&gid=313460202&tq&callback=processRosterData';
+      document.body.appendChild(script);
     }
 
     function toggleLanguage() {
