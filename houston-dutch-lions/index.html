@@ -939,21 +939,31 @@
         const lookupDate = monthNames[parseInt(m, 10) - 1] + " " + parseInt(d, 10);
         
         let signupHTML = '';
+        let drinksCovered = false;
         if (signupsMap.has(lookupDate)) {
             const signups = signupsMap.get(lookupDate);
             if (signups.drinks && signups.drinks.length > 0) {
+                drinksCovered = true;
                 signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-emerald-300 bg-emerald-900/30 p-2 rounded border border-emerald-800/50">
-                    <i data-lucide="cup-soda" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
-                    <span><strong>Drinks provided by:</strong> ${signups.drinks.join(', ')}</span>
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <span><strong>Drinks covered by:</strong> ${signups.drinks.join(', ')}</span>
                 </div>`;
             }
         }
+        
+        if (eventType === 'scrimmage' && !drinksCovered) {
+             signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-orange-300 bg-orange-900/30 p-2 rounded border border-orange-800/50">
+                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <span><strong>Drinks are still needed!</strong></span>
+                </div>`;
+        }
+
         if (signupHTML) {
             content += `<div class="mt-3 border-t border-slate-700/50 pt-2">${signupHTML}</div>`;
         }
 
-        // Add Drinks Button (Google Form Link) ONLY for Scrimmages
-        if (eventType === 'scrimmage') {
+        // Add Drinks Button (Google Form Link) ONLY for Scrimmages if NOT covered
+        if (eventType === 'scrimmage' && !drinksCovered) {
             content += `<div class="mt-3">
               <a href="https://docs.google.com/forms/d/e/1FAIpQLSey2gFFQABoppLZ1mKHw3-dLCp3FHfXoxr7Mn5tbKzr63O8og/viewform" target="_blank" class="w-full p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
                 <i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks
