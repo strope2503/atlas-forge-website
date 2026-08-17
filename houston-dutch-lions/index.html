@@ -1368,6 +1368,20 @@
         lucide.createIcons();
         setTimeout(() => {
           closeVolunteerModal();
+          
+          // Optimistically update UI so they don't have to refresh
+          if (!signupsMap.has(date)) {
+            signupsMap.set(date, { drinks: [] });
+          }
+          signupsMap.get(date).drinks.push(name);
+          
+          const dayNum = date.replace('August ', '');
+          const el = document.getElementById('drink-status-Aug' + dayNum);
+          if (el) {
+              el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40";
+              el.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${signupsMap.get(date).drinks.join(', ')}`;
+              if (window.lucide) lucide.createIcons();
+          }
         }, 2000);
       }).catch(err => {
         status.textContent = "Error submitting. Please try again.";
