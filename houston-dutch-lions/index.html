@@ -624,29 +624,31 @@
     let signupsMap = new Map();
 
     function fetchSignups() {
-      const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRK1tZfpsKKJlJz9CsM0du5W8C2kP0BDWbZrGYe9lYprTt20bm7Q3REXRaMVvZnVgaNur-yaI3Ob1Ja/pub?output=csv';
-      Papa.parse(csvUrl, {
-        download: true,
-        header: true,
-        skipEmptyLines: true,
-        complete: function(results) {
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec";
+      
+      fetch(scriptUrl)
+        .then(response => response.json())
+        .then(data => {
           signupsMap.clear();
-          results.data.forEach(row => {
-            const name = row['Parent Name'] ? row['Parent Name'].trim() : '';
-            const date = row['Game Date'] ? row['Game Date'].trim() : '';
-            const role = row['What are you volunteering for?'] ? row['What are you volunteering for?'].trim() : '';
-            
-            if (!name || !date || !role) return;
-            
-            if (!signupsMap.has(date)) {
-              signupsMap.set(date, { drinks: [] });
-            }
-            
-            const entry = signupsMap.get(date);
-            if (role.toLowerCase().includes('drink') || role.toLowerCase().includes('snack') || role.toLowerCase().includes('water')) {
-              entry.drinks.push(name);
-            }
-          });
+          
+          if (Array.isArray(data)) {
+            data.forEach(row => {
+              const name = row.name ? row.name.trim() : '';
+              const date = row.date ? row.date.trim() : '';
+              const role = row.role ? row.role.trim() : '';
+              
+              if (!name || !date || !role) return;
+              
+              if (!signupsMap.has(date)) {
+                signupsMap.set(date, { drinks: [] });
+              }
+              
+              const entry = signupsMap.get(date);
+              if (role.toLowerCase().includes('drink') || role.toLowerCase().includes('snack') || role.toLowerCase().includes('water')) {
+                entry.drinks.push(name);
+              }
+            });
+          }
           
           // Update event list drink statuses
           const dates = ["Aug20", "Aug27", "Aug29"];
@@ -660,13 +662,20 @@
                           el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40";
                           el.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${s.drinks.join(', ')}`;
                           if(window.lucide) lucide.createIcons();
+                      } else {
+                          el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40";
+                          el.innerHTML = \`<i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August \${dayNum}'); return false;" class="underline ml-1">Volunteer</a>\`;
+                          if(window.lucide) lucide.createIcons();
                       }
+                  } else {
+                      el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40";
+                      el.innerHTML = \`<i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August \${dayNum}'); return false;" class="underline ml-1">Volunteer</a>\`;
+                      if(window.lucide) lucide.createIcons();
                   }
               }
           });
-          
-        }
-      });
+        })
+        .catch(err => console.error('Error fetching signups:', err));
     }
 
     function fetchAndRenderDirectory() {
