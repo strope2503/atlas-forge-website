@@ -314,6 +314,46 @@
       </div>
     </section>
 
+    <!-- SECTION: STATISTICS LEADERBOARDS -->
+    <section id="stats-section" class="space-y-3">
+      <div>
+        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="w-4 h-4 text-orange-400"></i>
+          <span data-i18n="stats_title">Season Statistics</span>
+        </h2>
+        <p class="text-[11px] text-slate-400" data-i18n="stats_subtitle">Team leaders across key metrics.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Golden Boot -->
+        <div class="glass-card p-4 rounded-xl border border-yellow-900/40 relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 opacity-10">
+            <i data-lucide="award" class="w-24 h-24 text-yellow-500"></i>
+          </div>
+          <h3 class="text-xs font-bold text-yellow-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i data-lucide="goal" class="w-3.5 h-3.5"></i> Golden Boot (Goals)</h3>
+          <div id="stats-goals" class="space-y-2 relative z-10"></div>
+        </div>
+
+        <!-- Playmaker -->
+        <div class="glass-card p-4 rounded-xl border border-blue-900/40 relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 opacity-10">
+            <i data-lucide="users" class="w-24 h-24 text-blue-500"></i>
+          </div>
+          <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i data-lucide="share-2" class="w-3.5 h-3.5"></i> Playmaker (Assists)</h3>
+          <div id="stats-assists" class="space-y-2 relative z-10"></div>
+        </div>
+
+        <!-- The Wall -->
+        <div class="glass-card p-4 rounded-xl border border-emerald-900/40 relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 opacity-10">
+            <i data-lucide="shield" class="w-24 h-24 text-emerald-500"></i>
+          </div>
+          <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> The Wall (Clean Sheets)</h3>
+          <div id="stats-cleans" class="space-y-2 relative z-10"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- SECTION: PARENT DIRECTORY (DYNAMIC) -->
     <section id="directory-section" class="space-y-3">
       <div class="flex justify-between items-start">
@@ -491,6 +531,10 @@
       <i data-lucide="users" class="w-4 h-4"></i>
       <span data-i18n="nav_roster">Roster</span>
     </a>
+    <a href="#stats-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+      <span data-i18n="nav_stats">Stats</span>
+    </a>
     <a href="#directory-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
       <i data-lucide="shield" class="w-4 h-4"></i>
       <span data-i18n="nav_contacts">Contacts</span>
@@ -595,6 +639,47 @@
     };
 
     let currentLang = 'en';
+
+    function renderStats(data) {
+      // Golden Boot
+      let topScorers = [...data].sort((a, b) => b.goals - a.goals).slice(0, 3);
+      document.getElementById('stats-goals').innerHTML = topScorers.map((p, i) => `
+        <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 w-3">${i + 1}.</span>
+            <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[9px] font-bold text-white">${p.initials}</div>
+            <span class="text-xs font-bold text-white">${p.name} <span class="text-slate-500 font-normal">#${p.number}</span></span>
+          </div>
+          <span class="text-sm font-black text-yellow-400">${p.goals}</span>
+        </div>
+      `).join('');
+
+      // Playmaker
+      let topAssists = [...data].sort((a, b) => b.assists - a.assists).slice(0, 3);
+      document.getElementById('stats-assists').innerHTML = topAssists.map((p, i) => `
+        <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 w-3">${i + 1}.</span>
+            <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[9px] font-bold text-white">${p.initials}</div>
+            <span class="text-xs font-bold text-white">${p.name} <span class="text-slate-500 font-normal">#${p.number}</span></span>
+          </div>
+          <span class="text-sm font-black text-blue-400">${p.assists}</span>
+        </div>
+      `).join('');
+
+      // The Wall
+      let topCleans = [...data].sort((a, b) => b.cleanSheets - a.cleanSheets).slice(0, 3);
+      document.getElementById('stats-cleans').innerHTML = topCleans.map((p, i) => `
+        <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 w-3">${i + 1}.</span>
+            <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[9px] font-bold text-white">${p.initials}</div>
+            <span class="text-xs font-bold text-white">${p.name} <span class="text-slate-500 font-normal">#${p.number}</span></span>
+          </div>
+          <span class="text-sm font-black text-emerald-400">${p.cleanSheets}</span>
+        </div>
+      `).join('');
+    }
 
     function renderRosterGrid(data) {
       const grid = document.getElementById('rosterGrid');
@@ -877,6 +962,7 @@
       // Sort by number
       globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
       renderRosterGrid(globalRosterData);
+      renderStats(globalRosterData);
       
       // Calculate upcoming birthdays
       let upcomingBirthdaysHTML = '';
@@ -1006,9 +1092,9 @@
     let currentDate = new Date('2026-08-15T12:00:00'); // Baseline to August 2026 for simulation
 
     const specificEvents = {
-      '2026-08-20': { type: 'scrimmage', opponent: 'Huntsville Eclipse', time: '7:00 PM - 8:30 PM', home: true, uniform: 'Orange Jersey', bring: 'Blue alternate', location: 'HDL Complex Field' },
-      '2026-08-27': { type: 'scrimmage', opponent: 'Cleveland FC', time: '7:00 PM (Call: 6:30 PM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field' },
-      '2026-08-29': { type: 'scrimmage', opponent: 'CMavericks FC', time: '9:15 AM (Call: 8:45 AM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field' }
+      '2026-08-20': { type: 'scrimmage', opponent: 'Huntsville Eclipse', time: '7:00 PM - 8:30 PM', home: true, uniform: 'Orange Jersey', bring: 'Blue alternate', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'2', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } },
+      '2026-08-27': { type: 'scrimmage', opponent: 'Cleveland FC', time: '7:00 PM (Call: 6:30 PM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'15', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } },
+      '2026-08-29': { type: 'scrimmage', opponent: 'CMavericks FC', time: '9:15 AM (Call: 8:45 AM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'2', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } }
     };
 
     function renderCalendar() {
@@ -1123,6 +1209,36 @@
       } else {
         content = `<h4 class="text-slate-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'NO EVENT' : 'SIN EVENTO'}</h4>
                    <p class="text-white text-xs font-semibold">${formattedDate}</p>`;
+      }
+      
+      // Lineup Block
+      if (ev && ev.formation && ev.starters) {
+          content += `<div class="mt-3 bg-slate-950/50 p-3 rounded-xl border border-slate-800">
+            <h5 class="text-orange-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center gap-1.5">
+              <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Starting Lineup (${ev.formation})
+            </h5>
+            <div class="relative w-full aspect-[4/3] bg-emerald-800/50 border border-white/20 rounded overflow-hidden mt-2">
+              <div class="absolute inset-0 border border-white/10 m-2 pointer-events-none"></div>
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1/5 border-b border-x border-white/20 pointer-events-none"></div>
+              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/3 h-1/5 border-t border-x border-white/20 pointer-events-none"></div>
+              <div class="absolute top-1/2 left-0 right-0 h-px bg-white/20 pointer-events-none"></div>
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 pointer-events-none"></div>
+              
+              <!-- Mini Tokens -->
+              <div class="absolute top-[8%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-zinc-400 rounded-full text-[8px] font-bold text-black flex items-center justify-center">${ev.starters.gk}</div>
+              <div class="absolute top-[25%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lb}</div>
+              <div class="absolute top-[22%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb1}</div>
+              <div class="absolute top-[22%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb2}</div>
+              <div class="absolute top-[25%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rb}</div>
+              <div class="absolute top-[45%] left-[30%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm1}</div>
+              <div class="absolute top-[52%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cdm}</div>
+              <div class="absolute top-[45%] left-[70%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm2}</div>
+              <div class="absolute top-[75%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lw}</div>
+              <div class="absolute top-[68%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.st}</div>
+              <div class="absolute top-[75%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rw}</div>
+            </div>
+            <button onclick="document.getElementById('modal-close-btn').click(); document.getElementById('tactics-section').scrollIntoView({behavior: 'smooth'})" class="mt-2 w-full text-[10px] bg-slate-800 hover:bg-slate-700 text-white py-1.5 rounded transition">Open Full Tactics Board</button>
+          </div>`;
       }
       
       if (eventType === 'scrimmage' || isPractice) {
