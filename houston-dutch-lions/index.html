@@ -737,11 +737,7 @@
                 initials = names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
             }
             
-            const hardcodedBirthdays = {
-                "Cole Hindmand": "08-17-15", // Changed temporarily so you can see the notification!
-                "Vinny Joslin": "12-22-15"
-            };
-            let bdayRaw = row['Birthday'] ? String(row['Birthday']).trim() : (hardcodedBirthdays[playerName] || "");
+            let bdayRaw = row['Birthday'] ? String(row['Birthday']).trim() : "";
             let bdayMMDD = "";
             let bdayDisplay = "TBD";
             if (bdayRaw) {
