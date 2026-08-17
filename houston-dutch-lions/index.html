@@ -135,6 +135,9 @@
         </button>
       </div>
 
+      <!-- UPCOMING BIRTHDAYS NOTIFICATION -->
+      <div id="upcoming-birthdays" class="hidden"></div>
+
       <!-- VISUAL CALENDAR GRID -->
       <div class="glass-card p-3 rounded-xl">
         <div class="flex justify-between items-center mb-2 px-1">
@@ -791,7 +794,7 @@
         const card = document.createElement('div');
         card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
         
-        const vcardData = `BEGIN:VCARD\nVERSION:3.0\nFN:${fullName}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
+        const vcardData = `BEGIN:VCARD\nVERSION:3.0\nN:${lastNameField};${firstName};;;\nFN:${fullName}\nTEL;TYPE=CELL:${phone}\nEMAIL:${email}\nEND:VCARD`;
         const vcardBlob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
         const vcardUrl = window.URL.createObjectURL(vcardBlob);
         
@@ -816,6 +819,51 @@
       // Sort by number
       globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
       renderRosterGrid(globalRosterData);
+      
+      // Calculate upcoming birthdays
+      let upcomingBirthdaysHTML = '';
+      const today = new Date(currentDate);
+      today.setHours(0,0,0,0);
+      
+      globalRosterData.forEach(p => {
+          if (p.birthdayMMDD) {
+              const [bMonth, bDay] = p.birthdayMMDD.split('-');
+              let nextBday = new Date(today.getFullYear(), parseInt(bMonth)-1, parseInt(bDay));
+              
+              if (nextBday < today) {
+                  nextBday.setFullYear(today.getFullYear() + 1);
+              }
+              
+              const diffTime = nextBday.getTime() - today.getTime();
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              
+              if (diffDays <= 7) {
+                  let timeStr = diffDays === 0 ? "Today!" : (diffDays === 1 ? "Tomorrow" : `In ${diffDays} days`);
+                  upcomingBirthdaysHTML += `<div class="mb-2 p-3 bg-pink-900/30 border border-pink-500/50 rounded-xl flex items-center justify-between shadow-lg">
+                      <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-xl shadow-inner">🎂</div>
+                          <div>
+                              <h4 class="text-pink-300 font-bold text-sm">Upcoming Birthday</h4>
+                              <p class="text-white text-xs">${p.name} turns a year older!</p>
+                          </div>
+                      </div>
+                      <span class="text-pink-400 font-bold text-xs uppercase tracking-wider bg-pink-900/50 px-2 py-1 rounded">${timeStr}</span>
+                  </div>`;
+              }
+          }
+      });
+      
+      const bdayContainer = document.getElementById('upcoming-birthdays');
+      if (bdayContainer) {
+          if (upcomingBirthdaysHTML) {
+              bdayContainer.innerHTML = upcomingBirthdaysHTML;
+              bdayContainer.classList.remove('hidden');
+          } else {
+              bdayContainer.classList.add('hidden');
+              bdayContainer.innerHTML = '';
+          }
+      }
+
       renderCalendar();
       lucide.createIcons();
     };
