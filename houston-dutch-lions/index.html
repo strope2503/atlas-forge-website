@@ -547,7 +547,7 @@
 
     function initLiveMatchPolling() {
         const GID_LIVE = '1766940121';
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_LIVE}`;
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&gid=${GID_LIVE}`;
         
         const poll = () => {
             fetch(url)
@@ -602,7 +602,7 @@
 
     function fetchMediaData() {
         const GID_MEDIA = '2101276011';
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_MEDIA}`;
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&gid=${GID_MEDIA}`;
         
         fetch(url)
             .then(res => res.text())
