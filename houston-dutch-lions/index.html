@@ -983,7 +983,7 @@
         if (email) vcardLines.push(`EMAIL:${email}`);
         vcardLines.push("END:VCARD");
         
-        const vcardData = vcardLines.join('\\r\\n');
+        const vcardData = vcardLines.join('\r\n');
         const vcardBlob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
         const vcardUrl = window.URL.createObjectURL(vcardBlob);
         
