@@ -968,10 +968,23 @@
                     try { startersParsed = JSON.parse(row['Starters']); } catch(e) { console.error("Error parsing starters JSON:", e); }
                 }
 
+                let timeStr = row['Time'] ? String(row['Time']).trim() : '';
+                if (timeStr.startsWith('Date(')) {
+                    const parts = timeStr.match(/Date\(\d+,\d+,\d+,(\d+),(\d+),(\d+)\)/);
+                    if (parts) {
+                        let hr = parseInt(parts[1], 10);
+                        let mn = String(parts[2]).padStart(2, '0');
+                        let ampm = hr >= 12 ? 'PM' : 'AM';
+                        hr = hr % 12;
+                        if (hr === 0) hr = 12;
+                        timeStr = `${hr}:${mn} ${ampm}`;
+                    }
+                }
+
                 specificEvents[dateStr] = {
                     type: row['Type'] ? row['Type'].toLowerCase() : 'practice',
                     opponent: row['Opponent'] || '',
-                    time: row['Time'] || '',
+                    time: timeStr,
                     home: true, // simplified
                     uniform: row['Uniform'] || '',
                     bring: row['Bring'] || '',
@@ -1135,7 +1148,7 @@
     // ==========================================
     // CALENDAR & WEATHER LOGIC
     // ==========================================
-    let currentDate = new Date('2026-08-15T12:00:00'); // Baseline to August 2026 for simulation
+    let currentDate = new Date(); // Use actual current date
 
     let specificEvents = {};
 
@@ -1176,7 +1189,8 @@
         }
         
         // Highlight today
-        if (dateStr === '2026-08-15') {
+        const todayStr = new Date().toLocaleDateString('en-CA'); // 'YYYY-MM-DD' local time
+        if (dateStr === todayStr) {
           colorClasses += " ring-2 ring-white/50";
         }
 
