@@ -1230,7 +1230,7 @@
       let eventType = ev ? ev.type : '';
       
       if (eventType === 'scrimmage') {
-        content = `<h4 class="text-orange-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO'}</h4>
+        content += `<h4 class="text-orange-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO'}</h4>
                    <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
                    <p class="text-slate-300 text-xs mb-1">${ev.time} vs ${ev.opponent}</p>
                    <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition mb-2.5">
@@ -1242,14 +1242,14 @@
                      <p class="text-[11px] text-slate-300 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring}</p>
                    </div>`;
       } else if (isPractice) {
-        content = `<h4 class="text-blue-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO'}</h4>
+        content += `<h4 class="text-blue-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO'}</h4>
                    <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
                    <p class="text-slate-300 text-xs mb-1">6:45 PM - 8:00 PM</p>
                    <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition">
                      <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
                    </a>`;
       } else {
-        content = `<h4 class="text-slate-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'NO EVENT' : 'SIN EVENTO'}</h4>
+        content += `<h4 class="text-slate-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'NO EVENT' : 'SIN EVENTO'}</h4>
                    <p class="text-white text-xs font-semibold">${formattedDate}</p>`;
       }
       
