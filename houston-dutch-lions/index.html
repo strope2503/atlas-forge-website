@@ -81,8 +81,39 @@
 
   <main class="max-w-4xl mx-auto px-4 py-5 space-y-8">
 
-
-
+    <!-- LIVE MATCH SCOREBOARD (HIDDEN BY DEFAULT) -->
+    <section id="live-match-container" class="hidden scroll-animate show glass-card glow-orange rounded-2xl p-5 relative border border-orange-500 shadow-lg shadow-orange-500/20 overflow-hidden">
+      <!-- Pulsing Live Indicator -->
+      <div class="absolute top-0 right-0 px-3 py-1 bg-red-600 text-white text-[10px] font-bold tracking-widest flex items-center gap-1.5 rounded-bl-lg">
+        <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> LIVE
+      </div>
+      
+      <div class="flex items-center justify-between mt-3 mb-2">
+        <div class="text-center w-5/12">
+          <h3 id="live-home-team" class="text-xs sm:text-sm font-bold text-slate-200 uppercase truncate">HDL Elite</h3>
+          <p id="live-home-score" class="text-4xl sm:text-5xl font-black text-orange-400 font-mono mt-1 drop-shadow-md">0</p>
+        </div>
+        
+        <div class="text-center w-2/12 flex flex-col items-center">
+          <span class="text-[10px] text-slate-400 font-bold mb-1 border border-slate-600 rounded px-1.5 py-0.5" id="live-match-status">1H</span>
+          <span class="text-xs font-black text-slate-500">VS</span>
+        </div>
+        
+        <div class="text-center w-5/12">
+          <h3 id="live-away-team" class="text-xs sm:text-sm font-bold text-slate-200 uppercase truncate">Opponent</h3>
+          <p id="live-away-score" class="text-4xl sm:text-5xl font-black text-white font-mono mt-1 drop-shadow-md">0</p>
+        </div>
+      </div>
+      
+      <!-- Live Updates / Clock -->
+      <div class="bg-slate-900/80 rounded-lg p-2.5 mt-4 border border-slate-700 flex items-start gap-2">
+        <i data-lucide="radio" class="w-4 h-4 text-orange-400 mt-0.5 animate-pulse"></i>
+        <div class="flex-1">
+          <p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold mb-0.5">Match Updates</p>
+          <p id="live-updates-text" class="text-xs text-slate-200 leading-snug">Waiting for kickoff...</p>
+        </div>
+      </div>
+    </section>
     <!-- HERO: NEXT MATCH -->
     <section class="scroll-animate glass-card glow-orange rounded-2xl p-5 relative border-l-4 border-l-orange-500">
       <div class="flex justify-between items-start mb-3">
@@ -331,53 +362,9 @@
         </a>
       </div>
 
-      <!-- VIDEO TIMELINE -->
-      <div class="relative border-l-2 border-blue-900/50 pl-4 space-y-6 mt-4 ml-1">
-        
-        <!-- SPRING 2026 -->
-        <div class="relative">
-          <div class="absolute -left-[21px] top-1 h-3 w-3 bg-emerald-500 rounded-full border border-[#0a0f1d] shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
-          <h4 class="text-sm font-bold text-emerald-400 mb-2">Spring 2026 Season</h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
-              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">Highlights of Spring 2026</p>
-              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/IX-0G-tQtH8" frameborder="0" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
-              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">South Texas Cup Spring 2026</p>
-              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/wX7jU24OncM" frameborder="0" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
-              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">04-16-26 vs Houston Dynamo</p>
-              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/OEjkdvvAYTs" frameborder="0" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
-              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">03-28-26 vs Hardin County YSC</p>
-              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/wnlTeISJXPc" frameborder="0" allowfullscreen loading="lazy"></iframe>
-            </div>
-          </div>
-        </div>
-
-        <!-- FALL 2025 -->
-        <div class="relative">
-          <div class="absolute -left-[21px] top-1 h-3 w-3 bg-orange-500 rounded-full border border-[#0a0f1d] shadow-[0_0_8px_rgba(234,88,12,0.8)]"></div>
-          <h4 class="text-sm font-bold text-orange-400 mb-2">Fall 2025 Season</h4>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
-              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">10-18-25 vs Klein SC</p>
-              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/AZnnlLqY48Q" frameborder="0" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
-              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">10-11-25 vs HTX Kingwood 14B Black</p>
-              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/aiLhOXNX9Jw" frameborder="0" allowfullscreen loading="lazy"></iframe>
-            </div>
-            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
-              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">10-05-25 vs HTX Tomball 14B Gold</p>
-              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/NbrZk45AUjY" frameborder="0" allowfullscreen loading="lazy"></iframe>
-            </div>
-          </div>
-        </div>
-
+      <!-- DYNAMIC MEDIA TIMELINE -->
+      <div id="dynamic-media-container" class="relative border-l-2 border-blue-900/50 pl-4 space-y-6 mt-4 ml-1">
+          <div class="text-center text-slate-400 text-xs py-4 flex items-center justify-center gap-2"><i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Loading latest media...</div>
       </div>
     </section>
 
@@ -463,6 +450,8 @@
 
   <!-- JAVASCRIPT & ROSTER DATA -->
   <script>
+    const SHEET_ID = '13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ';
+    
     // Global dynamic roster data
     let globalRosterData = [];
 
@@ -555,6 +544,128 @@
     };
 
     let currentLang = 'en';
+
+    function initLiveMatchPolling() {
+        const GID_LIVE = '179619559';
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_LIVE}`;
+        
+        const poll = () => {
+            fetch(url)
+                .then(res => res.text())
+                .then(text => {
+                    const jsonStr = text.substring(text.indexOf('google.visualization.Query.setResponse(') + 39, text.length - 2);
+                    const data = JSON.parse(jsonStr);
+                    if (data.table && data.table.rows && data.table.rows.length > 0) {
+                        const cols = data.table.cols.map(c => c.label);
+                        const row = data.table.rows[0].c;
+                        let matchData = {};
+                        cols.forEach((col, i) => { matchData[col] = row[i] ? (row[i].f || row[i].v) : ''; });
+                        updateLiveMatchUI(matchData);
+                    }
+                });
+        };
+        poll();
+        setInterval(poll, 30000);
+    }
+
+    function updateLiveMatchUI(matchData) {
+        const container = document.getElementById('live-match-container');
+        const status = (matchData['Status'] || '').toUpperCase();
+        
+        if (status === 'LIVE' || status.includes('HALF') || status === 'FINAL' || status.includes('DELAY')) {
+            // Show scoreboard
+            container.classList.remove('hidden');
+            
+            document.getElementById('live-home-team').textContent = matchData['Home Team'] || 'Home';
+            document.getElementById('live-away-team').textContent = matchData['Away Team'] || 'Away';
+            
+            document.getElementById('live-home-score').textContent = matchData['Home Score'] || '0';
+            document.getElementById('live-away-score').textContent = matchData['Away Score'] || '0';
+            
+            document.getElementById('live-match-status').textContent = status;
+            document.getElementById('live-updates-text').textContent = matchData['Live Updates'] || 'No updates yet...';
+            
+            // If final, maybe change styling to not pulse red
+            const indicator = container.querySelector('.bg-red-600') || container.querySelector('.bg-slate-700');
+            if (status === 'FINAL') {
+                indicator.className = 'absolute top-0 right-0 px-3 py-1 bg-slate-700 text-white text-[10px] font-bold tracking-widest flex items-center gap-1.5 rounded-bl-lg';
+                indicator.innerHTML = 'FINAL';
+            } else {
+                indicator.className = 'absolute top-0 right-0 px-3 py-1 bg-red-600 text-white text-[10px] font-bold tracking-widest flex items-center gap-1.5 rounded-bl-lg';
+                indicator.innerHTML = '<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> LIVE';
+            }
+        } else {
+            // Hide scoreboard if 'PREGAME' or empty
+            container.classList.add('hidden');
+        }
+    }
+
+    function fetchMediaData() {
+        const GID_MEDIA = '2101276011';
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${GID_MEDIA}`;
+        
+        fetch(url)
+            .then(res => res.text())
+            .then(text => {
+                const jsonStr = text.substring(text.indexOf('google.visualization.Query.setResponse(') + 39, text.length - 2);
+                const data = JSON.parse(jsonStr);
+                processMediaData(data);
+            })
+            .catch(err => {
+                console.error("Error fetching Media data:", err);
+                document.getElementById('dynamic-media-container').innerHTML = '<p class="text-xs text-red-400">Failed to load media.</p>';
+            });
+    }
+
+    function processMediaData(data) {
+        const container = document.getElementById('dynamic-media-container');
+        if (!data.table.rows || data.table.rows.length === 0) {
+            container.innerHTML = '<p class="text-[11px] text-slate-500 italic">No media uploaded yet.</p>';
+            return;
+        }
+
+        const cols = data.table.cols.map(c => c ? c.label : '');
+        let html = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
+        
+        data.table.rows.forEach(row => {
+            let rowData = {};
+            cols.forEach((colName, i) => {
+                if (!colName) return;
+                const cell = row.c[i];
+                rowData[colName] = cell ? (cell.f || cell.v) : '';
+            });
+
+            if (!rowData['Media URL']) return;
+
+            const url = rowData['Media URL'];
+            const caption = rowData['Caption'] || 'Team Media';
+            
+            // Very simple embed logic (could be improved to handle YouTube vs raw images)
+            let mediaEmbed = '';
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                // Convert to embed URL
+                let videoId = '';
+                if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+                else if (url.includes('v=')) videoId = url.split('v=')[1].split('&')[0];
+                
+                mediaEmbed = `<iframe class="w-full aspect-video rounded-lg bg-black" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen loading="lazy"></iframe>`;
+            } else {
+                // Assume image or raw video
+                mediaEmbed = `<img src="${url}" alt="${caption}" class="w-full aspect-video object-cover rounded-lg bg-slate-900 border border-slate-700" loading="lazy">`;
+            }
+
+            html += `
+                <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition shadow-lg">
+                  <p class="text-[10px] font-bold text-slate-300 mb-1.5 truncate flex items-center gap-1.5"><i data-lucide="play-circle" class="w-3.5 h-3.5 text-orange-400"></i> ${caption}</p>
+                  ${mediaEmbed}
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        container.innerHTML = html;
+        if (window.lucide) lucide.createIcons();
+    }
 
     function renderStats(data) {
       // Golden Boot
@@ -929,13 +1040,13 @@
 
     function fetchAndRenderDirectory() {
       const script = document.createElement('script');
-      script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json;responseHandler:processRosterData&headers=1&gid=313460202';
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:processRosterData&headers=1&gid=313460202`;
       document.body.appendChild(script);
     }
 
     function fetchEventsData() {
       const script = document.createElement('script');
-      script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json;responseHandler:processEventsData&headers=1&gid=1253580532';
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:processEventsData&headers=1&gid=1253580532`;
       document.body.appendChild(script);
     }
 
@@ -1509,9 +1620,10 @@
       if (banner) banner.classList.remove('hidden');
     }
 
-    // Initial render
-    fetchSignups();
+    // Initialize all data
     fetchAndRenderDirectory();
+    initLiveMatchPolling();
+    fetchMediaData();
     renderCalendar();
     fetchWeather();
 
