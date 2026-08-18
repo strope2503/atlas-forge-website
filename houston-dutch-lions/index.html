@@ -984,8 +984,7 @@
         vcardLines.push("END:VCARD");
         
         const vcardData = vcardLines.join('\r\n');
-        const vcardBlob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
-        const vcardUrl = window.URL.createObjectURL(vcardBlob);
+        const vcardUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcardData);
         
         card.innerHTML = `
           <div>
