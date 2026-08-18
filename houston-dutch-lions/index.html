@@ -547,7 +547,7 @@
 
     function initLiveMatchPolling() {
         const GID_LIVE = '1766940121';
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&gid=${GID_LIVE}`;
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&gid=${GID_LIVE}&t=${Date.now()}`;
         
         const poll = () => {
             fetch(url)
@@ -602,7 +602,7 @@
 
     function fetchMediaData() {
         const GID_MEDIA = '2101276011';
-        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&gid=${GID_MEDIA}`;
+        const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&gid=${GID_MEDIA}&t=${Date.now()}`;
         
         fetch(url)
             .then(res => res.text())
@@ -1040,13 +1040,13 @@
 
     function fetchAndRenderDirectory() {
       const script = document.createElement('script');
-      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:processRosterData&headers=1&gid=313460202`;
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:processRosterData&headers=1&gid=313460202&t=${Date.now()}`;
       document.body.appendChild(script);
     }
 
     function fetchEventsData() {
       const script = document.createElement('script');
-      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:processEventsData&headers=1&gid=1253580532`;
+      script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json;responseHandler:processEventsData&headers=1&gid=1253580532&t=${Date.now()}`;
       document.body.appendChild(script);
     }
 
