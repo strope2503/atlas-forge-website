@@ -356,10 +356,22 @@
 
       <!-- Upload Portal -->
       <div class="mb-6">
-        <a href="https://drive.google.com/open?id=1gsg9oirm_aehrZ42WnEJGuu00pBQlkG3&usp=drive_fs" target="_blank" class="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02]">
+        <label for="mediaUploadInput" class="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02] cursor-pointer">
           <i data-lucide="upload-cloud" class="w-5 h-5"></i>
-          <span data-i18n="upload_photos">Upload Game Photos & Videos</span>
-        </a>
+          <span data-i18n="upload_photos" id="uploadBtnText">Upload Game Photos & Videos</span>
+        </label>
+        <input type="file" id="mediaUploadInput" accept="image/*,video/*" multiple class="hidden" onchange="handleMediaUpload(event)">
+        
+        <!-- Progress Bar -->
+        <div id="uploadProgressContainer" class="hidden mt-3 bg-slate-800 rounded-lg p-3 border border-slate-700">
+          <div class="flex justify-between text-xs mb-1">
+            <span id="uploadStatusText" class="text-orange-400 font-bold">Preparing...</span>
+            <span id="uploadPercentText" class="text-slate-300">0%</span>
+          </div>
+          <div class="w-full bg-slate-900 rounded-full h-2.5 border border-slate-700 overflow-hidden">
+            <div id="uploadProgressBar" class="bg-orange-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
       </div>
 
       <!-- DYNAMIC MEDIA TIMELINE -->
@@ -1840,6 +1852,86 @@
         console.error(err);
       });
     }
+    // UPLOAD LOGIC
+    async function handleMediaUpload(event) {
+        const files = event.target.files;
+        if (!files || files.length === 0) return;
+
+        const container = document.getElementById('uploadProgressContainer');
+        const statusText = document.getElementById('uploadStatusText');
+        const percentText = document.getElementById('uploadPercentText');
+        const progressBar = document.getElementById('uploadProgressBar');
+        
+        container.classList.remove('hidden');
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbzrpDc9q2kmsP0drtxucdE3dhFxonXAxpGtCIbcNaXAkfoVCvUKnKzKVb2X1Bc8Aum9/exec";
+
+        let successCount = 0;
+        let failCount = 0;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            statusText.innerText = `Uploading ${i + 1} of ${files.length}: ${file.name}...`;
+            let pct = Math.round((i / files.length) * 100);
+            progressBar.style.width = pct + '%';
+            percentText.innerText = pct + '%';
+
+            try {
+                const base64 = await toBase64(file);
+                const payload = {
+                    filename: file.name,
+                    mimeType: file.type,
+                    file: base64
+                };
+
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                if (result.status === 'success') {
+                    successCount++;
+                } else {
+                    console.error("Upload failed for", file.name, result.message);
+                    failCount++;
+                }
+            } catch (err) {
+                console.error("Error uploading", file.name, err);
+                failCount++;
+            }
+        }
+
+        // Finish
+        progressBar.style.width = '100%';
+        percentText.innerText = '100%';
+        
+        if (failCount === 0) {
+            statusText.innerText = `Success! Uploaded ${successCount} files.`;
+            statusText.className = "text-emerald-400 font-bold";
+        } else {
+            statusText.innerText = `Done. ${successCount} succeeded, ${failCount} failed.`;
+            statusText.className = "text-red-400 font-bold";
+        }
+
+        // Reset file input so they can upload again
+        event.target.value = '';
+
+        setTimeout(() => {
+            container.classList.add('hidden');
+            statusText.className = "text-orange-400 font-bold";
+            progressBar.style.width = '0%';
+        }, 5000);
+    }
+
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
   </script>
 </body>
 </html>
