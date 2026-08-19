@@ -1092,8 +1092,39 @@
                 }
 
                 let startersParsed = null;
-                if (row['Starters']) {
-                    try { startersParsed = JSON.parse(row['Starters']); } catch(e) { console.error("Error parsing starters JSON:", e); }
+                if (row['GK'] || row['LB'] || row['CB1'] || row['ST'] || row['RB'] || row['CDM']) {
+                    startersParsed = {
+                        gk: row['GK'] || '',
+                        lb: row['LB'] || '',
+                        cb1: row['CB1'] || '',
+                        cb2: row['CB2'] || '',
+                        rb: row['RB'] || '',
+                        cm1: row['CM1'] || '',
+                        cdm: row['CDM'] || '',
+                        cm2: row['CM2'] || '',
+                        lw: row['LW'] || '',
+                        st: row['ST'] || '',
+                        rw: row['RW'] || ''
+                    };
+                } else if (row['Starters']) {
+                    const raw = String(row['Starters']).trim();
+                    if (raw.startsWith('{')) {
+                        try { startersParsed = JSON.parse(raw); } catch(e) { console.error("Error parsing starters JSON:", e); }
+                    } else {
+                        startersParsed = {};
+                        const posKeys = ['gk','lb','cb1','cb2','rb','cm1','cdm','cm2','lw','st','rw'];
+                        const pairs = raw.split(/[,;\n]/);
+                        pairs.forEach((pair, idx) => {
+                            if (pair.includes(':')) {
+                                const parts = pair.split(':');
+                                const k = parts[0].trim().toLowerCase();
+                                const v = parts[1].trim();
+                                startersParsed[k] = v;
+                            } else if (pair.trim() && idx < posKeys.length) {
+                                startersParsed[posKeys[idx]] = pair.trim();
+                            }
+                        });
+                    }
                 }
 
                 let timeStr = row['Time'] ? String(row['Time']).trim() : '';
