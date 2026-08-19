@@ -976,14 +976,13 @@
         let vcardLines = [
             "BEGIN:VCARD",
             "VERSION:3.0",
-            `N:${lastNameField};${firstName};;;`,
             `FN:${fullName}`
         ];
         if (phone) vcardLines.push(`TEL;TYPE=CELL:${phone}`);
         if (email) vcardLines.push(`EMAIL:${email}`);
         vcardLines.push("END:VCARD");
         
-        const vcardData = vcardLines.join('\r\n');
+        const vcardData = vcardLines.join('\n');
         const vcardUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcardData);
         
         card.innerHTML = `
