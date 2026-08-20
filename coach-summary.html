@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Atlas Scout Pro: Executive Coaching Summary & Technical Capabilities Briefing.">
+    <title>Coach Executive Briefing — Atlas Scout Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        :root {
+            --bg-obsidian: #04070d;
+            --panel-card: #0b0f19;
+            --card-border: #1e2638;
+            --accent-cyan: #00f0ff;
+            --accent-green: #10b981;
+            --accent-yellow: #f59e0b;
+            --accent-red: #ff3b30;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-obsidian);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.65;
+            padding-bottom: 100px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            color: var(--accent-cyan);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .unlisted-tag {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            color: var(--accent-yellow);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .section-box {
+            background: var(--panel-card);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: clamp(24px, 4vw, 36px);
+            margin-bottom: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-cyan);
+        }
+
+        .section-box.green-edge::before {
+            background: var(--accent-green);
+        }
+
+        .section-box.yellow-edge::before {
+            background: var(--accent-yellow);
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(1.4rem, 3vw, 1.8rem);
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .feature-card {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.25s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
+        .feature-card h4 {
+            color: var(--accent-cyan);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .quote-callout {
+            background: rgba(0, 240, 255, 0.05);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #e2e8f0;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+
+        .stat-pill {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin: 4px;
+            color: var(--accent-cyan);
+        }
+
+        .print-btn {
+            background: rgba(0, 240, 255, 0.15);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .print-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        @media (max-width: 800px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+
+        @media print {
+            header, .print-btn { display: none !important; }
+            body { background: #fff !important; color: #000 !important; }
+            .section-box { border: 1px solid #ccc !important; background: #fff !important; color: #000 !important; box-shadow: none !important; }
+            .section-title, .feature-card h4 { color: #000 !important; }
+            .feature-card p, .quote-callout { color: #333 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <a class="brand" href="index.html" aria-label="Atlas Forge home">
+            <span class="brand-mark" aria-hidden="true">
+                <svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg>
+            </span>
+            <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
+        </a>
+        <div style="display:flex; align-items:center; gap:12px;">
+            <span class="unlisted-tag">🔒 Unlisted Link</span>
+            <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+        </div>
+    </header>
+
+    <main class="section-shell" style="max-width: 1100px; margin: 40px auto; padding: 0 20px;">
+
+        <!-- HERO HEADER -->
+        <div style="text-align: center; margin-bottom: 50px;">
+            <div class="hero-badge">⚡ COACHING STAFF EXECUTIVE BRIEFING</div>
+            <h1 style="font-family:'Space Grotesk',sans-serif; font-size:clamp(2.2rem, 5vw, 3.4rem); font-weight:800; line-height:1.2; margin-bottom:15px;">
+                Atlas Scout Pro Capabilities & Field Guide
+            </h1>
+            <p style="color:var(--text-muted); font-size:1.15rem; max-width:800px; margin:0 auto;">
+                An autonomous, sideline-mounted AI sports broadcasting, analytics, and tactical coaching engine. Zero cameramen required. Zero cloud fees. Pro-tier insights.
+            </p>
+        </div>
+
+        <!-- PILLAR 1: RECORDING -->
+        <div class="section-box">
+            <div class="section-title">🎥 1. Dual-Stream Autonomous Recording Engine</div>
+            <p style="color:var(--text-muted); font-size:1.05rem;">
+                Operating from an elevated 15–25 ft mast, the Jetson Edge AI unit captures and encodes <strong>TWO distinct video streams simultaneously</strong> in real time:
+            </p>
+
+            <div class="grid-2">
+                <div class="feature-card">
+                    <h4>★ 180° Tactical Panoramic Master</h4>
+                    <p>Captures an unbroken, corner-to-corner full field view. Gives coaches 100% visibility of defensive compactness, backline shifts, off-ball midfield runs, and space creation that standard TV broadcasts cut out.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🎥 1080p Virtual Follow-Cam</h4>
+                    <p>Powered by an AI "Auto-Director" that smoothly pans and zooms to follow the ball and player action with fluid, human-like motion for highlight reels, parent feeds, and college recruiting film.</p>
+                </div>
+            </div>
+
+            <div class="quote-callout">
+                <span>🎮</span>
+                <div>
+                    <strong>Cameraman Manual Override:</strong> Coaches or staff can instantly take over the Follow-Cam using an on-screen virtual joystick and zoom slider on any phone, tablet, or laptop.
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLAR 2: STATS & ANALYTICS -->
+        <div class="section-box green-edge">
+            <div class="section-title" style="color:#fff;">📊 2. Comprehensive Multi-Position Statistics</div>
+            <p style="color:var(--text-muted); font-size:1.05rem;">
+                Atlas Scout tracks every single position on the field—giving defenders and midfielders the recognition they deserve:
+            </p>
+
+            <div class="grid-3">
+                <div class="feature-card">
+                    <h4 style="color:var(--accent-green)">🏃 Athletic & Fitness</h4>
+                    <p>
+                        • <strong>Top Speed:</strong> Peak mph sprint<br>
+                        • <strong>Distance:</strong> Total miles covered<br>
+                        • <strong>Sprint Count:</strong> Bursts >14 mph<br>
+                        • <strong>Fatigue Curve:</strong> 1st vs 2nd half workrate
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4 style="color:var(--accent-green)">🛡️ Defensive Impact</h4>
+                    <p>
+                        • <strong>Steals & Interceptions:</strong> Cutting lanes<br>
+                        • <strong>1v1 Tackles Won:</strong> Ground duels<br>
+                        • <strong>Box Clearances & Blocks:</strong> 18yd stops<br>
+                        • <strong>Recovery Sprints:</strong> 20yd chase-downs
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <h4 style="color:var(--accent-green)">🎯 Technical Quality</h4>
+                    <p>
+                        • <strong>Pass Accuracy %:</strong> Completed passes<br>
+                        • <strong>Progressive Passes:</strong> 15+ yd line-breaks<br>
+                        • <strong>1st Touch Retention:</strong> Pressure control<br>
+                        • <strong>Atlas Match Rating:</strong> 1.0 – 10.0 score
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLAR 3: TACTICAL MASTERMIND AI -->
+        <div class="section-box yellow-edge">
+            <div class="section-title" style="color:#fff;">🧠 3. The "Atlas Tactical Mastermind" AI (In-Game Game Theory)</div>
+            <p style="color:var(--text-muted); font-size:1.05rem;">
+                During live matches, the AI acts as your dedicated tactical analyst sitting on the bench:
+            </p>
+
+            <div class="grid-2">
+                <div class="feature-card">
+                    <h4 style="color:var(--accent-yellow)">🗺️ Formation & Weakness Detection</h4>
+                    <p>Automatically identifies opponent formations (4-3-3, 4-2-3-1, 3-5-2, 4-4-2) within 5 minutes and flags out-of-position fullbacks or high offside trap vulnerabilities.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4 style="color:var(--accent-yellow)">📋 Halftime Tactical Action Cards</h4>
+                    <p>Delivers 3 high-impact tactical adjustments directly to the coach's tablet before the second half kickoff (e.g. overloads, channel switches, pressing triggers).</p>
+                </div>
+            </div>
+
+            <div class="quote-callout" style="border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.05);">
+                <span>💡</span>
+                <div>
+                    <strong>Sample Halftime AI Insight:</strong> <em>"Opponent #3 (Left Back) is pushing too high, leaving a 25-yard pocket behind him. Instruct #10 Justin to make diagonal runs into that right channel to trigger 2v1 overloads."</em>
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLAR 4: PRACTICE ACADEMY -->
+        <div class="section-box">
+            <div class="section-title">🏋️ 4. Practice Mode & AI Skills Development Academy</div>
+            <p style="color:var(--text-muted); font-size:1.05rem;">
+                At practice, the AI transforms into a <strong>Personal Technique Coach</strong> that tracks drills and diagnoses individual body mechanics:
+            </p>
+
+            <div class="grid-3">
+                <div class="feature-card">
+                    <h4>🔄 Rondo Reaction Speed</h4>
+                    <p>Measures 1-touch vs 2-touch decision reaction times in tight 4v2 / 5v3 grids (Target: <0.85s from reception to pass).</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>🎯 Shooting Velocity & Corners</h4>
+                    <p>Tracks shot speed in mph and placement accuracy (side-netting vs center of goal) on both dominant and weak feet.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>💨 1v1 Channel Duels</h4>
+                    <p>Calculates attacker take-on success rates vs defender jockeying and turnover containment.</p>
+                </div>
+            </div>
+
+            <h3 style="color:#fff; font-size:1.25rem; margin-top:30px; margin-bottom:15px; font-family:'Space Grotesk',sans-serif;">
+                Biomechanical Technique Flaw Detection (Kid-Friendly Cues):
+            </h3>
+
+            <div class="grid-3">
+                <div class="feature-card" style="border-left: 3px solid var(--accent-red);">
+                    <strong style="color:#fff; display:block; margin-bottom:4px;">Shooting: Leaning Back</strong>
+                    <p style="font-size:0.88rem;"><strong>AI Cue:</strong> <em>"Get your chest and chin over the ball! Point your toes down and land on your kicking foot."</em></p>
+                </div>
+
+                <div class="feature-card" style="border-left: 3px solid var(--accent-yellow);">
+                    <strong style="color:#fff; display:block; margin-bottom:4px;">Passing: Stiff Ankle</strong>
+                    <p style="font-size:0.88rem;"><strong>AI Cue:</strong> <em>"Cushion the ball like catching an egg! Soften your foot as it arrives to absorb speed."</em></p>
+                </div>
+
+                <div class="feature-card" style="border-left: 3px solid var(--accent-cyan);">
+                    <strong style="color:#fff; display:block; margin-bottom:4px;">Defending: Flat-Footed</strong>
+                    <p style="font-size:0.88rem;"><strong>AI Cue:</strong> <em>"Drop one foot back at 45 degrees, stay on your toes, and steer them to the sideline."</em></p>
+                </div>
+            </div>
+
+            <div class="quote-callout" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.05); margin-top:25px;">
+                <span>📈</span>
+                <div>
+                    <strong>Practice-to-Game Proof:</strong> <em>"After 3 weeks of focusing on the 4v2 Rondo drill, the team's live match passing accuracy jumped from <strong>71% to 84%</strong>."</em>
+                </div>
+            </div>
+        </div>
+
+        <!-- PILLAR 5: FILM STUDY & TELESTRATOR -->
+        <div class="section-box">
+            <div class="section-title">💻 5. Post-Game Film Study & Telestrator Studio</div>
+            <p style="color:var(--text-muted); font-size:1.05rem;">
+                Open <code>coach_app.html</code> on your laptop, tablet, or home PC for professional film breakdown:
+            </p>
+
+            <div class="grid-2">
+                <div class="feature-card">
+                    <h4>✏️ Interactive Telestrator Canvas</h4>
+                    <p>Draw <strong>Tactical Arrows (➔)</strong>, <strong>Spotlight Player Circles (⭕)</strong>, and measure passing distances with the <strong>Yardage Ruler (📏)</strong> directly on the video.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h4>☁️ 1-Click PDF & Cloud Sync</h4>
+                    <p>Generate clean 1-Page Tactical Match PDFs and automatically sync player stats to Google Sheets and your Team Website player profiles over Wi-Fi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA BOX -->
+        <div style="text-align:center; padding:40px 20px; background:linear-gradient(180deg, #0b0f19 0%, #04070d 100%); border:1px solid var(--card-border); border-radius:16px; margin-top:40px;">
+            <h2 style="font-family:'Space Grotesk',sans-serif; font-size:1.8rem; color:#fff; margin-bottom:10px;">Ready to Elevate Your Team's Game?</h2>
+            <p style="color:var(--text-muted); max-width:600px; margin:0 auto 20px auto;">Atlas Scout Pro brings pro-stadium film, real-time analytics, and personalized player coaching to your sideline.</p>
+            <button class="print-btn" onclick="window.print()" style="padding:12px 24px; font-size:1rem;">🖨️ Print Coaching Summary</button>
+        </div>
+
+    </main>
+
+    <footer class="site-footer" style="margin-top:60px; border-top:1px solid var(--card-border); padding:30px 20px; text-align:center; color:var(--text-muted); font-size:0.85rem;">
+        <p>Atlas Scout Pro · Confidential Coaching Staff Briefing · © 2026 Atlas Forge LLC</p>
+    </footer>
+
+</body>
+</html>

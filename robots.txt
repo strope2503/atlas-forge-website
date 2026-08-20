@@ -2,3 +2,4 @@ User-agent: *
 Disallow: /speaker.html
 Allow: /
 
+Disallow: /coach-summary.html
