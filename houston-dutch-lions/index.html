@@ -1445,17 +1445,22 @@
       let ev = eventDataStr ? JSON.parse(eventDataStr.replace(/&quot;/g, '"')) : null;
       let eventType = ev ? ev.type : '';
       
-      if (eventType === 'scrimmage') {
-        content += `<h4 class="text-orange-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO'}</h4>
+      let isGameOrScrimmage = (eventType === 'scrimmage' || eventType === 'game' || eventType === 'match' || eventType === 'tournament');
+      
+      if (isGameOrScrimmage) {
+        const titleText = (eventType === 'game' || eventType === 'match') ? (currentLang === 'en' ? 'GAME DAY' : 'DÍA DE PARTIDO') : (currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO');
+        const vsText = ev.opponent ? ` vs ${ev.opponent}` : '';
+        const locText = ev.location || 'HDL Complex';
+        content += `<h4 class="text-orange-400 font-bold text-sm mb-1">${titleText}</h4>
                    <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
-                   <p class="text-slate-300 text-xs mb-1">${ev.time} vs ${ev.opponent}</p>
-                   <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition mb-2.5">
-                     <i data-lucide="map-pin" class="w-3 h-3"></i> ${ev.location}
+                   <p class="text-slate-300 text-xs mb-1">${ev.time}${vsText}</p>
+                   <a href="https://maps.google.com/?q=${encodeURIComponent(locText)}" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition mb-2.5">
+                     <i data-lucide="map-pin" class="w-3 h-3"></i> ${locText}
                    </a>
                    <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/80 mb-2">
                      <strong class="text-orange-400 text-[10px] uppercase tracking-widest block mb-1.5 flex items-center gap-1.5"><i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Game Day Checklist</strong>
-                     <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform}</p>
-                     <p class="text-[11px] text-slate-300 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring}</p>
+                     <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform || 'Standard Kit'}</p>
+                     <p class="text-[11px] text-slate-300 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring || 'Water, Shin Guards, Cleats'}</p>
                    </div>`;
       } else if (isPractice) {
         content += `<h4 class="text-blue-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO'}</h4>
@@ -1483,24 +1488,36 @@
               <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 pointer-events-none"></div>
               
               <!-- Mini Tokens -->
-              <div class="absolute top-[8%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-zinc-400 rounded-full text-[8px] font-bold text-black flex items-center justify-center">${ev.starters.gk}</div>
-              <div class="absolute top-[25%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lb}</div>
-              <div class="absolute top-[22%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb1}</div>
-              <div class="absolute top-[22%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb2}</div>
-              <div class="absolute top-[25%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rb}</div>
-              <div class="absolute top-[45%] left-[30%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm1}</div>
-              <div class="absolute top-[52%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cdm}</div>
-              <div class="absolute top-[45%] left-[70%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm2}</div>
-              <div class="absolute top-[75%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lw}</div>
-              <div class="absolute top-[68%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.st}</div>
-              <div class="absolute top-[75%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rw}</div>
+              <div class="absolute top-[8%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-zinc-400 rounded-full text-[8px] font-bold text-black flex items-center justify-center">${ev.starters.gk || ''}</div>
+              <div class="absolute top-[25%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lb || ''}</div>
+              <div class="absolute top-[22%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb1 || ''}</div>
+              <div class="absolute top-[22%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb2 || ''}</div>
+              <div class="absolute top-[25%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rb || ''}</div>
+              <div class="absolute top-[45%] left-[30%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm1 || ''}</div>
+              <div class="absolute top-[52%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cdm || ''}</div>
+              <div class="absolute top-[45%] left-[70%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm2 || ''}</div>
+              <div class="absolute top-[75%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lw || ''}</div>
+              <div class="absolute top-[68%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.st || ''}</div>
+              <div class="absolute top-[75%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rw || ''}</div>
             </div>
             <button onclick="document.getElementById('modal-close-btn').click(); document.getElementById('tactics-section').scrollIntoView({behavior: 'smooth'})" class="mt-2 w-full text-[10px] bg-slate-800 hover:bg-slate-700 text-white py-1.5 rounded transition">Open Full Tactics Board</button>
           </div>`;
       }
       
-      if (eventType === 'scrimmage' || isPractice) {
-        const timeHour = eventType === 'scrimmage' ? 19 : 18; // 7PM or 6PM
+      if (isGameOrScrimmage || isPractice) {
+        let timeHour = 19;
+        if (ev && ev.time) {
+            const timeMatch = ev.time.match(/(\d{1,2}):?(\d{2})?\s*(AM|PM)?/i);
+            if (timeMatch) {
+                let h = parseInt(timeMatch[1], 10);
+                const ampm = timeMatch[3] ? timeMatch[3].toUpperCase() : '';
+                if (ampm === 'PM' && h < 12) h += 12;
+                if (ampm === 'AM' && h === 12) h = 0;
+                timeHour = h;
+            }
+        } else if (isPractice) {
+            timeHour = 18;
+        }
         
         // Add Advanced Weather Placeholder
         content += `<div id="hourly-weather" class="mt-3 p-2 bg-slate-900/80 border border-slate-800 rounded-lg text-[11px] text-slate-300 flex items-center justify-center shadow-inner">
@@ -1527,7 +1544,7 @@
                 <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-emerald-400"></i>
                 <span><strong>Drinks covered by:</strong> ${drinkVolunteers.join(', ')}</span>
             </div>`;
-        } else if (eventType === 'scrimmage') {
+        } else if (isGameOrScrimmage) {
              signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-orange-300 bg-orange-900/30 p-2 rounded border border-orange-800/50">
                     <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-orange-400"></i>
                     <span><strong>Drinks are still needed!</strong></span>
@@ -1538,8 +1555,7 @@
             content += `<div class="mt-3 border-t border-slate-700/50 pt-2">${signupHTML}</div>`;
         }
 
-        // Add Drinks Button (Google Form Link) ONLY for Scrimmages if NOT covered
-        if (eventType === 'scrimmage' && !drinksCovered) {
+        if (isGameOrScrimmage && !drinksCovered) {
             content += `<div class="mt-3">
               <button onclick="openVolunteerModal('${lookupDate}')" class="w-full p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
                 <i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks
@@ -1553,13 +1569,14 @@
         // Fetch specific hourly weather
         const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=30.2975&longitude=-95.4655&hourly=temperature_2m,precipitation_probability&temperature_unit=fahrenheit&timezone=America%2FChicago&start_date=${dateStr}&end_date=${dateStr}`;
         fetch(weatherUrl).then(res => res.json()).then(data => {
-            if(data && data.hourly) {
-                const temp = Math.round(data.hourly.temperature_2m[timeHour]);
-                const rain = data.hourly.precipitation_probability[timeHour];
+            if(data && data.hourly && data.hourly.temperature_2m && data.hourly.temperature_2m.length > 0) {
+                const hourIdx = Math.min(Math.max(timeHour, 0), data.hourly.temperature_2m.length - 1);
+                const temp = Math.round(data.hourly.temperature_2m[hourIdx]);
+                const rain = data.hourly.precipitation_probability ? data.hourly.precipitation_probability[hourIdx] : 0;
                 
                 let hotWarning = '';
-                if(temp >= 90 && eventType === 'scrimmage') {
-                    hotWarning = `<div class="w-full mt-2 text-center text-red-400 font-bold bg-red-900/30 border border-red-800 rounded py-1.5 px-2 text-[10px]">⚠️ Drinks are greatly appreciated on hot days over 90°F!</div>`;
+                if(temp >= 90) {
+                    hotWarning = `<div class="w-full mt-2 text-center text-red-400 font-bold bg-red-900/30 border border-red-800 rounded py-1.5 px-2 text-[10px]">⚠️ Hydration alert: High temp forecast (${temp}°F)!</div>`;
                 }
 
                 const wBox = document.getElementById('hourly-weather');
@@ -1570,10 +1587,17 @@
                     </div>${hotWarning}`;
                     lucide.createIcons();
                 }
+            } else {
+                const wBox = document.getElementById('hourly-weather');
+                if(wBox) {
+                    wBox.innerHTML = `<div class="text-center text-[10px] text-slate-400">🌦️ Weather forecast available within 16 days of event date</div>`;
+                }
             }
         }).catch(() => {
             const wBox = document.getElementById('hourly-weather');
-            if(wBox) wBox.style.display = 'none';
+            if(wBox) {
+                wBox.innerHTML = `<div class="text-center text-[10px] text-slate-400">🌦️ Weather forecast available within 16 days of event date</div>`;
+            }
         });
       }
       
@@ -1588,8 +1612,8 @@
     }
 
     function fetchWeather() {
-      // Free Open-Meteo API for Conroe, TX
-      const url = "https://api.open-meteo.com/v1/forecast?latitude=30.2975&longitude=-95.4655&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=America%2FChicago";
+      // Free Open-Meteo API for Conroe, TX with 16-day forecast window
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=30.2975&longitude=-95.4655&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=America%2FChicago&forecast_days=16";
       fetch(url)
         .then(res => res.json())
         .then(data => {
