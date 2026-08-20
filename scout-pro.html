@@ -3,237 +3,595 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Atlas Scout Pro V8.0 — The World's First Autonomous AI Sports Scouting, Broadcasting & Player Development System.">
-    <title>Scout Pro — Atlas Forge</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <title>Atlas Scout Pro V8.0 | Atlas Forge</title>
+    <style>
+        :root {
+            --bg-obsidian: #000000;
+            --bg-panel: rgba(22, 27, 34, 0.6);
+            --border-dark: rgba(255, 255, 255, 0.1);
+            --accent-cyan: #00F2FE;
+            --accent-blue: #4FACFE;
+            --accent-green: #10B981;
+            --text-main: #F0F6FC;
+            --text-muted: #8B949E;
+            --glass-blur: blur(12px);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg-obsidian);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #B4F481, #10B981, #00F2FE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        /* Feature Cards */
+        .features-section { padding: 40px 20px 100px; text-align: center; }
+        .features-header { display: flex; align-items: baseline; justify-content: center; gap: 20px; margin-bottom: 60px; flex-wrap: wrap; }
+        .features-header h1 { 
+            font-size: 5.5rem; 
+            font-weight: 800;
+            background: linear-gradient(90deg, #B4F481, #10B981, #00F2FE);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 1250px; margin: 0 auto; }
+        .glass-card {
+            background: linear-gradient(180deg, rgba(30,40,60,0.3) 0%, rgba(10,15,30,0.7) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 40px 24px 30px;
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .card-cyan { border: 2px solid rgba(0, 242, 254, 0.2); box-shadow: 0 0 20px rgba(0, 242, 254, 0.05), inset 0 0 20px rgba(0, 242, 254, 0.05); }
+        .card-green { border: 2px solid rgba(16, 185, 129, 0.2); box-shadow: 0 0 20px rgba(16, 185, 129, 0.05), inset 0 0 20px rgba(16, 185, 129, 0.05); }
+        
+        .glass-card:hover { transform: translateY(-12px); }
+        .card-cyan:hover { box-shadow: 0 15px 40px rgba(0, 242, 254, 0.15), inset 0 0 30px rgba(0, 242, 254, 0.1); border-color: rgba(0, 242, 254, 0.6); }
+        .card-green:hover { box-shadow: 0 15px 40px rgba(16, 185, 129, 0.15), inset 0 0 30px rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.6); }
+
+        .icon-container { height: 120px; display: flex; align-items: center; justify-content: center; margin-bottom: 25px; animation: float 4s ease-in-out infinite; }
+        .neon-svg-cyan svg { filter: drop-shadow(0 0 12px rgba(0,242,254,0.6)); color: var(--accent-cyan); }
+        .neon-svg-green svg { filter: drop-shadow(0 0 12px rgba(16,185,129,0.6)); color: var(--accent-green); }
+        
+        .glass-card h4 { font-size: 1.5rem; margin-bottom: 15px; font-weight: 700; }
+        .glass-card p { font-size: 0.95rem; color: #94A3B8; margin-bottom: 35px; line-height: 1.6; flex-grow: 1; padding: 0 10px; }
+
+        .reveal {
+            opacity: 0;
+            animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        /* Unified Navigation Header */
+        .atlas-header {
+            height: 70px;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-dark);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        .nav-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .brand-logo {
+            height: 40px;
+            object-fit: contain;
+        }
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-item img { height: 20px; }
+        .nav-item:hover, .nav-item.active { color: var(--text-main); }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at 50% 50%, rgba(0, 242, 254, 0.1) 0%, rgba(0,0,0,0) 60%);
+            padding: 100px 20px;
+        }
+
+        .badge {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            background: linear-gradient(to right, #fff, #8B949E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 24px;
+            max-width: 900px;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        /* Glassmorphism Panels */
+        .glass-panel {
+            background: var(--bg-panel);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-dark);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr; }
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+        }
+
+        .text-lg { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 20px; }
+
+        /* Competition Showdown */
+        .vs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .vs-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vs-card.winner {
+            background: rgba(0, 242, 254, 0.05);
+            border: 1px solid var(--accent-cyan);
+        }
+
+        .vs-card h4 { font-size: 1.3rem; margin-bottom: 15px; }
+        .vs-card ul { list-style: none; color: var(--text-muted); }
+        .vs-card li { margin-bottom: 10px; padding-left: 20px; position: relative; }
+        .vs-card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-cyan);
+        }
+        .vs-card.winner li::before { content: '✓'; color: var(--accent-green); }
+
+        /* App Ecosystem Mockups */
+        .app-mockup {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #0B0E14;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-top: 20px;
+        }
+        .app-header {
+            background: #161B22;
+            padding: 10px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .window-dots {
+            display: flex; gap: 6px;
+        }
+        .window-dots span {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #ff5f56;
+        }
+        .window-dots span:nth-child(2) { background: #ffbd2e; }
+        .window-dots span:nth-child(3) { background: #27c93f; }
+        .app-title { font-size: 0.8rem; color: #8B949E; font-family: monospace; }
+        
+        .app-body {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background-color: #111;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #444;
+            background-image: linear-gradient(45deg, #111 25%, #151515 25%, #151515 50%, #111 50%, #111 75%, #151515 75%, #151515 100%);
+            background-size: 20px 20px;
+        }
+
+        .overlay-mock {
+            position: absolute;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid var(--accent-cyan);
+            padding: 10px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.8rem;
+            backdrop-filter: blur(4px);
+        }
+
+        /* Pricing Section */
+        .pricing-box {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(180deg, rgba(0,242,254,0.05) 0%, transparent 100%);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 24px;
+            margin: 60px 0;
+        }
+        
+        .price {
+            font-size: 4rem;
+            font-weight: 900;
+            color: #fff;
+            margin: 20px 0;
+        }
+        .price span { font-size: 1.5rem; color: var(--text-muted); font-weight: 500; }
+
+        .btn-buy {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-blue));
+            color: #000;
+            padding: 16px 40px;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-buy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,242,254,0.3);
+        }
+    </style>
 </head>
-<body class="bg-[#04070D] text-slate-200">
-    <div class="noise"></div>
-    <header class="site-header">
-        <a class="brand" href="index.html" aria-label="Atlas Forge home">
-            <span class="brand-mark" aria-hidden="true">
-                <svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg>
-            </span>
-            <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
-        </a>
-        <nav class="desktop-nav" aria-label="Main navigation">
-            <a href="index.html">Home</a>
-            <a href="scout-pro.html" class="active">Scout Pro</a>
-            <a href="coach_portal.html">Coach AR Film Room</a>
-            <a href="telestrator.html">Halftime Telestrator</a>
-            <a href="parent_app.html">Parent App</a>
-            <a href="technology.html">Technology</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-        </nav>
-        <a class="nav-cta" href="contact.html">Contact Sales</a>
-        <button class="menu-button" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+<body>
+
+    <!-- Header -->
+    <header class="atlas-header">
+        <div class="nav-container">
+            <a href="index.html" class="brand-link">
+                <img src="ATLAS_FORGE_LOGO.png" alt="Atlas Forge Logo" class="brand-logo">
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-item">Home</a>
+                <a href="scout-pro.html" class="nav-item active">
+                    <img src="ATLAS_SCOUT_LOGO.png" alt="Scout Logo"> Scout Pro V8.0
+                </a>
+                <a href="forge_ledger.html" class="nav-item">
+                    <img src="ATLAS_LEDGER_LOGO.png" alt="Ledger Logo"> The Forge Ledger™
+                </a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <section class="inner-hero section-shell">
-            <div class="inner-copy reveal">
-                <div class="eyebrow"><span></span> AUTONOMOUS AI SPORTS SCOUTING & BROADCASTING</div>
-                <h1>Every player.<br>Every touch.<br><em>Hands-Free AI.</em></h1>
-                <p>The World's First Autonomous AI Sports Scouting, Broadcasting & Player Development System. No cameraman needed. No expensive cloud subscriptions. Instant 4K 180° tactical panorama, AI-directed follow-cam live streaming, parent instant replays in the bleachers, and UEFA Pro tactical coaching intelligence.</p>
-                <div class="hero-actions">
-                    <a class="button primary" href="contact.html">Request Hardware Demo</a>
-                    <a class="button secondary" href="#pillars">Explore 6 Core Pillars</a>
-                </div>
-            </div>
-            <div class="feature-visual field-demo reveal delay-1">
-                <div class="pitch">
-                    <div class="center-circle"></div>
-                    <div class="center-line"></div>
-                    <span class="player p1" title="Player #10"></span>
-                    <span class="player p2"></span>
-                    <span class="player p3"></span>
-                    <span class="player p4"></span>
-                    <span class="player p5"></span>
-                    <span class="ball"></span>
-                    <svg class="track-line" viewBox="0 0 600 350" preserveAspectRatio="none"><path d="M90,250 C170,120 290,310 510,100"/></svg>
-                </div>
-            </div>
-        </section>
-
-        <section class="content-section section-shell">
-            <div class="section-heading reveal">
-                <div class="eyebrow"><span></span> HARDWARE BUILD TIERS</div>
-                <h2>Commercial-Grade Sideline Hardware</h2>
-                <p>Choose the hardware tier engineered for your organization—backed by NVIDIA Jetson edge processing and power-loss immunity.</p>
-            </div>
-            <div class="feature-grid two reveal delay-1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 30px;">
-                <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 32px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
-                            <div>
-                                <h3 style="color: #fff; font-size: 22px; margin-bottom: 4px;">Base Edition</h3>
-                                <p style="color: #94a3b8; font-size: 13px;">For Travel Clubs & High Schools</p>
-                            </div>
-                            <span style="color: #00F0FF; font-size: 28px; font-weight: 800;">$2,500</span>
-                        </div>
-                        <ul style="color: #94a3b8; font-size: 14px; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
-                            <li>✓ 3x Weather-proof 4K PoE IP Cameras (45° Overlap Optics)</li>
-                            <li>✓ NVIDIA Jetson Orin Nano AI Processor (MAXN Mode)</li>
-                            <li>✓ 15–25 ft Telescoping Sideline Mast with 3-Step Guided Alignment</li>
-                            <li>✓ Self-Contained Offline Field Wi-Fi Router + Gigabit PoE Switch</li>
-                            <li>✓ Crash-Protected Fragmented MP4 External SSD Storage</li>
-                            <li>✓ LiFePO4 All-Day Field Power Station</li>
-                        </ul>
-                    </div>
-                    <a href="contact.html" class="button primary" style="text-align: center; justify-content: center; width: 100%;">Select Base Package</a>
-                </article>
-
-                <article style="background: #0B0F19; border: 2px solid #00F0FF; padding: 32px; border-radius: 12px; position: relative; display: flex; flex-direction: column; justify-content: space-between;">
-                    <div style="position: absolute; top: 0; right: 0; background: #00F0FF; color: #04070D; font-size: 11px; font-weight: 800; text-transform: uppercase; padding: 4px 12px; border-bottom-left-radius: 8px;">Recommended</div>
-                    <div>
-                        <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
-                            <div>
-                                <h3 style="color: #fff; font-size: 22px; margin-bottom: 4px;">Elite Academy Edition</h3>
-                                <p style="color: #94a3b8; font-size: 13px;">For Colleges & Professional Academies</p>
-                            </div>
-                            <span style="color: #10b981; font-size: 28px; font-weight: 800;">$3,700</span>
-                        </div>
-                        <ul style="color: #94a3b8; font-size: 14px; list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px;">
-                            <li>✓ 3x Luxonis Spatial AI 3D Depth Cameras with Active IR</li>
-                            <li>✓ Advanced 3D Biomechanical & ACL Safety Stress Analytics</li>
-                            <li>✓ UEFA Pro Tactical Mastermind Formation Engine</li>
-                            <li>✓ High-Grade Ruggedized Apache 5800 Weather-Sealed Case</li>
-                            <li>✓ All Base Compute, Rigging, & Field Networking Included</li>
-                        </ul>
-                    </div>
-                    <a href="contact.html" class="button primary" style="text-align: center; justify-content: center; width: 100%;">Select Elite Package</a>
-                </article>
-            </div>
-        </section>
-
-        <section id="pillars" class="content-section section-shell">
-            <div class="section-heading reveal">
-                <div class="eyebrow"><span></span> SYSTEM CAPABILITIES</div>
-                <h2>The 6 Core Feature Pillars</h2>
-                <p>Real-time edge computation eliminates server queues, cloud rental fees, and upload bottlenecks.</p>
-            </div>
-            <div class="feature-grid three reveal delay-1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-top: 30px;">
-                <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">PILLAR 01</div>
-                    <h3 style="color: #fff; font-size: 18px; margin: 12px 0 8px 0;">Autonomous Dual-Stream Engine</h3>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
-                        • <strong>180° Tactical Panorama:</strong> 4K corner-to-corner full field footage at 30 FPS in H.265.<br>
-                        • <strong>Virtual AI Follow-Cam:</strong> Dynamic 1080p pan-zoom tracking ball and player clusters.<br>
-                        • <strong>Manual Override:</strong> Virtual joystick & zoom slider takeover from any phone or tablet.
-                    </p>
-                </article>
-
-                <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">PILLAR 02</div>
-                    <h3 style="color: #fff; font-size: 18px; margin: 12px 0 8px 0;">Bleacher DVR & Instant Replay</h3>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
-                        • <strong>100% Offline Replay:</strong> Parents connect to local field Wi-Fi for -10s/-30s instant slow-mo replays.<br>
-                        • <strong>"Follow My Kid":</strong> Select jersey numbers for real-time sprint & steal alerts.<br>
-                        • <strong>Viral Social Export:</strong> 1-tap 20-second clip exports to TikTok, IG Stories, and WhatsApp.
-                    </p>
-                </article>
-
-                <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">PILLAR 03</div>
-                    <h3 style="color: #fff; font-size: 18px; margin: 12px 0 8px 0;">Multi-Position Analytics Engine</h3>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
-                        • <strong>Workrate:</strong> Top speed (mph), total distance (miles), and 2nd half fatigue decay.<br>
-                        • <strong>Defensive Tracking:</strong> Steals, interceptions, 1v1 tackles won, and box clearances.<br>
-                        • <strong>Atlas Match Rating:</strong> Composite 1.0 – 10.0 EA Sports style rating for every athlete.
-                    </p>
-                </article>
-
-                <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">PILLAR 04</div>
-                    <h3 style="color: #fff; font-size: 18px; margin: 12px 0 8px 0;">UEFA Pro "Tactical Mastermind"</h3>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
-                        • <strong>Formation AI:</strong> Automatically detects 4-3-3, 4-2-3-1, 3-5-2, and 4-4-2 systems in 5 min.<br>
-                        • <strong>Weakness Spotter:</strong> Flags out-of-position fullbacks, high traps, and pressing triggers.<br>
-                        • <strong>Halftime Adjustment Cards:</strong> Delivers 3 actionable tactical cards directly to coaches.
-                    </p>
-                </article>
-
-                <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">PILLAR 05</div>
-                    <h3 style="color: #fff; font-size: 18px; margin: 12px 0 8px 0;">Practice Mode & Skills Academy</h3>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
-                        • <strong>Drill Diagnostics:</strong> 1-touch decision reaction times in Rondos and shot power metrics.<br>
-                        • <strong>Biomechanical Analysis:</strong> Identifies shooting flaws (leaning back, plant foot distance).<br>
-                        • <strong>Player Fix-It Cards:</strong> Generates 1-page development homework cards with custom drills.
-                    </p>
-                </article>
-
-                <article style="background: #0B0F19; border: 1px solid #1E2638; padding: 24px; border-radius: 12px;">
-                    <div class="product-tag">PILLAR 06</div>
-                    <h3 style="color: #fff; font-size: 18px; margin: 12px 0 8px 0;">Google Sheets & Web Portals</h3>
-                    <p style="color: #94a3b8; font-size: 14px; line-height: 1.6;">
-                        • <strong>1-Tap Sheets Sync:</strong> Automatically pushes match data and player stats into Google Sheets.<br>
-                        • <strong>Live Club Portals:</strong> Websites automatically render live leaderboards, stats, and clips.<br>
-                        • <strong>Restreaming:</strong> 1-click RTMP broadcasting straight to YouTube Live and Facebook Live.
-                    </p>
-                </article>
-            </div>
-        </section>
-
-        <section id="tech-specs" class="content-section section-shell">
-            <div class="section-heading reveal">
-                <div class="eyebrow"><span></span> TECHNICAL ARCHITECTURE</div>
-                <h2>Hardware Specifications</h2>
-            </div>
-            <div class="feature-grid two reveal delay-1" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px;">
-                <div style="background: #0B0F19; border: 1px solid #1E2638; padding: 20px; border-radius: 10px;">
-                    <strong style="color: #00F0FF; display: block; margin-bottom: 4px;">Core Edge Processor</strong>
-                    <p style="color: #94a3b8; font-size: 13px; margin: 0;">NVIDIA Jetson Orin Nano Edge AI Processor running in MAXN high-performance mode.</p>
-                </div>
-                <div style="background: #0B0F19; border: 1px solid #1E2638; padding: 20px; border-radius: 10px;">
-                    <strong style="color: #00F0FF; display: block; margin-bottom: 4px;">Camera Array</strong>
-                    <p style="color: #94a3b8; font-size: 13px; margin: 0;">3x High-Resolution PoE IP Cameras with calibrated 45° overlap optics for full 180° seamless stitching.</p>
-                </div>
-                <div style="background: #0B0F19; border: 1px solid #1E2638; padding: 20px; border-radius: 10px;">
-                    <strong style="color: #00F0FF; display: block; margin-bottom: 4px;">Field Connectivity</strong>
-                    <p style="color: #94a3b8; font-size: 13px; margin: 0;">Self-contained offline local Wi-Fi router + industrial Gigabit PoE network switch.</p>
-                </div>
-                <div style="background: #0B0F19; border: 1px solid #1E2638; padding: 20px; border-radius: 10px;">
-                    <strong style="color: #00F0FF; display: block; margin-bottom: 4px;">Protected Storage Engine</strong>
-                    <p style="color: #94a3b8; font-size: 13px; margin: 0;">High-Speed External SSD with crash & battery-pull file protection utilizing Fragmented MP4 encoding.</p>
-                </div>
-                <div style="background: #0B0F19; border: 1px solid #1E2638; padding: 20px; border-radius: 10px; grid-column: 1 / -1;">
-                    <strong style="color: #00F0FF; display: block; margin-bottom: 4px;">Rigging & Field Deployment</strong>
-                    <p style="color: #94a3b8; font-size: 13px; margin: 0;">Telescoping 15–25 ft Sideline Mast with rapid 3-step guided alignment and guy-wire wind stabilization.</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="cta-section section-shell reveal">
-            <div>
-                <div class="eyebrow"><span></span> DEPLOYMENT READY</div>
-                <h2>Ready to deploy Atlas Scout Pro?</h2>
-                <p>Reserve your hardware allocation or schedule a field demonstration.</p>
-            </div>
-            <a class="button primary" href="contact.html">Schedule Demo & Join Waitlist</a>
-        </section>
-    </main>
-
-    <footer class="site-footer section-shell">
-        <div class="footer-brand">
-            <a class="brand" href="index.html">
-                <span class="brand-mark"><svg viewBox="0 0 48 48"><path d="M24 4 43 38H31.8L24 24.2 16.2 38H5L24 4Z"/><path class="cut" d="M24 13.5 35.4 34H31l-7-12.4L17 34h-4.4L24 13.5Z"/></svg></span>
-                <span class="brand-wordmark"><strong>Atlas</strong> Forge</span>
-            </a>
-            <p>Forge What's Next. · © 2026 Atlas Forge LLC</p>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="badge reveal">Flagship Hardware & Ecosystem</div>
+        <h1 class="reveal delay-1">The Autonomous Camera That <span class="gradient-text" style="color: var(--accent-cyan);">Actually Thinks.</span></h1>
+        <p class="reveal delay-2">Autonomous sideline recording for all ages and skill levels, with edge-AI analytics, zero-token local processing, and unparalleled tactical insights.</p>
+        <div class="reveal delay-3">
+            <a href="#pricing" class="btn-buy">Pre-Order Now</a>
         </div>
-        <div class="footer-links">
-            <a href="scout-pro.html">Scout Pro</a>
-            <a href="coach_portal.html">Coach Portal</a>
-            <a href="telestrator.html">Telestrator</a>
-            <a href="parent_app.html">Parent App</a>
-            <a href="contact.html">Contact</a>
-        </div>
-    </footer>
-    <script src="script.js"></script>
+    </section>
+
+    <div class="container">
+        
+        <section class="features-section reveal" id="features">
+            <div class="features-header">
+                <h1 class="gradient-text">Features</h1>
+            </div>
+
+            <div class="grid-4">
+                <div class="glass-card card-cyan">
+                    <div class="icon-container neon-svg-cyan">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 18h6" />
+                            <path d="M10 22h4" />
+                            <path d="M12 2a8 8 0 0 0-8 8c0 1.5.5 2.9 1.4 4l.6.8c.2.2.3.5.3.8v2.4a2 2 0 0 0 2 2h7.4a2 2 0 0 0 2-2v-2.4c0-.3.1-.6.3-.8l.6-.8A8 8 0 0 0 12 2Z" />
+                        </svg>
+                    </div>
+                    <h4 class="gradient-text">AI Assistant Coach</h4>
+                    <p>AI-driven real-time coaching insights, personalized training drills, and tactical feedback to elevate player performance.</p>
+                </div>
+                
+                <div class="glass-card card-green">
+                    <div class="icon-container neon-svg-green">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                        </svg>
+                    </div>
+                    <h4 class="gradient-text">Auto-Stat Tracking</h4>
+                    <p>Automatic, real-time capture of all game stats, player heatmaps, and performance analytics for accurate player evaluation.</p>
+                </div>
+
+                <div class="glass-card card-cyan">
+                    <div class="icon-container neon-svg-cyan">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                    </div>
+                    <h4 class="gradient-text">Practice Mode</h4>
+                    <p>Advanced drills, skill-specific training modules, and progress tracking to optimize practice sessions and skill development.</p>
+                </div>
+
+                <div class="glass-card card-green">
+                    <div class="icon-container neon-svg-green">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="23 7 16 12 23 17 23 7" />
+                            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" />
+                        </svg>
+                    </div>
+                    <h4 class="gradient-text">Parent Stream</h4>
+                    <p>Secure, high-quality live streaming of games for parents and scouts, with instant replays and player highlights.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Competition Showdown -->
+        <section class="glass-panel reveal">
+            <div class="text-center">
+                <h2 class="gradient-text">Why We Built It.</h2>
+                <p class="text-lg">Legacy systems charge you thousands a year just to upload video to their servers. We put a supercomputer on the sideline instead.</p>
+            </div>
+            
+            <div class="vs-grid">
+                <div class="vs-card">
+                    <h4 style="color: #ff5f56;">Vs. Veo & Trace</h4>
+                    <ul>
+                        <li>Requires expensive annual cloud subscriptions.</li>
+                        <li>Takes hours to upload and process video.</li>
+                        <li>Requires players to wear physical GPS trackers.</li>
+                        <li>No real-time coaching tools on the sideline.</li>
+                    </ul>
+                </div>
+                <div class="vs-card winner">
+                    <h4 style="color: var(--accent-cyan);">The Atlas Advantage</h4>
+                    <ul>
+                        <li><strong>Zero Cloud Fees.</strong> 100% processed locally on the Edge GPU.</li>
+                        <li><strong>Instant Analysis.</strong> Video and stats are ready the second the whistle blows.</li>
+                        <li><strong>No Trackers.</strong> AI Vision locks onto jerseys and tracks speed automatically.</li>
+                        <li><strong>Live Coaching.</strong> Tactics sent directly to the bench iPad mid-game.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Ecosystem Apps -->
+        <section class="glass-panel reveal">
+            <h2 class="gradient-text">The Command Center Ecosystem</h2>
+            <p class="text-lg">Atlas isn't just a camera. It's a localized, Wi-Fi mesh network (CoreGrid™) that connects the sideline to the stands seamlessly.</p>
+
+            <div class="grid-2" style="margin-top: 50px;">
+                <div>
+                    <h3>1. Camera Operator App</h3>
+                    <p class="text-lg">Monitor the 180° Trident Array in real-time. The AI acts as your robotic cameraman, smoothly following the ball and zooming in on penalty kicks automatically. No manual panning required.</p>
+                </div>
+                <div class="app-mockup" style="border: 1px solid var(--accent-cyan); box-shadow: 0 0 40px rgba(0, 242, 254, 0.2);">
+                    <img src="assets/ui_operator_deck.jpg" alt="Camera Operator App UI" style="width: 100%; height: auto; display: block;">
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 80px; direction: rtl;">
+                <div style="direction: ltr;">
+                    <h3>2. Coach AR Film Room™</h3>
+                    <p class="text-lg">Your sideline tactical advantage. Get real-time xG (Expected Goals), pitch control maps, and skeletal injury alerts delivered instantly to your iPad. Use the Halftime Telestrator to draw over plays and send them to the team.</p>
+                    
+                    <h4 style="color: var(--accent-cyan); margin-top: 15px;">Advanced AI Training Tools</h4>
+                    <p class="text-muted" style="margin-bottom: 15px;">The system doesn't just record; it actively profiles your players. Our computer vision tracks total distance covered, top sprint speeds, and heat maps for every player without requiring them to wear physical GPS vests.</p>
+                    
+                    <ul style="list-style: none; color: var(--text-muted); margin-bottom: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <li>✓ <strong>Player Speed & Distance</strong></li>
+                        <li>✓ <strong>Expected Goals (xG)</strong></li>
+                        <li>✓ <strong>Pitch Control / Heatmaps</strong></li>
+                        <li>✓ <strong>Pass Completion Rates</strong></li>
+                        <li>✓ <strong>Biometric Injury Alerts</strong></li>
+                        <li>✓ <strong>Smart Auto-Scoreboard</strong></li>
+                    </ul>
+                    <p class="text-muted">The <strong>Smart Auto-Scoreboard</strong> uses optical character recognition and game-logic to overlay a clean, professional broadcast scoreboard directly onto your stream, automatically keeping track of time and goals.</p>
+                </div>
+                <div class="app-mockup" style="direction: ltr; border: 1px solid var(--accent-green); box-shadow: 0 0 40px rgba(16, 185, 129, 0.2);">
+                    <img src="assets/ui_coach_ar.jpg" alt="Coach AR Tablet UI" style="width: 100%; height: auto; display: block;">
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 80px;">
+                <div>
+                    <h3>3. Parent App Pro™</h3>
+                    <p class="text-lg">For the fans in the stands or at home. Stream the game in 1080p and see Live Velocity Badges hover over your kid. Let the AI automatically generate highlight reels to export to TikTok/Instagram in one click.</p>
+                    
+                    <h4 style="color: var(--accent-cyan); margin-top: 15px;">Your Kid's Personal Highlight Dashboard</h4>
+                    <p class="text-muted" style="margin-bottom: 15px;">Never miss a moment. The Parent App tracks personalized, professional-grade stats for your athlete that you can share with family and recruiters:</p>
+                    
+                    <ul style="list-style: none; color: var(--text-muted); margin-bottom: 15px;">
+                        <li style="margin-bottom: 8px;">🚀 <strong>Max Sprint Speed & Acceleration:</strong> Know exactly how fast they ran on that breakaway.</li>
+                        <li style="margin-bottom: 8px;">🏃 <strong>Total Distance Covered:</strong> See their true work rate over the full 90 minutes.</li>
+                        <li style="margin-bottom: 8px;">🔥 <strong>Personal Heatmaps:</strong> Visual maps of where they spent the most time on the pitch.</li>
+                        <li style="margin-bottom: 8px;">🎬 <strong>Auto-Highlight Reels:</strong> The AI automatically clips their best moments for instant social media sharing.</li>
+                    </ul>
+                </div>
+                <div class="app-mockup" style="aspect-ratio: 9/16; width: 60%; margin: 0 auto; border: 1px solid var(--accent-cyan); box-shadow: 0 0 40px rgba(0, 242, 254, 0.2);">
+                    <img src="assets/ui_parent_app.jpg" alt="Parent App Phone UI" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                </div>
+            </div>
+        </section>
+
+        <!-- Under The Hood / Specs -->
+        <section class="glass-panel reveal">
+            <h2 class="gradient-text">Under The Hood</h2>
+            <p class="text-lg">Built with aerospace-grade components and powered by NVIDIA.</p>
+            <div class="vs-grid">
+                <div>
+                    <h3>The Apex Core™</h3>
+                    <p class="text-muted">An NVIDIA Jetson Orin Nano Super Dev Kit processes 40 trillion operations per second to run our AI vision models directly on the mast.</p>
+                </div>
+                <div>
+                    <h3>The Trident Array™</h3>
+                    <p class="text-muted">Three 4K Sony Starvis 2 sensors with massive F1.0 apertures for crystal-clear night games, stitched into a seamless 180° canvas.</p>
+                </div>
+                <div>
+                    <h3>SVG-C™ Codec</h3>
+                    <p class="text-muted">Our proprietary compression math turns massive 90-minute 4K video files into tiny <50MB spatial files, saving your hard drive.</p>
+                </div>
+                <div>
+                    <h3>The Forge Reactor™</h3>
+                    <p class="text-muted">A rugged 50Ah deep-cycle marine battery provides over 17 hours of continuous recording power on a single charge.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="pricing-box reveal">
+            <img src="ATLAS_SCOUT_LOGO.png" alt="Scout Logo" style="height: 60px; margin-bottom: 20px;">
+            <h2 class="gradient-text">Own Your Hardware. Own Your Data.</h2>
+            <p class="text-lg">No mandatory cloud subscriptions. Period.</p>
+            
+            <div class="price">$2,600 <span>/ Base Hardware Package</span></div>
+            
+            <ul style="list-style: none; color: var(--text-muted); margin: 20px 0; font-size: 1.1rem; line-height: 2;">
+                <li>✓ Includes The Sentinel Mast, Trident Array, and Apex Core</li>
+                <li>✓ <strong>1 Month FREE</strong> of all Premium Software Features</li>
+                <li>✓ Parent App: Free 1080p live streaming forever ($9.99/mo for stats & highlights)</li>
+                <li>✓ Contact us for advanced Coach AI tool pricing & upgraded camera optics</li>
+            </ul>
+
+            <a href="mailto:sales@atlasforgetech.com?subject=Inquiry:%20Atlas%20Scout%20Pro%20V8.0" class="btn-buy">Contact Sales To Order</a>
+        </section>
+
+    </div>
+
+    <!-- Intersection Observer for Scroll Animations -->
+    <script>
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach((el) => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+    </script>
 </body>
 </html>
