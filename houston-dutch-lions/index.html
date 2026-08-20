@@ -1003,22 +1003,23 @@
             displayNameHTML = `${cleanLastName}${numHTML} ${relSuffixHTML}`;
         }
         
-        const fullName = (firstName + " " + lastNameField).trim();
-            
-        const card = document.createElement('div');
-        card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
+        const cleanFirst = firstName ? firstName.replace(/\s*-\s*$/, '').trim() : '';
+        const vcardFullName = (cleanFirst + " " + cleanLastName).trim() || (firstName + " " + lastNameField).trim();
+        const cleanPhoneNum = phone ? phone.replace(/[^0-9+]/g, '') : '';
         
         let vcardLines = [
             "BEGIN:VCARD",
             "VERSION:3.0",
-            `FN:${fullName}`
+            `N:${cleanLastName};${cleanFirst};;;`,
+            `FN:${vcardFullName}`
         ];
-        if (phone) vcardLines.push(`TEL;TYPE=CELL:${phone}`);
-        if (email) vcardLines.push(`EMAIL:${email}`);
+        if (cleanPhoneNum) vcardLines.push(`TEL;TYPE=CELL,VOICE:${cleanPhoneNum}`);
+        if (email) vcardLines.push(`EMAIL;TYPE=INTERNET:${email.trim()}`);
         vcardLines.push("END:VCARD");
         
-        const vcardData = vcardLines.join('\n');
-        const vcardUrl = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vcardData);
+        const vcardData = vcardLines.join('\r\n');
+        const vcardBase64 = btoa(unescape(encodeURIComponent(vcardData)));
+        const vcardUrl = 'data:text/vcard;charset=utf-8;base64,' + vcardBase64;
         
         card.innerHTML = `
           <div>
@@ -1028,7 +1029,7 @@
           <div class="flex gap-1.5 items-center self-end sm:self-auto">
             ${phone ? `<a href="tel:${phone}" class="p-2 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg transition" title="Call"><i data-lucide="phone" class="w-4 h-4"></i></a>` : ''}
             ${phone ? `<a href="sms:${phone}" class="p-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition" title="Text"><i data-lucide="message-square" class="w-4 h-4"></i></a>` : ''}
-            ${phone ? `<a href="${vcardUrl}" download="${fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.vcf" class="py-2 px-3 border border-slate-600 hover:border-slate-400 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition flex items-center gap-1.5 ml-1" title="Save Contact">
+            ${phone ? `<a href="${vcardUrl}" download="${vcardFullName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.vcf" onclick="downloadVCard(event, '${vcardUrl}')" class="py-2 px-3 border border-slate-600 hover:border-slate-400 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition flex items-center gap-1.5 ml-1" title="Save Contact">
               <i data-lucide="user-plus" class="w-4 h-4"></i>
               <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Save</span>
             </a>` : ''}
@@ -2000,6 +2001,14 @@
             reader.onload = () => resolve(reader.result);
             reader.onerror = error => reject(error);
         });
+    }
+
+    function downloadVCard(event, dataUrl) {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        if (isIOS) {
+            // Direct location navigation on iOS Safari / PWA forces native "Add Contact" sheet
+            window.location.href = dataUrl;
+        }
     }
 
   </script>
