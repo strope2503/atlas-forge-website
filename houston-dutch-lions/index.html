@@ -761,7 +761,7 @@
         grid.appendChild(card);
       });
 
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     let signupsMap = new Map();
@@ -1193,7 +1193,7 @@
         renderCalendar();
         renderEventList();
         fetchSignups();
-        lucide.createIcons();
+        if (window.lucide) lucide.createIcons();
     };
 
     function renderEventList() {
@@ -1420,7 +1420,7 @@
         const evData = evObj ? JSON.stringify(evObj).replace(/"/g, '&quot;') : '';
         grid.innerHTML += `<div class="p-1.5 rounded-lg flex items-center justify-center transition-colors cursor-pointer hover:scale-105 ${colorClasses}" onclick="showEventDetails('${dateStr}', ${isPractice}, '${evData}')">${displayHtml}</div>`;
       }
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     function showEventDetails(dateStr, isPractice, eventDataStr) {
@@ -1600,7 +1600,7 @@
                         <div class="flex items-center gap-1"><i data-lucide="thermometer" class="w-4 h-4 text-orange-400"></i> <span>Est. Temp: <strong class="text-white">${temp}°F</strong></span></div>
                         <div class="flex items-center gap-1"><i data-lucide="cloud-rain" class="w-4 h-4 text-blue-400"></i> <span>Rain Chance: <strong class="text-white">${rain}%</strong></span></div>
                     </div>${hotWarning}`;
-                    lucide.createIcons();
+                    if (window.lucide) lucide.createIcons();
                 }
             } else {
                 const wBox = document.getElementById('hourly-weather');
@@ -1618,7 +1618,7 @@
       
       detailsBox.innerHTML = content;
       detailsBox.classList.remove('hidden');
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
     }
 
     function changeMonth(delta) {
@@ -1686,14 +1686,14 @@
               el.innerHTML = `<i data-lucide="${iconName}" class="w-3.5 h-3.5 ${iconName==='sun'?'text-yellow-400':'text-blue-300'}"></i> ${maxT}°F`;
             }
           });
-          lucide.createIcons();
+          if (window.lucide) lucide.createIcons();
         })
         .catch(err => {
           console.error("Weather fetch failed", err);
           document.querySelectorAll('[id^="weather-"]').forEach(el => {
             el.innerHTML = `<i data-lucide="cloud-off" class="w-3 h-3"></i> N/A`;
           });
-          lucide.createIcons();
+          if (window.lucide) lucide.createIcons();
         });
     }
 
@@ -1927,7 +1927,7 @@
       
       btn.disabled = true;
       btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Submitting...';
-      lucide.createIcons();
+      if (window.lucide) lucide.createIcons();
 
       const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec";
       
@@ -1942,7 +1942,7 @@
         status.textContent = "Success! Drinks are covered.";
         status.className = "text-xs text-center text-emerald-400 mt-2 block font-bold";
         btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Submitted!';
-        lucide.createIcons();
+        if (window.lucide) lucide.createIcons();
         setTimeout(() => {
           closeVolunteerModal();
           
