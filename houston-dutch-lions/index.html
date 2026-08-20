@@ -766,63 +766,98 @@
 
     let signupsMap = new Map();
 
+    function addSignupEntry(rawDate, name, role) {
+      if (!name || !rawDate) return;
+      const roleStr = String(role || '').toLowerCase();
+      if (!roleStr.includes('drink') && !roleStr.includes('snack') && !roleStr.includes('water')) return;
+
+      let monthNum = null; // 1-12
+      let dayNum = null;   // 1-31
+      let yearNum = 2026;
+
+      const dateStr = String(rawDate).trim();
+
+      if (dateStr.includes('T')) {
+          const dObj = new Date(dateStr);
+          if (!isNaN(dObj.getTime())) {
+              monthNum = dObj.getUTCMonth() + 1;
+              dayNum = dObj.getUTCDate();
+              yearNum = dObj.getUTCFullYear();
+          }
+      } else if (dateStr.match(/^\d{4}-\d{1,2}-\d{1,2}/)) {
+          const parts = dateStr.split('-');
+          yearNum = parseInt(parts[0], 10);
+          monthNum = parseInt(parts[1], 10);
+          dayNum = parseInt(parts[2], 10);
+      } else if (dateStr.match(/^\d{1,2}\/\d{1,2}(\/\d{2,4})?/)) {
+          const parts = dateStr.split('/');
+          monthNum = parseInt(parts[0], 10);
+          dayNum = parseInt(parts[1], 10);
+          if (parts[2]) {
+              yearNum = parseInt(parts[2], 10);
+              if (yearNum < 100) yearNum += 2000;
+          }
+      } else {
+          const monthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+          const monthShorts = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+          const lower = dateStr.toLowerCase();
+          for (let i = 0; i < 12; i++) {
+              if (lower.includes(monthNames[i]) || lower.includes(monthShorts[i])) {
+                  monthNum = i + 1;
+                  const matchDay = dateStr.match(/\b([0-3]?\d)\b/);
+                  if (matchDay) dayNum = parseInt(matchDay[1], 10);
+                  break;
+              }
+          }
+      }
+
+      if (monthNum && dayNum) {
+          const monthNamesFull = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+          const monthNamesShort = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+          const mFull = monthNamesFull[monthNum - 1];
+          const mShort = monthNamesShort[monthNum - 1];
+          const dStrPadded = String(dayNum).padStart(2, '0');
+          const mStrPadded = String(monthNum).padStart(2, '0');
+          const yStr = String(yearNum);
+
+          const keys = [
+              `${mFull} ${dayNum}`,
+              `${yStr}-${mStrPadded}-${dStrPadded}`,
+              `${mShort} ${dayNum}`,
+              `${mShort}${dayNum}`,
+              `${monthNum}/${dayNum}`,
+              `${monthNum}/${dayNum}/${yStr}`
+          ];
+
+          keys.forEach(k => {
+              if (!signupsMap.has(k)) {
+                  signupsMap.set(k, { drinks: [] });
+              }
+              const list = signupsMap.get(k).drinks;
+              if (!list.includes(name)) {
+                  list.push(name);
+              }
+          });
+      }
+    }
+
     function fetchSignups() {
       const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec?_cb=" + new Date().getTime();
       
-      fetch(scriptUrl)
+      return fetch(scriptUrl)
         .then(response => response.json())
         .then(data => {
           signupsMap.clear();
           
           if (Array.isArray(data)) {
             data.forEach(row => {
-              const name = row.name ? String(row.name).trim() : '';
-              let date = row.date ? String(row.date).trim() : '';
-              const role = row.role ? String(row.role).trim() : '';
-              
-              if (!name || !date || !role) return;
-              
-              if (date.includes('T')) {
-                  const dObj = new Date(date);
-                  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                  date = monthNames[dObj.getUTCMonth()] + " " + dObj.getUTCDate();
-              }
-              
-              if (!signupsMap.has(date)) {
-                signupsMap.set(date, { drinks: [] });
-              }
-              
-              const entry = signupsMap.get(date);
-              if (role.toLowerCase().includes('drink') || role.toLowerCase().includes('snack') || role.toLowerCase().includes('water')) {
-                entry.drinks.push(name);
-              }
+              addSignupEntry(row.date, row.name, row.role);
             });
           }
           
-          // Update event list drink statuses
-          const dates = ["Aug20", "Aug27", "Aug29"];
-          dates.forEach(d => {
-              const el = document.getElementById('drink-status-' + d);
-              if(el) {
-                  const dayNum = d.replace('Aug', '');
-                  if (signupsMap.has('August ' + dayNum)) {
-                      const s = signupsMap.get('August ' + dayNum);
-                      if(s.drinks && s.drinks.length > 0) {
-                          el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40";
-                          el.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${s.drinks.join(', ')}`;
-                          if(window.lucide) lucide.createIcons();
-                      } else {
-                          el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40";
-                          el.innerHTML = `<i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August ${dayNum}'); return false;" class="underline ml-1">Volunteer</a>`;
-                          if(window.lucide) lucide.createIcons();
-                      }
-                  } else {
-                      el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40";
-                      el.innerHTML = `<i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August ${dayNum}'); return false;" class="underline ml-1">Volunteer</a>`;
-                      if(window.lucide) lucide.createIcons();
-                  }
-              }
-          });
+          if (typeof renderCalendar === 'function') renderCalendar();
+          if (typeof renderEventList === 'function') renderEventList();
+          if (window.lucide) lucide.createIcons();
         })
         .catch(err => console.error('Error fetching signups:', err));
     }
@@ -1155,6 +1190,7 @@
         }
         renderCalendar();
         renderEventList();
+        fetchSignups();
         lucide.createIcons();
     };
 
@@ -1197,17 +1233,22 @@
           let signupHTML = '';
           if (ev.type !== 'practice') {
               let drinksCovered = false;
-              if (signupsMap.has(lookupDate)) {
-                  const signups = signupsMap.get(lookupDate);
-                  if (signups.drinks && signups.drinks.length > 0) drinksCovered = true;
+              let drinkVolunteers = [];
+              if (signupsMap.has(lookupDate) && signupsMap.get(lookupDate).drinks.length > 0) {
+                  drinksCovered = true;
+                  drinkVolunteers = signupsMap.get(lookupDate).drinks;
+              } else if (signupsMap.has(dateStr) && signupsMap.get(dateStr).drinks.length > 0) {
+                  drinksCovered = true;
+                  drinkVolunteers = signupsMap.get(dateStr).drinks;
               }
+
               if (!drinksCovered) {
                   signupHTML = `<div id="drink-status-${dateStr}" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
-                      <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('${lookupDate}'); return false;" class="underline ml-1">Volunteer</a>
+                      <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('${lookupDate}'); return false;" class="underline ml-1 text-orange-300 hover:text-white">Volunteer</a>
                   </div>`;
               } else {
-                  signupHTML = `<div class="mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40">
-                      <i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered
+                  signupHTML = `<div id="drink-status-${dateStr}" class="mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40">
+                      <i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${drinkVolunteers.join(', ')}
                   </div>`;
               }
           }
@@ -1470,20 +1511,23 @@
         
         let signupHTML = '';
         let drinksCovered = false;
-        if (signupsMap.has(lookupDate)) {
-            const signups = signupsMap.get(lookupDate);
-            if (signups.drinks && signups.drinks.length > 0) {
-                drinksCovered = true;
-                signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-emerald-300 bg-emerald-900/30 p-2 rounded border border-emerald-800/50">
-                    <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
-                    <span><strong>Drinks covered by:</strong> ${signups.drinks.join(', ')}</span>
-                </div>`;
-            }
+        let drinkVolunteers = [];
+        if (signupsMap.has(lookupDate) && signupsMap.get(lookupDate).drinks.length > 0) {
+            drinksCovered = true;
+            drinkVolunteers = signupsMap.get(lookupDate).drinks;
+        } else if (signupsMap.has(dateStr) && signupsMap.get(dateStr).drinks.length > 0) {
+            drinksCovered = true;
+            drinkVolunteers = signupsMap.get(dateStr).drinks;
         }
-        
-        if (eventType === 'scrimmage' && !drinksCovered) {
+
+        if (drinksCovered) {
+            signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-emerald-300 bg-emerald-900/30 p-2 rounded border border-emerald-800/50">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-emerald-400"></i>
+                <span><strong>Drinks covered by:</strong> ${drinkVolunteers.join(', ')}</span>
+            </div>`;
+        } else if (eventType === 'scrimmage') {
              signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-orange-300 bg-orange-900/30 p-2 rounded border border-orange-800/50">
-                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-orange-400"></i>
                     <span><strong>Drinks are still needed!</strong></span>
                 </div>`;
         }
@@ -1674,6 +1718,8 @@
     fetchMediaData();
     renderCalendar();
     fetchWeather();
+    fetchSignups();
+    setInterval(fetchSignups, 60000);
 
     // ==========================================
     // TACTICS BOARD DRAG AND DROP (MOUSE + TOUCH)
@@ -1860,19 +1906,14 @@
           closeVolunteerModal();
           
           // Optimistically update UI so they don't have to refresh
-          if (!signupsMap.has(date)) {
-            signupsMap.set(date, { drinks: [] });
-          }
-          signupsMap.get(date).drinks.push(name);
+          addSignupEntry(date, name, role);
+          if (typeof renderCalendar === 'function') renderCalendar();
+          if (typeof renderEventList === 'function') renderEventList();
+          if (window.lucide) lucide.createIcons();
           
-          const dayNum = date.replace('August ', '');
-          const el = document.getElementById('drink-status-Aug' + dayNum);
-          if (el) {
-              el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40";
-              el.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${signupsMap.get(date).drinks.join(', ')}`;
-              if (window.lucide) lucide.createIcons();
-          }
-        }, 2000);
+          // Sync with Google Sheets backend
+          setTimeout(fetchSignups, 2000);
+        }, 1500);
       }).catch(err => {
         status.textContent = "Error submitting. Please try again.";
         status.className = "text-xs text-center text-red-400 mt-2 block font-bold";
