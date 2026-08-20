@@ -1003,14 +1003,15 @@
             displayNameHTML = `${cleanLastName}${numHTML} ${relSuffixHTML}`;
         }
         
-        const cleanFirst = firstName ? firstName.replace(/\s*-\s*$/, '').trim() : '';
-        const vcardFullName = (cleanFirst + " " + cleanLastName).trim() || (firstName + " " + lastNameField).trim();
+        const vcardFirst = firstName ? firstName.trim() : '';
+        const vcardLast = lastNameField ? lastNameField.trim() : '';
+        const vcardFullName = (vcardFirst + " " + vcardLast).trim();
         const cleanPhoneNum = phone ? phone.replace(/[^0-9+]/g, '') : '';
         
         let vcardLines = [
             "BEGIN:VCARD",
             "VERSION:3.0",
-            `N:${cleanLastName};${cleanFirst};;;`,
+            `N:${vcardLast};${vcardFirst};;;`,
             `FN:${vcardFullName}`
         ];
         if (cleanPhoneNum) vcardLines.push(`TEL;TYPE=CELL,VOICE:${cleanPhoneNum}`);
