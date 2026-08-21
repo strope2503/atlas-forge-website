@@ -356,7 +356,7 @@
 
       <!-- Upload Portal -->
       <div class="mb-6">
-        <a href="https://drive.google.com/drive/folders/1qsg9oirm_aehrZ42WnEJGuu00pBQlkG3" target="_blank" class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02]">
+        <a id="mainDriveUploadBtn" href="https://drive.google.com/drive/folders/10QOOYeDr2Fyt_WN2VqMvP1PNWwAFRlD9" target="_blank" class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02]">
           <i data-lucide="folder-plus" class="w-5 h-5"></i>
           <span data-i18n="upload_photos">Open Team Google Drive Media Folder</span>
         </a>
@@ -1209,6 +1209,17 @@
                 };
             });
         }
+        let latestDriveFolder = '';
+        Object.values(specificEvents).forEach(ev => {
+            if (ev.mediaFolder && ev.mediaFolder.startsWith('http')) {
+                latestDriveFolder = ev.mediaFolder;
+            }
+        });
+        if (latestDriveFolder) {
+            const mainBtn = document.getElementById('mainDriveUploadBtn');
+            if (mainBtn) mainBtn.href = latestDriveFolder;
+        }
+        
         renderCalendar();
         renderEventList();
         fetchSignups();
