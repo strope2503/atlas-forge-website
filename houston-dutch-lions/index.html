@@ -1204,7 +1204,8 @@
                     bring: row['Bring'] || '',
                     location: row['Location'] || '',
                     formation: row['Formation'] || '',
-                    starters: startersParsed
+                    starters: startersParsed,
+                    mediaFolder: row['Media Folder'] || row['Drive Folder'] || row['Folder'] || ''
                 };
             });
         }
@@ -1469,6 +1470,7 @@
         const titleText = (eventType === 'game' || eventType === 'match') ? (currentLang === 'en' ? 'GAME DAY' : 'DÍA DE PARTIDO') : (currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO');
         const vsText = ev.opponent ? ` vs ${ev.opponent}` : '';
         const locText = ev.location || 'HDL Complex';
+        const driveFolderLink = (ev && ev.mediaFolder) ? ev.mediaFolder : 'https://drive.google.com/drive/folders/1qsg9oirm_aehrZ42WnEJGuu00pBQlkG3';
         content += `<h4 class="text-orange-400 font-bold text-sm mb-1">${titleText}</h4>
                    <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
                    <p class="text-slate-300 text-xs mb-1">${ev.time}${vsText}</p>
@@ -1478,7 +1480,10 @@
                    <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/80 mb-2">
                      <strong class="text-orange-400 text-[10px] uppercase tracking-widest block mb-1.5 flex items-center gap-1.5"><i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Game Day Checklist</strong>
                      <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform || 'Standard Kit'}</p>
-                     <p class="text-[11px] text-slate-300 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring || 'Water, Shin Guards, Cleats'}</p>
+                     <p class="text-[11px] text-slate-300 mb-2 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring || 'Water, Shin Guards, Cleats'}</p>
+                     <a href="${driveFolderLink}" target="_blank" class="w-full py-2 px-3 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg border border-orange-500/30 flex items-center justify-center gap-1.5 transition text-[11px] font-bold">
+                       <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Upload / View Media Folder for this Game
+                     </a>
                    </div>`;
       } else if (isPractice) {
         content += `<h4 class="text-blue-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO'}</h4>
