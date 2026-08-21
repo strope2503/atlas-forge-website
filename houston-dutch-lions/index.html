@@ -356,22 +356,11 @@
 
       <!-- Upload Portal -->
       <div class="mb-6">
-        <label for="mediaUploadInput" class="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02] cursor-pointer">
-          <i data-lucide="upload-cloud" class="w-5 h-5"></i>
-          <span data-i18n="upload_photos" id="uploadBtnText">Upload Game Photos & Videos</span>
-        </label>
-        <input type="file" id="mediaUploadInput" accept="image/*,video/*" multiple class="hidden" onchange="handleMediaUpload(event)">
-        
-        <!-- Progress Bar -->
-        <div id="uploadProgressContainer" class="hidden mt-3 bg-slate-800 rounded-lg p-3 border border-slate-700">
-          <div class="flex justify-between text-xs mb-1">
-            <span id="uploadStatusText" class="text-orange-400 font-bold">Preparing...</span>
-            <span id="uploadPercentText" class="text-slate-300">0%</span>
-          </div>
-          <div class="w-full bg-slate-900 rounded-full h-2.5 border border-slate-700 overflow-hidden">
-            <div id="uploadProgressBar" class="bg-orange-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
-          </div>
-        </div>
+        <a href="https://drive.google.com/drive/folders/1qsg9oirm_aehrZ42WnEJGuu00pBQlkG3" target="_blank" class="w-full py-3.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02]">
+          <i data-lucide="folder-plus" class="w-5 h-5"></i>
+          <span data-i18n="upload_photos">Open Team Google Drive Media Folder</span>
+        </a>
+        <p class="text-[10px] text-slate-400 text-center mt-2">📁 Upload photos & 4K videos directly into Google Drive with unlimited storage!</p>
       </div>
 
       <!-- DYNAMIC MEDIA TIMELINE -->
@@ -632,12 +621,14 @@
     function processMediaData(data) {
         const container = document.getElementById('dynamic-media-container');
         if (!data.table.rows || data.table.rows.length === 0) {
-            container.innerHTML = '<p class="text-[11px] text-slate-500 italic">No media uploaded yet.</p>';
+            container.innerHTML = '<p class="text-[11px] text-slate-500 italic text-center py-4">No team media posted yet.</p>';
             return;
         }
 
         const cols = data.table.cols.map(c => c ? c.label : '');
-        let html = '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">';
+        
+        // Group items by Event / Game or Date
+        const groupedMedia = {};
         
         data.table.rows.forEach(row => {
             let rowData = {};
@@ -649,32 +640,57 @@
 
             if (!rowData['Media URL']) return;
 
-            const url = rowData['Media URL'];
-            const caption = rowData['Caption'] || 'Team Media';
-            
-            // Very simple embed logic (could be improved to handle YouTube vs raw images)
-            let mediaEmbed = '';
-            if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                // Convert to embed URL
-                let videoId = '';
-                if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
-                else if (url.includes('v=')) videoId = url.split('v=')[1].split('&')[0];
-                
-                mediaEmbed = `<iframe class="w-full aspect-video rounded-lg bg-black" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen loading="lazy"></iframe>`;
-            } else {
-                // Assume image or raw video
-                mediaEmbed = `<img src="${url}" alt="${caption}" class="w-full aspect-video object-cover rounded-lg bg-slate-900 border border-slate-700" loading="lazy">`;
+            const groupKey = rowData['Event'] || rowData['Game'] || rowData['Date'] || 'Team Highlights';
+            if (!groupedMedia[groupKey]) {
+                groupedMedia[groupKey] = [];
             }
-
-            html += `
-                <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition shadow-lg">
-                  <p class="text-[10px] font-bold text-slate-300 mb-1.5 truncate flex items-center gap-1.5"><i data-lucide="play-circle" class="w-3.5 h-3.5 text-orange-400"></i> ${caption}</p>
-                  ${mediaEmbed}
-                </div>
-            `;
+            groupedMedia[groupKey].push(rowData);
         });
-        
-        html += '</div>';
+
+        let html = '';
+        for (const [groupTitle, items] of Object.entries(groupedMedia)) {
+            html += `
+              <div class="mb-5">
+                <h4 class="text-xs font-bold text-orange-400 uppercase tracking-wider mb-2.5 flex items-center gap-2 border-b border-slate-800 pb-1">
+                  <i data-lucide="film" class="w-4 h-4 text-orange-500"></i> ${groupTitle}
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            `;
+
+            items.forEach(item => {
+                const url = item['Media URL'];
+                const caption = item['Caption'] || 'Media Item';
+                
+                let mediaEmbed = '';
+                if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    let videoId = '';
+                    if (url.includes('youtu.be/')) videoId = url.split('youtu.be/')[1].split('?')[0];
+                    else if (url.includes('v=')) videoId = url.split('v=')[1].split('&')[0];
+                    mediaEmbed = `<iframe class="w-full aspect-video rounded-lg bg-black shadow" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen loading="lazy"></iframe>`;
+                } else if (url.includes('drive.google.com')) {
+                    let fileId = '';
+                    const match = url.match(/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+                    if (match) fileId = match[1];
+                    if (fileId) {
+                        mediaEmbed = `<iframe src="https://drive.google.com/file/d/${fileId}/preview" class="w-full aspect-video rounded-lg bg-slate-900 border border-slate-700" allow="autoplay"></iframe>`;
+                    } else {
+                        mediaEmbed = `<a href="${url}" target="_blank" class="block w-full aspect-video rounded-lg bg-slate-800 border border-slate-700 flex flex-col items-center justify-center p-4 text-center hover:bg-slate-700 transition"><i data-lucide="external-link" class="w-6 h-6 text-orange-400 mb-1"></i><span class="text-xs text-white font-bold truncate w-full">${caption}</span><span class="text-[10px] text-slate-400">View in Google Drive</span></a>`;
+                    }
+                } else {
+                    mediaEmbed = `<img src="${url}" alt="${caption}" class="w-full aspect-video object-cover rounded-lg bg-slate-900 border border-slate-700 shadow" loading="lazy">`;
+                }
+
+                html += `
+                    <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition shadow-lg">
+                      <p class="text-[10px] font-bold text-slate-300 mb-1.5 truncate flex items-center gap-1.5"><i data-lucide="play-circle" class="w-3.5 h-3.5 text-orange-400 shrink-0"></i> ${caption}</p>
+                      ${mediaEmbed}
+                    </div>
+                `;
+            });
+
+            html += `</div></div>`;
+        }
+
         container.innerHTML = html;
         if (window.lucide) lucide.createIcons();
     }
