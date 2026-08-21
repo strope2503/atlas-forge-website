@@ -651,13 +651,21 @@
                 rowData[colName] = cell ? (cell.f || cell.v) : '';
             });
 
-            if (!rowData['Media URL']) return;
+            let url = rowData['Media URL'] || rowData['File URL'] || rowData['URL'] || '';
+            if (!url && row.c) {
+                row.c.forEach(cell => {
+                    if (cell && cell.v && String(cell.v).startsWith('http')) {
+                        url = String(cell.v);
+                    }
+                });
+            }
+            if (!url) return;
 
             const groupKey = rowData['Event'] || rowData['Game'] || rowData['Date'] || 'Team Highlights';
             if (!groupedMedia[groupKey]) {
                 groupedMedia[groupKey] = [];
             }
-            groupedMedia[groupKey].push(rowData);
+            groupedMedia[groupKey].push({ ...rowData, 'Media URL': url });
         });
 
         let html = '';
