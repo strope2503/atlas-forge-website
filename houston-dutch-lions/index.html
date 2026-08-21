@@ -720,7 +720,7 @@
       const files = event.target.files;
       if (!files || files.length === 0) return;
       
-      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlTZmvEKmn-IuZ_vmmHHe0r27BfBg8IgdFetZcolwuX2TzynW5MO87eXvLYfoOFZW2/exec';
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxWjJ96mXV_MKku2rMGpxt7Q8LvSiUMlcRYdh74Q_UugT4H16Yu7HFyQn8MxGx0GQ5/exec';
       const progressContainer = document.getElementById('nativeUploadProgress');
       const statusText = document.getElementById('nativeUploadStatus');
       const percentText = document.getElementById('nativeUploadPercent');
@@ -939,7 +939,7 @@
     }
 
     function fetchSignups() {
-      const scriptUrl = "https://script.google.com/macros/s/AKfycbzlTZmvEKmn-IuZ_vmmHHe0r27BfBg8IgdFetZcolwuX2TzynW5MO87eXvLYfoOFZW2/exec?_cb=" + new Date().getTime();
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbzxWjJ96mXV_MKku2rMGpxt7Q8LvSiUMlcRYdh74Q_UugT4H16Yu7HFyQn8MxGx0GQ5/exec?_cb=" + new Date().getTime();
       
       return fetch(scriptUrl)
         .then(response => response.json())
@@ -2044,7 +2044,7 @@
       btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Submitting...';
       if (window.lucide) lucide.createIcons();
 
-      const scriptUrl = "https://script.google.com/macros/s/AKfycbzlTZmvEKmn-IuZ_vmmHHe0r27BfBg8IgdFetZcolwuX2TzynW5MO87eXvLYfoOFZW2/exec";
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbzxWjJ96mXV_MKku2rMGpxt7Q8LvSiUMlcRYdh74Q_UugT4H16Yu7HFyQn8MxGx0GQ5/exec";
       
       fetch(scriptUrl, {
         method: "POST",
