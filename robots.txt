@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /speaker.html
-Allow: /
-
+Disallow: /speaker-passive.html
+Disallow: /speaker_passive.html
 Disallow: /coach-summary.html
+Allow: /

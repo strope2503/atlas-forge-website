@@ -145,6 +145,43 @@
             margin-bottom: 10px;
         }
 
+        .edition-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 22px;
+            flex-wrap: wrap;
+        }
+
+        .edition-pill {
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-size: 0.82em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .edition-pill.active {
+            background: rgba(0, 210, 255, 0.15);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .edition-pill.inactive {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--steel-border);
+            color: var(--steel-mid);
+        }
+
+        .edition-pill.inactive:hover {
+            border-color: #e6b800;
+            color: #e6b800;
+        }
+
         .container {
             max-width: 1200px;
             margin: clamp(20px, 4vw, 40px) auto;
@@ -428,6 +465,10 @@
         <p style="color: var(--steel-mid); max-width: 700px; margin: 0 auto; font-size: 1.05rem;">
             Complete High-Output 200W RMS Bluetooth Rig with True Wireless Stereo & Active DSP Tuning.
         </p>
+        <div class="edition-nav">
+            <a href="speaker.html" class="edition-pill active">Ported TWS Edition (Active)</a>
+            <a href="speaker-passive.html" class="edition-pill inactive">Pro-Acoustic Passive Radiator Edition &rarr;</a>
+        </div>
     </section>
 
     <div class="container">
