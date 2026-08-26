@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>HDL Coach's Hub</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #020617; /* slate-950 */
+      color: #f8fafc;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-tab.active {
+      background-color: #f97316; /* orange-500 */
+      color: white;
+      border-color: #ea580c;
+    }
+    
+    .nav-tab {
+      background-color: rgba(30, 41, 59, 0.5);
+      color: #94a3b8;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    
+    /* Pitch Layout */
+    .tactical-pitch {
+      background: #064e3b;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 2/3;
+      max-height: 500px;
+      margin: 0 auto;
+    }
+    .pitch-line {
+      position: absolute;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    
+    .player-token {
+      width: 28px;
+      height: 28px;
+      background: #ea580c;
+      border: 2px solid white;
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+      color: white;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body class="pb-20">
+
+  <!-- Header -->
+  <header class="glass-panel sticky top-0 z-50 border-b border-slate-800 shadow-xl">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center shadow-lg border border-orange-500">
+          <i data-lucide="clipboard-list" class="w-5 h-5 text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-black tracking-tight text-white leading-tight">Coaches Hub</h1>
+          <p class="text-[10px] font-bold text-orange-400 uppercase tracking-wider">HDL Elite U14</p>
+        </div>
+      </div>
+      <a href="index.html" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-bold transition flex items-center gap-1 border border-slate-700">
+        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Main
+      </a>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <div class="max-w-5xl mx-auto px-4 py-4">
+    <div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+      <button onclick="switchTab('playbook')" id="tab-playbook" class="nav-tab active px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap flex items-center gap-2 transition shadow">
+        <i data-lucide="book-open" class="w-4 h-4"></i> Master Playbook
+      </button>
+      <button onclick="switchTab('scouting')" id="tab-scouting" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap flex items-center gap-2 transition shadow">
+        <i data-lucide="target" class="w-4 h-4"></i> Opponent Scouting
+      </button>
+      <button onclick="switchTab('film')" id="tab-film" class="nav-tab px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap flex items-center gap-2 transition shadow">
+        <i data-lucide="video" class="w-4 h-4"></i> Game Film Review
+      </button>
+    </div>
+  </div>
+
+  <!-- Content Container -->
+  <main class="max-w-5xl mx-auto px-4 space-y-6">
+    
+    <!-- PLAYBOOK TAB -->
+    <div id="content-playbook" class="space-y-6">
+      
+      <!-- System Overview -->
+      <div class="glass-panel p-5 rounded-2xl border-orange-500/30">
+        <h2 class="text-lg font-black text-white flex items-center gap-2 mb-3">
+          <i data-lucide="layout-dashboard" class="w-5 h-5 text-orange-400"></i>
+          System Base: Total Dutch Football 4-2-3-1
+        </h2>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          In possession, modern Dutch football does not remain static in a 4-2-3-1. We deploy three dynamic tactical transformations depending on the opponent's weaknesses.
+        </p>
+        
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="bg-slate-900 p-3 rounded-xl border border-blue-900/50">
+            <h3 class="text-xs font-black text-blue-400 mb-1">1. The 3-2-4-1 (Central Triangle Dominance)</h3>
+            <p class="text-[11px] text-slate-400">Used against rigid 4-4-2s to establish a 3v2 overload in the midfield. Quick 2-touch circulation exhausts opponent CMs.</p>
+          </div>
+          <div class="bg-slate-900 p-3 rounded-xl border border-emerald-900/50">
+            <h3 class="text-xs font-black text-emerald-400 mb-1">2. The 3-1-5-1 (Diagonal Overload)</h3>
+            <p class="text-[11px] text-slate-400">Used against narrow diamond midfields. Stretches their shape wide to open up far-post cutback corridors.</p>
+          </div>
+          <div class="bg-slate-900 p-3 rounded-xl border border-purple-900/50">
+            <h3 class="text-xs font-black text-purple-400 mb-1">3. The 4-2-4 (High Press Lock)</h3>
+            <p class="text-[11px] text-slate-400">Aggressive goal kick suffocation used against teams that insist on playing out of the back.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Match Management Playbook -->
+      <div class="glass-panel p-5 rounded-2xl border-slate-800">
+        <h2 class="text-base font-black text-white flex items-center gap-2 mb-3">
+          <i data-lucide="clock" class="w-4 h-4 text-emerald-400"></i>
+          Match Management & Psychology
+        </h2>
+        <div class="space-y-3">
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 flex gap-3">
+            <div class="w-8 h-8 rounded-lg bg-emerald-950 flex items-center justify-center shrink-0 border border-emerald-900">
+              <span class="text-emerald-400 font-bold text-xs">0-10'</span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-white">The First 10 Minutes</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">High-intensity physical dominance and tempo establishment. Win every first 50/50 challenge to set the psychological baseline.</p>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 flex gap-3">
+            <div class="w-8 h-8 rounded-lg bg-blue-950 flex items-center justify-center shrink-0 border border-blue-900">
+              <span class="text-blue-400 font-bold text-xs">15-45'</span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-white">Managing the Middle Third</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Control the rhythm with Dutch possession. Make opponents chase shadows to drain their stamina in the Texas heat.</p>
+            </div>
+          </div>
+          <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800 flex gap-3">
+            <div class="w-8 h-8 rounded-lg bg-orange-950 flex items-center justify-center shrink-0 border border-orange-900">
+              <span class="text-orange-400 font-bold text-xs">Final 15'</span>
+            </div>
+            <div>
+              <h4 class="text-xs font-bold text-white">The Final 15 Minutes</h4>
+              <p class="text-[11px] text-slate-400 mt-0.5">Against trailing teams: enforce strict 3+2 rest defense and exploit space on the counter. Against tired teams: bring fresh pace onto the wings to finish chances.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+    <!-- SCOUTING TAB -->
+    <div id="content-scouting" class="hidden space-y-4">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-black text-white flex items-center gap-2">
+          <i data-lucide="target" class="w-5 h-5 text-orange-400"></i>
+          Opponent Dossiers
+        </h2>
+        <span class="px-2.5 py-1 bg-orange-950 text-orange-300 rounded-lg text-[10px] font-bold border border-orange-800">
+          STXCL Bracket B
+        </span>
+      </div>
+      
+      <div id="scouting-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+    <!-- FILM TAB -->
+    <div id="content-film" class="hidden space-y-4">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-black text-white flex items-center gap-2">
+          <i data-lucide="video" class="w-5 h-5 text-purple-400"></i>
+          Match Film Database
+        </h2>
+        <span class="px-2.5 py-1 bg-purple-950 text-purple-300 rounded-lg text-[10px] font-bold border border-purple-800">
+          Video Room
+        </span>
+      </div>
+      
+      <div id="film-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <script src="scouting.js"></script>
+  <script>
+    lucide.createIcons();
+    
+    function switchTab(tabId) {
+      document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tab-' + tabId).classList.add('active');
+      
+      document.getElementById('content-playbook').classList.add('hidden');
+      document.getElementById('content-scouting').classList.add('hidden');
+      document.getElementById('content-film').classList.add('hidden');
+      
+      document.getElementById('content-' + tabId).classList.remove('hidden');
+    }
+
+    // Render Scouting Cards
+    function renderScoutingCards() {
+      if (!window.opponentScoutingDB) return;
+      const grid = document.getElementById('scouting-grid');
+      let html = '';
+      
+      for (const [name, data] of Object.entries(window.opponentScoutingDB)) {
+        const strengthsHTML = (data.strengths || []).map(s => \`<li class="flex items-start gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-400 shrink-0 mt-0.5"></i> <span>\${s}</span></li>\`).join('');
+        const weaknessesHTML = (data.weaknesses || []).map(w => \`<li class="flex items-start gap-1.5"><i data-lucide="x" class="w-3 h-3 text-amber-400 shrink-0 mt-0.5"></i> <span>\${w}</span></li>\`).join('');
+        
+        html += \`
+          <div class="glass-panel p-4 rounded-2xl border-slate-800 flex flex-col h-full space-y-3 shadow-lg">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="text-sm font-black text-white">\${name}</h3>
+                <p class="text-[10px] text-slate-400 font-mono mt-0.5">ID: \${data.id}</p>
+              </div>
+            </div>
+            
+            <div class="bg-slate-900/80 p-2.5 rounded-xl border border-slate-800/80">
+              <div class="text-[10px] font-bold text-slate-500 uppercase mb-1">Formation & Style</div>
+              <div class="text-xs font-bold text-orange-300">\${data.formation}</div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-2 flex-1">
+              <div class="bg-emerald-950/20 p-2.5 rounded-xl border border-emerald-900/30">
+                <div class="text-[10px] font-bold text-emerald-500 uppercase mb-1.5">Strengths</div>
+                <ul class="text-[10px] text-slate-300 space-y-1.5">\${strengthsHTML}</ul>
+              </div>
+              <div class="bg-amber-950/20 p-2.5 rounded-xl border border-amber-900/30">
+                <div class="text-[10px] font-bold text-amber-500 uppercase mb-1.5">Weaknesses</div>
+                <ul class="text-[10px] text-slate-300 space-y-1.5">\${weaknessesHTML}</ul>
+              </div>
+            </div>
+            
+            <div class="bg-blue-950/20 p-3 rounded-xl border border-blue-900/30 space-y-1.5">
+              <div class="text-[10px] font-bold text-blue-400 uppercase mb-1">Counter-Strategy</div>
+              <div class="text-[10px] text-slate-300"><span class="font-bold text-blue-300">#6/#8:</span> \${data.pivotPlan}</div>
+              <div class="text-[10px] text-slate-300"><span class="font-bold text-blue-300">#10:</span> \${data.playmakerPlan}</div>
+              <div class="text-[10px] text-slate-300"><span class="font-bold text-blue-300">Target Zones:</span> \${data.targetZones.join(', ')}</div>
+            </div>
+          </div>
+        \`;
+      }
+      grid.innerHTML = html;
+      lucide.createIcons();
+    }
+    
+    // Render Film Cards
+    function renderFilmCards() {
+      if (!window.opponentScoutingDB) return;
+      const grid = document.getElementById('film-grid');
+      let html = '';
+      
+      for (const [name, data] of Object.entries(window.opponentScoutingDB)) {
+        if (!data.film || data.film.length === 0) continue;
+        
+        let filmList = data.film.map(f => \`
+          <a href="\${f.url}" target="_blank" class="block p-2.5 bg-slate-900 hover:bg-purple-900/30 rounded-xl border border-slate-800 hover:border-purple-500/50 transition group">
+            <div class="flex items-start gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-slate-950 flex items-center justify-center shrink-0 text-slate-400 group-hover:text-purple-400 group-hover:scale-110 transition-transform border border-slate-800">
+                <i data-lucide="play" class="w-4 h-4"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-bold text-slate-200 group-hover:text-white transition leading-tight">\${f.title}</div>
+                <div class="text-[10px] text-slate-500 mt-1 flex gap-2">
+                  <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> \${f.duration}</span>
+                </div>
+              </div>
+            </div>
+          </a>
+        \`).join('');
+        
+        html += \`
+          <div class="glass-panel p-4 rounded-2xl border-purple-900/30">
+            <h3 class="text-sm font-black text-white mb-3 flex items-center gap-2">
+              <div class="w-2 h-2 rounded-full bg-purple-500"></div> \${name}
+            </h3>
+            <div class="space-y-2">\${filmList}</div>
+          </div>
+        \`;
+      }
+      grid.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // Small delay to ensure scouting.js has loaded
+      setTimeout(() => {
+        renderScoutingCards();
+        renderFilmCards();
+      }, 100);
+    });
+  </script>
+</body>
+</html>
