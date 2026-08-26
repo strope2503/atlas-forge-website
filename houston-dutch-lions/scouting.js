@@ -11,8 +11,8 @@ window.opponentScoutingDB = {
     targetZones: ['Zones 11 & 17 (Half-spaces behind advancing fullbacks)', 'Their lone #6 in possession'],
     film: [
       { title: 'HTX Tourney vs HTX Woodlands Gold STXCL', url: 'https://www.youtube.com/watch?v=4Z6wtYBwoQE', duration: '30:24' },
-      { title: '2013 Houston Surf White vs HTX Woodlands Gold', url: 'https://www.youtube.com/watch?v=DXpzjGi6LnM', duration: 'Highlights' },
-      { title: 'Lonestar 12/13B vs HTX Woodlands 12/13B Gold', url: 'https://www.youtube.com/watch?v=4Z6wtYBwoQE', duration: '37:40' },
+      { title: '2013 Houston Surf White vs HTX Woodlands Gold', url: 'https://www.youtube.com/watch?v=RuOOOy6GAt8', duration: 'Highlights' },
+      { title: 'Lonestar 12/13B vs HTX Woodlands 12/13B Gold', url: 'https://www.youtube.com/watch?v=H35NPSA_n6s', duration: '37:40' },
       { title: 'JAH CHIESA vs HTX Woodlands 13B', url: 'https://www.youtube.com/watch?v=DXpzjGi6LnM', duration: 'Highlights' }
     ]
   },
