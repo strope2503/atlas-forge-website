@@ -18,18 +18,20 @@ window.opponentScoutingDB = {
   },
   'HTX West Gold': {
     id: '240339',
-    formation: '4-2-3-1 / Flat 4-4-2 (Direct vertical play)',
-    strengths: ['Direct vertical distribution', 'Target striker knockdowns', 'Physical 50/50 duels'],
-    weaknesses: ['Lowest scoring output in conference (15 GF)', 'Backline rushes clearances under high press', 'Disconnect between midfield and front two'],
-    pivotPlan: '#6 and #8 dominate aerial second balls and distribute wide immediately.',
-    playmakerPlan: '#10 drifts laterally between their flat lines to pull center-backs out of position.',
-    wingsPlan: 'Overload flanks 2v1 with overlapping fullbacks (#2/#3) against their flat back four.',
-    pressTrigger: 'Press center-backs immediately when forced onto their weaker foot.',
-    targetZones: ['Touchline 2v1 zones', 'Channels behind fullbacks'],
+    formation: '4-4-2 (Flat block, direct vertical clearances)',
+    strengths: ['Athletic target forward', 'Second-ball knockdowns in middle third'],
+    weaknesses: ['Lowest scoring offense (15 GF / 21 matches)', 'Panic on weak foot clearances', 'Midfield disconnect between CMs and strikers'],
+    pivotPlan: 'Fullbacks (#2 and #3) step up alongside #6 and #8 to form a 4-man midfield net.',
+    playmakerPlan: '#10 roams freely across the width in the pocket between their midfield and back four to create a 5v2 central superiority.',
+    wingsPlan: 'Wingers (#7 and #11) stay glued to touchlines to isolate flat outside backs 1v1.',
+    pressTrigger: '"Weak-Foot Funnel & Sideline Squeeze": Funnel pass to weaker-footed CB, clamp inside lanes, and force panicked clearance.',
+    targetZones: ['Touchline corridors for 2v1 wide overloads', 'Their central 2-man midfield duo (overload and bypass)'],
     film: [
-      { title: 'HTX Tourney vs HTX West Gold STXCL (Full Match — 1:20:28)', url: 'https://www.youtube.com/watch?v=8_MZszyNUGc', duration: '1:20:28' },
-      { title: 'JAH 2013B vs HTX West 13B Gold I (Match Clip — 1:03)', url: 'https://www.youtube.com/watch?v=s7zUyYfO03w', duration: '1:03' },
-      { title: 'HTX South Gold vs HTX West Gold (Match Highlights — 2:22)', url: 'https://www.youtube.com/watch?v=LGieQ1uiYlU', duration: '2:22' }
+      { title: 'HTX Tourney vs HTX West Gold STXCL', url: 'https://www.youtube.com/watch?v=8_MZszyNUGc', duration: '1:20:28' },
+      { title: 'HTX South Gold vs HTX West Gold', url: 'https://www.youtube.com/watch?v=LGieQ1uiYlU', duration: '2:22' },
+      { title: 'HTX South Gold vs HTX West Gold (25-26 Season)', url: 'https://www.youtube.com/watch?v=ypdEr_wcGKw', duration: 'Highlights' },
+      { title: 'JAH 2013B vs HTX West 13B Gold I', url: 'https://www.youtube.com/watch?v=s7zUyYfO03w', duration: 'Highlights' },
+      { title: 'JAH CHIESA 2013 vs HTX West 13B Gold', url: 'https://www.youtube.com/watch?v=6lnzbooZCtc', duration: '14:44' }
     ]
   },
   'HTX South Gold': {
