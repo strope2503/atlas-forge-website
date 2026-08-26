@@ -87,19 +87,19 @@ window.opponentScoutingDB = {
   },
   'AHFC SW Blue': {
     id: '175983',
-    formation: '3-2-4-1 Central Triangle Dominance (Rigid 4-4-2 base)',
-    strengths: ['100% win rate (14 GF / 2 GA)', 'Aggressive vertical transitions', 'Set-piece aerial dominance'],
-    weaknesses: ['2-man central midfield vulnerable to 3v2 overloads', 'Space behind stepping CBs', 'Delayed lateral shifts'],
-    pivotPlan: 'Establish 3v2 central midfield numerical superiority with #10.',
-    playmakerPlan: 'Third-man combination runs into space behind aggressive center-backs.',
-    wingsPlan: 'Underlapping half-space runs into penalty area.',
-    pressTrigger: 'Direct Outlet Choke: CBs drop 5 yards before pass, #6 and #8 sweep the rebound pocket.',
-    targetZones: ['Seams between central midfielders and fullbacks', 'Space behind stepping CBs'],
+    formation: '4-4-2 / 4-2-3-1 (Fast, direct, long diagonal balls)',
+    strengths: ['100% Conference Win Rate (14 GF / 2 GA)', 'Aggressive second ball hunting', 'Far-post headers on set pieces'],
+    weaknesses: ['Two-man central midfield steps high', 'Massive pockets left open in half-spaces', 'Vulnerable to 3v2 central overloads'],
+    pivotPlan: 'Keep #6 and #8 tight centrally to outnumber their 2-man midfield 3v2. Win the "rebound zone" on direct balls.',
+    playmakerPlan: '#10 positioned at peak of triangle in Zone 14. Drag stepping CB and execute 1-touch wall passes.',
+    wingsPlan: '#7 and #11 pin their fullbacks wide. Underlap into vacated space behind their defense.',
+    pressTrigger: '"The Third-Man Combination": #9 checks to drag CB, #10 wall passes to sprinting winger.',
+    targetZones: ['Half-spaces (massive pockets)', 'Zone 14'],
     film: [
-      { title: 'AHFC 14B West Premier #1 vs VCF 2013 White (Full Match — 1:20:00)', url: 'https://www.youtube.com/watch?v=r14LWaphMW0', duration: '1:20:00' },
-      { title: 'AHFC 14B West Premier #1 vs Hays Youth Soccer 2013 (Full Match — 1:07:20)', url: 'https://www.youtube.com/watch?v=t7mAS1yAMGo', duration: '1:07:20' },
-      { title: 'AHFC 14B West Premier #1 vs Challenge 2013 East Red (Full Match — 1:16:08)', url: 'https://www.youtube.com/watch?v=oCNY0ZJOCsg', duration: '1:16:08' },
-      { title: 'AHFC 13B West Premier #1 vs MAFC 2013B (Match Footage — 33:29)', url: 'https://www.youtube.com/watch?v=ADEg8_Bt5b8', duration: '33:29' }
+      { title: 'AHFC 14B West Premier vs VCF 2013 White', url: 'https://www.youtube.com/watch?v=r14LWaphMW0', duration: '1:20:00' },
+      { title: 'AHFC 14B West Premier vs Hays 2013 Boys', url: 'https://www.youtube.com/watch?v=t7mAS1yAMGo', duration: '1:07:20' },
+      { title: 'AHFC 13B Premier vs GFI Gold — Rise Houston Warm-Up Cup', url: 'https://www.youtube.com/watch?v=Ch2iYGboDUw', duration: 'Highlights' },
+      { title: 'AHFC 14B West vs VCB Houston 15B Black', url: 'https://www.youtube.com/watch?v=smiGWmSL5Qs', duration: '32:40' }
     ]
   },
   'North Shore FC White': {
