@@ -122,19 +122,20 @@ window.opponentScoutingDB = {
   },
   'Real Greens': {
     id: '640546',
-    formation: 'Overload-to-Isolate Diagonal Shift (4-3-3 / 3-4-3 base)',
-    strengths: ['Aggressive counter-press', 'Dynamic 1v1 wingers', 'Dangerous near-post corners'],
-    weaknesses: ['Over-commits on high press', 'CBs vulnerable in 1v1 open field', 'Weak-side fullback isolated'],
-    pivotPlan: 'Bait press into defensive third, release via quick 3rd-man combinations.',
-    playmakerPlan: 'Attack vacated central seams as #9 drags CBs wide.',
-    wingsPlan: 'Overload left flank to isolate #7 (RW) on far-right touchline for diagonal switches.',
-    pressTrigger: 'Press-Break Bounce: NEVER try to dribble out. 1-touch backward bounce to GK/CB to launch switch.',
-    targetZones: ['Space behind high-pressing fullbacks', 'Isolated weak-side fullback'],
+    formation: '4-3-3 (Aggressive swarming counter-press, heavy shift)',
+    strengths: ['Aggressive 3-4 man counter-press on turnovers', 'High-intensity pressure', '3-2-3 Conference Record'],
+    weaknesses: ['Heavy Shift Vulnerability leaves opposite outside back stranded', 'Transition defending in open field', 'CBs struggle in 1v1 footraces'],
+    pivotPlan: 'The Overload-to-Isolate Switch: Build up on left to draw press, bounce pass back to CB/GK, launch 40-yard diagonal switch.',
+    playmakerPlan: '#7 isolated 1v1 on far touchline with no central cover for Real Greens.',
+    wingsPlan: 'Station #7 high and wide on far touchline to exploit stranded weak-side outside back.',
+    pressTrigger: 'The 3rd-Man Bounce: strictly avoid >2 touches. Use 3rd-man combos to puncture their pressing wave.',
+    targetZones: ['Weak-side outside back in 1v1 isolation', 'Far-side flank corridor'],
     film: [
-      { title: 'Real Greens Xolos vs Rayados Waller (Full Match — 1:01:39)', url: 'https://www.youtube.com/watch?v=d0hcv5ej-9w', duration: '1:01:39' },
-      { title: 'U15 STXCL RGSA vs Houstonians (Match Footage — 6:23)', url: 'https://www.youtube.com/watch?v=CsLgZveEAso', duration: '6:23' },
-      { title: 'STXCL RGSA vs Rise SC (Match Footage — 3:20)', url: 'https://www.youtube.com/watch?v=0SKrSAkdCYk', duration: '3:20' },
-      { title: 'Real Greens Soccer Academy vs SG1 10B Black (Match Footage — 2:35)', url: 'https://www.youtube.com/watch?v=ifR6_Mj-D0g', duration: '2:35' }
+      { title: 'NORTH SHORE 13 STXCL vs RGSA 13B STXCL', url: 'https://www.youtube.com/watch?v=P_HkWSLRAqM', duration: '38:06' },
+      { title: 'H. WOLVES STXCL 13 vs RGSA STXCL U13B', url: 'https://www.youtube.com/watch?v=v_CcrTACkUc', duration: '42:20' },
+      { title: 'Full Match Film: RGSA 13B vs H Wolves 13 (1st Half)', url: 'https://www.youtube.com/watch?v=uqxT3LRISzM', duration: '35:04' },
+      { title: 'Full Match Film: RGSA 13B vs H Wolves 13 (2nd Half)', url: 'https://www.youtube.com/watch?v=spRQl68L6O4', duration: '37:46' },
+      { title: 'JAH CHIESA 2013 vs Real Greens SA 13B', url: 'https://www.youtube.com/watch?v=rCvx-KYLd7g', duration: '13:24' }
     ]
   },
   'Storm SC': {
