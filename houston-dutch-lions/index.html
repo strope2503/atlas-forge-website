@@ -2213,20 +2213,6 @@
             if (mainBtn) mainBtn.href = latestDriveFolder;
         }
         
-        // If current month has no matches/scrimmages, default to the month of the upcoming match
-        const currentMonthPrefix = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
-        const hasCurrentMonthEvents = Object.keys(specificEvents).some(d => d.startsWith(currentMonthPrefix));
-        if (!hasCurrentMonthEvents) {
-            const sortedDates = Object.keys(specificEvents).sort();
-            const futureDate = sortedDates.find(d => {
-                const [y, m, dNum] = d.split('-').map(Number);
-                return new Date(y, m - 1, dNum, 23, 59, 59).getTime() >= Date.now();
-            });
-            if (futureDate) {
-                const [fy, fm, fd] = futureDate.split('-').map(Number);
-                currentDate = new Date(fy, fm - 1, fd);
-            }
-        }
 
         renderCalendar();
         renderEventList();
