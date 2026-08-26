@@ -53,15 +53,19 @@ window.opponentScoutingDB = {
   },
   'HTX Central Gold': {
     id: '752439',
-    formation: '3-1-5-1 Diagonal Overload (Narrow Diamond base)',
-    strengths: ['Compact central shape', 'Short passing circuits', 'Quick midfield combination'],
-    weaknesses: ['Narrow shape is vulnerable to rapid diagonal ball switches', 'Slow lateral sliding leaves cutback angles open on far post'],
-    pivotPlan: 'Double pivot quickly circulates wide to bypass congested central diamond.',
-    playmakerPlan: '#10 finds half-spaces outside their diamond midfield to deliver crosses.',
-    wingsPlan: 'Isolate their outside backs 1v1 on touchlines; cross into far-post cutback corridors.',
-    pressTrigger: 'Diamond Flank Compression: Steer their diamond midfielders toward the touchline and double-team.',
-    targetZones: ['Wide flanks & touchlines', 'Far-post cutback corridors (Zone 14 to far post)'],
-    film: []
+    formation: '4-3-3 (Structured build-up, short passing)',
+    strengths: ['Balanced, structured build-up', 'Play short through central third', 'Backline positioning under box pressure'],
+    weaknesses: ['Vulnerable to central overloading', 'Struggle against high fullbacks', 'Midfield turnovers under back-to-goal pressure'],
+    pivotPlan: 'Use Shift Beta (3-1-5-1): #6 drops into the back three to allow high fullbacks to stretch their central block.',
+    playmakerPlan: 'Create a 5v4 attacking line across the final third to deliver far-post cutbacks.',
+    wingsPlan: 'High fullbacks (#2 & #3) push onto the touchlines to overload the wide areas.',
+    pressTrigger: 'Press their central midfielders immediately when receiving with their back to our goal to force turnovers.',
+    targetZones: ['Central third (pressing traps)', 'Far-post areas for cutbacks'],
+    film: [
+      { title: 'HTX Central 13 Gold Highlights in College Station', url: 'https://www.youtube.com/watch?v=w5Sj-p7ixXk', duration: 'Highlights' },
+      { title: 'HTX 2013s Clearing the Ball Out', url: 'https://www.youtube.com/watch?v=VDmhCwIVsrs', duration: 'Highlights' },
+      { title: 'Sugar Land 14B vs HTX Central 14B Black', url: 'https://www.youtube.com/watch?v=YAATXCCMA5Y', duration: '50:27' }
+    ]
   },
   'Houstonians FC N': {
     id: '546899',
