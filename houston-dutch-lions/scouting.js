@@ -163,26 +163,26 @@ window.overrideOpponentFunctions = function() {
       }
       const cardBg = isHDL ? 'border-orange-500/50 bg-orange-950/20' : 'border-slate-800/80 hover:border-blue-500/40';
 
-      html += \`
-        <div class="glass-card p-3.5 rounded-2xl border \${cardBg} flex flex-col justify-between space-y-3 transition shadow">
+      html += `
+        <div class="glass-card p-3.5 rounded-2xl border ${cardBg} flex flex-col justify-between space-y-3 transition shadow">
           <!-- Header -->
           <div class="flex items-start justify-between gap-2">
             <div class="flex items-center gap-2.5 min-w-0">
-              <img src="\${t.logo}" alt="\${t.name}" class="w-10 h-10 object-contain rounded-full bg-slate-950 p-1 border border-slate-700/60 shrink-0 shadow">
+              <img src="${t.logo}" alt="${t.name}" class="w-10 h-10 object-contain rounded-full bg-slate-950 p-1 border border-slate-700/60 shrink-0 shadow">
               <div class="min-w-0">
-                <h4 class="font-extrabold text-xs text-white truncate \${isHDL ? 'text-orange-400' : ''}">\${t.name}</h4>
-                <p class="text-[10px] text-slate-400 truncate">\${t.clubName || t.venue}</p>
+                <h4 class="font-extrabold text-xs text-white truncate ${isHDL ? 'text-orange-400' : ''}">${t.name}</h4>
+                <p class="text-[10px] text-slate-400 truncate">${t.clubName || t.venue}</p>
               </div>
             </div>
             <div class="flex flex-col items-end gap-1 shrink-0">
-              <span class="text-[9px] font-black px-1.5 py-0.5 rounded \${t.stateRank ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-slate-900 text-slate-400'}">
-                TXS #\${t.stateRank || 'NR'}
+              <span class="text-[9px] font-black px-1.5 py-0.5 rounded ${t.stateRank ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-slate-900 text-slate-400'}">
+                TXS #${t.stateRank || 'NR'}
               </span>
-              \${scoutInfo && scoutInfo.film && scoutInfo.film.length > 0 ? \`
+              ${scoutInfo && scoutInfo.film && scoutInfo.film.length > 0 ? `
                 <span class="text-[8px] font-black px-1.5 py-0.2 rounded bg-purple-950 text-purple-300 border border-purple-800 flex items-center gap-0.5 shadow">
-                  <i data-lucide="video" class="w-2.5 h-2.5 text-purple-400"></i> \${scoutInfo.film.length} Film
+                  <i data-lucide="video" class="w-2.5 h-2.5 text-purple-400"></i> ${scoutInfo.film.length} Film
                 </span>
-              \` : \`<span class="text-[9px] font-bold text-slate-400">\${t.points} pts</span>\`}
+              ` : `<span class="text-[9px] font-bold text-slate-400">${t.points} pts</span>`}
             </div>
           </div>
 
@@ -190,19 +190,19 @@ window.overrideOpponentFunctions = function() {
           <div class="grid grid-cols-4 gap-1 text-center bg-slate-950/70 p-1.5 rounded-xl border border-slate-800/80">
             <div>
               <div class="text-[8px] text-slate-500 font-bold uppercase">US/CAN</div>
-              <div class="text-[10px] font-black text-slate-200">\${t.usCanRank ? '#' + t.usCanRank : 'NR'}</div>
+              <div class="text-[10px] font-black text-slate-200">${t.usCanRank ? '#' + t.usCanRank : 'NR'}</div>
             </div>
             <div>
               <div class="text-[8px] text-slate-500 font-bold uppercase">Nat'l</div>
-              <div class="text-[10px] font-black text-slate-200">\${t.nationalRank ? '#' + t.nationalRank : 'NR'}</div>
+              <div class="text-[10px] font-black text-slate-200">${t.nationalRank ? '#' + t.nationalRank : 'NR'}</div>
             </div>
             <div>
               <div class="text-[8px] text-slate-500 font-bold uppercase">Reg'l</div>
-              <div class="text-[10px] font-black text-slate-200">\${t.regionalRank ? '#' + t.regionalRank : 'NR'}</div>
+              <div class="text-[10px] font-black text-slate-200">${t.regionalRank ? '#' + t.regionalRank : 'NR'}</div>
             </div>
             <div>
               <div class="text-[8px] text-slate-500 font-bold uppercase">TXS</div>
-              <div class="text-[10px] font-black text-emerald-400">\${t.stateRank ? '#' + t.stateRank : 'NR'}</div>
+              <div class="text-[10px] font-black text-emerald-400">${t.stateRank ? '#' + t.stateRank : 'NR'}</div>
             </div>
           </div>
 
@@ -210,29 +210,29 @@ window.overrideOpponentFunctions = function() {
           <div class="bg-slate-950/50 rounded-lg p-2 text-[10px] space-y-1 border border-slate-800/50">
             <div class="flex justify-between text-slate-400">
               <span>Coach:</span>
-              <span class="text-slate-200 font-bold truncate max-w-[130px]">\${t.coach || 'Coach'}</span>
+              <span class="text-slate-200 font-bold truncate max-w-[130px]">${t.coach || 'Coach'}</span>
             </div>
             <div class="flex justify-between text-slate-400">
               <span>Record & Win %:</span>
-              <span class="text-emerald-400 font-bold">\${t.wins}-\${t.draws}-\${t.losses} (\${t.winPercent}%)</span>
+              <span class="text-emerald-400 font-bold">${t.wins}-${t.draws}-${t.losses} (${t.winPercent}%)</span>
             </div>
             <div class="flex justify-between text-slate-400">
               <span>Match vs HDL:</span>
-              <strong class="\${isHDL ? 'text-slate-500' : 'text-orange-400'}">\${t.matchVsHDL}</strong>
+              <strong class="${isHDL ? 'text-slate-500' : 'text-orange-400'}">${t.matchVsHDL}</strong>
             </div>
           </div>
 
           <!-- Actions -->
           <div class="flex gap-1.5 pt-0.5">
-            <button onclick="window.openOpponentModal('\${t.id}')" class="flex-1 py-1.5 px-2 bg-orange-600/20 hover:bg-orange-600 text-orange-400 hover:text-white rounded-lg text-[10px] font-black border border-orange-500/30 flex items-center justify-center gap-1 transition">
+            <button onclick="window.openOpponentModal('${t.id}')" class="flex-1 py-1.5 px-2 bg-orange-600/20 hover:bg-orange-600 text-orange-400 hover:text-white rounded-lg text-[10px] font-black border border-orange-500/30 flex items-center justify-center gap-1 transition">
               <i data-lucide="crosshair" class="w-3 h-3 text-orange-400"></i> Scouting & Film
             </button>
-            <a href="\${t.rankingsUrl}" target="_blank" class="py-1.5 px-2.5 bg-blue-900/30 hover:bg-blue-800 text-blue-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 border border-blue-800/40 transition">
+            <a href="${t.rankingsUrl}" target="_blank" class="py-1.5 px-2.5 bg-blue-900/30 hover:bg-blue-800 text-blue-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 border border-blue-800/40 transition">
               <i data-lucide="external-link" class="w-3 h-3"></i>
             </a>
           </div>
         </div>
-      \`;
+      `;
     });
     grid.innerHTML = html;
     if (window.lucide) lucide.createIcons();
@@ -273,29 +273,29 @@ window.overrideOpponentFunctions = function() {
 
     let scoutingHTML = '';
     if (scouting) {
-      const strengthsHTML = (scouting.strengths || []).map(s => \`<span class="px-2 py-0.5 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="check-circle" class="w-3 h-3 text-emerald-400"></i> \${s}</span>\`).join(' ');
-      const weaknessesHTML = (scouting.weaknesses || []).map(w => \`<span class="px-2 py-0.5 rounded-md bg-amber-950/80 text-amber-300 border border-amber-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-amber-400"></i> \${w}</span>\`).join(' ');
-      const targetZonesHTML = (scouting.targetZones || []).map(z => \`<span class="px-2 py-0.5 rounded-md bg-blue-950/80 text-blue-300 border border-blue-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="crosshair" class="w-3 h-3 text-blue-400"></i> \${z}</span>\`).join(' ');
+      const strengthsHTML = (scouting.strengths || []).map(s => `<span class="px-2 py-0.5 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="check-circle" class="w-3 h-3 text-emerald-400"></i> ${s}</span>`).join(' ');
+      const weaknessesHTML = (scouting.weaknesses || []).map(w => `<span class="px-2 py-0.5 rounded-md bg-amber-950/80 text-amber-300 border border-amber-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-amber-400"></i> ${w}</span>`).join(' ');
+      const targetZonesHTML = (scouting.targetZones || []).map(z => `<span class="px-2 py-0.5 rounded-md bg-blue-950/80 text-blue-300 border border-blue-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="crosshair" class="w-3 h-3 text-blue-400"></i> ${z}</span>`).join(' ');
 
       let filmHTML = '';
       if (scouting.film && scouting.film.length > 0) {
-        filmHTML = \`
+        filmHTML = `
           <div class="space-y-1.5 pt-1">
             <div class="text-[10px] font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1">
-              <i data-lucide="video" class="w-3.5 h-3.5"></i> Game Film & Footage (\${scouting.film.length})
+              <i data-lucide="video" class="w-3.5 h-3.5"></i> Game Film & Footage (${scouting.film.length})
             </div>
             <div class="grid grid-cols-1 gap-2">
-              \${scouting.film.map((f) => \`
-                <a href="\${f.url}" target="_blank" class="p-2.5 bg-slate-950 hover:bg-purple-950/50 rounded-xl border border-purple-800/50 hover:border-purple-500 transition flex items-center justify-between gap-2 shadow group">
+              ${scouting.film.map((f) => `
+                <a href="${f.url}" target="_blank" class="p-2.5 bg-slate-950 hover:bg-purple-950/50 rounded-xl border border-purple-800/50 hover:border-purple-500 transition flex items-center justify-between gap-2 shadow group">
                   <div class="flex items-center gap-2.5 min-w-0">
                     <div class="w-8 h-8 rounded-lg bg-purple-900/50 border border-purple-700/60 flex items-center justify-center shrink-0 text-purple-300 group-hover:scale-110 transition-transform">
                       <i data-lucide="play" class="w-4 h-4 text-purple-300"></i>
                     </div>
                     <div class="min-w-0">
-                      <div class="text-xs font-extrabold text-white group-hover:text-purple-300 transition truncate">\${f.title}</div>
+                      <div class="text-xs font-extrabold text-white group-hover:text-purple-300 transition truncate">${f.title}</div>
                       <div class="text-[10px] text-slate-400 flex items-center gap-1.5 mt-0.5">
-                        <span class="px-1.5 py-0.2 rounded bg-purple-950 text-purple-300 font-bold border border-purple-800/60 text-[9px]">\${f.url.includes('veo') ? 'VEO MATCH' : 'YOUTUBE'}</span>
-                        \${f.duration ? \`<span>⏱️ \${f.duration}</span>\` : ''}
+                        <span class="px-1.5 py-0.2 rounded bg-purple-950 text-purple-300 font-bold border border-purple-800/60 text-[9px]">${f.url.includes('veo') ? 'VEO MATCH' : 'YOUTUBE'}</span>
+                        ${f.duration ? `<span>⏱️ ${f.duration}</span>` : ''}
                       </div>
                     </div>
                   </div>
@@ -303,19 +303,19 @@ window.overrideOpponentFunctions = function() {
                     Watch Film ↗
                   </span>
                 </a>
-              \`).join('')}
+              `).join('')}
             </div>
           </div>
-        \`;
+        `;
       } else {
-        filmHTML = \`
+        filmHTML = `
           <div class="p-2.5 bg-slate-950/60 rounded-xl border border-slate-800 text-center text-[10px] text-slate-400 italic">
             🎬 Game film is currently being scouted and compiled for this opponent. Check back before matchday!
           </div>
-        \`;
+        `;
       }
 
-      scoutingHTML = \`
+      scoutingHTML = `
         <!-- TACTICAL SCOUTING DOSSIER -->
         <div class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-4 rounded-2xl border border-orange-500/40 space-y-3 shadow-xl mt-3">
           <div class="flex justify-between items-center border-b border-slate-800 pb-2">
@@ -333,7 +333,7 @@ window.overrideOpponentFunctions = function() {
             <div class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">Opponent Formation Shift</div>
             <div class="text-white font-black text-xs bg-slate-950/90 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
               <i data-lucide="layout-dashboard" class="w-4 h-4 text-orange-400 shrink-0"></i>
-              <span>\${scouting.formation}</span>
+              <span>${scouting.formation}</span>
             </div>
           </div>
 
@@ -343,14 +343,14 @@ window.overrideOpponentFunctions = function() {
               <div class="text-[10px] font-extrabold uppercase text-emerald-400 flex items-center gap-1">
                 <i data-lucide="shield-check" class="w-3 h-3"></i> Key Strengths
               </div>
-              <div class="flex flex-wrap gap-1">\${strengthsHTML}</div>
+              <div class="flex flex-wrap gap-1">${strengthsHTML}</div>
             </div>
 
             <div class="bg-slate-950/80 p-2.5 rounded-xl border border-amber-900/50 space-y-1.5">
               <div class="text-[10px] font-extrabold uppercase text-amber-400 flex items-center gap-1">
                 <i data-lucide="alert-triangle" class="w-3 h-3"></i> Vulnerabilities to Exploit
               </div>
-              <div class="flex flex-wrap gap-1">\${weaknessesHTML}</div>
+              <div class="flex flex-wrap gap-1">${weaknessesHTML}</div>
             </div>
           </div>
 
@@ -363,49 +363,49 @@ window.overrideOpponentFunctions = function() {
             <div class="space-y-1.5 text-[11px]">
               <div class="p-1.5 rounded-lg bg-blue-950/40 border border-blue-900/40">
                 <strong class="text-blue-300 block mb-0.5">🛡️ Double Pivot (#6 & #8):</strong>
-                <span class="text-slate-300">\${scouting.pivotPlan}</span>
+                <span class="text-slate-300">${scouting.pivotPlan}</span>
               </div>
               <div class="p-1.5 rounded-lg bg-amber-950/40 border border-amber-900/40">
                 <strong class="text-amber-300 block mb-0.5">🎯 Playmaker CAM (#10):</strong>
-                <span class="text-slate-300">\${scouting.playmakerPlan}</span>
+                <span class="text-slate-300">${scouting.playmakerPlan}</span>
               </div>
               <div class="p-1.5 rounded-lg bg-emerald-950/40 border border-emerald-900/40">
                 <strong class="text-emerald-300 block mb-0.5">⚡ Wingers & Fullbacks (#7/#11 & #2/#3):</strong>
-                <span class="text-slate-300">\${scouting.wingsPlan}</span>
+                <span class="text-slate-300">${scouting.wingsPlan}</span>
               </div>
               <div class="p-1.5 rounded-lg bg-orange-950/40 border border-orange-900/40">
                 <strong class="text-orange-300 block mb-0.5">⚠️ Pressing Trigger:</strong>
-                <span class="text-slate-300">\${scouting.pressTrigger}</span>
+                <span class="text-slate-300">${scouting.pressTrigger}</span>
               </div>
             </div>
 
-            \${targetZonesHTML ? \`
+            ${targetZonesHTML ? `
               <div class="pt-1 border-t border-slate-800 flex items-center gap-1.5 flex-wrap">
                 <span class="text-[10px] text-slate-400 font-bold">Key Attack Zones:</span>
-                \${targetZonesHTML}
+                ${targetZonesHTML}
               </div>
-            \` : ''}
+            ` : ''}
           </div>
 
           <!-- Game Film Hub -->
-          \${filmHTML}
+          ${filmHTML}
         </div>
-      \`;
+      `;
     }
 
-    content.innerHTML = \`
+    content.innerHTML = `
       <div class="space-y-4">
         <!-- Header Banner -->
         <div class="flex items-center gap-3.5 border-b border-slate-800 pb-3">
-          <img src="\${team.logo}" alt="\${team.name}" class="w-14 h-14 object-contain rounded-2xl bg-slate-950 p-1.5 border border-slate-700/80 shrink-0 shadow-lg">
+          <img src="${team.logo}" alt="${team.name}" class="w-14 h-14 object-contain rounded-2xl bg-slate-950 p-1.5 border border-slate-700/80 shrink-0 shadow-lg">
           <div class="min-w-0 flex-1">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 text-[10px] font-bold"># \${team.id}</span>
+              <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 text-[10px] font-bold"># ${team.id}</span>
               <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800 text-[10px] font-bold">Male, U14</span>
-              <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-black">\${team.points} Points</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-black">${team.points} Points</span>
             </div>
-            <h3 class="text-base sm:text-lg font-black text-white mt-1 leading-tight \${isHDL ? 'text-orange-400' : ''}">\${team.fullName}</h3>
-            <p class="text-[11px] text-slate-400 mt-0.5">\${team.clubName} • \${team.venue}</p>
+            <h3 class="text-base sm:text-lg font-black text-white mt-1 leading-tight ${isHDL ? 'text-orange-400' : ''}">${team.fullName}</h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">${team.clubName} • ${team.venue}</p>
           </div>
         </div>
 
@@ -417,20 +417,20 @@ window.overrideOpponentFunctions = function() {
           </div>
           <div class="grid grid-cols-4 gap-2">
             <div class="flex-1 min-w-[55px] flex flex-col items-center justify-center bg-slate-950 border border-emerald-500/60 rounded-xl py-2 px-1 text-center shadow-lg relative overflow-hidden">
-              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">\${team.usCanRank ? '#' + team.usCanRank : 'NR'}</span>
+              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">${team.usCanRank ? '#' + team.usCanRank : 'NR'}</span>
               <span class="text-[8px] font-black uppercase tracking-wider text-slate-400 mt-0.5">US/CAN</span>
             </div>
             <div class="flex-1 min-w-[55px] flex flex-col items-center justify-center bg-slate-950 border border-emerald-500/60 rounded-xl py-2 px-1 text-center shadow-lg relative overflow-hidden">
-              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">\${team.nationalRank ? '#' + team.nationalRank : 'NR'}</span>
+              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">${team.nationalRank ? '#' + team.nationalRank : 'NR'}</span>
               <span class="text-[8px] font-black uppercase tracking-wider text-slate-400 mt-0.5">National</span>
             </div>
             <div class="flex-1 min-w-[55px] flex flex-col items-center justify-center bg-slate-950 border border-emerald-500/60 rounded-xl py-2 px-1 text-center shadow-lg relative overflow-hidden">
-              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">\${team.regionalRank ? '#' + team.regionalRank : 'NR'}</span>
+              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">${team.regionalRank ? '#' + team.regionalRank : 'NR'}</span>
               <span class="text-[8px] font-black uppercase tracking-wider text-slate-400 mt-0.5">Regional</span>
             </div>
             <div class="flex-1 min-w-[55px] flex flex-col items-center justify-center bg-slate-950 border border-emerald-500/60 rounded-xl py-2 px-1 text-center shadow-lg relative overflow-hidden">
-              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">\${team.stateRank ? '#' + team.stateRank : 'NR'}</span>
-              <span class="text-[8px] font-black uppercase tracking-wider text-slate-400 mt-0.5">\${team.stateCode || 'TXS'}</span>
+              <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">${team.stateRank ? '#' + team.stateRank : 'NR'}</span>
+              <span class="text-[8px] font-black uppercase tracking-wider text-slate-400 mt-0.5">${team.stateCode || 'TXS'}</span>
             </div>
           </div>
         </div>
@@ -444,11 +444,11 @@ window.overrideOpponentFunctions = function() {
             </h5>
             <div>
               <div class="text-[10px] text-slate-400">Club Name:</div>
-              <div class="font-bold text-slate-200">\${team.clubName}</div>
+              <div class="font-bold text-slate-200">${team.clubName}</div>
             </div>
             <div>
               <div class="text-[10px] text-slate-400">State / Region:</div>
-              <div class="font-bold text-slate-200">\${team.stateCode} / South Texas</div>
+              <div class="font-bold text-slate-200">${team.stateCode} / South Texas</div>
             </div>
           </div>
 
@@ -459,11 +459,11 @@ window.overrideOpponentFunctions = function() {
             </h5>
             <div>
               <div class="text-[10px] text-slate-400">Head Coach:</div>
-              <div class="font-bold text-emerald-400 truncate">\${team.coach || 'Coach'}</div>
+              <div class="font-bold text-emerald-400 truncate">${team.coach || 'Coach'}</div>
             </div>
             <div>
               <div class="text-[10px] text-slate-400">Team Manager:</div>
-              <div class="font-bold text-slate-200 truncate">\${team.manager || 'Manager'}</div>
+              <div class="font-bold text-slate-200 truncate">${team.manager || 'Manager'}</div>
             </div>
           </div>
 
@@ -474,25 +474,25 @@ window.overrideOpponentFunctions = function() {
             </h5>
             <div class="flex justify-between text-[11px]">
               <span class="text-slate-400">Games:</span>
-              <span class="font-bold text-white">\${team.games}</span>
+              <span class="font-bold text-white">${team.games}</span>
             </div>
             <div class="flex justify-between text-[11px]">
               <span class="text-slate-400">W-D-L:</span>
-              <span class="font-bold text-emerald-400">\${team.wins}-\${team.draws}-\${team.losses}</span>
+              <span class="font-bold text-emerald-400">${team.wins}-${team.draws}-${team.losses}</span>
             </div>
             <div class="flex justify-between text-[11px]">
               <span class="text-slate-400">GF / GA:</span>
-              <span class="font-bold text-slate-200">\${team.goalsFor} / \${team.goalsAgainst}</span>
+              <span class="font-bold text-slate-200">${team.goalsFor} / ${team.goalsAgainst}</span>
             </div>
             <div class="flex justify-between text-[11px]">
               <span class="text-slate-400">Win Rate:</span>
-              <span class="font-black text-orange-400">\${team.winPercent}%</span>
+              <span class="font-black text-orange-400">${team.winPercent}%</span>
             </div>
           </div>
         </div>
         
         <!-- Tactical Scouting Section (from Google Docs) -->
-        \${scoutingHTML}
+        ${scoutingHTML}
 
         <!-- Matchup vs Houston Dutch Lions -->
         <div class="bg-gradient-to-r from-orange-950/30 to-blue-950/30 p-3 rounded-xl border border-orange-500/30 space-y-1.5 mt-2">
@@ -500,28 +500,28 @@ window.overrideOpponentFunctions = function() {
             <span class="text-[10px] font-bold text-orange-400 uppercase tracking-wider flex items-center gap-1">
               <i data-lucide="swords" class="w-3.5 h-3.5"></i> Matchup vs HDL Elite
             </span>
-            <span class="font-black text-white text-[11px]">\${team.matchVsHDL}</span>
+            <span class="font-black text-white text-[11px]">${team.matchVsHDL}</span>
           </div>
           <p class="text-[11px] text-slate-300 flex items-center gap-1">
             <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
-            <span>\${team.matchVenue || team.venue}</span>
+            <span>${team.matchVenue || team.venue}</span>
           </p>
         </div>
 
         <!-- Action Link Buttons -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-800">
-          <a href="\${team.rankingsUrl}" target="_blank" class="py-2 px-3 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded-xl text-center font-bold text-[11px] border border-emerald-500/40 transition flex items-center justify-center gap-1">
+          <a href="${team.rankingsUrl}" target="_blank" class="py-2 px-3 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded-xl text-center font-bold text-[11px] border border-emerald-500/40 transition flex items-center justify-center gap-1">
             <i data-lucide="award" class="w-3.5 h-3.5"></i> GotSport Rankings ↗
           </a>
-          <a href="\${team.gotsportScheduleUrl}" target="_blank" class="py-2 px-3 bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white rounded-xl text-center font-bold text-[11px] border border-blue-500/40 transition flex items-center justify-center gap-1">
+          <a href="${team.gotsportScheduleUrl}" target="_blank" class="py-2 px-3 bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white rounded-xl text-center font-bold text-[11px] border border-blue-500/40 transition flex items-center justify-center gap-1">
             <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Team Schedule ↗
           </a>
-          <a href="\${team.website}" target="_blank" class="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-center font-bold text-[11px] border border-slate-700 transition flex items-center justify-center gap-1">
+          <a href="${team.website}" target="_blank" class="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-center font-bold text-[11px] border border-slate-700 transition flex items-center justify-center gap-1">
             <i data-lucide="globe" class="w-3.5 h-3.5 text-orange-400"></i> Club Website ↗
           </a>
         </div>
       </div>
-    \`;
+    `;
 
     modal.classList.remove('hidden');
     if (window.lucide) lucide.createIcons();
