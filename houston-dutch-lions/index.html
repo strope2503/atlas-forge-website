@@ -265,10 +265,11 @@
 
       <div class="flex gap-2 overflow-x-auto pb-1 text-xs font-bold scrollbar-none">
         <button onclick="selectPosition('gk')" id="pos-gk" class="pos-tab px-3.5 py-2 rounded-xl bg-orange-600 text-white whitespace-nowrap shadow">Goalkeeper (#1)</button>
-        <button onclick="selectPosition('cb')" id="pos-cb" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Center Back (#4/5)</button>
-        <button onclick="selectPosition('fb')" id="pos-fb" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Fullback (#2/3)</button>
-        <button onclick="selectPosition('mid')" id="pos-mid" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Midfield (#6/8/10)</button>
-        <button onclick="selectPosition('fwd')" id="pos-fwd" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Attackers (#7/9/11)</button>
+        <button onclick="selectPosition('cb')" id="pos-cb" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Center Backs (#4/5)</button>
+        <button onclick="selectPosition('fb')" id="pos-fb" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Fullbacks (#2/3)</button>
+        <button onclick="selectPosition('cdm')" id="pos-cdm" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Double Pivot (#6/8)</button>
+        <button onclick="selectPosition('cam')" id="pos-cam" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Playmaker CAM (#10)</button>
+        <button onclick="selectPosition('fwd')" id="pos-fwd" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Wingers & Striker (#7/9/11)</button>
       </div>
 
       <div id="position-drill-card" class="glass-card p-4 rounded-2xl space-y-3 border border-blue-900/40">
@@ -440,52 +441,128 @@
       </div>
     </section>
 
-    <!-- TACTICS BOARD SECTION -->
-    <section id="tactics-section" class="hidden animate-fade-in p-4 sm:p-6 max-w-2xl mx-auto mb-20">
-      <div class="mb-4">
-        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
-          <i data-lucide="layout-dashboard" class="w-4 h-4 text-orange-400"></i>
-          <span data-i18n="tactics_title">Interactive Tactics Board</span>
-        </h2>
-        <p class="text-[11px] text-slate-400">Drag and drop players to visualize formations and drills.</p>
+    <!-- SECTION: 4-2-3-1 DUTCH TACTICS BOARD & SET PIECE PLAYBOOK -->
+    <section id="tactics-section" class="space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <div>
+          <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-orange-400"></i>
+            <span>4-2-3-1 Playbook & Interactive Pitch</span>
+          </h2>
+          <p class="text-xs text-slate-400">Drag & drop players to visualize 4-2-3-1 spacing, passing lanes, and set piece routines.</p>
+        </div>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button onclick="applyFormation('4231')" class="px-2.5 py-1 bg-orange-600 hover:bg-orange-500 text-white rounded-lg text-[10px] font-bold transition shadow">
+            4-2-3-1 Base
+          </button>
+          <button onclick="applyFormation('highpress')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] font-bold border border-slate-700 transition">
+            High Press 4-4-2
+          </button>
+          <button onclick="resetTactics()" class="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-slate-400 rounded-lg text-[10px] font-bold border border-slate-800 transition">
+            Reset
+          </button>
+        </div>
       </div>
 
-      <div class="glass-card p-4 rounded-2xl border border-blue-900/40 relative overflow-hidden">
+      <div class="glass-card p-3 sm:p-4 rounded-2xl border border-blue-900/40 relative overflow-hidden">
         <!-- Pitch Background -->
-        <div class="relative w-full aspect-[2/3] bg-emerald-700/80 border-2 border-white/50 rounded overflow-hidden select-none" id="tactics-pitch">
+        <div class="relative w-full aspect-[2/3] bg-emerald-700/85 border-2 border-white/60 rounded-xl overflow-hidden select-none shadow-inner" id="tactics-pitch">
           <!-- Field Lines -->
-          <div class="absolute inset-0 border-2 border-white/30 pointer-events-none"></div>
+          <div class="absolute inset-0 border-2 border-white/40 pointer-events-none"></div>
           <!-- Center Circle -->
-          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-24 sm:h-24 border-2 border-white/30 rounded-full pointer-events-none"></div>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 sm:w-28 sm:h-28 border-2 border-white/40 rounded-full pointer-events-none"></div>
           <!-- Center Line -->
-          <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-white/30 pointer-events-none"></div>
+          <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-white/40 pointer-events-none"></div>
           <!-- Penalty Areas -->
-          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[15%] border-b-2 border-x-2 border-white/30 pointer-events-none"></div>
-          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[15%] border-t-2 border-x-2 border-white/30 pointer-events-none"></div>
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[16%] border-b-2 border-x-2 border-white/40 pointer-events-none"></div>
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[16%] border-t-2 border-x-2 border-white/40 pointer-events-none"></div>
 
-          <!-- Tokens (4-3-3 Orange) -->
+          <!-- Pure 4-2-3-1 Tokens -->
           <!-- GK -->
-          <div class="absolute top-[5%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-zinc-400 border-2 border-zinc-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-black shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-gk">GK</div>
-          <!-- Def -->
-          <div class="absolute top-[20%] left-[10%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-lb">LB</div>
-          <div class="absolute top-[18%] left-[32%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cb1">CB</div>
-          <div class="absolute top-[18%] left-[58%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cb2">CB</div>
-          <div class="absolute top-[20%] left-[80%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-rb">RB</div>
-          <!-- Mid -->
-          <div class="absolute top-[35%] left-[25%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cm1">CM</div>
-          <div class="absolute top-[40%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cdm">CDM</div>
-          <div class="absolute top-[35%] left-[65%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cm2">CM</div>
-          <!-- Fwd -->
-          <div class="absolute top-[50%] left-[15%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-lw">LW</div>
-          <div class="absolute top-[45%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-st">ST</div>
-          <div class="absolute top-[50%] left-[75%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-rw">RW</div>
+          <div class="absolute top-[4%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-zinc-300 border-2 border-zinc-100 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-slate-900 shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-gk">GK</div>
+          
+          <!-- Back 4 -->
+          <div class="absolute top-[18%] left-[8%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-lb">LB</div>
+          <div class="absolute top-[16%] left-[32%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-cb1">CB</div>
+          <div class="absolute top-[16%] left-[58%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-cb2">CB</div>
+          <div class="absolute top-[18%] left-[82%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-rb">RB</div>
+          
+          <!-- Double Pivot CDMs -->
+          <div class="absolute top-[32%] left-[28%] w-6 h-6 sm:w-8 sm:h-8 bg-amber-500 border-2 border-amber-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-slate-950 shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-cdm1">#6</div>
+          <div class="absolute top-[32%] left-[62%] w-6 h-6 sm:w-8 sm:h-8 bg-amber-500 border-2 border-amber-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-slate-950 shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-cdm2">#8</div>
+          
+          <!-- Attacking Midfield (3) -->
+          <div class="absolute top-[50%] left-[10%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-lw">LW</div>
+          <div class="absolute top-[48%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-600 border-2 border-amber-300 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-cam">#10</div>
+          <div class="absolute top-[50%] left-[80%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-rw">RW</div>
+          
+          <!-- Solo Striker (1) -->
+          <div class="absolute top-[66%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[9px] sm:text-xs font-black text-white shadow-xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" id="token-st">ST</div>
           
           <!-- Ball -->
-          <div class="absolute top-[60%] left-[45%] w-4 h-4 sm:w-5 sm:h-5 bg-white border border-slate-800 rounded-full shadow-lg cursor-grab active:cursor-grabbing" draggable="true" ondragstart="dragStart(event)" id="token-ball">⚽</div>
+          <div class="absolute top-[76%] left-[46%] w-4 h-4 sm:w-5 sm:h-5 bg-white border border-slate-800 rounded-full shadow-xl flex items-center justify-center text-[9px] sm:text-xs cursor-grab active:cursor-grabbing" id="token-ball">⚽</div>
         </div>
+      </div>
+
+      <!-- 4-2-3-1 SET PIECE PLAYBOOK -->
+      <div class="glass-card p-4 rounded-2xl border border-blue-900/40 space-y-3">
+        <h3 class="text-sm font-extrabold text-white flex items-center gap-2">
+          <i data-lucide="flag" class="w-4 h-4 text-orange-400"></i>
+          <span>Official 4-2-3-1 Set Piece Playbook</span>
+        </h3>
         
-        <div class="mt-3 text-center">
-           <button onclick="resetTactics()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 px-4 rounded-full border border-slate-700 transition">Reset Positions</button>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <!-- Attacking Corner A -->
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5 shadow">
+            <div class="flex items-center justify-between">
+              <strong class="text-orange-400 font-bold flex items-center gap-1.5 text-xs">
+                <span>🚩 Corner A: Near-Post Flick</span>
+              </strong>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-orange-950 text-orange-300 font-black">ATTACK</span>
+            </div>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              <strong>CB1</strong> sprints to near post to glance flick. <strong>ST (#9)</strong> & <strong>CB2</strong> crash far post for the tap-in. <strong>#6 CDM</strong> holds edge of 18-yard box for second balls.
+            </p>
+          </div>
+
+          <!-- Attacking Corner B -->
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5 shadow">
+            <div class="flex items-center justify-between">
+              <strong class="text-orange-400 font-bold flex items-center gap-1.5 text-xs">
+                <span>🚩 Corner B: 2v1 Short Overload</span>
+              </strong>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-orange-950 text-orange-300 font-black">ATTACK</span>
+            </div>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              <strong>CAM (#10)</strong> checks short to corner taker for 2v1 overload. Pulls defender out, opening angle for driven cutback to <strong>#8 CDM</strong> arriving at the penalty spot.
+            </p>
+          </div>
+
+          <!-- Defending Corners -->
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5 shadow">
+            <div class="flex items-center justify-between">
+              <strong class="text-emerald-400 font-bold flex items-center gap-1.5 text-xs">
+                <span>🛡️ Defending Corners (Hybrid)</span>
+              </strong>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 font-black">DEFENSE</span>
+            </div>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              4-man zonal line across 6-yard box (LB, CB1, CB2, RB). <strong>#6 & #8 CDMs</strong> man-mark opponent runners. <strong>ST (#9)</strong> stays on halfway line for instant counter-attack outlet.
+            </p>
+          </div>
+
+          <!-- Direct Free Kicks -->
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5 shadow">
+            <div class="flex items-center justify-between">
+              <strong class="text-blue-400 font-bold flex items-center gap-1.5 text-xs">
+                <span>🎯 Direct Free Kicks & Walls</span>
+              </strong>
+              <span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 font-black">ORGANIZATION</span>
+            </div>
+            <p class="text-slate-300 text-[11px] leading-relaxed">
+              <strong>GK</strong> calls wall count (3-4 players). Tallest player on near post side of wall. <strong>#6 CDM</strong> guards wall-end peel off. <strong>Wingers</strong> drop to edge of box to sweep rebounds.
+            </p>
+          </div>
         </div>
       </div>
     </section>
@@ -502,9 +579,9 @@
       <i data-lucide="trophy" class="w-4 h-4"></i>
       <span>Standings</span>
     </a>
-    <a href="#skills-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
-      <i data-lucide="crosshair" class="w-4 h-4"></i>
-      <span data-i18n="nav_skills">Skills</span>
+    <a href="#tactics-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+      <span>Playbook</span>
     </a>
     <a href="#roster-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
       <i data-lucide="users" class="w-4 h-4"></i>
@@ -2301,24 +2378,28 @@
 
     const positionData = {
       gk: {
-        en: { title: "Goalkeeper (#1)", summary: "Primary Director & Shot Stopper", skills: "Box command, distribution with feet out of the back, handling crosses, vocal communication.", home: "Wall volley catches (100 touches), lateral cone shuffle to diving shape on grass, ground distribution passes." },
+        en: { title: "Goalkeeper (#1)", summary: "Sweeper Keeper, Director & Shot Stopper", skills: "Box command, distribution with feet out of the back, handling crosses, and organizing the back 4 line.", home: "Wall volley catches (100 touches), lateral cone shuffle to diving shape on grass, accurate ground distribution passes." },
         es: { title: "Arquero / Portero (#1)", summary: "Voz de Mando y Seguridad en el Arco", skills: "Dominio del área chica y grande, juego de pies en salida, anticipación a centros y comunicación constante.", home: "Rebotes contra la pared (100 toques), desplazamientos laterales en conos y pases rasantes de salida." }
       },
       cb: {
-        en: { title: "Center Backs (#4 & #5)", summary: "Defensive Spine & Aerial Anchors", skills: "1v1 jockeying, winning aerial headers, holding the offside line, stepping up to intercept.", home: "Parent toss & header clearances, 2-cone figure-8 backpedaling with forward acceleration." },
-        es: { title: "Defensas Centrales (#4 y #5)", summary: "Eje Defensivo y Coberturas", skills: "Duelos 1v1 con perfilación correcta, despeje aéreo, línea de fuera de juego y coberturas a la espalda.", home: "Cabezazos con un familiar devolviendo el balón a las manos, desplazamientos en 8 y pique corto." }
+        en: { title: "Center Backs (#4 & #5)", summary: "4-2-3-1 Defensive Spine & Build-Up Initiators", skills: "1v1 jockeying, winning aerial headers, stepping up into midfield pockets, and holding a disciplined offside line.", home: "Parent toss & header clearances, 2-cone figure-8 backpedaling with forward acceleration." },
+        es: { title: "Defensas Centrales (#4 y #5)", summary: "Eje Defensivo e Inicio de Juego", skills: "Duelos 1v1 con perfilación correcta, despeje aéreo, línea de fuera de juego y coberturas a la espalda.", home: "Cabezazos con un familiar devolviendo el balón a las manos, desplazamientos en 8 y pique corto." }
       },
       fb: {
-        en: { title: "Fullbacks / Wingbacks (#2 & #3)", summary: "Wide Defenders & Overlapping Attackers", skills: "Channel defending against fast wingers, body shape forcing attackers wide, timed overlapping runs.", home: "Side-shuffle to driven crossing reps, 1v1 sprint recovery turns." },
+        en: { title: "Fullbacks / Wingbacks (#2 & #3)", summary: "Wide Defenders & Overlapping Attackers", skills: "Channel defending against fast wingers, body shape forcing attackers wide, timed overlapping runs with wingers.", home: "Side-shuffle to driven crossing reps, 1v1 sprint recovery turns." },
         es: { title: "Laterales (#2 y #3)", summary: "Defensa por Banda y Apoyo Ofensivo", skills: "Marcación por los costados, perfilación para orientar al rival hacia afuera y desdobles por banda.", home: "Desplazamientos laterales con centros dirigidos y giros rápidos de repliegue defensivo." }
       },
-      mid: {
-        en: { title: "Midfielders (#6, #8 & #10)", summary: "Engine Room, Scanners & Playmakers", skills: "Head-scanning before receiving, receiving on the half-turn, 1-2 passing, through balls.", home: "Shoulder-check wall passing (200 touches with both feet), Cruyff turns, sole rolls." },
-        es: { title: "Mediocampistas / Volantes (#6, #8 y #10)", summary: "Visión, Control del Ritmo y Pases Filtrados", skills: "Giro de cabeza constante antes de recibir, control orientado en medio giro, paredes cortas y pases entre líneas.", home: "Mirar por encima del hombro antes de recibir contra la pared (200 toques con ambas piernas) y giros rápidos." }
+      cdm: {
+        en: { title: "Double Pivot CDMs (#6 & #8)", summary: "Engine Room, Balance & Shielding", skills: "#6 Destroyer shields back 4; #8 Box-to-Box links play. Head-scanning before receiving, 1-2 passing, and defensive transition screens.", home: "Shoulder-check wall passing (200 touches with both feet), Cruyff turns, sole rolls, and quick pivot turns." },
+        es: { title: "Doble Pivote (#6 y #8)", summary: "Equilibrio, Distribución y Escudo Defensivo", skills: "El #6 destruye y protege a los centrales; el #8 enlaza con los atacantes. Control orientado en medio giro y pases de primera.", home: "Mirar por encima del hombro antes de recibir contra la pared (200 toques con ambas piernas) y giros rápidos." }
+      },
+      cam: {
+        en: { title: "Playmaker CAM (#10)", summary: "Creative Heart, Between-the-Lines Threat", skills: "Operating in the hole between opponent midfield and defense, killer through-balls, rapid half-turns, and late box arrivals for cutbacks.", home: "Rapid receiving on the half-turn, 1-touch wall passing to turn and shoot, disguised passes." },
+        es: { title: "Enganche / Mediapunta (#10)", summary: "Creatividad, Pases Filtrados y Llegada al Área", skills: "Juego entre líneas, giros rápidos al recibir, habilitaciones al delantero y remates de media distancia.", home: "Controles orientados hacia el arco, giros en un toque contra la pared y remates de primera." }
       },
       fwd: {
-        en: { title: "Wingers & Strikers (#7, #9 & #11)", summary: "Goal Scorers & High Pressers", skills: "Diagonal runs in behind, 1v1 take-ons along touchline, first-touch finishing across the keeper.", home: "1-touch instep finishes from edge of the box, rapid ladder footwork into sprint finishes." },
-        es: { title: "Extremos y Delanteros (#7, #9 y #11)", summary: "Definición, Velocidad y Presión Alta", skills: "Desmarques en diagonal, regates veloces por banda, remates de primera intención y presión alta.", home: "Definición al primer toque en espacios reducidos y coordinación en escalera rematando al arco." }
+        en: { title: "Wingers & Striker (#7, #9 & #11)", summary: "Pace, Penetration & Clinical Finishing", skills: "#7 & #11 1v1 isolation dribbling, cutbacks into box; #9 holding up ball, near-post darting runs, and clinical 1-touch finishing.", home: "1-touch instep finishes from edge of the box, rapid ladder footwork into sprint finishes, near-post diagonal runs." },
+        es: { title: "Extremos y Delanteros (#7, #9 y #11)", summary: "Desborde, Velocidad y Definición", skills: "Extremos (#7/#11) con regate 1v1 y centros; Delantero (#9) con desmarques al primer palo y remate letal.", home: "Definición al primer toque en espacios reducidos y coordinación en escalera rematando al arco." }
       }
     };
 
@@ -3053,11 +3134,49 @@
       draggedToken = null;
     }
 
+    const formation4231 = {
+      'token-gk': { top: '4%', left: '45%' },
+      'token-lb': { top: '18%', left: '8%' },
+      'token-cb1': { top: '16%', left: '32%' },
+      'token-cb2': { top: '16%', left: '58%' },
+      'token-rb': { top: '18%', left: '82%' },
+      'token-cdm1': { top: '32%', left: '28%' },
+      'token-cdm2': { top: '32%', left: '62%' },
+      'token-lw': { top: '50%', left: '10%' },
+      'token-cam': { top: '48%', left: '45%' },
+      'token-rw': { top: '50%', left: '80%' },
+      'token-st': { top: '66%', left: '45%' },
+      'token-ball': { top: '76%', left: '46%' }
+    };
+
+    const formationHighPress = {
+      'token-gk': { top: '10%', left: '45%' },
+      'token-lb': { top: '32%', left: '12%' },
+      'token-cb1': { top: '30%', left: '34%' },
+      'token-cb2': { top: '30%', left: '56%' },
+      'token-rb': { top: '32%', left: '78%' },
+      'token-cdm1': { top: '48%', left: '30%' },
+      'token-cdm2': { top: '48%', left: '60%' },
+      'token-lw': { top: '68%', left: '12%' },
+      'token-cam': { top: '74%', left: '38%' },
+      'token-rw': { top: '68%', left: '78%' },
+      'token-st': { top: '78%', left: '58%' },
+      'token-ball': { top: '84%', left: '52%' }
+    };
+
+    function applyFormation(type) {
+      const form = type === 'highpress' ? formationHighPress : formation4231;
+      for (const [id, pos] of Object.entries(form)) {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.top = pos.top;
+          el.style.left = pos.left;
+        }
+      }
+    }
+
     function resetTactics() {
-       document.querySelectorAll('[id^="token-"]').forEach(token => {
-          token.style.top = defaultPositions[token.id].top;
-          token.style.left = defaultPositions[token.id].left;
-       });
+       applyFormation('4231');
     }
   </script>
   <!-- Volunteer Modal -->
