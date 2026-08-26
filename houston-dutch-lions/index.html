@@ -1869,8 +1869,23 @@
       if (window.lucide) lucide.createIcons();
     }
 
-    function openOpponentModal(teamId) {
-      const team = stxclBracketBTeams.find(t => String(t.id) === String(teamId) || String(t.teamId) === String(teamId));
+    function openOpponentModal(teamIdentifier) {
+      if (!teamIdentifier) return;
+      const term = String(teamIdentifier).trim().toLowerCase();
+      
+      const team = stxclBracketBTeams.find(t => {
+        if (String(t.id) === String(teamIdentifier) || String(t.teamId) === String(teamIdentifier)) return true;
+        const nameLower = t.name.toLowerCase();
+        const fullLower = t.fullName.toLowerCase();
+        if (term === nameLower || term === fullLower) return true;
+        if (term.includes(nameLower) || nameLower.includes(term)) return true;
+        if (term.includes(fullLower) || fullLower.includes(term)) return true;
+        const termClean = term.replace(/[^a-z0-9]/g, '');
+        const nameClean = nameLower.replace(/[^a-z0-9]/g, '');
+        if (termClean.includes(nameClean) || nameClean.includes(termClean)) return true;
+        return false;
+      }) || (term.includes('dutch') || term.includes('hdl') ? stxclBracketBTeams.find(t => t.isOurTeam) : null);
+
       if (!team) return;
 
       const modal = document.getElementById('opponent-scouting-modal');
@@ -2214,8 +2229,9 @@
           }
 
           const mapTarget = ev.mapQuery || ev.location;
+          const oppModalAction = ev.opponent ? `onclick="openOpponentModal('${ev.opponent}')"` : `onclick="showEventDetails('${dateStr}')"`;
 
-          html += `<div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-${colorClass}-500/40 transition cursor-pointer" onclick="showEventDetails('${dateStr}')">
+          html += `<div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-${colorClass}-500/40 transition cursor-pointer" ${oppModalAction}>
             <div class="flex items-start justify-between mb-1">
               <div class="flex items-center gap-2">
                 <span class="px-2 py-0.5 bg-${colorClass}-500/20 text-${colorClass}-400 border border-${colorClass}-500/30 text-[10px] font-bold rounded uppercase flex items-center">${badgeIcon}${badgeText}</span>
@@ -2225,9 +2241,17 @@
                 <i data-lucide="cloud-sun" class="w-3 h-3 text-slate-400"></i> --°F
               </div>
             </div>
-            <p class="text-xs text-slate-200 mb-0.5 flex items-center gap-1">
-              ${ev.time} ${ev.opponent ? '• ' + opponentLogoHTML + '<strong>' + ev.opponent + '</strong>' : ''}
-            </p>
+            <div class="flex items-center justify-between gap-1 mb-0.5">
+              <p class="text-xs text-slate-200 flex items-center gap-1.5 min-w-0">
+                <span class="font-bold text-slate-300 shrink-0">${ev.time}</span>
+                ${ev.opponent ? `• <span class="inline-flex items-center gap-1 font-bold text-white hover:text-orange-400 transition truncate">${opponentLogoHTML}${ev.opponent}</span>` : ''}
+              </p>
+              ${ev.opponent ? `
+                <button onclick="event.stopPropagation(); openOpponentModal('${ev.opponent}')" class="px-2 py-0.5 bg-emerald-950/90 hover:bg-emerald-800 text-emerald-300 hover:text-white border border-emerald-700/60 rounded text-[9px] font-black flex items-center gap-1 transition shrink-0 shadow">
+                  <i data-lucide="bar-chart-2" class="w-3 h-3 text-emerald-400"></i> Stats & Info
+                </button>
+              ` : ''}
+            </div>
             <p class="text-[11px] text-slate-400 mb-0.5 flex items-center gap-1">
               <a href="https://maps.google.com/?q=${encodeURIComponent(mapTarget)}" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 hover:underline transition" onclick="event.stopPropagation()">
                 <i data-lucide="map-pin" class="w-3 h-3 shrink-0"></i> ${ev.location}
@@ -2485,6 +2509,12 @@
           <h4 class="text-white font-extrabold text-sm mb-0.5">${ev.opponent || 'Opponent'}</h4>
           <p class="text-xs text-orange-400 font-bold mb-1">${formattedDate} • ${ev.time}</p>
           <p class="text-[11px] text-slate-400 mb-2">${ev.division || 'Boys U14 Bracket B'}</p>
+
+          ${ev.opponent ? `
+            <button onclick="openOpponentModal('${ev.opponent}')" class="w-full py-2 px-3 bg-emerald-950/90 hover:bg-emerald-700 text-emerald-300 hover:text-white border border-emerald-600/60 rounded-xl text-xs font-black flex items-center justify-center gap-1.5 transition shadow mb-2.5">
+              <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-emerald-400"></i> View ${ev.opponent} Team Stats & Rankings
+            </button>
+          ` : ''}
 
           <a href="https://maps.google.com/?q=${encodeURIComponent(mapQuery)}" target="_blank" class="w-full py-2 px-3 bg-blue-700/80 hover:bg-blue-600 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition shadow mb-3">
             <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${locText}
@@ -2798,8 +2828,23 @@
         targetKickoffTime = matchDateTime ? matchDateTime.getTime() : null;
 
         if (matchDateEl) matchDateEl.innerText = formattedDate;
-        if (homeTeamEl) homeTeamEl.innerText = "HDL ELITE 2013";
-        if (awayTeamEl) awayTeamEl.innerText = nextEvent.opponent ? nextEvent.opponent.toUpperCase() : (nextEvent.type === 'practice' ? (currentLang === 'en' ? 'TEAM PRACTICE' : 'ENTRENAMIENTO') : 'UPCOMING MATCH');
+        if (homeTeamEl) {
+          homeTeamEl.innerText = "HDL ELITE 2013";
+          homeTeamEl.className = 'text-sm sm:text-lg font-black text-white hover:text-orange-400 cursor-pointer transition';
+          homeTeamEl.onclick = () => openOpponentModal('Houston Dutch Lions');
+          homeTeamEl.title = 'Click to view HDL team stats & rankings';
+        }
+        if (awayTeamEl) {
+          awayTeamEl.innerText = nextEvent.opponent ? nextEvent.opponent.toUpperCase() : (nextEvent.type === 'practice' ? (currentLang === 'en' ? 'TEAM PRACTICE' : 'ENTRENAMIENTO') : 'UPCOMING MATCH');
+          if (nextEvent.opponent) {
+            awayTeamEl.className = 'text-[11px] sm:text-sm font-black text-slate-200 hover:text-orange-400 cursor-pointer underline decoration-dotted transition';
+            awayTeamEl.onclick = () => openOpponentModal(nextEvent.opponent);
+            awayTeamEl.title = `Click to view ${nextEvent.opponent} stats & GotSport rankings`;
+          } else {
+            awayTeamEl.className = 'text-[11px] sm:text-sm font-black text-slate-300';
+            awayTeamEl.onclick = null;
+          }
+        }
         if (kickoffEl) kickoffEl.innerText = nextEvent.time || (nextEvent.type === 'practice' ? '6:45 PM' : 'TBD');
 
         let arrivalText = '30 min prior';
