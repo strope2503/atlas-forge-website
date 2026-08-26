@@ -1865,7 +1865,6 @@
       tbody.innerHTML = html;
     }
 
-
     function renderOpponents() {
       const grid = document.getElementById('opponent-grid');
       if (!grid) return;
@@ -1873,15 +1872,6 @@
       let html = '';
       stxclBracketBTeams.forEach(t => {
         const isHDL = t.isOurTeam;
-        let scoutInfo = null;
-        if (typeof opponentScoutingDB !== 'undefined') {
-          for (const [sName, sData] of Object.entries(opponentScoutingDB)) {
-            if (sData.id === t.id || t.name.toLowerCase().includes(sName.toLowerCase()) || sName.toLowerCase().includes(t.name.toLowerCase())) {
-              scoutInfo = sData;
-              break;
-            }
-          }
-        }
         const cardBg = isHDL ? 'border-orange-500/50 bg-orange-950/20' : 'border-slate-800/80 hover:border-blue-500/40';
 
         html += `
@@ -1899,11 +1889,7 @@
                 <span class="text-[9px] font-black px-1.5 py-0.5 rounded ${t.stateRank ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-slate-900 text-slate-400'}">
                   TXS #${t.stateRank || 'NR'}
                 </span>
-                ${scoutInfo && scoutInfo.film && scoutInfo.film.length > 0 ? `
-                  <span class="text-[8px] font-black px-1.5 py-0.2 rounded bg-purple-950 text-purple-300 border border-purple-800 flex items-center gap-0.5 shadow">
-                    <i data-lucide="video" class="w-2.5 h-2.5 text-purple-400"></i> ${scoutInfo.film.length} Film
-                  </span>
-                ` : `<span class="text-[9px] font-bold text-slate-400">${t.points} pts</span>`}
+                <span class="text-[9px] font-bold text-slate-400">${t.points} pts</span>
               </div>
             </div>
 
@@ -1946,7 +1932,7 @@
             <!-- Actions -->
             <div class="flex gap-1.5 pt-0.5">
               <button onclick="openOpponentModal('${t.id}')" class="flex-1 py-1.5 px-2 bg-orange-600/20 hover:bg-orange-600 text-orange-400 hover:text-white rounded-lg text-[10px] font-black border border-orange-500/30 flex items-center justify-center gap-1 transition">
-                <i data-lucide="crosshair" class="w-3 h-3 text-orange-400"></i> Scouting & Film
+                <i data-lucide="bar-chart-2" class="w-3 h-3"></i> Scouting & Stats
               </button>
               <a href="${t.rankingsUrl}" target="_blank" class="py-1.5 px-2.5 bg-blue-900/30 hover:bg-blue-800 text-blue-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 border border-blue-800/40 transition">
                 <i data-lucide="external-link" class="w-3 h-3"></i>
@@ -1960,172 +1946,41 @@
       if (window.lucide) lucide.createIcons();
     }
 
-
-        function openOpponentModal(teamIdentifier) {
-      const modal = document.getElementById('opponent-scouting-modal');
-      const content = document.getElementById('opponent-modal-content');
-      if (!modal || !content) return;
-
-      let team = null;
-      if (typeof teamIdentifier === 'string' && /^[0-9]+$/.test(teamIdentifier)) {
-        team = fullTeamsAnalytics.find(t => t.id === teamIdentifier);
-      } else {
-        team = fullTeamsAnalytics.find(t => t.name.toLowerCase() === (teamIdentifier || '').toLowerCase() || t.fullName.toLowerCase().includes((teamIdentifier || '').toLowerCase()));
-      }
-
-      if (!team) {
-        team = fullTeamsAnalytics.find(t => t.name.toLowerCase().includes((teamIdentifier || '').toLowerCase()));
-      }
-
-      if (!team) {
-        content.innerHTML = '<div class="p-6 text-center text-slate-400">Opponent scouting data is loading...</div>';
-        modal.classList.remove('hidden');
-        return;
-      }
-
-      const isHDL = team.name === 'Houston Dutch Lions FC';
+    function openOpponentModal(teamIdentifier) {
+      if (!teamIdentifier) return;
+      const term = String(teamIdentifier).trim().toLowerCase();
       
-      let scouting = null;
-      for (const [sName, sData] of Object.entries(opponentScoutingDB)) {
-        if (sData.id === team.id || team.name.toLowerCase().includes(sName.toLowerCase()) || sName.toLowerCase().includes(team.name.toLowerCase())) {
-          scouting = sData;
-          break;
-        }
-      }
+      const team = stxclBracketBTeams.find(t => {
+        if (String(t.id) === String(teamIdentifier) || String(t.teamId) === String(teamIdentifier)) return true;
+        const nameLower = t.name.toLowerCase();
+        const fullLower = t.fullName.toLowerCase();
+        if (term === nameLower || term === fullLower) return true;
+        if (term.includes(nameLower) || nameLower.includes(term)) return true;
+        if (term.includes(fullLower) || fullLower.includes(term)) return true;
+        const termClean = term.replace(/[^a-z0-9]/g, '');
+        const nameClean = nameLower.replace(/[^a-z0-9]/g, '');
+        if (termClean.includes(nameClean) || nameClean.includes(termClean)) return true;
+        return false;
+      }) || (term.includes('dutch') || term.includes('hdl') ? stxclBracketBTeams.find(t => t.isOurTeam) : null);
 
-      let scoutingHTML = '';
-      if (scouting) {
-        const strengthsHTML = (scouting.strengths || []).map(s => `<span class="px-2 py-0.5 rounded-md bg-emerald-950/80 text-emerald-300 border border-emerald-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="check-circle" class="w-3 h-3 text-emerald-400"></i> ${s}</span>`).join(' ');
-        const weaknessesHTML = (scouting.weaknesses || []).map(w => `<span class="px-2 py-0.5 rounded-md bg-amber-950/80 text-amber-300 border border-amber-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="alert-triangle" class="w-3 h-3 text-amber-400"></i> ${w}</span>`).join(' ');
-        const targetZonesHTML = (scouting.targetZones || []).map(z => `<span class="px-2 py-0.5 rounded-md bg-blue-950/80 text-blue-300 border border-blue-800/70 text-[10px] font-bold inline-flex items-center gap-1"><i data-lucide="crosshair" class="w-3 h-3 text-blue-400"></i> ${z}</span>`).join(' ');
+      if (!team) return;
 
-        let filmHTML = '';
-        if (scouting.film && scouting.film.length > 0) {
-          filmHTML = `
-            <div class="space-y-1.5 pt-1">
-              <div class="text-[10px] font-extrabold uppercase tracking-wider text-purple-400 flex items-center gap-1">
-                <i data-lucide="video" class="w-3.5 h-3.5"></i> Available Game Film & Match Footage (${scouting.film.length})
-              </div>
-              <div class="grid grid-cols-1 gap-2">
-                ${scouting.film.map((f, idx) => `
-                  <a href="${f.url}" target="_blank" class="p-2.5 bg-slate-950 hover:bg-purple-950/50 rounded-xl border border-purple-800/50 hover:border-purple-500 transition flex items-center justify-between gap-2 shadow group">
-                    <div class="flex items-center gap-2.5 min-w-0">
-                      <div class="w-8 h-8 rounded-lg bg-purple-900/50 border border-purple-700/60 flex items-center justify-center shrink-0 text-purple-300 group-hover:scale-110 transition-transform">
-                        <i data-lucide="play" class="w-4 h-4 text-purple-300"></i>
-                      </div>
-                      <div class="min-w-0">
-                        <div class="text-xs font-extrabold text-white group-hover:text-purple-300 transition truncate">${f.title}</div>
-                        <div class="text-[10px] text-slate-400 flex items-center gap-1.5 mt-0.5">
-                          <span class="px-1.5 py-0.2 rounded bg-purple-950 text-purple-300 font-bold border border-purple-800/60 text-[9px]">${f.url.includes('veo') ? 'VEO MATCH' : 'YOUTUBE'}</span>
-                          ${f.duration ? `<span>⏱️ ${f.duration}</span>` : ''}
-                        </div>
-                      </div>
-                    </div>
-                    <span class="px-2 py-1 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-[10px] font-black shrink-0 flex items-center gap-1 transition shadow">
-                      Watch Film ↗
-                    </span>
-                  </a>
-                `).join('')}
-              </div>
-            </div>
-          `;
-        } else {
-          filmHTML = `
-            <div class="p-2.5 bg-slate-950/60 rounded-xl border border-slate-800 text-center text-[10px] text-slate-400 italic">
-              🎬 Game film is currently being scouted and compiled for this opponent. Check back before matchday!
-            </div>
-          `;
-        }
+      const modal = document.getElementById('opponent-scouting-modal');
+      const container = document.getElementById('opponent-modal-content');
+      if (!modal || !container) return;
 
-        scoutingHTML = `
-          <!-- 4-2-3-1 TACTICAL SCOUTING DOSSIER -->
-          <div class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 p-4 rounded-2xl border border-orange-500/40 space-y-3 shadow-xl">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-              <div class="flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
-                <h4 class="text-xs font-black uppercase tracking-wider text-orange-400 flex items-center gap-1.5">
-                  <i data-lucide="target" class="w-3.5 h-3.5"></i> 4-2-3-1 Tactical Scouting Dossier
-                </h4>
-              </div>
-              <span class="text-[9px] px-2 py-0.5 rounded-full bg-orange-950 text-orange-300 font-black border border-orange-800">STXCL SCOUT</span>
-            </div>
+      const isHDL = team.isOurTeam;
 
-            <!-- Formation & Style -->
-            <div class="text-xs">
-              <div class="text-[10px] text-slate-400 font-bold uppercase mb-0.5">Opponent Formation & Style</div>
-              <div class="text-white font-black text-xs bg-slate-950/90 p-2.5 rounded-xl border border-slate-800 flex items-center gap-2">
-                <i data-lucide="layout-dashboard" class="w-4 h-4 text-orange-400 shrink-0"></i>
-                <span>${scouting.formation}</span>
-              </div>
-            </div>
-
-            <!-- Strengths & Weaknesses -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              <div class="bg-slate-950/80 p-2.5 rounded-xl border border-emerald-900/50 space-y-1.5">
-                <div class="text-[10px] font-extrabold uppercase text-emerald-400 flex items-center gap-1">
-                  <i data-lucide="shield-check" class="w-3 h-3"></i> Key Strengths
-                </div>
-                <div class="flex flex-wrap gap-1">${strengthsHTML}</div>
-              </div>
-
-              <div class="bg-slate-950/80 p-2.5 rounded-xl border border-amber-900/50 space-y-1.5">
-                <div class="text-[10px] font-extrabold uppercase text-amber-400 flex items-center gap-1">
-                  <i data-lucide="alert-triangle" class="w-3 h-3"></i> Vulnerabilities to Exploit
-                </div>
-                <div class="flex flex-wrap gap-1">${weaknessesHTML}</div>
-              </div>
-            </div>
-
-            <!-- 4-2-3-1 Counter-Strategy Plan -->
-            <div class="bg-slate-950/90 p-3 rounded-xl border border-blue-900/60 space-y-2 text-xs">
-              <div class="text-[10px] font-extrabold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
-                <i data-lucide="crosshair" class="w-3.5 h-3.5 text-blue-400"></i> HDL 4-2-3-1 Counter-Strategy
-              </div>
-
-              <div class="space-y-1.5 text-[11px]">
-                <div class="p-1.5 rounded-lg bg-blue-950/40 border border-blue-900/40">
-                  <strong class="text-blue-300 block mb-0.5">🛡️ Double Pivot (#6 & #8):</strong>
-                  <span class="text-slate-300">${scouting.pivotPlan}</span>
-                </div>
-                <div class="p-1.5 rounded-lg bg-amber-950/40 border border-amber-900/40">
-                  <strong class="text-amber-300 block mb-0.5">🎯 Playmaker CAM (#10):</strong>
-                  <span class="text-slate-300">${scouting.playmakerPlan}</span>
-                </div>
-                <div class="p-1.5 rounded-lg bg-emerald-950/40 border border-emerald-900/40">
-                  <strong class="text-emerald-300 block mb-0.5">⚡ Wingers & Fullbacks (#7/#11 & #2/#3):</strong>
-                  <span class="text-slate-300">${scouting.wingsPlan}</span>
-                </div>
-                <div class="p-1.5 rounded-lg bg-orange-950/40 border border-orange-900/40">
-                  <strong class="text-orange-300 block mb-0.5">⚠️ Pressing Trigger:</strong>
-                  <span class="text-slate-300">${scouting.pressTrigger}</span>
-                </div>
-              </div>
-
-              ${targetZonesHTML ? `
-                <div class="pt-1 border-t border-slate-800 flex items-center gap-1.5 flex-wrap">
-                  <span class="text-[10px] text-slate-400 font-bold">Key Attack Zones:</span>
-                  ${targetZonesHTML}
-                </div>
-              ` : ''}
-            </div>
-
-            <!-- Game Film Hub -->
-            ${filmHTML}
-          </div>
-        `;
-      }
-
-      content.innerHTML = `
-        <div class="space-y-4">
-          <!-- Header Banner -->
-          <div class="flex items-center gap-3.5 border-b border-slate-800 pb-3">
-            <img src="${team.logo}" alt="${team.name}" class="w-14 h-14 object-contain rounded-2xl bg-slate-950 p-1.5 border border-slate-700/80 shrink-0 shadow-lg">
+      container.innerHTML = `
+        <div class="space-y-4 text-xs">
+          <!-- Header -->
+          <div class="flex items-start gap-3.5 border-b border-slate-800 pb-3">
+            <img src="${team.logo}" alt="${team.name}" class="w-14 h-14 object-contain rounded-full bg-slate-950 p-1.5 border border-slate-700/80 shrink-0 shadow-lg">
             <div class="min-w-0 flex-1">
               <div class="flex items-center gap-2 flex-wrap">
                 <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 text-[10px] font-bold"># ${team.id}</span>
                 <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800 text-[10px] font-bold">Male, U14</span>
                 <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-black">${team.points} Points</span>
-                ${scouting && scouting.film && scouting.film.length > 0 ? `<span class="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800 text-[10px] font-bold flex items-center gap-1"><i data-lucide="video" class="w-3 h-3"></i> ${scouting.film.length} Film Available</span>` : ''}
               </div>
               <h3 class="text-base sm:text-lg font-black text-white mt-1 leading-tight ${isHDL ? 'text-orange-400' : ''}">${team.fullName}</h3>
               <p class="text-[11px] text-slate-400 mt-0.5">${team.clubName} • ${team.venue}</p>
@@ -2145,9 +2000,6 @@
               ${renderRankingShield(team.stateRank, team.stateCode || 'TXS')}
             </div>
           </div>
-
-          <!-- Tactical Scouting Section (from Google Docs) -->
-          ${scoutingHTML}
 
           <!-- GotSport 3-Section Overview -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
@@ -2238,8 +2090,7 @@
       if (window.lucide) lucide.createIcons();
     }
 
-
-        function closeOpponentModal() {
+    function closeOpponentModal() {
       const modal = document.getElementById('opponent-scouting-modal');
       if (modal) modal.classList.add('hidden');
     }
