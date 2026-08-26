@@ -184,6 +184,7 @@
         </div>
         <div class="mt-3 pt-2 border-t border-slate-800/50 flex justify-center gap-3 text-[9px] font-bold tracking-wider">
           <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500/40 border border-blue-400/50"></span><span class="text-slate-400">PRACTICE</span></div>
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500/40 border border-emerald-400/50"></span><span class="text-emerald-400">STXCL LEAGUE</span></div>
           <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-orange-500/40 border border-orange-400/50"></span><span class="text-slate-400">SCRIMMAGE</span></div>
         </div>
       </div>
@@ -192,6 +193,63 @@
 
       <div class="grid gap-2.5" id="event-list">
         <!-- Event list populated dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- SECTION: STXCL CONFERENCE STANDINGS & OPPONENT HUB -->
+    <section id="standings-section" class="scroll-animate space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 text-[10px] font-bold rounded uppercase tracking-wider">STXCL Eastern Conference</span>
+            <span class="text-xs text-slate-400 font-bold">2026-27 Season</span>
+          </div>
+          <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2 mt-1">
+            <i data-lucide="trophy" class="w-4 h-4 text-orange-400"></i>
+            <span>Boys U14 Bracket B Standings</span>
+          </h2>
+        </div>
+        <a href="https://system.gotsport.com/splash/34041/events/54831/schedules?group=534266" target="_blank" class="text-xs font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1 bg-orange-950/40 border border-orange-800/50 px-2.5 py-1.5 rounded-lg transition shadow">
+          <span>Official GotSport</span> <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+
+      <!-- Standings Table Container -->
+      <div class="glass-card rounded-2xl overflow-hidden border border-blue-900/40 shadow-xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-slate-950/80 text-[10px] text-slate-400 uppercase tracking-wider border-b border-slate-800">
+              <tr>
+                <th class="py-2.5 px-3 text-center">#</th>
+                <th class="py-2.5 px-3">Team</th>
+                <th class="py-2.5 px-2 text-center">MP</th>
+                <th class="py-2.5 px-2 text-center">W</th>
+                <th class="py-2.5 px-2 text-center">L</th>
+                <th class="py-2.5 px-2 text-center">D</th>
+                <th class="py-2.5 px-2 text-center">GF</th>
+                <th class="py-2.5 px-2 text-center">GA</th>
+                <th class="py-2.5 px-2 text-center">GD</th>
+                <th class="py-2.5 px-3 text-center font-bold text-orange-400">PTS</th>
+              </tr>
+            </thead>
+            <tbody id="standings-table-body" class="divide-y divide-slate-800/60 font-medium">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Opponent Scouting & Team Directory -->
+      <div class="space-y-2.5 pt-2">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs sm:text-sm font-extrabold text-white uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="shield" class="w-3.5 h-3.5 text-orange-400"></i> Opponent Scouting & Team Directory
+          </h3>
+          <span class="text-[10px] text-slate-400">9 Conference Teams</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5" id="opponent-grid">
+          <!-- Rendered dynamically -->
+        </div>
       </div>
     </section>
 
@@ -435,10 +493,14 @@
   </main>
 
   <!-- MOBILE STICKY BOTTOM NAV -->
-  <nav class="fixed bottom-0 left-0 right-0 z-40 glass-card border-t border-blue-950 px-4 py-2 flex justify-around items-center text-[10px] font-bold text-slate-400 max-w-md mx-auto sm:rounded-t-2xl">
+  <nav class="fixed bottom-0 left-0 right-0 z-40 glass-card border-t border-blue-950 px-3 py-2 flex justify-around items-center text-[10px] font-bold text-slate-400 max-w-md mx-auto sm:rounded-t-2xl">
     <a href="#schedule-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
       <i data-lucide="calendar" class="w-4 h-4"></i>
       <span data-i18n="nav_schedule">Schedule</span>
+    </a>
+    <a href="#standings-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="trophy" class="w-4 h-4"></i>
+      <span>Standings</span>
     </a>
     <a href="#skills-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
       <i data-lucide="crosshair" class="w-4 h-4"></i>
@@ -447,10 +509,6 @@
     <a href="#roster-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
       <i data-lucide="users" class="w-4 h-4"></i>
       <span data-i18n="nav_roster">Roster</span>
-    </a>
-    <a href="#stats-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
-      <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
-      <span data-i18n="nav_stats">Stats</span>
     </a>
     <a href="#directory-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
       <i data-lucide="shield" class="w-4 h-4"></i>
@@ -1203,8 +1261,413 @@
       document.body.appendChild(script);
     }
 
+    // ==========================================
+    // OFFICIAL STXCL LEAGUE FIXTURES & BRACKET TEAMS
+    // ==========================================
+    const officialLeagueMatches = [
+      {
+        id: '201583',
+        date: '2026-09-12',
+        time: '2:00 PM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        homeLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        awayTeam: 'HTX Woodlands Gold STXCL EC BU14',
+        awayLogo: 'https://system.gotsport.com/system/teams/logos/000/241/436/full/HTXNEWLOGO.jpg?1685906975',
+        opponent: 'HTX Woodlands Gold',
+        opponentLogo: 'https://system.gotsport.com/system/teams/logos/000/241/436/full/HTXNEWLOGO.jpg?1685906975',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4129162',
+        isHome: true,
+        location: 'Houston Dutch Lions FC Soccer Facility - Field 1',
+        address: '14562 Interstate 45 S, Conroe, TX 77384',
+        mapQuery: '14562 Interstate 45 South, Conroe, Texas 77384',
+        uniform: 'Orange Jersey (Home Kit)',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911829'
+      },
+      {
+        id: '201585',
+        date: '2026-09-19',
+        time: '12:00 PM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'HTX West Gold STXCL EC BU14',
+        homeLogo: 'https://system.gotsport.com/system/teams/logos/000/240/339/full/HTXNEWLOGO.jpg?1685923777',
+        awayTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        awayLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        opponent: 'HTX West Gold',
+        opponentLogo: 'https://system.gotsport.com/system/teams/logos/000/240/339/full/HTXNEWLOGO.jpg?1685923777',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140665',
+        isHome: false,
+        location: 'Lost Creek Park - Field 3',
+        address: '3703 Lost Creek Blvd, Sugar Land, TX 77478',
+        mapQuery: '3703 Lost Creek Blvd, Sugar Land, TX 77478',
+        uniform: 'Blue / White Jersey (Away Kit)',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911831'
+      },
+      {
+        id: '201590',
+        date: '2026-09-26',
+        time: '2:00 PM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        homeLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        awayTeam: 'HTX South Gold STXCL EC BU14',
+        awayLogo: 'https://system.gotsport.com/system/teams/logos/000/240/319/full/HTXNEWLOGO.jpg?1685918311',
+        opponent: 'HTX South Gold',
+        opponentLogo: 'https://system.gotsport.com/system/teams/logos/000/240/319/full/HTXNEWLOGO.jpg?1685918311',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140662',
+        isHome: true,
+        location: 'Houston Dutch Lions FC Soccer Facility - Field 1',
+        address: '14562 Interstate 45 S, Conroe, TX 77384',
+        mapQuery: '14562 Interstate 45 South, Conroe, Texas 77384',
+        uniform: 'Orange Jersey (Home Kit)',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911836'
+      },
+      {
+        id: '201594',
+        date: '2026-10-03',
+        time: '2:00 PM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'North Shore FC White STXCL EC BU14',
+        homeLogo: 'https://system.gotsport.com/system/organizations/logos/000/019/340/full/NSFC_Logo.png?1630180270',
+        awayTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        awayLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        opponent: 'North Shore FC White',
+        opponentLogo: 'https://system.gotsport.com/system/organizations/logos/000/019/340/full/NSFC_Logo.png?1630180270',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4135684',
+        isHome: false,
+        location: 'North Shore Park - Field 2',
+        address: '14440 Wallisville Rd, Houston, TX 77049',
+        mapQuery: '14440 Wallisville Rd, Houston, TX 77049',
+        uniform: 'Blue / White Jersey (Away Kit)',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911840'
+      },
+      {
+        id: '201597',
+        date: '2026-10-17',
+        time: '2:00 PM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        homeLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        awayTeam: 'HOUSTONIANS FC N STXCL EC BU14',
+        awayLogo: 'https://system.gotsport.com/system/teams/logos/000/546/899/full/hfc_logo.JPG?1743908138',
+        opponent: 'Houstonians FC N',
+        opponentLogo: 'https://system.gotsport.com/system/teams/logos/000/546/899/full/hfc_logo.JPG?1743908138',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4193840',
+        isHome: true,
+        location: 'Houston Dutch Lions FC Soccer Facility - Field 1',
+        address: '14562 Interstate 45 S, Conroe, TX 77384',
+        mapQuery: '14562 Interstate 45 South, Conroe, Texas 77384',
+        uniform: 'Orange Jersey (Home Kit)',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911843'
+      },
+      {
+        id: '201603',
+        date: '2026-10-25',
+        time: '2:00 PM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'Real Greens STXCL EC BU14',
+        homeLogo: 'https://system.gotsport.com/system/teams/logos/000/640/546/full/RG_NEW_LOGO_GOTSPORT.png?1784784570',
+        awayTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        awayLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        opponent: 'Real Greens',
+        opponentLogo: 'https://system.gotsport.com/system/teams/logos/000/640/546/full/RG_NEW_LOGO_GOTSPORT.png?1784784570',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4293246',
+        isHome: false,
+        location: 'Houston Dutch Lions FC Soccer Facility - Field 1',
+        address: '14562 Interstate 45 S, Conroe, TX 77384',
+        mapQuery: '14562 Interstate 45 South, Conroe, Texas 77384',
+        uniform: 'Orange Jersey / Both',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911849'
+      },
+      {
+        id: '201604',
+        date: '2026-11-01',
+        time: '8:00 AM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        homeLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        awayTeam: 'AHFC SW BLUE STXCL EC BU14',
+        awayLogo: 'https://system.gotsport.com/system/teams/logos/000/175/983/full/AHFC_Logo.jpg?1636610923',
+        opponent: 'AHFC SW BLUE',
+        opponentLogo: 'https://system.gotsport.com/system/teams/logos/000/175/983/full/AHFC_Logo.jpg?1636610923',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4318587',
+        isHome: true,
+        location: 'Houston Dutch Lions FC Soccer Facility - Field 1',
+        address: '14562 Interstate 45 S, Conroe, TX 77384',
+        mapQuery: '14562 Interstate 45 South, Conroe, Texas 77384',
+        uniform: 'Orange Jersey (Home Kit)',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911850'
+      },
+      {
+        id: '201612',
+        date: '2026-11-14',
+        time: '2:00 PM',
+        type: 'league',
+        division: 'Boys U14 Bracket B',
+        homeTeam: 'HTX Central Gold STXCL EC BU14',
+        homeLogo: 'https://system.gotsport.com/system/teams/logos/000/752/439/full/HTXNEWLOGO.jpg?1780627794',
+        awayTeam: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        awayLogo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        opponent: 'HTX Central Gold',
+        opponentLogo: 'https://system.gotsport.com/system/teams/logos/000/752/439/full/HTXNEWLOGO.jpg?1780627794',
+        opponentUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4125791',
+        isHome: false,
+        location: "Dad's Club Sports Park - Field 1",
+        address: '14700 Silverhill Dr, Houston, TX 77048',
+        mapQuery: "14700 Silverhill Dr, Houston, TX 77048",
+        uniform: 'Blue / White Jersey (Away Kit)',
+        bring: 'Both Jerseys, Shin Guards, Cleats, Water',
+        matchUrl: 'https://system.gotsport.com/org_event/events/54831/schedules?group=534266&match=26911858'
+      }
+    ];
+
+    const stxclBracketBTeams = [
+      {
+        rank: 1,
+        id: '4193840',
+        name: 'Houstonians FC N',
+        fullName: 'HOUSTONIANS FC N STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/teams/logos/000/546/899/full/hfc_logo.JPG?1743908138',
+        website: 'https://www.houstoniansfc.org/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4193840',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sat, Oct 17 @ 2:00 PM',
+        venue: 'Houston, TX'
+      },
+      {
+        rank: 2,
+        id: '4293246',
+        name: 'Real Greens',
+        fullName: 'Real Greens STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/teams/logos/000/640/546/full/RG_NEW_LOGO_GOTSPORT.png?1784784570',
+        website: 'https://www.realgreensfc.com/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4293246',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sun, Oct 25 @ 2:00 PM',
+        venue: 'Houston, TX'
+      },
+      {
+        rank: 3,
+        id: '4318587',
+        name: 'AHFC SW Blue',
+        fullName: 'AHFC SW BLUE STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/teams/logos/000/175/983/full/AHFC_Logo.jpg?1636610923',
+        website: 'https://www.albionhurricanes.org/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4318587',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sun, Nov 01 @ 8:00 AM',
+        venue: 'Katy / SW Houston'
+      },
+      {
+        rank: 4,
+        id: '4295509',
+        name: 'Houston Dutch Lions Elite',
+        fullName: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        logo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
+        website: 'https://houstondutchlionsfc.com/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4295509',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        isOurTeam: true,
+        matchVsHDL: '—',
+        venue: 'HDL Soccer Complex (Conroe, TX)'
+      },
+      {
+        rank: 5,
+        id: '4125791',
+        name: 'HTX Central Gold',
+        fullName: 'HTX Central Gold STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/teams/logos/000/752/439/full/HTXNEWLOGO.jpg?1780627794',
+        website: 'https://htxsoccer.com/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4125791',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sat, Nov 14 @ 2:00 PM',
+        venue: "Dad's Club Sports Park (Houston, TX)"
+      },
+      {
+        rank: 6,
+        id: '4129162',
+        name: 'HTX Woodlands Gold',
+        fullName: 'HTX Woodlands Gold STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/teams/logos/000/241/436/full/HTXNEWLOGO.jpg?1685906975',
+        website: 'https://htxsoccer.com/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4129162',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sat, Sep 12 @ 2:00 PM',
+        venue: 'The Woodlands, TX'
+      },
+      {
+        rank: 7,
+        id: '4140665',
+        name: 'HTX West Gold',
+        fullName: 'HTX West Gold STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/teams/logos/000/240/339/full/HTXNEWLOGO.jpg?1685923777',
+        website: 'https://htxsoccer.com/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140665',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sat, Sep 19 @ 12:00 PM',
+        venue: 'Lost Creek Park (Sugar Land, TX)'
+      },
+      {
+        rank: 8,
+        id: '4140662',
+        name: 'HTX South Gold',
+        fullName: 'HTX South Gold STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/teams/logos/000/240/319/full/HTXNEWLOGO.jpg?1685918311',
+        website: 'https://htxsoccer.com/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140662',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sat, Sep 26 @ 2:00 PM',
+        venue: 'South Houston / Friendswood'
+      },
+      {
+        rank: 9,
+        id: '4135684',
+        name: 'North Shore FC White',
+        fullName: 'North Shore FC White STXCL EC BU14',
+        logo: 'https://system.gotsport.com/system/organizations/logos/000/019/340/full/NSFC_Logo.png?1630180270',
+        website: 'https://www.northshorefc.org/',
+        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4135684',
+        mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
+        matchVsHDL: 'Sat, Oct 03 @ 2:00 PM',
+        venue: 'North Shore Park (Houston, TX)'
+      }
+    ];
+
+    function renderStandings() {
+      const tbody = document.getElementById('standings-table-body');
+      if (!tbody) return;
+
+      let html = '';
+      stxclBracketBTeams.forEach(t => {
+        const isHDL = t.isOurTeam;
+        const rowClass = isHDL 
+          ? 'bg-orange-500/20 text-white font-bold border-l-4 border-l-orange-500 shadow-inner' 
+          : 'hover:bg-slate-900/60 text-slate-300 transition-colors';
+        const rankBadge = isHDL
+          ? `<span class="w-5 h-5 rounded-full bg-orange-500 text-white font-black flex items-center justify-center text-[10px] mx-auto shadow">${t.rank}</span>`
+          : `<span class="text-slate-400 font-semibold">${t.rank}</span>`;
+
+        html += `<tr class="${rowClass}">
+          <td class="py-2.5 px-3 text-center">${rankBadge}</td>
+          <td class="py-2.5 px-3">
+            <a href="${t.gotsportUrl}" target="_blank" class="flex items-center gap-2 group">
+              <img src="${t.logo}" alt="${t.name}" class="w-6 h-6 object-contain rounded-full bg-slate-900/80 p-0.5 border border-slate-700/60 group-hover:scale-110 transition-transform shrink-0">
+              <div class="min-w-0">
+                <div class="${isHDL ? 'text-orange-400 font-extrabold' : 'text-slate-200 group-hover:text-white'} text-xs leading-tight truncate">${t.name}</div>
+                <div class="text-[9px] text-slate-400 font-normal truncate max-w-[140px] sm:max-w-none">${t.venue}</div>
+              </div>
+            </a>
+          </td>
+          <td class="py-2.5 px-2 text-center text-slate-400">${t.mp}</td>
+          <td class="py-2.5 px-2 text-center text-emerald-400 font-bold">${t.w}</td>
+          <td class="py-2.5 px-2 text-center text-red-400">${t.l}</td>
+          <td class="py-2.5 px-2 text-center text-slate-400">${t.d}</td>
+          <td class="py-2.5 px-2 text-center text-slate-400">${t.gf}</td>
+          <td class="py-2.5 px-2 text-center text-slate-400">${t.ga}</td>
+          <td class="py-2.5 px-2 text-center text-slate-400">${t.gd}</td>
+          <td class="py-2.5 px-3 text-center font-black ${isHDL ? 'text-orange-400 text-sm' : 'text-white'}">${t.pts}</td>
+        </tr>`;
+      });
+
+      tbody.innerHTML = html;
+    }
+
+    function renderOpponents() {
+      const grid = document.getElementById('opponent-grid');
+      if (!grid) return;
+
+      let html = '';
+      stxclBracketBTeams.forEach(t => {
+        const isHDL = t.isOurTeam;
+        const cardBg = isHDL ? 'border-orange-500/50 bg-orange-950/20' : 'border-slate-800/80 hover:border-blue-500/40';
+
+        let linksHTML = '';
+        if (t.website) {
+          linksHTML += `<a href="${t.website}" target="_blank" class="flex-1 px-2 py-1 bg-slate-800/90 hover:bg-slate-700 text-slate-200 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition">
+            <i data-lucide="globe" class="w-3 h-3 text-orange-400"></i> Club Site
+          </a>`;
+        }
+        if (t.gotsportUrl) {
+          linksHTML += `<a href="${t.gotsportUrl}" target="_blank" class="flex-1 px-2 py-1 bg-blue-900/40 hover:bg-blue-800 text-blue-300 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition">
+            <i data-lucide="trophy" class="w-3 h-3 text-yellow-400"></i> GotSport
+          </a>`;
+        }
+
+        html += `<div class="glass-card p-3 rounded-xl border ${cardBg} flex flex-col justify-between space-y-2.5 transition shadow">
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <img src="${t.logo}" alt="${t.name}" class="w-9 h-9 object-contain rounded-full bg-slate-950 p-1 border border-slate-700/60 shrink-0">
+              <div class="min-w-0">
+                <h4 class="font-extrabold text-xs text-white truncate ${isHDL ? 'text-orange-400' : ''}">${t.name}</h4>
+                <p class="text-[10px] text-slate-400 truncate">${t.venue}</p>
+              </div>
+            </div>
+            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${isHDL ? 'bg-orange-500 text-white' : 'bg-slate-900 text-slate-400 border border-slate-800'} shrink-0">
+              #${t.rank}
+            </span>
+          </div>
+
+          <div class="bg-slate-950/60 rounded-lg p-2 text-[10px] space-y-1 border border-slate-800/50">
+            <div class="flex justify-between text-slate-400">
+              <span>Match vs HDL:</span>
+              <strong class="${isHDL ? 'text-slate-500' : 'text-orange-400'}">${t.matchVsHDL}</strong>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Conference:</span>
+              <span class="text-slate-300 font-semibold">STXCL EC U14-B</span>
+            </div>
+          </div>
+
+          <div class="flex gap-1.5 pt-0.5">
+            ${linksHTML}
+          </div>
+        </div>`;
+      });
+
+      grid.innerHTML = html;
+      if (window.lucide) lucide.createIcons();
+    }
+
     window.processEventsData = function(json) {
         specificEvents = {};
+
+        // 1. Populate all official STXCL league fixtures
+        officialLeagueMatches.forEach(m => {
+            specificEvents[m.date] = {
+                type: 'league',
+                matchNumber: m.id,
+                opponent: m.opponent,
+                opponentLogo: m.opponentLogo,
+                opponentUrl: m.opponentUrl,
+                division: m.division,
+                homeTeam: m.homeTeam,
+                awayTeam: m.awayTeam,
+                isHome: m.isHome,
+                time: m.time,
+                uniform: m.uniform,
+                bring: m.bring,
+                location: m.location,
+                address: m.address,
+                mapQuery: m.mapQuery,
+                matchUrl: m.matchUrl
+            };
+        });
+
+        // 2. Merge Google Sheet scrimmages and practices
         if (json && json.table && json.table.rows) {
             json.table.rows.forEach(r => {
                 const row = {};
@@ -1215,7 +1678,6 @@
                 const dateVal = row['Date'] ? String(row['Date']).trim() : '';
                 if (!dateVal) return;
                 
-                // Fix date format from Google Sheets if it comes back as Date(YYYY,MM,DD)
                 let dateStr = dateVal;
                 if (dateVal.toString().startsWith('Date(')) {
                     const parts = dateVal.match(/Date\((\d+),(\d+),(\d+)/);
@@ -1242,25 +1704,6 @@
                         st: row['ST'] || '',
                         rw: row['RW'] || ''
                     };
-                } else if (row['Starters']) {
-                    const raw = String(row['Starters']).trim();
-                    if (raw.startsWith('{')) {
-                        try { startersParsed = JSON.parse(raw); } catch(e) { console.error("Error parsing starters JSON:", e); }
-                    } else {
-                        startersParsed = {};
-                        const posKeys = ['gk','lb','cb1','cb2','rb','cm1','cdm','cm2','lw','st','rw'];
-                        const pairs = raw.split(/[,;\n]/);
-                        pairs.forEach((pair, idx) => {
-                            if (pair.includes(':')) {
-                                const parts = pair.split(':');
-                                const k = parts[0].trim().toLowerCase();
-                                const v = parts[1].trim();
-                                startersParsed[k] = v;
-                            } else if (pair.trim() && idx < posKeys.length) {
-                                startersParsed[posKeys[idx]] = pair.trim();
-                            }
-                        });
-                    }
                 }
 
                 let timeStr = row['Time'] ? String(row['Time']).trim() : '';
@@ -1276,20 +1719,28 @@
                     }
                 }
 
-                specificEvents[dateStr] = {
-                    type: row['Type'] ? row['Type'].toLowerCase() : 'practice',
-                    opponent: row['Opponent'] || '',
-                    time: timeStr,
-                    home: true, // simplified
-                    uniform: row['Uniform'] || '',
-                    bring: row['Bring'] || '',
-                    location: row['Location'] || '',
-                    formation: row['Formation'] || '',
-                    starters: startersParsed,
-                    mediaFolder: row['Media Folder'] || row['Drive Folder'] || row['Folder'] || ''
-                };
+                const rowType = row['Type'] ? row['Type'].toLowerCase() : 'practice';
+
+                // Merge with specificEvents
+                if (!specificEvents[dateStr] || rowType === 'scrimmage') {
+                    specificEvents[dateStr] = {
+                        type: rowType,
+                        opponent: row['Opponent'] || '',
+                        time: timeStr || '7:00 PM',
+                        home: true,
+                        uniform: row['Uniform'] || (rowType === 'scrimmage' ? 'Orange Jersey | Bring: Both' : 'Practice Kit'),
+                        bring: row['Bring'] || 'Both Jerseys, Shin Guards, Cleats, Water',
+                        location: row['Location'] || 'HDL Complex Field',
+                        formation: row['Formation'] || '',
+                        starters: startersParsed,
+                        mediaFolder: row['Media Folder'] || row['Drive Folder'] || row['Folder'] || ''
+                    };
+                } else if (specificEvents[dateStr] && row['Media Folder']) {
+                    specificEvents[dateStr].mediaFolder = row['Media Folder'];
+                }
             });
         }
+
         let latestDriveFolder = '';
         Object.values(specificEvents).forEach(ev => {
             if (ev.mediaFolder && ev.mediaFolder.startsWith('http')) {
@@ -1303,6 +1754,8 @@
         
         renderCalendar();
         renderEventList();
+        renderStandings();
+        renderOpponents();
         updateNextMatchHero();
         fetchSignups();
         if (window.lucide) lucide.createIcons();
@@ -1314,7 +1767,7 @@
       
       let html = '';
       
-      // Keep the weekly practice block at the top
+      // Weekly practice block
       html += `<div class="glass-card p-3.5 rounded-xl flex items-center justify-between hover:border-blue-500/40 transition">
           <div class="space-y-0.5">
             <div class="flex items-center gap-2 mb-1">
@@ -1345,7 +1798,7 @@
           const eventDateTime = parseEventDateTime(dateStr, ev.time);
           const expiryTime = eventDateTime ? (eventDateTime.getTime() + 2 * 60 * 60 * 1000) : new Date(y, m-1, d, 23, 59, 59).getTime();
           if (expiryTime < now) {
-              return; // Skip past/completed events from the upcoming list
+              return; // Skip past/completed events
           }
           upcomingCount++;
 
@@ -1353,8 +1806,28 @@
           const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
           const lookupDate = monthNames[dObj.getMonth()] + " " + dObj.getDate();
           
-          let colorClass = ev.type === 'practice' ? 'blue' : 'orange';
-          let badgeText = ev.type === 'practice' ? (currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO') : (currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO');
+          let colorClass = 'blue';
+          let badgeText = currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO';
+          let badgeIcon = '';
+          let matchMetaHTML = '';
+          let opponentLogoHTML = '';
+
+          if (ev.type === 'league') {
+              colorClass = 'emerald';
+              badgeText = currentLang === 'en' ? 'STXCL LEAGUE' : 'LIGA STXCL';
+              badgeIcon = '<i data-lucide="trophy" class="w-3 h-3 inline mr-1 text-yellow-400"></i>';
+              if (ev.opponentLogo) {
+                  opponentLogoHTML = `<img src="${ev.opponentLogo}" alt="${ev.opponent}" class="w-4 h-4 object-contain rounded-full bg-slate-900 border border-slate-700 shrink-0 inline mr-1">`;
+              }
+              matchMetaHTML = `<div class="flex items-center gap-1.5 mt-0.5 text-[10px]">
+                  <span class="px-1.5 py-0.2 bg-${ev.isHome ? 'orange' : 'blue'}-950 text-${ev.isHome ? 'orange' : 'blue'}-300 border border-${ev.isHome ? 'orange' : 'blue'}-800/60 rounded font-black text-[9px]">${ev.isHome ? 'HOME' : 'AWAY'}</span>
+                  ${ev.matchNumber ? `<span class="text-slate-400 font-semibold">Match #${ev.matchNumber}</span>` : ''}
+                  ${ev.matchUrl ? `<a href="${ev.matchUrl}" target="_blank" class="text-emerald-400 hover:text-emerald-300 underline font-bold" onclick="event.stopPropagation()">GotSport ↗</a>` : ''}
+              </div>`;
+          } else if (ev.type === 'scrimmage') {
+              colorClass = 'orange';
+              badgeText = currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO';
+          }
 
           let signupHTML = '';
           if (ev.type !== 'practice') {
@@ -1379,23 +1852,28 @@
               }
           }
 
+          const mapTarget = ev.mapQuery || ev.location;
+
           html += `<div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-${colorClass}-500/40 transition cursor-pointer" onclick="showEventDetails('${dateStr}')">
             <div class="flex items-start justify-between mb-1">
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 bg-${colorClass}-500/20 text-${colorClass}-400 border border-${colorClass}-500/30 text-[10px] font-bold rounded uppercase">${badgeText}</span>
+                <span class="px-2 py-0.5 bg-${colorClass}-500/20 text-${colorClass}-400 border border-${colorClass}-500/30 text-[10px] font-bold rounded uppercase flex items-center">${badgeIcon}${badgeText}</span>
                 <span class="text-xs font-bold text-white">${formattedDate}</span>
               </div>
               <div id="weather-${dateStr}" class="text-[10px] font-bold text-slate-400 flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
                 <i data-lucide="cloud-sun" class="w-3 h-3 text-slate-400"></i> --°F
               </div>
             </div>
-            <p class="text-xs text-slate-300 mb-0.5 flex items-center gap-1">
-              ${ev.time} ${ev.opponent ? 'vs ' + ev.opponent : ''} • 
-              <a href="https://maps.google.com/?q=${encodeURIComponent(ev.location)}" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 hover:underline transition" onclick="event.stopPropagation()">
-                <i data-lucide="map-pin" class="w-3 h-3"></i> ${ev.location}
+            <p class="text-xs text-slate-200 mb-0.5 flex items-center gap-1">
+              ${ev.time} ${ev.opponent ? '• ' + opponentLogoHTML + '<strong>' + ev.opponent + '</strong>' : ''}
+            </p>
+            <p class="text-[11px] text-slate-400 mb-0.5 flex items-center gap-1">
+              <a href="https://maps.google.com/?q=${encodeURIComponent(mapTarget)}" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 hover:underline transition" onclick="event.stopPropagation()">
+                <i data-lucide="map-pin" class="w-3 h-3 shrink-0"></i> ${ev.location}
               </a>
             </p>
-            <p class="text-[11px] text-${colorClass}-400 font-bold">Uniform: ${ev.uniform} | Bring: ${ev.bring}</p>
+            ${matchMetaHTML}
+            <p class="text-[11px] text-${colorClass}-400 font-bold mt-1">Uniform: ${ev.uniform} | Bring: ${ev.bring}</p>
             ${signupHTML}
           </div>`;
       });
@@ -1426,6 +1904,8 @@
         renderRosterGrid(globalRosterData);
       }
       renderEventList();
+      renderStandings();
+      renderOpponents();
       updateNextMatchHero();
     }
 
@@ -1470,11 +1950,48 @@
     }
 
     function downloadCalendarICS() {
-      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Houston Dutch Lions FC//Elite 2013//EN\nBEGIN:VEVENT\nSUMMARY:Houston Dutch Lions Elite 2013 vs Storm SC\nLOCATION:HDL Soccer Complex Field #1\nDESCRIPTION:Call time: 8:15 AM. Orange Kit.\nDTSTART:20260822T140000Z\nDTEND:20260822T153000Z\nEND:VEVENT\nEND:VCALENDAR";
-      const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8;' });
+      let ics = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Houston Dutch Lions FC//Elite 2013 U14//EN\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\nX-WR-CALNAME:HDL Elite 2013 U14 Schedule\n";
+
+      const pad = (n) => String(n).padStart(2, '0');
+
+      // Add all official matches
+      officialLeagueMatches.forEach(m => {
+        const dt = parseEventDateTime(m.date, m.time);
+        if (!dt) return;
+        const endDt = new Date(dt.getTime() + 90 * 60 * 1000);
+
+        const dtStart = `${dt.getUTCFullYear()}${pad(dt.getUTCMonth()+1)}${pad(dt.getUTCDate())}T${pad(dt.getUTCHours())}${pad(dt.getUTCMinutes())}00Z`;
+        const dtEnd = `${endDt.getUTCFullYear()}${pad(endDt.getUTCMonth()+1)}${pad(endDt.getUTCDate())}T${pad(endDt.getUTCHours())}${pad(endDt.getUTCMinutes())}00Z`;
+
+        ics += `BEGIN:VEVENT\n`;
+        ics += `UID:stxcl-${m.id}@houstondutchlionsfc.com\n`;
+        ics += `SUMMARY:STXCL: HDL Elite vs ${m.opponent}\n`;
+        ics += `DESCRIPTION:STXCL Eastern Conference Match #${m.id}. ${m.isHome ? 'HOME' : 'AWAY'} at ${m.location}. Uniform: ${m.uniform}. Pack: ${m.bring}. GotSport: ${m.matchUrl}\n`;
+        ics += `LOCATION:${m.location}, ${m.address}\n`;
+        ics += `DTSTART:${dtStart}\n`;
+        ics += `DTEND:${dtEnd}\n`;
+        ics += `STATUS:CONFIRMED\n`;
+        ics += `END:VEVENT\n`;
+      });
+
+      // Add recurring practices for Sep - Nov 2026
+      ics += `BEGIN:VEVENT\n`;
+      ics += `UID:hdl-practice-weekly@houstondutchlionsfc.com\n`;
+      ics += `SUMMARY:HDL Elite 2013 Practice\n`;
+      ics += `DESCRIPTION:Regular weekly team practice. 11v11 Tactical Positioning.\n`;
+      ics += `LOCATION:Houston Dutch Lions FC Soccer Facility - 14562 Interstate 45 S, Conroe, TX 77384\n`;
+      ics += `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,TH;UNTIL=20261130T235959Z\n`;
+      ics += `DTSTART:20260824T234500Z\n`;
+      ics += `DTEND:20260825T010000Z\n`;
+      ics += `STATUS:CONFIRMED\n`;
+      ics += `END:VEVENT\n`;
+
+      ics += "END:VCALENDAR";
+
+      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
       const link = document.createElement('a');
       link.href = window.URL.createObjectURL(blob);
-      link.setAttribute('download', 'hdl_elite_2013_schedule.ics');
+      link.setAttribute('download', 'hdl_elite_2013_u14_schedule.ics');
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -1483,7 +2000,7 @@
     // ==========================================
     // CALENDAR & WEATHER LOGIC
     // ==========================================
-    let currentDate = new Date(); // Use actual current date
+    let currentDate = new Date();
 
     let specificEvents = {};
 
@@ -1517,14 +2034,16 @@
         let evObj = specificEvents[dateStr];
         let evType = evObj ? evObj.type : '';
         
-        if (evType === 'scrimmage') {
+        if (evType === 'league') {
+          colorClasses = "bg-emerald-500/25 text-emerald-300 border border-emerald-400/60 font-black";
+        } else if (evType === 'scrimmage') {
           colorClasses = "bg-orange-500/20 text-orange-400 border border-orange-500/30 font-bold";
         } else if (isPractice) {
           colorClasses = "bg-blue-500/20 text-blue-400 border border-blue-500/30 font-bold";
         }
         
         // Highlight today
-        const todayStr = new Date().toLocaleDateString('en-CA'); // 'YYYY-MM-DD' local time
+        const todayStr = new Date().toLocaleDateString('en-CA');
         if (dateStr === todayStr) {
           colorClasses += " ring-2 ring-white/50";
         }
@@ -1578,9 +2097,55 @@
       let ev = eventDataStr ? JSON.parse(eventDataStr.replace(/&quot;/g, '"')) : null;
       let eventType = ev ? ev.type : '';
       
-      let isGameOrScrimmage = (eventType === 'scrimmage' || eventType === 'game' || eventType === 'match' || eventType === 'tournament');
+      let isGameOrScrimmage = (eventType === 'league' || eventType === 'scrimmage' || eventType === 'game' || eventType === 'match' || eventType === 'tournament');
       
-      if (isGameOrScrimmage) {
+      if (eventType === 'league') {
+        const isHome = ev.isHome;
+        const locText = ev.location || 'HDL Complex';
+        const mapQuery = ev.mapQuery || locText;
+        const driveFolderLink = (ev && ev.mediaFolder) ? ev.mediaFolder : 'https://drive.google.com/drive/folders/1qsg9oirm_aehrZ42WnEJGuu00pBQlkG3';
+
+        content += `
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-[10px] font-black rounded uppercase flex items-center gap-1">
+              <i data-lucide="trophy" class="w-3 h-3"></i> STXCL MATCH ${ev.matchNumber ? '#' + ev.matchNumber : ''}
+            </span>
+            <span class="px-2 py-0.5 bg-${isHome ? 'orange' : 'blue'}-950 text-${isHome ? 'orange' : 'blue'}-300 border border-${isHome ? 'orange' : 'blue'}-800/60 rounded font-black text-[10px]">
+              ${isHome ? 'HOME GAME' : 'AWAY GAME'}
+            </span>
+          </div>
+
+          <div class="flex items-center justify-center gap-3 my-2">
+            <img src="https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png" alt="HDL" class="w-10 h-10 object-contain drop-shadow">
+            <span class="font-black text-xs text-slate-500">VS</span>
+            ${ev.opponentLogo ? `<img src="${ev.opponentLogo}" alt="${ev.opponent}" class="w-10 h-10 object-contain rounded-full bg-slate-900 p-1 border border-slate-700 drop-shadow">` : `<div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-xs font-black text-slate-300">OPP</div>`}
+          </div>
+
+          <h4 class="text-white font-extrabold text-sm mb-0.5">${ev.opponent || 'Opponent'}</h4>
+          <p class="text-xs text-orange-400 font-bold mb-1">${formattedDate} • ${ev.time}</p>
+          <p class="text-[11px] text-slate-400 mb-2">${ev.division || 'Boys U14 Bracket B'}</p>
+
+          <a href="https://maps.google.com/?q=${encodeURIComponent(mapQuery)}" target="_blank" class="w-full py-2 px-3 bg-blue-700/80 hover:bg-blue-600 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 transition shadow mb-3">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> ${locText}
+          </a>
+
+          <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/80 mb-2 text-left">
+            <strong class="text-orange-400 text-[10px] uppercase tracking-widest block mb-1.5 flex items-center gap-1.5">
+              <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Game Day Checklist
+            </strong>
+            <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform || (isHome ? 'Orange Jersey (Home)' : 'Blue/White Away Jersey')}</p>
+            <p class="text-[11px] text-slate-300 mb-2 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring || 'Both Jerseys, Shin Guards, Cleats, Water'}</p>
+            <div class="grid grid-cols-2 gap-2 mt-2">
+              ${ev.matchUrl ? `<a href="${ev.matchUrl}" target="_blank" class="py-1.5 px-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex items-center justify-center gap-1 transition text-[10px] font-bold">
+                <i data-lucide="trophy" class="w-3 h-3"></i> GotSport Sheet
+              </a>` : ''}
+              <a href="${driveFolderLink}" target="_blank" class="py-1.5 px-2 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg border border-orange-500/30 flex items-center justify-center gap-1 transition text-[10px] font-bold">
+                <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Media Folder
+              </a>
+            </div>
+          </div>
+        `;
+      } else if (isGameOrScrimmage) {
         const titleText = (eventType === 'game' || eventType === 'match') ? (currentLang === 'en' ? 'GAME DAY' : 'DÍA DE PARTIDO') : (currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO');
         const vsText = ev.opponent ? ` vs ${ev.opponent}` : '';
         const locText = ev.location || 'HDL Complex';
@@ -1978,10 +2543,14 @@
     }
 
     // Initialize all data
+    processEventsData(null);
+    fetchEventsData();
     fetchAndRenderDirectory();
     initLiveMatchPolling();
     fetchMediaData();
     renderCalendar();
+    renderStandings();
+    renderOpponents();
     fetchWeather();
     fetchSignups();
     setInterval(fetchSignups, 60000);
