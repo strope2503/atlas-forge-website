@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hdl-cache-v42';
+const CACHE_NAME = 'hdl-cache-v44';
 const urlsToCache = [
   './',
   './index.html',
