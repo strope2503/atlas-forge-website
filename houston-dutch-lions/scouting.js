@@ -69,20 +69,20 @@ window.opponentScoutingDB = {
   },
   'Houstonians FC N': {
     id: '546899',
-    formation: 'Direct 3-2-3-2 Aerial Overload (Fluid 4-3-3 base)',
-    strengths: ['Technical 1v1 dribbling', 'Quick 1-2 combination play', 'Aggressive high counter-press'],
-    weaknesses: ['Over-committed fullbacks leave massive transition space', 'Disconnected lines', 'Weak in aerial set-piece duels (12 GA)'],
-    pivotPlan: 'Funnel ball-carriers wide into sideline compression traps.',
-    playmakerPlan: 'Push #10 level with #9 as a twin striker setup to contest aerial headers.',
-    wingsPlan: 'Make diagonal sprint runs behind high fullbacks into penalty box.',
-    pressTrigger: 'Sideline Funnel: Do not dive in centrally. Use jockeying to deny central lanes and trap on touchlines.',
-    targetZones: ['Channels behind fullbacks', 'Penalty spot & 6-yard box aerial crossings'],
+    formation: '4-3-3 (High-risk penalty box dribbling, inverted wingers)',
+    strengths: ['Ball retention in tight spaces', 'Wingers cutting inside on right foot'],
+    weaknesses: ['0-0-3 (1 GF / 12 GA)', 'Turnovers from dribbling in own box', 'Disconnected two-man rest defense'],
+    pivotPlan: 'Full High-Press on Goal Kicks: Shift into a 4-2-4 high lock to force rushed turnovers inside their 18-yard box.',
+    playmakerPlan: '#10 stays high. Upon regaining possession, hit #10 on the turn for diagonal through-balls.',
+    wingsPlan: '#7 and #11 pinch inside on goal kicks to cut off short fullback exits.',
+    pressTrigger: 'Defensive Stance: Fullbacks maintain open body posture forcing wingers toward outside touchline (deny cut-inside).',
+    targetZones: ['Their penalty box on goal kicks', 'Wide corridors in counter transition'],
     film: [
-      { title: 'Gorilones Jr 2013 vs Houstonians FC 2013 — League Final (Full Match — 1:16:59)', url: 'https://www.youtube.com/watch?v=_6FgN_jwAhk', duration: '1:16:59' },
-      { title: 'Houstonians FC 2013 vs CF10 2013 — Texas Easter Cup (Full Match — 1:08:40)', url: 'https://www.youtube.com/watch?v=IhED34475zs', duration: '1:08:40' },
-      { title: 'Gorilones Jr vs Houstonians 2013 (Full Match — 1:16:20)', url: 'https://www.youtube.com/watch?v=nkW08B4Ybh8', duration: '1:16:20' },
-      { title: 'Houstonians FC 2013 vs Dynamo CDP Rosenberg 2013 (Full Match — 1:05:10)', url: 'https://www.youtube.com/watch?v=vWeCkkniCDg', duration: '1:05:10' },
-      { title: 'Houstonians FC STXCL vs AHFC NW STXCL (Match Film — 53:09)', url: 'https://www.youtube.com/watch?v=03EsN1mGskw', duration: '53:09' }
+      { title: 'Gorilones Jr 2013 vs Houstonians FC 2013 — Derise League Final', url: 'https://www.youtube.com/watch?v=_6FgN_jwAhk', duration: '1:16:59' },
+      { title: 'Houstonians FC 2013 vs CF10 2013 — Texas Easter Cup', url: 'https://www.youtube.com/watch?v=IhED34475zs', duration: '1:08:40' },
+      { title: 'Houstonians FC 2013 vs Inwood Real Conroe 2013', url: 'https://www.youtube.com/watch?v=qPoUdoIiSw8', duration: '1:06:50' },
+      { title: 'Houstonians FC 2013 vs Dynamo CDP Rosenberg 2013', url: 'https://www.youtube.com/watch?v=vWeCkkniCDg', duration: '1:05:10' },
+      { title: 'Gorilones Jr vs Houstonians 2013 ECNL RL', url: 'https://www.youtube.com/watch?v=nkW08B4Ybh8', duration: '1:16:20' }
     ]
   },
   'AHFC SW Blue': {
