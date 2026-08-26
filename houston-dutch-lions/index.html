@@ -517,8 +517,20 @@
     <a href="#media-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
       <i data-lucide="image" class="w-4 h-4"></i>
       <span data-i18n="nav_media">Media</span>
-    </a>
   </nav>
+
+  <!-- OPPONENT SCOUTING & GOTSPORT RANKINGS ANALYTICS MODAL -->
+  <div id="opponent-scouting-modal" class="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md hidden flex items-center justify-center p-3 sm:p-4">
+    <div class="glass-card max-w-xl w-full rounded-2xl border border-blue-800/60 p-4 sm:p-6 max-h-[92vh] overflow-y-auto space-y-4 shadow-2xl relative">
+      <button onclick="closeOpponentModal()" class="absolute top-3.5 right-3.5 p-1.5 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <div id="opponent-modal-content">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </div>
+  </div>
 
   <!-- JAVASCRIPT & ROSTER DATA -->
   <script>
@@ -1438,114 +1450,304 @@
     const stxclBracketBTeams = [
       {
         rank: 1,
-        id: '4193840',
+        id: 546899,
+        teamId: 546899,
         name: 'Houstonians FC N',
         fullName: 'HOUSTONIANS FC N STXCL EC BU14',
+        clubName: 'Houstonians FC',
         logo: 'https://system.gotsport.com/system/teams/logos/000/546/899/full/hfc_logo.JPG?1743908138',
         website: 'https://www.houstoniansfc.org/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4193840',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/546899',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4193840',
+        coach: 'Coach',
+        manager: 'Team Manager',
+        points: 0,
+        usCanRank: 7583,
+        nationalRank: 7336,
+        regionalRank: 1863,
+        stateRank: 355,
+        stateCode: 'TXS',
+        games: 3,
+        wins: 0,
+        draws: 0,
+        losses: 3,
+        goalsFor: 1,
+        goalsAgainst: 12,
+        goalRatio: '0.08',
+        winPercent: 0,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sat, Oct 17 @ 2:00 PM',
+        matchVenue: 'Houston Dutch Lions FC Soccer Facility - Field 1 (Conroe, TX)',
         venue: 'Houston, TX'
       },
       {
         rank: 2,
-        id: '4293246',
+        id: 640546,
+        teamId: 640546,
         name: 'Real Greens',
         fullName: 'Real Greens STXCL EC BU14',
+        clubName: 'Real Greens FC',
         logo: 'https://system.gotsport.com/system/teams/logos/000/640/546/full/RG_NEW_LOGO_GOTSPORT.png?1784784570',
         website: 'https://www.realgreensfc.com/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4293246',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/640546',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4293246',
+        coach: 'Coach',
+        manager: 'Team Manager',
+        points: 148,
+        usCanRank: 6000,
+        nationalRank: 5914,
+        regionalRank: 1509,
+        stateRank: 285,
+        stateCode: 'TXS',
+        games: 8,
+        wins: 3,
+        draws: 2,
+        losses: 3,
+        goalsFor: 16,
+        goalsAgainst: 13,
+        goalRatio: '1.23',
+        winPercent: 38,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sun, Oct 25 @ 2:00 PM',
+        matchVenue: 'Houston Dutch Lions FC Soccer Facility - Field 1 (Conroe, TX)',
         venue: 'Houston, TX'
       },
       {
         rank: 3,
-        id: '4318587',
+        id: 175983,
+        teamId: 175983,
         name: 'AHFC SW Blue',
         fullName: 'AHFC SW BLUE STXCL EC BU14',
+        clubName: 'Albion Hurricanes FC',
         logo: 'https://system.gotsport.com/system/teams/logos/000/175/983/full/AHFC_Logo.jpg?1636610923',
         website: 'https://www.albionhurricanes.org/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4318587',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/175983',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4318587',
+        coach: 'Cesar Hernandez',
+        manager: 'Luisa Soria, Amanda Megat',
+        points: 187,
+        usCanRank: 6025,
+        nationalRank: 5989,
+        regionalRank: 1490,
+        stateRank: 326,
+        stateCode: 'TXS',
+        games: 3,
+        wins: 3,
+        draws: 0,
+        losses: 0,
+        goalsFor: 14,
+        goalsAgainst: 2,
+        goalRatio: '7.00',
+        winPercent: 100,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sun, Nov 01 @ 8:00 AM',
+        matchVenue: 'Houston Dutch Lions FC Soccer Facility - Field 1 (Conroe, TX)',
         venue: 'Katy / SW Houston'
       },
       {
         rank: 4,
-        id: '4295509',
+        id: 790890,
+        teamId: 790890,
         name: 'Houston Dutch Lions Elite',
         fullName: 'Houston Dutch Lions FC Elite STXCL EC BU14',
+        clubName: 'Houston Dutch Lions FC',
         logo: 'https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png',
         website: 'https://houstondutchlionsfc.com/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4295509',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/790890',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4295509',
+        coach: 'Coach',
+        manager: 'Team Manager',
+        points: 0,
+        usCanRank: null,
+        nationalRank: null,
+        regionalRank: null,
+        stateRank: null,
+        stateCode: 'TXS',
+        games: 0,
+        wins: 0,
+        draws: 0,
+        losses: 0,
+        goalsFor: 0,
+        goalsAgainst: 0,
+        goalRatio: '0.00',
+        winPercent: 0,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         isOurTeam: true,
         matchVsHDL: '—',
+        matchVenue: 'Houston Dutch Lions FC Soccer Facility (Conroe, TX)',
         venue: 'HDL Soccer Complex (Conroe, TX)'
       },
       {
         rank: 5,
-        id: '4125791',
+        id: 752439,
+        teamId: 752439,
         name: 'HTX Central Gold',
         fullName: 'HTX Central Gold STXCL EC BU14',
+        clubName: 'HTX Soccer',
         logo: 'https://system.gotsport.com/system/teams/logos/000/752/439/full/HTXNEWLOGO.jpg?1780627794',
         website: 'https://htxsoccer.com/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4125791',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/752439',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4125791',
+        coach: 'Carlos Ortiz',
+        manager: 'Stetson Isdale',
+        points: 187,
+        usCanRank: 5275,
+        nationalRank: 5227,
+        regionalRank: 1314,
+        stateRank: 252,
+        stateCode: 'TXS',
+        games: 5,
+        wins: 3,
+        draws: 0,
+        losses: 2,
+        goalsFor: 12,
+        goalsAgainst: 8,
+        goalRatio: '1.50',
+        winPercent: 60,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sat, Nov 14 @ 2:00 PM',
+        matchVenue: "Dad's Club Sports Park - Field 1 (14700 Silverhill Dr, Houston, TX 77048)",
         venue: "Dad's Club Sports Park (Houston, TX)"
       },
       {
         rank: 6,
-        id: '4129162',
+        id: 241436,
+        teamId: 241436,
         name: 'HTX Woodlands Gold',
         fullName: 'HTX Woodlands Gold STXCL EC BU14',
+        clubName: 'HTX Soccer',
         logo: 'https://system.gotsport.com/system/teams/logos/000/241/436/full/HTXNEWLOGO.jpg?1685906975',
         website: 'https://htxsoccer.com/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4129162',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/241436',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4129162',
+        coach: 'Marcus Watt',
+        manager: 'Stetson Isdale',
+        points: 777,
+        usCanRank: 3095,
+        nationalRank: 3074,
+        regionalRank: 767,
+        stateRank: 138,
+        stateCode: 'TXS',
+        games: 27,
+        wins: 7,
+        draws: 4,
+        losses: 16,
+        goalsFor: 26,
+        goalsAgainst: 45,
+        goalRatio: '0.58',
+        winPercent: 26,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sat, Sep 12 @ 2:00 PM',
+        matchVenue: 'Houston Dutch Lions FC Soccer Facility - Field 1 (Conroe, TX)',
         venue: 'The Woodlands, TX'
       },
       {
         rank: 7,
-        id: '4140665',
+        id: 240339,
+        teamId: 240339,
         name: 'HTX West Gold',
         fullName: 'HTX West Gold STXCL EC BU14',
+        clubName: 'HTX Soccer',
         logo: 'https://system.gotsport.com/system/teams/logos/000/240/339/full/HTXNEWLOGO.jpg?1685923777',
         website: 'https://htxsoccer.com/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140665',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/240339',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140665',
+        coach: 'Simon Mattar',
+        manager: 'Stetson Isdale',
+        points: 494,
+        usCanRank: 3881,
+        nationalRank: 3860,
+        regionalRank: 983,
+        stateRank: 178,
+        stateCode: 'TXS',
+        games: 21,
+        wins: 4,
+        draws: 4,
+        losses: 13,
+        goalsFor: 15,
+        goalsAgainst: 34,
+        goalRatio: '0.44',
+        winPercent: 19,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sat, Sep 19 @ 12:00 PM',
+        matchVenue: 'Lost Creek Park - Field 3 (3703 Lost Creek Blvd, Sugar Land, TX 77478)',
         venue: 'Lost Creek Park (Sugar Land, TX)'
       },
       {
         rank: 8,
-        id: '4140662',
+        id: 240319,
+        teamId: 240319,
         name: 'HTX South Gold',
         fullName: 'HTX South Gold STXCL EC BU14',
+        clubName: 'HTX Soccer',
         logo: 'https://system.gotsport.com/system/teams/logos/000/240/319/full/HTXNEWLOGO.jpg?1685918311',
         website: 'https://htxsoccer.com/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140662',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/240319',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4140662',
+        coach: 'Liam Green',
+        manager: 'Stetson Isdale',
+        points: 1326,
+        usCanRank: 2072,
+        nationalRank: 2055,
+        regionalRank: 520,
+        stateRank: 87,
+        stateCode: 'TXS',
+        games: 29,
+        wins: 11,
+        draws: 4,
+        losses: 14,
+        goalsFor: 47,
+        goalsAgainst: 49,
+        goalRatio: '0.96',
+        winPercent: 38,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sat, Sep 26 @ 2:00 PM',
+        matchVenue: 'Houston Dutch Lions FC Soccer Facility - Field 1 (Conroe, TX)',
         venue: 'South Houston / Friendswood'
       },
       {
         rank: 9,
-        id: '4135684',
+        id: 135996,
+        teamId: 135996,
         name: 'North Shore FC White',
         fullName: 'North Shore FC White STXCL EC BU14',
+        clubName: 'North Shore FC',
         logo: 'https://system.gotsport.com/system/organizations/logos/000/019/340/full/NSFC_Logo.png?1630180270',
         website: 'https://www.northshorefc.org/',
-        gotsportUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4135684',
+        rankingsUrl: 'https://rankings.gotsport.com/teams/135996',
+        gotsportScheduleUrl: 'https://system.gotsport.com/splash/34041/events/54831/schedules?team=4135684',
+        coach: 'Javier Morales',
+        manager: 'Team Manager',
+        points: 0,
+        usCanRank: 7583,
+        nationalRank: 7336,
+        regionalRank: 1863,
+        stateRank: 355,
+        stateCode: 'TXS',
+        games: 3,
+        wins: 0,
+        draws: 0,
+        losses: 3,
+        goalsFor: 2,
+        goalsAgainst: 24,
+        goalRatio: '0.08',
+        winPercent: 0,
         mp: 0, w: 0, l: 0, d: 0, gf: 0, ga: 0, gd: 0, pts: 0,
         matchVsHDL: 'Sat, Oct 03 @ 2:00 PM',
+        matchVenue: 'North Shore Park - Field 2 (14440 Wallisville Rd, Houston, TX 77049)',
         venue: 'North Shore Park (Houston, TX)'
       }
     ];
+
+    function renderRankingShield(rank, label) {
+      const display = rank ? '#' + rank : 'NR';
+      return `
+        <div class="flex-1 min-w-[55px] flex flex-col items-center justify-center bg-slate-950 border border-emerald-500/60 rounded-xl py-2 px-1 text-center shadow-lg relative overflow-hidden">
+          <span class="text-xs sm:text-sm font-black text-emerald-300 tracking-tight font-mono">${display}</span>
+          <span class="text-[8px] font-black uppercase tracking-wider text-slate-400 mt-0.5">${label}</span>
+        </div>
+      `;
+    }
 
     function renderStandings() {
       const tbody = document.getElementById('standings-table-body');
@@ -1561,16 +1763,16 @@
           ? `<span class="w-5 h-5 rounded-full bg-orange-500 text-white font-black flex items-center justify-center text-[10px] mx-auto shadow">${t.rank}</span>`
           : `<span class="text-slate-400 font-semibold">${t.rank}</span>`;
 
-        html += `<tr class="${rowClass}">
+        html += `<tr class="${rowClass} cursor-pointer" onclick="openOpponentModal('${t.id}')">
           <td class="py-2.5 px-3 text-center">${rankBadge}</td>
           <td class="py-2.5 px-3">
-            <a href="${t.gotsportUrl}" target="_blank" class="flex items-center gap-2 group">
+            <div class="flex items-center gap-2 group">
               <img src="${t.logo}" alt="${t.name}" class="w-6 h-6 object-contain rounded-full bg-slate-900/80 p-0.5 border border-slate-700/60 group-hover:scale-110 transition-transform shrink-0">
               <div class="min-w-0">
                 <div class="${isHDL ? 'text-orange-400 font-extrabold' : 'text-slate-200 group-hover:text-white'} text-xs leading-tight truncate">${t.name}</div>
                 <div class="text-[9px] text-slate-400 font-normal truncate max-w-[140px] sm:max-w-none">${t.venue}</div>
               </div>
-            </a>
+            </div>
           </td>
           <td class="py-2.5 px-2 text-center text-slate-400">${t.mp}</td>
           <td class="py-2.5 px-2 text-center text-emerald-400 font-bold">${t.w}</td>
@@ -1595,51 +1797,210 @@
         const isHDL = t.isOurTeam;
         const cardBg = isHDL ? 'border-orange-500/50 bg-orange-950/20' : 'border-slate-800/80 hover:border-blue-500/40';
 
-        let linksHTML = '';
-        if (t.website) {
-          linksHTML += `<a href="${t.website}" target="_blank" class="flex-1 px-2 py-1 bg-slate-800/90 hover:bg-slate-700 text-slate-200 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition">
-            <i data-lucide="globe" class="w-3 h-3 text-orange-400"></i> Club Site
-          </a>`;
-        }
-        if (t.gotsportUrl) {
-          linksHTML += `<a href="${t.gotsportUrl}" target="_blank" class="flex-1 px-2 py-1 bg-blue-900/40 hover:bg-blue-800 text-blue-300 rounded text-[10px] font-bold flex items-center justify-center gap-1 transition">
-            <i data-lucide="trophy" class="w-3 h-3 text-yellow-400"></i> GotSport
-          </a>`;
-        }
-
-        html += `<div class="glass-card p-3 rounded-xl border ${cardBg} flex flex-col justify-between space-y-2.5 transition shadow">
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <img src="${t.logo}" alt="${t.name}" class="w-9 h-9 object-contain rounded-full bg-slate-950 p-1 border border-slate-700/60 shrink-0">
-              <div class="min-w-0">
-                <h4 class="font-extrabold text-xs text-white truncate ${isHDL ? 'text-orange-400' : ''}">${t.name}</h4>
-                <p class="text-[10px] text-slate-400 truncate">${t.venue}</p>
+        html += `
+          <div class="glass-card p-3.5 rounded-2xl border ${cardBg} flex flex-col justify-between space-y-3 transition shadow">
+            <!-- Header -->
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <img src="${t.logo}" alt="${t.name}" class="w-10 h-10 object-contain rounded-full bg-slate-950 p-1 border border-slate-700/60 shrink-0 shadow">
+                <div class="min-w-0">
+                  <h4 class="font-extrabold text-xs text-white truncate ${isHDL ? 'text-orange-400' : ''}">${t.name}</h4>
+                  <p class="text-[10px] text-slate-400 truncate">${t.clubName || t.venue}</p>
+                </div>
+              </div>
+              <div class="flex flex-col items-end gap-1 shrink-0">
+                <span class="text-[9px] font-black px-1.5 py-0.5 rounded ${t.stateRank ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' : 'bg-slate-900 text-slate-400'}">
+                  TXS #${t.stateRank || 'NR'}
+                </span>
+                <span class="text-[9px] font-bold text-slate-400">${t.points} pts</span>
               </div>
             </div>
-            <span class="text-[9px] font-bold px-1.5 py-0.5 rounded ${isHDL ? 'bg-orange-500 text-white' : 'bg-slate-900 text-slate-400 border border-slate-800'} shrink-0">
-              #${t.rank}
-            </span>
-          </div>
 
-          <div class="bg-slate-950/60 rounded-lg p-2 text-[10px] space-y-1 border border-slate-800/50">
-            <div class="flex justify-between text-slate-400">
-              <span>Match vs HDL:</span>
-              <strong class="${isHDL ? 'text-slate-500' : 'text-orange-400'}">${t.matchVsHDL}</strong>
+            <!-- 4-Shield Ranking Mini Row -->
+            <div class="grid grid-cols-4 gap-1 text-center bg-slate-950/70 p-1.5 rounded-xl border border-slate-800/80">
+              <div>
+                <div class="text-[8px] text-slate-500 font-bold uppercase">US/CAN</div>
+                <div class="text-[10px] font-black text-slate-200">${t.usCanRank ? '#' + t.usCanRank : 'NR'}</div>
+              </div>
+              <div>
+                <div class="text-[8px] text-slate-500 font-bold uppercase">Nat'l</div>
+                <div class="text-[10px] font-black text-slate-200">${t.nationalRank ? '#' + t.nationalRank : 'NR'}</div>
+              </div>
+              <div>
+                <div class="text-[8px] text-slate-500 font-bold uppercase">Reg'l</div>
+                <div class="text-[10px] font-black text-slate-200">${t.regionalRank ? '#' + t.regionalRank : 'NR'}</div>
+              </div>
+              <div>
+                <div class="text-[8px] text-slate-500 font-bold uppercase">TXS</div>
+                <div class="text-[10px] font-black text-emerald-400">${t.stateRank ? '#' + t.stateRank : 'NR'}</div>
+              </div>
             </div>
-            <div class="flex justify-between text-slate-400">
-              <span>Conference:</span>
-              <span class="text-slate-300 font-semibold">STXCL EC U14-B</span>
-            </div>
-          </div>
 
-          <div class="flex gap-1.5 pt-0.5">
-            ${linksHTML}
+            <!-- Stats Bar -->
+            <div class="bg-slate-950/50 rounded-lg p-2 text-[10px] space-y-1 border border-slate-800/50">
+              <div class="flex justify-between text-slate-400">
+                <span>Coach:</span>
+                <span class="text-slate-200 font-bold truncate max-w-[130px]">${t.coach || 'Coach'}</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Record & Win %:</span>
+                <span class="text-emerald-400 font-bold">${t.wins}-${t.draws}-${t.losses} (${t.winPercent}%)</span>
+              </div>
+              <div class="flex justify-between text-slate-400">
+                <span>Match vs HDL:</span>
+                <strong class="${isHDL ? 'text-slate-500' : 'text-orange-400'}">${t.matchVsHDL}</strong>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex gap-1.5 pt-0.5">
+              <button onclick="openOpponentModal('${t.id}')" class="flex-1 py-1.5 px-2 bg-orange-600/20 hover:bg-orange-600 text-orange-400 hover:text-white rounded-lg text-[10px] font-black border border-orange-500/30 flex items-center justify-center gap-1 transition">
+                <i data-lucide="bar-chart-2" class="w-3 h-3"></i> Scouting & Stats
+              </button>
+              <a href="${t.rankingsUrl}" target="_blank" class="py-1.5 px-2.5 bg-blue-900/30 hover:bg-blue-800 text-blue-300 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 border border-blue-800/40 transition">
+                <i data-lucide="external-link" class="w-3 h-3"></i>
+              </a>
+            </div>
           </div>
-        </div>`;
+        `;
       });
 
       grid.innerHTML = html;
       if (window.lucide) lucide.createIcons();
+    }
+
+    function openOpponentModal(teamId) {
+      const team = stxclBracketBTeams.find(t => String(t.id) === String(teamId) || String(t.teamId) === String(teamId));
+      if (!team) return;
+
+      const modal = document.getElementById('opponent-scouting-modal');
+      const container = document.getElementById('opponent-modal-content');
+      if (!modal || !container) return;
+
+      const isHDL = team.isOurTeam;
+
+      container.innerHTML = `
+        <div class="space-y-4 text-xs">
+          <!-- Header -->
+          <div class="flex items-start gap-3.5 border-b border-slate-800 pb-3">
+            <img src="${team.logo}" alt="${team.name}" class="w-14 h-14 object-contain rounded-full bg-slate-950 p-1.5 border border-slate-700/80 shrink-0 shadow-lg">
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2 py-0.5 rounded bg-blue-950 text-blue-300 border border-blue-800 text-[10px] font-bold"># ${team.id}</span>
+                <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-300 border border-slate-800 text-[10px] font-bold">Male, U14</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-black">${team.points} Points</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-black text-white mt-1 leading-tight ${isHDL ? 'text-orange-400' : ''}">${team.fullName}</h3>
+              <p class="text-[11px] text-slate-400 mt-0.5">${team.clubName} • ${team.venue}</p>
+            </div>
+          </div>
+
+          <!-- GotSport Ranking Badges Banner -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              <span class="flex items-center gap-1 text-emerald-400"><i data-lucide="shield" class="w-3.5 h-3.5"></i> GotSport Rankings</span>
+              <span>STXCL EC U14-B</span>
+            </div>
+            <div class="grid grid-cols-4 gap-2">
+              ${renderRankingShield(team.usCanRank, 'US/CAN')}
+              ${renderRankingShield(team.nationalRank, 'National')}
+              ${renderRankingShield(team.regionalRank, 'Regional')}
+              ${renderRankingShield(team.stateRank, team.stateCode || 'TXS')}
+            </div>
+          </div>
+
+          <!-- GotSport 3-Section Overview -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+            <!-- Club Info -->
+            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5">
+              <h5 class="text-[10px] font-bold uppercase tracking-wider text-orange-400 flex items-center gap-1">
+                <i data-lucide="building" class="w-3 h-3"></i> Club Info
+              </h5>
+              <div>
+                <div class="text-[10px] text-slate-400">Club Name:</div>
+                <div class="font-bold text-slate-200">${team.clubName}</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-slate-400">State / Region:</div>
+                <div class="font-bold text-slate-200">${team.stateCode} / South Texas</div>
+              </div>
+            </div>
+
+            <!-- Team Staff -->
+            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5">
+              <h5 class="text-[10px] font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1">
+                <i data-lucide="user-check" class="w-3 h-3"></i> Team Staff
+              </h5>
+              <div>
+                <div class="text-[10px] text-slate-400">Head Coach:</div>
+                <div class="font-bold text-emerald-400 truncate">${team.coach || 'Coach'}</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-slate-400">Team Manager:</div>
+                <div class="font-bold text-slate-200 truncate">${team.manager || 'Manager'}</div>
+              </div>
+            </div>
+
+            <!-- Match Analytics -->
+            <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5">
+              <h5 class="text-[10px] font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                <i data-lucide="activity" class="w-3 h-3"></i> Match Analytics
+              </h5>
+              <div class="flex justify-between text-[11px]">
+                <span class="text-slate-400">Games:</span>
+                <span class="font-bold text-white">${team.games}</span>
+              </div>
+              <div class="flex justify-between text-[11px]">
+                <span class="text-slate-400">W-D-L:</span>
+                <span class="font-bold text-emerald-400">${team.wins}-${team.draws}-${team.losses}</span>
+              </div>
+              <div class="flex justify-between text-[11px]">
+                <span class="text-slate-400">GF / GA:</span>
+                <span class="font-bold text-slate-200">${team.goalsFor} / ${team.goalsAgainst}</span>
+              </div>
+              <div class="flex justify-between text-[11px]">
+                <span class="text-slate-400">Win Rate:</span>
+                <span class="font-black text-orange-400">${team.winPercent}%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Matchup vs Houston Dutch Lions -->
+          <div class="bg-gradient-to-r from-orange-950/30 to-blue-950/30 p-3 rounded-xl border border-orange-500/30 space-y-1.5">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-bold text-orange-400 uppercase tracking-wider flex items-center gap-1">
+                <i data-lucide="swords" class="w-3.5 h-3.5"></i> Matchup vs HDL Elite
+              </span>
+              <span class="font-black text-white text-[11px]">${team.matchVsHDL}</span>
+            </div>
+            <p class="text-[11px] text-slate-300 flex items-center gap-1">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-blue-400 shrink-0"></i>
+              <span>${team.matchVenue || team.venue}</span>
+            </p>
+          </div>
+
+          <!-- Action Link Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-2 border-t border-slate-800">
+            <a href="${team.rankingsUrl}" target="_blank" class="py-2 px-3 bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white rounded-xl text-center font-bold text-[11px] border border-emerald-500/40 transition flex items-center justify-center gap-1">
+              <i data-lucide="award" class="w-3.5 h-3.5"></i> GotSport Rankings ↗
+            </a>
+            <a href="${team.gotsportScheduleUrl}" target="_blank" class="py-2 px-3 bg-blue-600/20 hover:bg-blue-600 text-blue-300 hover:text-white rounded-xl text-center font-bold text-[11px] border border-blue-500/40 transition flex items-center justify-center gap-1">
+              <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Team Schedule ↗
+            </a>
+            <a href="${team.website}" target="_blank" class="py-2 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl text-center font-bold text-[11px] border border-slate-700 transition flex items-center justify-center gap-1">
+              <i data-lucide="globe" class="w-3.5 h-3.5 text-orange-400"></i> Club Website ↗
+            </a>
+          </div>
+        </div>
+      `;
+
+      modal.classList.remove('hidden');
+      if (window.lucide) lucide.createIcons();
+    }
+
+    function closeOpponentModal() {
+      const modal = document.getElementById('opponent-scouting-modal');
+      if (modal) modal.classList.add('hidden');
     }
 
     window.processEventsData = function(json) {
