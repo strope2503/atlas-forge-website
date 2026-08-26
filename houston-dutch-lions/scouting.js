@@ -104,18 +104,20 @@ window.opponentScoutingDB = {
   },
   'North Shore FC White': {
     id: '135996',
-    formation: '4-1-4-1 Zone 14 Exploitation (Flat 4-3-3 base)',
-    strengths: ['Physical intensity & aerial power', 'Direct vertical clearances', 'Long throw-ins and free kicks'],
-    weaknesses: ['Zone 14 wide open', 'Slow flank recovery', 'Panics under rapid box combinations (24 GA)'],
-    pivotPlan: 'Bait midfield press, then hit line-breaking passes into Zone 14.',
-    playmakerPlan: 'Operate freely in Zone 14 to combine with #9 and wingers.',
-    wingsPlan: 'Overload wide areas and execute underlapping half-space runs.',
-    pressTrigger: 'Clearance Compression: Immediately compress forward 15 yards to catch forwards offside and win clearance.',
-    targetZones: ['Zone 14 (Edge of 18-yard box)', 'Wide channels behind fullbacks'],
+    formation: '4-4-2 / 4-3-3 (Physical, direct, long clearances)',
+    strengths: ['Physical 50/50 challenges', 'Direct clearance style', 'Drops 11 players in 6-yard box on corners'],
+    weaknesses: ['0-0-3 (2 GF / 24 GA)', 'Zone 14 Grand Canyon gap', 'Box disorganization under rapid 1-2 passing'],
+    pivotPlan: 'Use 4-1-4-1 "Zone 14 Flood": #8 pushes forward alongside #10 into the open pocket between their midfield and backline.',
+    playmakerPlan: '#8 and #10 have uncontested space at the top of the box for mid-range shooting and quick wall passes.',
+    wingsPlan: 'Inverted wingers (#7 & #11) pinch inside to half-spaces, fullbacks (#2 & #3) provide touchline width.',
+    pressTrigger: 'Clearance Compression: The moment our attack finishes, back four immediately steps up 15-20 yards to catch forwards offside.',
+    targetZones: ['Zone 14 (top of the 18-yard box)'],
     film: [
-      { title: 'NSFC Select White 2014 vs BYSC Renegades 2014 (Full Match — 1:05:21)', url: 'https://www.youtube.com/watch?v=2TnWddjFSJI', duration: '1:05:21' },
-      { title: 'NSFC Select 2014 vs BYSC Renegade (Full Match — 54:43)', url: 'https://www.youtube.com/watch?v=86nFEKf4MlI', duration: '54:43' },
-      { title: 'JAH 2013B vs North Shore FC Select 13B (Match Footage — 2:14)', url: 'https://www.youtube.com/watch?v=NTMMnJoV894', duration: '2:14' }
+      { title: 'NSFC Select White 2014 vs BYSC Renegades 2014', url: 'https://www.youtube.com/watch?v=2TnWddjFSJI', duration: '1:05:21' },
+      { title: 'NSFC Select 2014 vs BYSC Renegade', url: 'https://www.youtube.com/watch?v=86nFEKf4MlI', duration: '54:43' },
+      { title: 'NSFC Select vs Liverpool', url: 'https://www.youtube.com/watch?v=o_egIRiP5ho', duration: '58:44' },
+      { title: 'JAH 2013B vs North Shore FC Select 13B', url: 'https://www.youtube.com/watch?v=NTMMnJoV894', duration: 'Highlights' },
+      { title: 'JAH CHIESA 2013 vs NORTH SHORE FC 2013', url: 'https://www.youtube.com/watch?v=qZQKebWaY_g', duration: '9:48' }
     ]
   },
   'Real Greens': {
