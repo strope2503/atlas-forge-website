@@ -139,18 +139,19 @@ window.opponentScoutingDB = {
     ]
   },
   'Storm SC': {
-    id: '790890',
-    formation: 'High Press 4-2-4 Lock (Structured 4-4-2 Diamond base)',
-    strengths: ['Disciplined mid-block spacing', 'Patient passing out of back', 'Organized defensive shape'],
-    weaknesses: ['Vulnerable to high pressing inside own box', 'Fullbacks pinned deep', 'Slow adaptation to tempo shifts'],
-    pivotPlan: 'High-press trigger on their center-backs during deep goal kicks to force turnovers.',
-    playmakerPlan: 'Rapid wall passes between winger and #10 to release overlapping fullbacks.',
-    wingsPlan: 'Overload touchlines to deliver driven crosses into 6-yard box.',
-    pressTrigger: 'Goal Kick Suffocation: Push 4 attackers high alongside #9/#10, locking onto back four man-for-man.',
-    targetZones: ['Penalty box half-spaces', 'Wide overlapping zones'],
+    id: 'preseason-storm',
+    formation: 'Patient build-out from the back',
+    strengths: ['Patient ground passes between GK and CBs'],
+    weaknesses: ['Hesitation under high penalty-box pressure', 'Deep, conservative fullbacks rarely overlap', 'Risky central ground passes'],
+    pivotPlan: 'Use 4-2-4 "Goal-Kick High-Press Lock": #7 and #11 push high alongside #9 and #10 to lock man-for-man on back four.',
+    playmakerPlan: '#9 and #10 close the central corridor instantly on goal kicks to force turnover within 20 yards.',
+    wingsPlan: '#7 and #11 lock onto their fullbacks high up the pitch on goal kicks.',
+    pressTrigger: 'The Goal-Kick Suffocation: #9 shadows stronger CB, #10 between GK and CDM. Trap instantly on first touch.',
+    targetZones: ['Their 18-yard box under immediate pressure', 'Zone 14 (top of penalty box)'],
     film: [
-      { title: 'Storm SC 2013 Red — Championship Match (Full Match — 1:00:57)', url: 'https://www.youtube.com/watch?v=wO0tjsBEldI', duration: '1:00:57' },
-      { title: 'Storm SC 2013 Black vs East County Surf 2013 (Full Match — 58:20)', url: 'https://www.youtube.com/watch?v=T_nsoCRJazw', duration: '58:20' }
+      { title: 'STING B14 vs STORM 14B', url: 'https://www.youtube.com/watch?v=bJW7mM3V6QI', duration: '51:03' },
+      { title: 'STING B14 vs STORM 14B (Scores & Highlights)', url: 'https://www.youtube.com/watch?v=t2LAfTa30y8', duration: '2:13' },
+      { title: 'Centex Storm 2014 Select Boys', url: 'https://www.youtube.com/watch?v=XSP9u9IRyEM', duration: 'Highlights' }
     ]
   }
 };
