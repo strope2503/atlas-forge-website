@@ -2448,6 +2448,8 @@
       const pad = (n) => String(n).padStart(2, '0');
       const dtStamp = `${nowDt.getUTCFullYear()}${pad(nowDt.getUTCMonth()+1)}${pad(nowDt.getUTCDate())}T${pad(nowDt.getUTCHours())}${pad(nowDt.getUTCMinutes())}00Z`;
 
+      const escapeText = (text) => text ? String(text).replace(/[\\;,]/g, match => '\\' + match).replace(/\n/g, '\\n') : '';
+
       let ics = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Houston Dutch Lions FC//Elite 2013 U14//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-CALNAME:HDL Elite 2013 U14 Schedule\r\n";
 
       // Add all official matches
@@ -2462,9 +2464,9 @@
         ics += `BEGIN:VEVENT\r\n`;
         ics += `UID:stxcl-${m.id}@houstondutchlionsfc.com\r\n`;
         ics += `DTSTAMP:${dtStamp}\r\n`;
-        ics += `SUMMARY:STXCL: HDL Elite vs ${m.opponent}\r\n`;
-        ics += `DESCRIPTION:STXCL Eastern Conference Match #${m.id}. ${m.isHome ? 'HOME' : 'AWAY'} at ${m.location}. Uniform: ${m.uniform}. Pack: ${m.bring}. GotSport: ${m.matchUrl}\r\n`;
-        ics += `LOCATION:${m.location}, ${m.address}\r\n`;
+        ics += `SUMMARY:STXCL: HDL Elite vs ${escapeText(m.opponent)}\r\n`;
+        ics += `DESCRIPTION:STXCL Eastern Conference Match #${m.id}. ${m.isHome ? 'HOME' : 'AWAY'} at ${escapeText(m.location)}. Uniform: ${escapeText(m.uniform)}. Pack: ${escapeText(m.bring)}. GotSport: ${escapeText(m.matchUrl)}\r\n`;
+        ics += `LOCATION:${escapeText(m.location + ', ' + m.address)}\r\n`;
         ics += `DTSTART:${dtStart}\r\n`;
         ics += `DTEND:${dtEnd}\r\n`;
         ics += `STATUS:CONFIRMED\r\n`;
@@ -2477,7 +2479,7 @@
       ics += `DTSTAMP:${dtStamp}\r\n`;
       ics += `SUMMARY:HDL Elite 2013 Practice\r\n`;
       ics += `DESCRIPTION:Regular weekly team practice. 11v11 Tactical Positioning.\r\n`;
-      ics += `LOCATION:Houston Dutch Lions FC Soccer Facility - 14562 Interstate 45 S, Conroe, TX 77384\r\n`;
+      ics += `LOCATION:Houston Dutch Lions FC Soccer Facility\\, 14562 Interstate 45 S\\, Conroe\\, TX 77384\r\n`;
       ics += `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,TH;UNTIL=20261130T235959Z\r\n`;
       ics += `DTSTART:20260824T234500Z\r\n`;
       ics += `DTEND:20260825T010000Z\r\n`;
@@ -2486,13 +2488,20 @@
 
       ics += "END:VCALENDAR\r\n";
 
-      const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(blob);
-      link.setAttribute('download', 'hdl_elite_2013_u14_schedule.ics');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (isIOS) {
+          window.location.href = "data:text/calendar;charset=utf8," + encodeURIComponent(ics);
+      } else {
+          const file = new File([ics], 'hdl_elite_2013_u14_schedule.ics', { type: 'text/calendar;charset=utf-8' });
+          const url = window.URL.createObjectURL(file);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', 'hdl_elite_2013_u14_schedule.ics');
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+      }
     }
 
     // ==========================================
