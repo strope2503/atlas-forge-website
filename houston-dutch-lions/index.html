@@ -2262,7 +2262,8 @@
       
       dates.forEach(dateStr => {
           // Only show upcoming games down below unless a specific date was clicked on the calendar
-          const todayStr = new Date().toLocaleDateString('en-CA');
+          const ___now = new Date();
+          const todayStr = ___now.getFullYear() + '-' + String(___now.getMonth()+1).padStart(2, '0') + '-' + String(___now.getDate()).padStart(2, '0');
           if (dateStr < todayStr && dateStr !== window.selectedCalendarDate) {
               return;
           }
@@ -2540,7 +2541,8 @@
         }
         
         // Highlight today
-        const todayStr = new Date().toLocaleDateString('en-CA');
+        const ___now = new Date();
+        const todayStr = ___now.getFullYear() + '-' + String(___now.getMonth()+1).padStart(2, '0') + '-' + String(___now.getDate()).padStart(2, '0');
         if (dateStr === todayStr) {
           colorClasses += " ring-2 ring-white/50";
         } else if (dateStr < todayStr) {
