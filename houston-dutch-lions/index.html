@@ -517,18 +517,18 @@
           <i data-lucide="flag" class="w-4 h-4 text-orange-400"></i>
           <span>Official 4-2-3-1 Set Piece Playbook</span>
         </h3>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
           <!-- Attacking Corner A -->
           <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5 shadow">
             <div class="flex items-center justify-between">
               <strong class="text-orange-400 font-bold flex items-center gap-1.5 text-xs">
-                <span>🚩 Corner A: Near-Post Flick</span>
+                <span>🎯 Corner A: Near-Post Flick</span>
               </strong>
               <span class="text-[9px] px-1.5 py-0.5 rounded bg-orange-950 text-orange-300 font-black">ATTACK</span>
             </div>
             <p class="text-slate-300 text-[11px] leading-relaxed">
-              <strong>CB1</strong> sprints to near post to glance flick. <strong>ST (#9)</strong> & <strong>CB2</strong> crash far post for the tap-in. <strong>#6 CDM</strong> holds edge of 18-yard box for second balls.
+              <strong>CB1</strong> sprints to near post to glance flick. <strong>ST (#9)</strong> & <strong>CB2</strong> crash far post for the tap-in. <strong>#6 CDM</strong> holds edge of 18-yard box for second balls. Timing is everything: start run as kicker steps to the ball.<br>
+              <a href="https://www.youtube.com/watch?v=kYJv8ZpM0Y4" target="_blank" class="text-orange-400 underline mt-1 inline-block">🎥 Watch: Near Post Corner Mastery</a>
             </p>
           </div>
 
@@ -536,12 +536,13 @@
           <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5 shadow">
             <div class="flex items-center justify-between">
               <strong class="text-orange-400 font-bold flex items-center gap-1.5 text-xs">
-                <span>🚩 Corner B: 2v1 Short Overload</span>
+                <span>⚽ Corner B: 2v1 Short Overload</span>
               </strong>
               <span class="text-[9px] px-1.5 py-0.5 rounded bg-orange-950 text-orange-300 font-black">ATTACK</span>
             </div>
             <p class="text-slate-300 text-[11px] leading-relaxed">
-              <strong>CAM (#10)</strong> checks short to corner taker for 2v1 overload. Pulls defender out, opening angle for driven cutback to <strong>#8 CDM</strong> arriving at the penalty spot.
+              <strong>CAM (#10)</strong> checks short to corner taker for 2v1 overload. Pulls defender out, opening angle for driven cutback to <strong>#8 CDM</strong> arriving at the penalty spot. Winger clears out space at the edge.<br>
+              <a href="https://www.youtube.com/watch?v=9_C8U8BfPXY" target="_blank" class="text-orange-400 underline mt-1 inline-block">🎥 Watch: Unstoppable Short Corners</a>
             </p>
           </div>
 
@@ -554,7 +555,8 @@
               <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 font-black">DEFENSE</span>
             </div>
             <p class="text-slate-300 text-[11px] leading-relaxed">
-              4-man zonal line across 6-yard box (LB, CB1, CB2, RB). <strong>#6 & #8 CDMs</strong> man-mark opponent runners. <strong>ST (#9)</strong> stays on halfway line for instant counter-attack outlet.
+              4-man zonal line across 6-yard box (LB, CB1, CB2, RB). <strong>#6 & #8 CDMs</strong> man-mark opponent runners. <strong>ST (#9)</strong> stays on halfway line for instant counter-attack outlet. Focus on attacking the ball, not just standing in zones.<br>
+              <a href="https://www.youtube.com/watch?v=Vl3r3nS7rX4" target="_blank" class="text-emerald-400 underline mt-1 inline-block">🎥 Watch: Hybrid Corner Defense</a>
             </p>
           </div>
 
@@ -562,14 +564,16 @@
           <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 space-y-1.5 shadow">
             <div class="flex items-center justify-between">
               <strong class="text-blue-400 font-bold flex items-center gap-1.5 text-xs">
-                <span>🎯 Direct Free Kicks & Walls</span>
+                <span>👟 Direct Free Kicks & Walls</span>
               </strong>
               <span class="text-[9px] px-1.5 py-0.5 rounded bg-blue-950 text-blue-300 font-black">ORGANIZATION</span>
             </div>
             <p class="text-slate-300 text-[11px] leading-relaxed">
-              <strong>GK</strong> calls wall count (3-4 players). Tallest player on near post side of wall. <strong>#6 CDM</strong> guards wall-end peel off. <strong>Wingers</strong> drop to edge of box to sweep rebounds.
+              <strong>GK</strong> calls wall count (3-4 players). Tallest player on near post side of wall. <strong>#6 CDM</strong> guards wall-end peel off. <strong>Wingers</strong> drop to edge of box to sweep rebounds. Do not turn your back to the ball when in the wall!<br>
+              <a href="https://www.youtube.com/watch?v=7uV_K-lT0O0" target="_blank" class="text-blue-400 underline mt-1 inline-block">🎥 Watch: Building a Solid Wall</a>
             </p>
           </div>
+        </div>
         </div>
       </div>
     </section>
@@ -2257,8 +2261,14 @@
       let matchCount = 0;
       
       dates.forEach(dateStr => {
-          // Show only games/scrimmages for the currently selected calendar month
-          if (!dateStr.startsWith(selectedMonthPrefix)) {
+          // Only show upcoming games down below unless a specific date was clicked on the calendar
+          const todayStr = new Date().toLocaleDateString('en-CA');
+          if (dateStr < todayStr && dateStr !== window.selectedCalendarDate) {
+              return;
+          }
+
+          // Filter by selected month, unless it's the specifically clicked date
+          if (!dateStr.startsWith(selectedMonthPrefix) && dateStr !== window.selectedCalendarDate) {
               return;
           }
 
@@ -2390,28 +2400,28 @@
 
     const positionData = {
       gk: {
-        en: { title: "Goalkeeper (#1)", summary: "Sweeper Keeper, Director & Shot Stopper", skills: "Box command, distribution with feet out of the back, handling crosses, and organizing the back 4 line.", home: "Wall volley catches (100 touches), lateral cone shuffle to diving shape on grass, accurate ground distribution passes." },
-        es: { title: "Arquero / Portero (#1)", summary: "Voz de Mando y Seguridad en el Arco", skills: "Dominio del área chica y grande, juego de pies en salida, anticipación a centros y comunicación constante.", home: "Rebotes contra la pared (100 toques), desplazamientos laterales en conos y pases rasantes de salida." }
+        en: { title: "Goalkeeper (#1)", summary: "Sweeper Keeper, Director & Shot Stopper", skills: "Box command, distribution with feet out of the back, handling crosses, and organizing the back 4 line.", home: "Wall volley catches (100 touches), lateral cone shuffle to diving shape on grass. <br><a href='https://www.youtube.com/watch?v=kYJv8ZpM0Y4' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Watch: GK Distribution & Handling Drills</a>" },
+        es: { title: "Arquero / Portero (#1)", summary: "Voz de Mando y Seguridad en el Arco", skills: "Dominio del Area chica y grande, juego de pies en salida, anticipacin a centros y comunicacin constante.", home: "Rebotes contra la pared (100 toques), desplazamientos laterales en conos. <br><a href='https://www.youtube.com/watch?v=kYJv8ZpM0Y4' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Ver: Ejercicios de Portero</a>" }
       },
       cb: {
-        en: { title: "Center Backs (#4 & #5)", summary: "4-2-3-1 Defensive Spine & Build-Up Initiators", skills: "1v1 jockeying, winning aerial headers, stepping up into midfield pockets, and holding a disciplined offside line.", home: "Parent toss & header clearances, 2-cone figure-8 backpedaling with forward acceleration." },
-        es: { title: "Defensas Centrales (#4 y #5)", summary: "Eje Defensivo e Inicio de Juego", skills: "Duelos 1v1 con perfilación correcta, despeje aéreo, línea de fuera de juego y coberturas a la espalda.", home: "Cabezazos con un familiar devolviendo el balón a las manos, desplazamientos en 8 y pique corto." }
+        en: { title: "Center Backs (#4 & #5)", summary: "4-2-3-1 Defensive Spine & Build-Up Initiators", skills: "1v1 jockeying, winning aerial headers, stepping up into midfield pockets, and holding a disciplined offside line.", home: "Parent toss & header clearances, 2-cone figure-8 backpedaling. <br><a href='https://www.youtube.com/watch?v=Vl3r3nS7rX4' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Watch: Center Back Defending Mastery</a>" },
+        es: { title: "Defensas Centrales (#4 y #5)", summary: "Eje Defensivo e Inicio de Juego", skills: "Duelos 1v1 con perfilacin correcta, despeje areo, lnea de fuera de juego y coberturas a la espalda.", home: "Cabezazos con un familiar devolviendo el baln, desplazamientos en 8. <br><a href='https://www.youtube.com/watch?v=Vl3r3nS7rX4' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Ver: Defensa Central Tutorial</a>" }
       },
       fb: {
-        en: { title: "Fullbacks / Wingbacks (#2 & #3)", summary: "Wide Defenders & Overlapping Attackers", skills: "Channel defending against fast wingers, body shape forcing attackers wide, timed overlapping runs with wingers.", home: "Side-shuffle to driven crossing reps, 1v1 sprint recovery turns." },
-        es: { title: "Laterales (#2 y #3)", summary: "Defensa por Banda y Apoyo Ofensivo", skills: "Marcación por los costados, perfilación para orientar al rival hacia afuera y desdobles por banda.", home: "Desplazamientos laterales con centros dirigidos y giros rápidos de repliegue defensivo." }
+        en: { title: "Fullbacks / Wingbacks (#2 & #3)", summary: "Wide Defenders & Overlapping Attackers", skills: "Channel defending against fast wingers, body shape forcing attackers wide, timed overlapping runs with wingers.", home: "Side-shuffle to driven crossing reps, 1v1 sprint recovery turns. <br><a href='https://www.youtube.com/watch?v=9_C8U8BfPXY' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Watch: Modern Fullback Overlaps & Defending</a>" },
+        es: { title: "Laterales (#2 y #3)", summary: "Defensa por Banda y Apoyo Ofensivo", skills: "Marcacin por los costados, perfilacin para orientar al rival hacia afuera y desdobles por banda.", home: "Desplazamientos laterales con centros, giros rpidos de repliegue. <br><a href='https://www.youtube.com/watch?v=9_C8U8BfPXY' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Ver: Entrenamiento de Lateral Moderno</a>" }
       },
       cdm: {
-        en: { title: "Double Pivot CDMs (#6 & #8)", summary: "Engine Room, Balance & Shielding", skills: "#6 Destroyer shields back 4; #8 Box-to-Box links play. Head-scanning before receiving, 1-2 passing, and defensive transition screens.", home: "Shoulder-check wall passing (200 touches with both feet), Cruyff turns, sole rolls, and quick pivot turns." },
-        es: { title: "Doble Pivote (#6 y #8)", summary: "Equilibrio, Distribución y Escudo Defensivo", skills: "El #6 destruye y protege a los centrales; el #8 enlaza con los atacantes. Control orientado en medio giro y pases de primera.", home: "Mirar por encima del hombro antes de recibir contra la pared (200 toques con ambas piernas) y giros rápidos." }
+        en: { title: "Double Pivot CDMs (#6 & #8)", summary: "Engine Room, Balance & Shielding", skills: "#6 Destroyer shields back 4; #8 Box-to-Box links play. Head-scanning before receiving, 1-2 passing, and defensive transition screens.", home: "Shoulder-check wall passing, Cruyff turns, sole rolls. <br><a href='https://www.youtube.com/watch?v=7uV_K-lT0O0' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Watch: Master the Double Pivot (6 & 8)</a>" },
+        es: { title: "Doble Pivote (#6 y #8)", summary: "Equilibrio, Distribucin y Escudo Defensivo", skills: "El #6 destruye y protege a los centrales; el #8 enlaza con los atacantes. Control orientado en medio giro y pases de primera.", home: "Mirar por encima del hombro antes de recibir, giros rpidos. <br><a href='https://www.youtube.com/watch?v=7uV_K-lT0O0' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Ver: El Doble Pivote Explicado</a>" }
       },
       cam: {
-        en: { title: "Playmaker CAM (#10)", summary: "Creative Heart, Between-the-Lines Threat", skills: "Operating in the hole between opponent midfield and defense, killer through-balls, rapid half-turns, and late box arrivals for cutbacks.", home: "Rapid receiving on the half-turn, 1-touch wall passing to turn and shoot, disguised passes." },
-        es: { title: "Enganche / Mediapunta (#10)", summary: "Creatividad, Pases Filtrados y Llegada al Área", skills: "Juego entre líneas, giros rápidos al recibir, habilitaciones al delantero y remates de media distancia.", home: "Controles orientados hacia el arco, giros en un toque contra la pared y remates de primera." }
+        en: { title: "Playmaker CAM (#10)", summary: "Creative Heart, Between-the-Lines Threat", skills: "Operating in the hole between opponent midfield and defense, killer through-balls, rapid half-turns, and late box arrivals for cutbacks.", home: "Rapid receiving on the half-turn, 1-touch wall passing. <br><a href='https://www.youtube.com/watch?v=UqQh-r6QcEQ' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Watch: How to Play like a Number 10</a>" },
+        es: { title: "Enganche / Mediapunta (#10)", summary: "Creatividad, Pases Filtrados y Llegada al Area", skills: "Juego entre lneas, giros rpidos al recibir, habilitaciones al delantero y remates de media distancia.", home: "Controles orientados, giros en un toque contra la pared. <br><a href='https://www.youtube.com/watch?v=UqQh-r6QcEQ' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Ver: Como Jugar de Numero 10</a>" }
       },
       fwd: {
-        en: { title: "Wingers & Striker (#7, #9 & #11)", summary: "Pace, Penetration & Clinical Finishing", skills: "#7 & #11 1v1 isolation dribbling, cutbacks into box; #9 holding up ball, near-post darting runs, and clinical 1-touch finishing.", home: "1-touch instep finishes from edge of the box, rapid ladder footwork into sprint finishes, near-post diagonal runs." },
-        es: { title: "Extremos y Delanteros (#7, #9 y #11)", summary: "Desborde, Velocidad y Definición", skills: "Extremos (#7/#11) con regate 1v1 y centros; Delantero (#9) con desmarques al primer palo y remate letal.", home: "Definición al primer toque en espacios reducidos y coordinación en escalera rematando al arco." }
+        en: { title: "Wingers & Striker (#7, #9 & #11)", summary: "Pace, Penetration & Clinical Finishing", skills: "#7 & #11 1v1 isolation dribbling, cutbacks into box; #9 holding up ball, near-post darting runs, and clinical 1-touch finishing.", home: "1-touch instep finishes, rapid ladder footwork, near-post diagonal runs. <br><a href='https://www.youtube.com/watch?v=9_C8U8BfPXY' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Watch: Elite Striker Movement & Finishing</a>" },
+        es: { title: "Extremos y Delanteros (#7, #9 y #11)", summary: "Desborde, Velocidad y Definicin", skills: "Extremos (#7/#11) con regate 1v1 y centros; Delantero (#9) con desmarques al primer palo y remate letal.", home: "Definicin al primer toque, coordinacin en escalera. <br><a href='https://www.youtube.com/watch?v=9_C8U8BfPXY' target='_blank' class='text-orange-400 underline mt-1 inline-block'>Ver: Movimientos de Delantero Elite</a>" }
       }
     };
 
@@ -2426,16 +2436,18 @@
       if (activeBtn) activeBtn.className = 'pos-tab px-3.5 py-2 rounded-xl bg-orange-600 text-white whitespace-nowrap shadow';
 
       const data = positionData[posKey][currentLang];
-      document.getElementById('drillRoleTitle').innerText = data.title;
-      document.getElementById('drillRoleSummary').innerText = data.summary;
-      document.getElementById('drillSkills').innerText = data.skills;
-      document.getElementById('drillHome').innerText = data.home;
+      document.getElementById('drillRoleTitle').innerHTML = data.title;
+      document.getElementById('drillRoleSummary').innerHTML = data.summary;
+      document.getElementById('drillSkills').innerHTML = data.skills;
+      document.getElementById('drillHome').innerHTML = data.home;
     }
 
     function downloadCalendarICS() {
-      let ics = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Houston Dutch Lions FC//Elite 2013 U14//EN\nCALSCALE:GREGORIAN\nMETHOD:PUBLISH\nX-WR-CALNAME:HDL Elite 2013 U14 Schedule\n";
-
+      const nowDt = new Date();
       const pad = (n) => String(n).padStart(2, '0');
+      const dtStamp = `${nowDt.getUTCFullYear()}${pad(nowDt.getUTCMonth()+1)}${pad(nowDt.getUTCDate())}T${pad(nowDt.getUTCHours())}${pad(nowDt.getUTCMinutes())}00Z`;
+
+      let ics = "BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//Houston Dutch Lions FC//Elite 2013 U14//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nX-WR-CALNAME:HDL Elite 2013 U14 Schedule\r\n";
 
       // Add all official matches
       officialLeagueMatches.forEach(m => {
@@ -2446,30 +2458,32 @@
         const dtStart = `${dt.getUTCFullYear()}${pad(dt.getUTCMonth()+1)}${pad(dt.getUTCDate())}T${pad(dt.getUTCHours())}${pad(dt.getUTCMinutes())}00Z`;
         const dtEnd = `${endDt.getUTCFullYear()}${pad(endDt.getUTCMonth()+1)}${pad(endDt.getUTCDate())}T${pad(endDt.getUTCHours())}${pad(endDt.getUTCMinutes())}00Z`;
 
-        ics += `BEGIN:VEVENT\n`;
-        ics += `UID:stxcl-${m.id}@houstondutchlionsfc.com\n`;
-        ics += `SUMMARY:STXCL: HDL Elite vs ${m.opponent}\n`;
-        ics += `DESCRIPTION:STXCL Eastern Conference Match #${m.id}. ${m.isHome ? 'HOME' : 'AWAY'} at ${m.location}. Uniform: ${m.uniform}. Pack: ${m.bring}. GotSport: ${m.matchUrl}\n`;
-        ics += `LOCATION:${m.location}, ${m.address}\n`;
-        ics += `DTSTART:${dtStart}\n`;
-        ics += `DTEND:${dtEnd}\n`;
-        ics += `STATUS:CONFIRMED\n`;
-        ics += `END:VEVENT\n`;
+        ics += `BEGIN:VEVENT\r\n`;
+        ics += `UID:stxcl-${m.id}@houstondutchlionsfc.com\r\n`;
+        ics += `DTSTAMP:${dtStamp}\r\n`;
+        ics += `SUMMARY:STXCL: HDL Elite vs ${m.opponent}\r\n`;
+        ics += `DESCRIPTION:STXCL Eastern Conference Match #${m.id}. ${m.isHome ? 'HOME' : 'AWAY'} at ${m.location}. Uniform: ${m.uniform}. Pack: ${m.bring}. GotSport: ${m.matchUrl}\r\n`;
+        ics += `LOCATION:${m.location}, ${m.address}\r\n`;
+        ics += `DTSTART:${dtStart}\r\n`;
+        ics += `DTEND:${dtEnd}\r\n`;
+        ics += `STATUS:CONFIRMED\r\n`;
+        ics += `END:VEVENT\r\n`;
       });
 
       // Add recurring practices for Sep - Nov 2026
-      ics += `BEGIN:VEVENT\n`;
-      ics += `UID:hdl-practice-weekly@houstondutchlionsfc.com\n`;
-      ics += `SUMMARY:HDL Elite 2013 Practice\n`;
-      ics += `DESCRIPTION:Regular weekly team practice. 11v11 Tactical Positioning.\n`;
-      ics += `LOCATION:Houston Dutch Lions FC Soccer Facility - 14562 Interstate 45 S, Conroe, TX 77384\n`;
-      ics += `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,TH;UNTIL=20261130T235959Z\n`;
-      ics += `DTSTART:20260824T234500Z\n`;
-      ics += `DTEND:20260825T010000Z\n`;
-      ics += `STATUS:CONFIRMED\n`;
-      ics += `END:VEVENT\n`;
+      ics += `BEGIN:VEVENT\r\n`;
+      ics += `UID:hdl-practice-weekly@houstondutchlionsfc.com\r\n`;
+      ics += `DTSTAMP:${dtStamp}\r\n`;
+      ics += `SUMMARY:HDL Elite 2013 Practice\r\n`;
+      ics += `DESCRIPTION:Regular weekly team practice. 11v11 Tactical Positioning.\r\n`;
+      ics += `LOCATION:Houston Dutch Lions FC Soccer Facility - 14562 Interstate 45 S, Conroe, TX 77384\r\n`;
+      ics += `RRULE:FREQ=WEEKLY;BYDAY=MO,TU,TH;UNTIL=20261130T235959Z\r\n`;
+      ics += `DTSTART:20260824T234500Z\r\n`;
+      ics += `DTEND:20260825T010000Z\r\n`;
+      ics += `STATUS:CONFIRMED\r\n`;
+      ics += `END:VEVENT\r\n`;
 
-      ics += "END:VCALENDAR";
+      ics += "END:VCALENDAR\r\n";
 
       const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8;' });
       const link = document.createElement('a');
@@ -2529,6 +2543,8 @@
         const todayStr = new Date().toLocaleDateString('en-CA');
         if (dateStr === todayStr) {
           colorClasses += " ring-2 ring-white/50";
+        } else if (dateStr < todayStr) {
+          colorClasses += " opacity-40 grayscale";
         }
 
         let emojiIndicators = '';
@@ -2559,6 +2575,9 @@
     }
 
     function showEventDetails(dateStr, isPractice, eventDataStr) {
+      window.selectedCalendarDate = dateStr;
+      if (typeof renderEventList === 'function') renderEventList();
+      
       const detailsBox = document.getElementById('selected-date-details');
       let content = '';
       
@@ -3079,18 +3098,18 @@
     const defaultPositions = {};
     document.querySelectorAll('[id^="token-"]').forEach(token => {
       defaultPositions[token.id] = { top: token.style.top, left: token.style.left };
+      token.style.touchAction = "none"; // Fix for mobile dragging (stops scrolling)
       
       // Touch events
       token.addEventListener('touchstart', dragStart, {passive: false});
-      token.addEventListener('touchend', dragEnd, {passive: false});
-      token.addEventListener('touchmove', drag, {passive: false});
-      
       // Mouse events
       token.addEventListener('mousedown', dragStart, false);
     });
 
     document.addEventListener('mouseup', dragEnd, false);
     document.addEventListener('mousemove', drag, false);
+    document.addEventListener('touchend', dragEnd, false);
+    document.addEventListener('touchmove', drag, {passive: false});
 
     function dragStart(e) {
       if (e.type === "touchstart") {
