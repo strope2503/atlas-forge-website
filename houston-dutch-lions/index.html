@@ -168,7 +168,7 @@
           <i data-lucide="calendar" class="w-4 h-4 text-orange-400"></i>
           <span data-i18n="upcoming_events_title">Upcoming Schedule</span>
         </h2>
-        <a href="webcal://strope2503.github.io/atlas-forge-website/houston-dutch-lions/hdl_schedule.ics" class="text-xs font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1">
+        <a id="ics-subscribe-link" href="webcal://atlasforgetech.com/houston-dutch-lions/hdl_schedule.ics" class="text-xs font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1" onclick="event.preventDefault(); subscribeCalendar();">
           <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="subscribe_calendar">Subscribe (.ICS)</span>
         </a>
       </div>
@@ -2187,6 +2187,8 @@
                 const rowType = row['Type'] ? row['Type'].toLowerCase() : 'practice';
 
                 // Merge with specificEvents
+                const rawLoc = row['Location'] || 'HDL Complex Field';
+                const isHDL = rawLoc.toLowerCase().includes('hdl') || rawLoc.toLowerCase().includes('dutch lions');
                 if (!specificEvents[dateStr] || rowType === 'scrimmage') {
                     specificEvents[dateStr] = {
                         type: rowType,
@@ -2195,7 +2197,8 @@
                         home: true,
                         uniform: row['Uniform'] || (rowType === 'scrimmage' ? 'Orange Jersey | Bring: Both' : 'Practice Kit'),
                         bring: row['Bring'] || 'Both Jerseys, Shin Guards, Cleats, Water',
-                        location: row['Location'] || 'HDL Complex Field',
+                        location: rawLoc,
+                        mapQuery: isHDL ? 'Houston Dutch Lions FC, 14562 Interstate 45 S, Conroe, TX 77384' : rawLoc,
                         formation: row['Formation'] || '',
                         starters: startersParsed,
                         mediaFolder: row['Media Folder'] || row['Drive Folder'] || row['Folder'] || ''
@@ -2443,6 +2446,28 @@
       document.getElementById('drillHome').innerHTML = data.home;
     }
 
+    function subscribeCalendar() {
+      const icsUrl = 'https://atlasforgetech.com/houston-dutch-lions/hdl_schedule.ics';
+      const webcalUrl = 'webcal://atlasforgetech.com/houston-dutch-lions/hdl_schedule.ics';
+
+      // Try webcal:// first (native calendar subscription on iOS/macOS/Outlook)
+      // If that doesn't work, fall back to direct HTTPS download
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isMac = /Macintosh/.test(navigator.userAgent);
+
+      if (isIOS || isMac) {
+        window.location.href = webcalUrl;
+      } else {
+        // Android and desktop: download the .ics file directly
+        const link = document.createElement('a');
+        link.href = icsUrl;
+        link.setAttribute('download', 'hdl_schedule.ics');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+
     function downloadCalendarICS() {
       const nowDt = new Date();
       const pad = (n) => String(n).padStart(2, '0');
@@ -2668,11 +2693,12 @@
         const titleText = (eventType === 'game' || eventType === 'match') ? (currentLang === 'en' ? 'GAME DAY' : 'DÍA DE PARTIDO') : (currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO');
         const vsText = ev.opponent ? ` vs ${ev.opponent}` : '';
         const locText = ev.location || 'HDL Complex';
+        const scrimmageMapTarget = ev.mapQuery || locText;
         const driveFolderLink = (ev && ev.mediaFolder) ? ev.mediaFolder : 'https://drive.google.com/drive/folders/1qsg9oirm_aehrZ42WnEJGuu00pBQlkG3';
         content += `<h4 class="text-orange-400 font-bold text-sm mb-1">${titleText}</h4>
                    <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
                    <p class="text-slate-300 text-xs mb-1">${ev.time}${vsText}</p>
-                   <a href="https://maps.google.com/?q=${encodeURIComponent(locText)}" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition mb-2.5">
+                   <a href="https://maps.google.com/?q=${encodeURIComponent(scrimmageMapTarget)}" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition mb-2.5">
                      <i data-lucide="map-pin" class="w-3 h-3"></i> ${locText}
                    </a>
                    <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/80 mb-2">
@@ -3004,9 +3030,10 @@
           }
         }
 
-        const loc = nextEvent.location || '14562 Interstate 45 S, Conroe, TX 77384';
+        const loc = nextEvent.location || 'HDL Complex Field';
+        const heroMapTarget = nextEvent.mapQuery || (loc.toLowerCase().includes('hdl') || loc.toLowerCase().includes('dutch lions') ? 'Houston Dutch Lions FC, 14562 Interstate 45 S, Conroe, TX 77384' : loc);
         if (locationEl) locationEl.innerText = loc;
-        if (mapLinkEl) mapLinkEl.href = `https://maps.google.com/?q=${encodeURIComponent(loc)}`;
+        if (mapLinkEl) mapLinkEl.href = `https://maps.google.com/?q=${encodeURIComponent(heroMapTarget)}`;
       } else {
         targetKickoffTime = null;
         if (matchDateEl) matchDateEl.innerText = currentLang === 'en' ? 'Matches Completed / TBD' : 'Partidos Completados / TBD';
