@@ -1842,15 +1842,24 @@
       const tbody = document.getElementById('standings-table-body');
       if (!tbody) return;
 
+      // Sort by PTS desc, then GD desc, then GF desc (matches GotSport tiebreaker order)
+      const sorted = [...stxclBracketBTeams].sort((a, b) => {
+        if (b.pts !== a.pts) return b.pts - a.pts;
+        if (b.gd !== a.gd) return b.gd - a.gd;
+        if (b.gf !== a.gf) return b.gf - a.gf;
+        return 0;
+      });
+
       let html = '';
-      stxclBracketBTeams.forEach(t => {
+      sorted.forEach((t, idx) => {
+        const pos = idx + 1;
         const isHDL = t.isOurTeam;
         const rowClass = isHDL 
           ? 'bg-orange-500/20 text-white font-bold border-l-4 border-l-orange-500 shadow-inner' 
           : 'hover:bg-slate-900/60 text-slate-300 transition-colors';
         const rankBadge = isHDL
-          ? `<span class="w-5 h-5 rounded-full bg-orange-500 text-white font-black flex items-center justify-center text-[10px] mx-auto shadow">${t.rank}</span>`
-          : `<span class="text-slate-400 font-semibold">${t.rank}</span>`;
+          ? `<span class="w-5 h-5 rounded-full bg-orange-500 text-white font-black flex items-center justify-center text-[10px] mx-auto shadow">${pos}</span>`
+          : `<span class="text-slate-400 font-semibold">${pos}</span>`;
 
         html += `<tr class="${rowClass} cursor-pointer" onclick="openOpponentModal('${t.id}')">
           <td class="py-2.5 px-3 text-center">${rankBadge}</td>
