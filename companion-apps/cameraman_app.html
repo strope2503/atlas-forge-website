@@ -3,34 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Operator Deck</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Atlas Scout Pro | Operator Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0b1118;
-            --panel-bg: rgba(18, 25, 36, 0.7);
+            --bg: #070a0f;
+            --panel-bg: rgba(11, 16, 25, 0.78);
             --text-main: #ffffff;
             --text-muted: #8d98aa;
             --accent-cyan: #00f0ff;
             --accent-red: #ff4757;
             --accent-green: #37ff6c;
+            --accent-yellow: #f59e0b;
             --font: "Inter", sans-serif;
             --radius-lg: 16px;
             --radius-md: 12px;
             --radius-sm: 8px;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: var(--font); }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: var(--font); margin: 0; padding: 0; }
 
         body {
-            margin: 0;
-            background: var(--bg) url('assets/cameraman_bg.jpg') center/cover no-repeat;
+            background: var(--bg);
             color: var(--text-main);
             display: flex;
             flex-direction: column;
             height: 100vh;
+            width: 100vw;
             overflow: hidden;
             font-size: 13px;
+            position: relative;
+        }
+
+        /* LIVE CAMERA STREAM VIEWPORT */
+        #liveStreamFeed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: 0;
+            background: #000;
         }
 
         /* Top Bar */
@@ -38,17 +52,18 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 16px 24px;
-            background: rgba(11, 17, 24, 0.9);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding: 12px 24px;
+            background: rgba(7, 10, 15, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             z-index: 10;
+            position: relative;
         }
 
         .brand {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--accent-red);
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -56,68 +71,34 @@
             text-transform: uppercase;
         }
         
-        .brand-icon {
-            width: 20px;
-            height: 20px;
-            border: 2px solid var(--accent-red);
-            border-radius: 4px;
-            position: relative;
+        .brand span { color: var(--accent-cyan); }
+
+        .cam-selector-bar {
             display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .brand-icon::after {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent-red);
-            border-radius: 50%;
-        }
-        
-        .live-status {
-            background: rgba(255, 71, 87, 0.15);
-            color: var(--accent-red);
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid rgba(255, 71, 87, 0.3);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .live-status::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: var(--accent-red);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.3; }
-            100% { opacity: 1; }
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 24px;
+            padding: 3px;
+            gap: 4px;
         }
 
-        .header-center {
-            display: flex;
-            gap: 24px;
-        }
-        
-        .nav-item {
+        .cam-btn {
+            background: transparent;
+            border: none;
             color: var(--text-muted);
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            padding: 6px 16px;
+            border-radius: 18px;
+            font-size: 11px;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
         }
-        .nav-item.active {
-            color: var(--text-main);
+
+        .cam-btn.active {
+            background: var(--accent-cyan);
+            color: #000;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.4);
         }
 
         .header-actions {
@@ -125,26 +106,45 @@
             align-items: center;
             gap: 16px;
         }
-        .icon-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
+
+        .live-status {
+            background: rgba(55, 255, 108, 0.15);
+            color: var(--accent-green);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.05);
+            gap: 6px;
+            border: 1px solid rgba(55, 255, 108, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .live-status::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
         }
 
-        /* Main Workspace */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Workspace Grid */
         .workspace {
             flex: 1;
             position: relative;
-            padding: 24px;
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             pointer-events: none;
+            z-index: 5;
         }
         
         .side-col {
@@ -154,526 +154,280 @@
             width: 280px;
             pointer-events: auto;
         }
-        
-        /* Glass Panels */
+
         .glass-panel {
             background: var(--panel-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: var(--radius-lg);
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            padding: 18px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
         }
         
         .panel-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
         .panel-title {
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--text-main);
+            color: var(--accent-cyan);
             margin: 0;
-        }
-        .dots {
-            letter-spacing: 2px;
-            color: var(--text-muted);
-            cursor: pointer;
         }
 
         /* Camera Controls */
         .cam-controls {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
         .control-btn {
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             color: var(--text-main);
-            padding: 12px;
+            padding: 10px;
             border-radius: var(--radius-sm);
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-transform: uppercase;
+            transition: all 0.2s;
         }
-        .control-btn:hover {
-            background: rgba(255,255,255,0.1);
-        }
+        .control-btn:hover { background: rgba(255,255,255,0.12); }
         .control-btn.active {
             border-color: var(--accent-cyan);
             color: var(--accent-cyan);
-            background: rgba(0, 240, 255, 0.1);
-        }
-        .control-icon {
-            font-size: 16px;
-        }
-        
-        /* Focus/Zoom Sliders */
-        .slider-wrap {
-            margin-bottom: 16px;
-        }
-        .slider-label {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11px;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .slider-label span { color: var(--text-main); }
-        .slider-track {
-            height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 2px;
-            position: relative;
-        }
-        .slider-fill {
-            height: 100%;
-            background: var(--accent-cyan);
-            border-radius: 2px;
-            position: absolute;
-            left: 0; top: 0;
-        }
-        .slider-thumb {
-            width: 12px;
-            height: 12px;
-            background: #fff;
-            border-radius: 50%;
-            position: absolute;
-            top: -4px;
-            transform: translateX(-50%);
-            box-shadow: 0 0 10px rgba(0,240,255,0.5);
+            background: rgba(0, 240, 255, 0.15);
         }
 
-        /* Stream Stats */
+        /* Center Calibration Overlays */
+        .calibration-reticle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 70vh;
+            border: 1px dashed rgba(245, 158, 11, 0.4);
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .horizon-level {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(245, 158, 11, 0.8);
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+        }
+
+        .center-circle {
+            width: 80px;
+            height: 80px;
+            border: 2px dashed rgba(245, 158, 11, 0.9);
+            border-radius: 50%;
+            position: relative;
+        }
+
         .stat-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
         .stat-item {
             background: rgba(0,0,0,0.3);
-            padding: 12px;
-            border-radius: var(--radius-sm);
+            padding: 10px;
+            border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.05);
         }
-        .stat-label {
-            font-size: 10px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-        .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--accent-cyan);
-        }
+        .stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-weight: 700; }
+        .stat-value { font-size: 16px; font-weight: 800; color: #fff; margin-top: 2px; }
 
-        /* Action Buttons Right Column */
         .big-action-btn {
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text-main);
-            padding: 16px;
-            border-radius: var(--radius-md);
-            font-size: 13px;
-            font-weight: 600;
+            background: rgba(0, 240, 255, 0.12);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 800;
+            text-align: center;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            margin-top: 8px;
+            transition: all 0.2s;
             text-transform: uppercase;
-            margin-bottom: 12px;
-            transition: 0.2s;
         }
         .big-action-btn:hover {
-            background: rgba(255,255,255,0.1);
+            background: var(--accent-cyan);
+            color: #000;
         }
-        .big-action-btn.danger {
-            border-color: rgba(255, 71, 87, 0.5);
-            color: var(--accent-red);
-        }
-        .big-action-btn.danger:hover {
-            background: rgba(255, 71, 87, 0.1);
-        }
-
-        /* Viewfinder Center */
-        .center-hud {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 400px;
-            height: 300px;
-            border: 1px solid rgba(255,255,255,0.2);
-            pointer-events: none;
-        }
-        .center-hud::before, .center-hud::after {
-            content: ''; position: absolute; background: rgba(255,255,255,0.5);
-        }
-        .center-hud::before { width: 20px; height: 1px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        .center-hud::after { width: 1px; height: 20px; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-        
-        .corner { position: absolute; width: 20px; height: 20px; border: 2px solid var(--accent-cyan); }
-        .c-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
-        .c-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
-        .c-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
-        .c-br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
-
-        .recording-indicator {
-            position: absolute;
-            top: 20px; left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px);
-            padding: 8px 16px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 600;
-            font-size: 14px;
-            border: 1px solid rgba(255,255,255,0.1);
-            pointer-events: none;
-        }
-        .rec-dot {
-            width: 10px; height: 10px;
-            background: var(--accent-red);
-            border-radius: 50%;
-            animation: pulse 1.5s infinite;
-        }
-
     </style>
 </head>
 <body>
 
+    <!-- REAL-TIME CAMERA STREAM VIEWPORT -->
+    <img id="liveStreamFeed" src="http://192.168.4.73:8000/stream/cam1" alt="Live Edge Camera Feed" onerror="handleStreamError(this)" />
+
+    <!-- TOP HEADER -->
     <header>
         <div class="brand">
-            <div class="brand-icon"></div>
-            Operator Deck
+            <span>ATLAS SCOUT PRO</span> | OPERATOR DECK
         </div>
-        
-        
-            <div class="nav-item">Cam 2</div>
-            <div class="nav-item">Drone</div>
-            <div class="nav-item">Tactical</div>
+
+        <!-- CAMERA SELECTOR SWITCH -->
+        <div class="cam-selector-bar">
+            <button class="cam-btn active" onclick="switchStream('cam1', this)">Cam 1 (Left 45°)</button>
+            <button class="cam-btn" onclick="switchStream('cam2', this)">Cam 2 (Center 0°)</button>
+            <button class="cam-btn" onclick="switchStream('cam3', this)">Cam 3 (Right 45°)</button>
+            <button class="cam-btn" onclick="switchStream('panorama', this)">180° Panorama</button>
         </div>
-        
+
         <div class="header-actions">
-            <div class="live-status">Live</div>
-            <div class="icon-btn">⚙</div>
+            <div class="live-status" id="connStatus">ONLINE: 3x RTSP</div>
         </div>
     </header>
 
     <div class="workspace">
         
-        <!-- Left Column -->
+        <!-- Left Column Controls -->
         <div class="side-col">
-            <!-- Camera Mode -->
+            <!-- Tracking Mode -->
             <div class="glass-panel">
                 <div class="panel-header">
                     <h3 class="panel-title">Tracking Mode</h3>
                 </div>
-                                <div class="cam-controls" id="modeControls">
-                    <div class="control-btn active" onclick="setCamMode(this)">
-                        <span class="control-icon">🎯</span>
-                        Auto
-                    </div>
-                    <div class="control-btn" onclick="setCamMode(this)">
-                        <span class="control-icon">👋</span>
-                        Manual
-                    </div>
-                    <div class="control-btn" onclick="setCamMode(this)">
-                        <span class="control-icon">🏃</span>
-                        Follow
-                    </div>
-                    <div class="control-btn" onclick="setCamMode(this)">
-                        <span class="control-icon">⚽</span>
-                        Ball
-                    </div>
+                <div class="cam-controls">
+                    <div class="control-btn active" onclick="setMode(this)"><span>🎯</span>Auto-Director</div>
+                    <div class="control-btn" onclick="setMode(this)"><span>👋</span>Manual PTZ</div>
+                    <div class="control-btn" onclick="setMode(this)"><span>🏃</span>Follow Player</div>
+                    <div class="control-btn" onclick="setMode(this)"><span>⚽</span>Ball Lock</div>
                 </div>
             </div>
-            </div>
 
-                        <!-- Live Telemetry Stream -->
+            <!-- Pitch Leveling Calibration -->
             <div class="glass-panel">
                 <div class="panel-header">
-                    <h3 class="panel-title">Live Telemetry</h3>
+                    <h3 class="panel-title">Calibration Overlay</h3>
                 </div>
-                <div class="stat-grid" style="grid-template-columns: 1fr;">
-                    <div class="stat-item" style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="stat-label" style="margin:0;">Engine FPS</span>
-                        <span class="stat-value" id="valFps">60.0</span>
-                    </div>
-                    <div class="stat-item" style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="stat-label" style="margin:0;">Tracked Entities</span>
-                        <span class="stat-value" id="valPlayers">22</span>
-                    </div>
-                    <div class="stat-item" style="display:flex; justify-content:space-between; align-items:center;">
-                        <span class="stat-label" style="margin:0;">Player #10 Knee Load</span>
-                        <span class="stat-value" id="valKnee" style="color:var(--accent-green);">172.4°</span>
-                    </div>
+                <p style="color:var(--text-muted); font-size:11px; margin-bottom:10px;">
+                    Align yellow horizon with midfield stripe.
+                </p>
+                <div class="big-action-btn" onclick="toggleCalibrationGuides()" id="btnCalibToggle">
+                    Hide Calibration Lines
                 </div>
-            </div>
-
-            <!-- Offline Scrubber -->
-            <div class="glass-panel">
-                <div class="panel-header">
-                    <h3 class="panel-title">Match Timeline</h3>
-                </div>
-                <div style="display:flex; flex-direction:column; gap: 12px;">
-                    <div class="big-action-btn" id="btnPlayPause" onclick="togglePlayPause()" style="justify-content:center; background: rgba(0,240,255,0.1); border-color: var(--accent-cyan); color: var(--accent-cyan);">
-                        ⏸ Pause
-                    </div>
-                    <div style="display:flex; align-items:center; gap:12px;">
-                        <input type="range" id="frameScrubber" min="1" max="100" value="100" style="flex:1; cursor:pointer; accent-color: var(--accent-cyan);" oninput="scrubTimeline(this.value)">
-                        <span style="font-size: 13px; font-weight:700; width:70px; text-align:right;" id="frameDisplay">Frame 100</span>
-                    </div>
-                </div>
-            </div>
-                </div>
-                </div>
-                
-                                <div class="slider-wrap">
-                    <div class="slider-label">Focus <span id="valFocus">Auto</span></div>
-                    <div class="slider-track" id="trackFocus" onmousedown="startDrag(event, 'Focus')">
-                        <div class="slider-fill" id="fillFocus" style="width: 75%; background: var(--text-muted); pointer-events:none;"></div>
-                        <div class="slider-thumb" id="thumbFocus" style="left: 75%; pointer-events:none;"></div>
-                    </div>
-                </div>
-                </div>
-                
-                                <div class="slider-wrap" style="margin-bottom:0;">
-                    <div class="slider-label">Iris <span id="valIris">f/4.0</span></div>
-                    <div class="slider-track" id="trackIris" onmousedown="startDrag(event, 'Iris')">
-                        <div class="slider-fill" id="fillIris" style="width: 60%; background: var(--text-muted); pointer-events:none;"></div>
-                        <div class="slider-thumb" id="thumbIris" style="left: 60%; pointer-events:none;"></div>
-                    </div>
-                </div>
+                <div class="big-action-btn" style="background:rgba(55,255,108,0.15); border-color:var(--accent-green); color:var(--accent-green);" onclick="alert('✓ Calibration Locked to 11v11 Scale Matrix!')">
+                    🔒 Lock Calibration
                 </div>
             </div>
         </div>
 
-        <!-- Center Viewfinder HUD -->
-        <div class="recording-indicator">
-            <div class="rec-dot"></div>
-            REC 01:24:15
-        </div>
-        
-        <div class="center-hud">
-            <div class="corner c-tl"></div>
-            <div class="corner c-tr"></div>
-            <div class="corner c-bl"></div>
-            <div class="corner c-br"></div>
+        <!-- Center Calibration Reticle -->
+        <div class="calibration-reticle" id="calibReticle">
+            <div class="horizon-level"></div>
+            <div class="center-circle"></div>
         </div>
 
-        <!-- Right Column -->
+        <!-- Right Column Stats & Actions -->
         <div class="side-col">
-            <!-- Stream Stats -->
+            <!-- Live Stream Telemetry -->
             <div class="glass-panel">
                 <div class="panel-header">
-                    <h3 class="panel-title">Stream Status</h3>
+                    <h3 class="panel-title">Edge Telemetry</h3>
                 </div>
                 <div class="stat-grid">
                     <div class="stat-item">
-                        <div class="stat-label">Bitrate</div>
-                        <div class="stat-value">8.5 <span style="font-size:12px; color:var(--text-muted);">Mbps</span></div>
+                        <div class="stat-label">Active Feed</div>
+                        <div class="stat-value" id="valActiveFeed" style="color:var(--accent-cyan); font-size:13px;">CAM 1</div>
                     </div>
                     <div class="stat-item">
                         <div class="stat-label">FPS</div>
-                        <div class="stat-value">59.94</div>
+                        <div class="stat-value" id="valFps">30.0</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Resolution</div>
-                        <div class="stat-value" style="font-size:16px;">1080p</div>
+                        <div class="stat-label">Latency</div>
+                        <div class="stat-value" style="color:var(--accent-green);">< 85ms</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-label">Network</div>
-                        <div class="stat-value" style="color:var(--accent-green);">Excellent</div>
+                        <div class="stat-label">Storage (SSD)</div>
+                        <div class="stat-value">480 GB</div>
                     </div>
                 </div>
             </div>
 
-                        <!-- Auto-Tagged Events -->
+            <!-- Instant Actions -->
             <div class="glass-panel">
                 <div class="panel-header">
-                    <h3 class="panel-title">Auto-Tagged Events</h3>
+                    <h3 class="panel-title">Match Action</h3>
                 </div>
-                <div style="display:flex; flex-direction:column; gap:8px;">
-                    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; font-size:12px;">
-                        ⚽ <strong style="color:var(--text-main);">38:12 Goal</strong><br>
-                        <span style="color:var(--text-muted);">Dynamic Overload Left Flank</span>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.05); padding: 10px; border-radius: 8px; font-size:12px;">
-                        🛡️ <strong style="color:var(--text-main);">12:40 Turnover</strong><br>
-                        <span style="color:var(--text-muted);">High Press Counter</span>
-                    </div>
+                <div class="big-action-btn" style="background:rgba(0,240,255,0.2);" onclick="alert('🔴 Match Recording Started!')">
+                    ★ Start Match Recording
                 </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="glass-panel" style="flex:1;">
-                <div class="panel-header">
-                    <h3 class="panel-title">Actions</h3>
+                <div class="big-action-btn" style="background:rgba(255,71,87,0.15); border-color:var(--accent-red); color:var(--accent-red); margin-top:20px;" onclick="if(confirm('Shut down Jetson safely?')) alert('Shutting down...');">
+                    ⏻ Shut Down Jetson
                 </div>
-                
-                <div class="big-action-btn" onclick="alert('⭐ Highlight Marked! Dispatched to Coach & Parents.')">
-                    Mark Highlight <span>★</span>
-                </div>
-                
-                <div class="big-action-btn" onclick="alert('📸 Still Captured! Saved to Atlas Forge drive.')">
-                    Capture Still <span>📷</span>
-                </div>
-                
-                <div class="big-action-btn danger" style="margin-top: 40px;" onclick="if(confirm('Are you sure you want to stop the live stream?')) alert('Stream Stopped.');">
-                    Stop Stream <span>⏹</span>
-                </div>
-                                <div class="big-action-btn" onclick="sendCommand('DISPATCH_CLIP', {target: 'Player_10'})" style="background: rgba(55,255,108,0.1); border-color: rgba(55,255,108,0.3); color: var(--accent-green);">
-                    Send to Phones <span>📲</span>
-                </div>
-                
             </div>
         </div>
         
     </div>
 
-
-<script>
-    
-    
-
-    // Scrubber Logic
-    function togglePlayPause() {
-        const btn = document.getElementById('btnPlayPause');
-        if(btn.innerText.includes('Pause')) {
-            btn.innerHTML = '▶ Play';
-            btn.style.background = 'rgba(55,255,108,0.1)';
-            btn.style.borderColor = 'var(--accent-green)';
-            btn.style.color = 'var(--accent-green)'; sendCommand('RESUME_STREAM');
-        } else {
-            btn.innerHTML = '⏸ Pause';
-            btn.style.background = 'rgba(0,240,255,0.1)';
-            btn.style.borderColor = 'var(--accent-cyan)';
-            btn.style.color = 'var(--accent-cyan)'; sendCommand('PAUSE_STREAM');
-        }
-    }
-
-    function scrubTimeline(val) {
-      document.getElementById('frameDisplay').textContent = `Frame ${val}`;
-      const btn = document.getElementById('btnPlayPause');
-      btn.innerHTML = '▶ Play';
-      btn.style.background = 'rgba(55,255,108,0.1)';
-      btn.style.borderColor = 'var(--accent-green)';
-      btn.style.color = 'var(--accent-green)'; sendCommand('RESUME_STREAM');
-    }
-
-
-    // Cam Mode Toggle
-    function setCamMode(btn) {
-        document.querySelectorAll('#modeControls .control-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    }
-
-    // Slider Logic
-    let activeSlider = null;
-    let trackRect = null;
-
-    function startDrag(e, type) {
-        activeSlider = type;
-        const track = document.getElementById('track' + type);
-        trackRect = track.getBoundingClientRect();
-        updateSlider(e);
-        document.addEventListener('mousemove', dragSlider);
-        document.addEventListener('mouseup', stopDrag);
-    }
-
-    function dragSlider(e) {
-        if (!activeSlider) return;
-        updateSlider(e);
-    }
-
-    function stopDrag() {
-        activeSlider = null;
-        document.removeEventListener('mousemove', dragSlider);
-        document.removeEventListener('mouseup', stopDrag);
-    }
-
-    function updateSlider(e) {
-        let x = e.clientX - trackRect.left;
-        let pct = x / trackRect.width;
-        if (pct < 0) pct = 0;
-        if (pct > 1) pct = 1;
-        
-        const pctStr = (pct * 100) + '%';
-        document.getElementById('fill' + activeSlider).style.width = pctStr;
-        document.getElementById('thumb' + activeSlider).style.left = pctStr;
-
-        // Update Label
-        if (activeSlider === 'Zoom') {
-            const val = (1.0 + pct * 9.0).toFixed(1);
-            document.getElementById('valZoom').textContent = val + 'x';
-            document.getElementById('fillZoom').style.background = 'var(--accent-cyan)';
-        } else if (activeSlider === 'Focus') {
-            if (pct > 0.9) {
-                document.getElementById('valFocus').textContent = 'Auto';
-                document.getElementById('fillFocus').style.background = 'var(--text-muted)';
-            } else {
-                const val = Math.round(pct * 100);
-                document.getElementById('valFocus').textContent = val + '%';
-                document.getElementById('fillFocus').style.background = 'var(--accent-cyan)';
-            }
-        } else if (activeSlider === 'Iris') {
-            const val = (1.4 + pct * 20.6).toFixed(1);
-            document.getElementById('valIris').textContent = 'f/' + val;
-            document.getElementById('fillIris').style.background = 'var(--accent-cyan)';
-        }
-    }
-</script>
-
     <script>
-        // Connect to Jetson WebSocket
-        const host = window.location.hostname || "127.0.0.1";
-        const ws = new WebSocket(`ws://${host}:8000/ws/telemetry`);
-        
-        ws.onopen = () => {
-            console.log("Connected to Atlas Edge Server");
-        };
+        // Resolve Edge Server IP (works locally or over LAN)
+        const host = window.location.hostname || "192.168.4.73";
+        const port = "8000";
+        const streamBase = `http://${host}:${port}/stream/`;
+        let currentFeed = "cam1";
 
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            
-            // Update common telemetry if elements exist
-            const fpsEl = document.getElementById('valFps');
-            if(fpsEl) fpsEl.textContent = data.fps.toFixed(1);
-            
-            const playersEl = document.getElementById('valPlayers');
-            if(playersEl) playersEl.textContent = data.tracked_players;
-            
-            const kneeEl = document.getElementById('valKnee');
-            if(kneeEl) kneeEl.textContent = data.left_knee_deg.toFixed(1) + '°';
-        };
+        function switchStream(camId, btn) {
+            currentFeed = camId;
+            document.querySelectorAll('.cam-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
 
-        function sendCommand(action, payload={}) {
-            if (ws.readyState === WebSocket.OPEN) {
-                ws.send(JSON.stringify({ action, ...payload }));
+            const streamImg = document.getElementById('liveStreamFeed');
+            const targetUrl = streamBase + camId;
+            streamImg.src = targetUrl;
+            document.getElementById('valActiveFeed').textContent = camId.toUpperCase();
+            console.log("Switching video stream to:", targetUrl);
+        }
+
+        function handleStreamError(img) {
+            console.warn("Retrying video stream connection in 2s...");
+            setTimeout(() => {
+                img.src = streamBase + currentFeed + "?t=" + new Date().getTime();
+            }, 2000);
+        }
+
+        function setMode(btn) {
+            document.querySelectorAll('.control-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function toggleCalibrationGuides() {
+            const reticle = document.getElementById('calibReticle');
+            const btn = document.getElementById('btnCalibToggle');
+            if (reticle.style.display === 'none') {
+                reticle.style.display = 'flex';
+                btn.textContent = 'Hide Calibration Lines';
             } else {
-                console.warn("WebSocket not connected. Command ignored.");
+                reticle.style.display = 'none';
+                btn.textContent = 'Show Calibration Lines';
             }
         }
+
+        // Initialize default stream on load
+        window.addEventListener('DOMContentLoaded', () => {
+            switchStream('cam1', document.querySelector('.cam-btn'));
+        });
     </script>
-
 </body>
-
 </html>
