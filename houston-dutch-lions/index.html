@@ -154,7 +154,8 @@
         <div><strong class="text-slate-400 block" data-i18n="uniform_color">Uniform:</strong> <span id="hero-uniform">Bring Both, Wear Orange</span><img id="hero-kit-img" src="./images/home_kit.jpg" alt="Kit" class="w-10 h-10 rounded-lg object-cover cursor-pointer hover:opacity-80 border border-orange-500/40 shadow mt-1" onclick="openKitLightbox(this.src, 'Match Kit')" title="Tap to view kit"></div>
         <div><strong class="text-slate-400 block" data-i18n="field_location">Location:</strong> <span id="hero-location">14562 Interstate 45 S, Conroe, TX 77384</span></div>
       </div>
-      <div class="mt-4 flex gap-2">
+      <div id="hero-volunteer-container" class="mt-3"></div>
+      <div class="mt-3 flex gap-2">
         <a id="hero-map-link" href="https://maps.google.com/?q=Houston+Dutch+Lions+FC" target="_blank" class="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition shadow">
           <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> <span data-i18n="btn_maps">Field Map</span>
         </a>
@@ -3075,6 +3076,36 @@
         const heroMapTarget = nextEvent.mapQuery || (loc.toLowerCase().includes('hdl') || loc.toLowerCase().includes('dutch lions') ? 'Houston Dutch Lions FC, 14562 Interstate 45 S, Conroe, TX 77384' : loc);
         if (locationEl) locationEl.innerText = loc;
         if (mapLinkEl) mapLinkEl.href = `https://maps.google.com/?q=${encodeURIComponent(heroMapTarget)}`;
+        
+        const volContainer = document.getElementById('hero-volunteer-container');
+        if (volContainer) {
+          volContainer.innerHTML = ''; // clear previous
+          if (nextEvent.type === 'scrimmage' || nextEvent.type === 'game' || nextEvent.type === 'league' || nextEvent.type === 'match') {
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const lookupDate = monthNames[m - 1] + " " + d;
+            
+            let drinksCovered = false;
+            if (signupsMap.has(lookupDate) && signupsMap.get(lookupDate).drinks.length > 0) {
+                drinksCovered = true;
+            } else if (signupsMap.has(nextDateStr) && signupsMap.get(nextDateStr).drinks.length > 0) {
+                drinksCovered = true;
+            }
+            
+            if (!drinksCovered) {
+              volContainer.innerHTML = `
+                <div class="flex items-start gap-2 mt-2 text-[11px] text-orange-300 bg-orange-900/30 p-2 rounded border border-orange-800/50">
+                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5 text-orange-400"></i>
+                    <span><strong>Drinks are still needed!</strong></span>
+                </div>
+                <button onclick="openVolunteerModal('${lookupDate}')" class="w-full mt-2 p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center shadow">
+                  <i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks
+                </button>
+              `;
+              if (typeof lucide !== 'undefined') lucide.createIcons();
+            }
+          }
+        }
+
       } else {
         targetKickoffTime = null;
         if (matchDateEl) matchDateEl.innerText = currentLang === 'en' ? 'Matches Completed / TBD' : 'Partidos Completados / TBD';
