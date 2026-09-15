@@ -1114,6 +1114,7 @@
           
           if (typeof renderCalendar === 'function') renderCalendar();
           if (typeof renderEventList === 'function') renderEventList();
+          if (typeof updateNextMatchHero === 'function') updateNextMatchHero();
           if (window.lucide) lucide.createIcons();
         })
         .catch(err => console.error('Error fetching signups:', err));
@@ -3672,6 +3673,7 @@
           addSignupEntry(date, name, role);
           if (typeof renderCalendar === 'function') renderCalendar();
           if (typeof renderEventList === 'function') renderEventList();
+          if (typeof updateNextMatchHero === 'function') updateNextMatchHero();
           if (window.lucide) lucide.createIcons();
           
           // Sync with Google Sheets backend
