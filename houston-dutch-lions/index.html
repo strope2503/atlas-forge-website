@@ -1300,6 +1300,23 @@
       globalRosterData = Array.from(rosterMap.values());
       // Sort by number
       globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
+
+      // ──── SEASON STATS OVERRIDE ────
+      // Manually tracked stats (update here until Google Sheet has Goals/Assists/Clean Sheets columns)
+      const seasonStatsOverride = {
+        '11': { goals: 1 },   // Fabian Hernandez
+        '7':  { goals: 1 },   // Aaron Ramirez
+      };
+      globalRosterData.forEach(p => {
+        const override = seasonStatsOverride[String(p.number)];
+        if (override) {
+          if (override.goals !== undefined) p.goals = override.goals;
+          if (override.assists !== undefined) p.assists = override.assists;
+          if (override.cleanSheets !== undefined) p.cleanSheets = override.cleanSheets;
+        }
+      });
+      // ──── END SEASON STATS OVERRIDE ────
+
       renderRosterGrid(globalRosterData);
       renderStats(globalRosterData);
       
