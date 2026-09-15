@@ -151,7 +151,7 @@
       <div class="bg-slate-950/70 rounded-xl p-3 grid grid-cols-2 gap-2 text-xs border border-slate-800 text-slate-300 mt-3">
         <div><strong class="text-slate-400 block" data-i18n="kickoff_time">Kick-Off:</strong> <span id="hero-kickoff">--:--</span></div>
         <div><strong class="text-orange-400 block" data-i18n="arrival_time">Arrival / Call:</strong> <span id="hero-arrival">--:--</span></div>
-        <div><strong class="text-slate-400 block" data-i18n="uniform_color">Uniform:</strong> <span id="hero-uniform">Bring Both, Wear Orange</span></div>
+        <div><strong class="text-slate-400 block" data-i18n="uniform_color">Uniform:</strong> <span id="hero-uniform">Bring Both, Wear Orange</span><img id="hero-kit-img" src="./images/home_kit.jpg" alt="Kit" class="w-10 h-10 rounded-lg object-cover cursor-pointer hover:opacity-80 border border-orange-500/40 shadow mt-1" onclick="openKitLightbox(this.src, 'Match Kit')" title="Tap to view kit"></div>
         <div><strong class="text-slate-400 block" data-i18n="field_location">Location:</strong> <span id="hero-location">14562 Interstate 45 S, Conroe, TX 77384</span></div>
       </div>
       <div class="mt-4 flex gap-2">
@@ -2336,9 +2336,9 @@
 
             let uniformImg = '';
             if (ev.uniform && ev.uniform.includes('Orange')) {
-                uniformImg = '<img src="./images/home_kit.jpg" alt="Home Kit" class="inline-block w-6 h-6 rounded-md ml-1.5 object-cover cursor-pointer hover:opacity-80 border border-orange-500/30" onclick="window.open(\'./images/home_kit.jpg\', \'_blank\')" title="Click to view full size" style="vertical-align: middle; margin-top: -3px;">';
+                uniformImg = '<img src="./images/home_kit.jpg" alt="Home Kit" class="inline-block w-10 h-10 rounded-lg ml-2 object-cover cursor-pointer hover:opacity-80 border border-orange-500/40 shadow-lg" onclick="event.stopPropagation(); openKitLightbox(\'./images/home_kit.jpg\', \'Home Kit – Orange Jersey, Orange Shorts, Orange Socks\')" title="Tap to view kit" style="vertical-align: middle;">';
             } else if (ev.uniform && ev.uniform.includes('Blue')) {
-                uniformImg = '<img src="./images/away_kit.jpg" alt="Away Kit" class="inline-block w-6 h-6 rounded-md ml-1.5 object-cover cursor-pointer hover:opacity-80 border border-blue-500/30" onclick="window.open(\'./images/away_kit.jpg\', \'_blank\')" title="Click to view full size" style="vertical-align: middle; margin-top: -3px;">';
+                uniformImg = '<img src="./images/away_kit.jpg" alt="Away Kit" class="inline-block w-10 h-10 rounded-lg ml-2 object-cover cursor-pointer hover:opacity-80 border border-blue-500/40 shadow-lg" onclick="event.stopPropagation(); openKitLightbox(\'./images/away_kit.jpg\', \'Away Kit – Blue Jersey, Blue Shorts, Blue Socks\')" title="Tap to view kit" style="vertical-align: middle;">';
             }
 
             html += `<div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-${colorClass}-500/40 transition cursor-pointer" ${oppModalAction}>
@@ -2686,7 +2686,7 @@
             <strong class="text-orange-400 text-[10px] uppercase tracking-widest block mb-1.5 flex items-center gap-1.5">
               <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Game Day Checklist
             </strong>
-            <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform || (isHome ? 'Orange Jersey (Home)' : 'Blue/White Away Jersey')}</p>
+            <p class="text-[11px] text-slate-300 mb-1 leading-snug flex items-center gap-2"><strong class="text-white">Uniform:</strong> ${ev.uniform || (isHome ? 'Orange Jersey, Orange Shorts, Orange Socks' : 'Blue Jersey, Blue Shorts, Blue Socks')} <img src="${(ev.uniform && ev.uniform.includes('Blue')) ? './images/away_kit.jpg' : './images/home_kit.jpg'}" alt="Kit" class="w-10 h-10 rounded-lg object-cover cursor-pointer hover:opacity-80 border border-slate-600/40 shadow" onclick="openKitLightbox('${(ev.uniform && ev.uniform.includes('Blue')) ? './images/away_kit.jpg' : './images/home_kit.jpg'}', 'Match Kit')" title="Tap to view full kit"></p>
             <p class="text-[11px] text-slate-300 mb-2 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring || 'Both Jerseys, Shin Guards, Cleats, Water'}</p>
             <div class="grid grid-cols-2 gap-2 mt-2">
               ${ev.matchUrl ? `<a href="${ev.matchUrl}" target="_blank" class="py-1.5 px-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex items-center justify-center gap-1 transition text-[10px] font-bold">
@@ -2712,7 +2712,7 @@
                    </a>
                    <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/80 mb-2">
                      <strong class="text-orange-400 text-[10px] uppercase tracking-widest block mb-1.5 flex items-center gap-1.5"><i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Game Day Checklist</strong>
-                     <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform || 'Standard Kit'}</p>
+                      <p class="text-[11px] text-slate-300 mb-1 leading-snug flex items-center gap-2"><strong class="text-white">Uniform:</strong> ${ev.uniform || 'Standard Kit'} <img src="${(ev.uniform && ev.uniform.includes('Blue')) ? './images/away_kit.jpg' : './images/home_kit.jpg'}" alt="Kit" class="w-10 h-10 rounded-lg object-cover cursor-pointer hover:opacity-80 border border-slate-600/40 shadow" onclick="openKitLightbox('${(ev.uniform && ev.uniform.includes('Blue')) ? './images/away_kit.jpg' : './images/home_kit.jpg'}', 'Match Kit')" title="Tap to view full kit"></p>
                      <p class="text-[11px] text-slate-300 mb-2 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring || 'Water, Shin Guards, Cleats'}</p>
                      <a href="${driveFolderLink}" target="_blank" class="w-full py-2 px-3 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg border border-orange-500/30 flex items-center justify-center gap-1.5 transition text-[11px] font-bold">
                        <i data-lucide="folder-plus" class="w-3.5 h-3.5"></i> Upload / View Media Folder for this Game
@@ -3038,6 +3038,12 @@
             uniformEl.innerText = nextEvent.type === 'practice' ? 'Practice Kit / Shinguards & Ball' : 'Bring Both, Wear Orange';
           }
         }
+        const heroKitImg = document.getElementById('hero-kit-img');
+        if (heroKitImg) {
+          const isAway = nextEvent.uniform && nextEvent.uniform.includes('Blue');
+          heroKitImg.src = isAway ? './images/away_kit.jpg' : './images/home_kit.jpg';
+          heroKitImg.className = `w-10 h-10 rounded-lg object-cover cursor-pointer hover:opacity-80 border ${isAway ? 'border-blue-500/40' : 'border-orange-500/40'} shadow mt-1`;
+        }
 
         const loc = nextEvent.location || 'HDL Complex Field';
         const heroMapTarget = nextEvent.mapQuery || (loc.toLowerCase().includes('hdl') || loc.toLowerCase().includes('dutch lions') ? 'Houston Dutch Lions FC, 14562 Interstate 45 S, Conroe, TX 77384' : loc);
@@ -3258,6 +3264,14 @@
        applyFormation('4231');
     }
   </script>
+  <!-- Kit Lightbox Modal -->
+  <div id="kit-lightbox" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm" onclick="closeKitLightbox()">
+    <div class="relative max-w-sm w-full" onclick="event.stopPropagation()">
+      <button onclick="closeKitLightbox()" class="absolute -top-3 -right-3 z-10 bg-slate-800 hover:bg-red-600 text-white rounded-full w-9 h-9 flex items-center justify-center shadow-lg border border-slate-600 transition text-xl font-bold leading-none">&times;</button>
+      <img id="kit-lightbox-img" src="" alt="Kit" class="w-full rounded-2xl shadow-2xl object-contain max-h-[75vh]">
+      <p id="kit-lightbox-caption" class="text-center text-white text-xs font-bold mt-3 bg-black/40 rounded-lg px-3 py-1.5"></p>
+    </div>
+  </div>
   <!-- Volunteer Modal -->
   <div id="volunteer-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
     <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-xl overflow-hidden shadow-2xl">
@@ -3504,6 +3518,21 @@
       entries.splice(idx, 1);
       saveCarpoolData(activeCarpoolDate, entries);
       renderCarpoolEntries();
+    }
+    function openKitLightbox(src, caption) {
+      const overlay = document.getElementById('kit-lightbox');
+      const img = document.getElementById('kit-lightbox-img');
+      const cap = document.getElementById('kit-lightbox-caption');
+      if (!overlay || !img) return;
+      img.src = src;
+      if (cap) cap.innerText = caption || '';
+      overlay.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeKitLightbox() {
+      const overlay = document.getElementById('kit-lightbox');
+      if (overlay) overlay.classList.add('hidden');
+      document.body.style.overflow = '';
     }
     function openVolunteerModal(preselectDate) {
       document.getElementById('volunteer-modal').classList.remove('hidden');
