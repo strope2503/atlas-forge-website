@@ -3654,14 +3654,19 @@
 
       const scriptUrl = "https://script.google.com/macros/s/AKfycbzxWjJ96mXV_MKku2rMGpxt7Q8LvSiUMlcRYdh74Q_UugT4H16Yu7HFyQn8MxGx0GQ5/exec";
       
-      fetch(scriptUrl, {
+      const fetchPromise = fetch(scriptUrl, {
         method: "POST",
         mode: "no-cors",
         headers: {
           "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify({ name, date, role })
-      }).then(() => {
+      });
+      
+      // Fallback timeout in case the browser hangs on opaque no-cors response
+      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 3000));
+
+      Promise.race([fetchPromise, timeoutPromise]).then(() => {
         status.textContent = "Success! Drinks are covered.";
         status.className = "text-xs text-center text-emerald-400 mt-2 block font-bold";
         btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Submitted!';
