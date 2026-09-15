@@ -3599,23 +3599,32 @@
       const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       
       let hasPreselected = false;
-      // Include ALL game/scrimmage/match events — not just scrimmages
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      // Include ALL game/scrimmage/league events
       for (const [dateStr, ev] of Object.entries(window.specificEvents || specificEvents)) {
-          if (ev.type === 'scrimmage' || ev.type === 'game' || ev.type === 'match') {
+          if (ev.type === 'scrimmage' || ev.type === 'game' || ev.type === 'match' || ev.type === 'league') {
               const [y, m, d] = dateStr.split('-');
+              const eventDate = new Date(parseInt(y, 10), parseInt(m, 10) - 1, parseInt(d, 10));
               const friendlyDate = monthNames[parseInt(m, 10) - 1] + " " + parseInt(d, 10);
-              const option = document.createElement('option');
-              option.value = friendlyDate;
-              option.textContent = friendlyDate + (ev.opponent ? ` – vs ${ev.opponent}` : '');
-              if (preselectDate && friendlyDate === preselectDate) {
-                  option.selected = true;
-                  hasPreselected = true;
+              
+              // Only include if it's upcoming, OR if it's the explicitly requested preselectDate
+              if (eventDate >= today || (preselectDate && friendlyDate === preselectDate)) {
+                  const option = document.createElement('option');
+                  option.value = friendlyDate;
+                  option.textContent = friendlyDate + (ev.opponent ? ` – vs ${ev.opponent}` : '');
+                  if (preselectDate && friendlyDate === preselectDate) {
+                      option.selected = true;
+                      hasPreselected = true;
+                  }
+                  select.appendChild(option);
               }
-              select.appendChild(option);
           }
       }
-      // If no option was pre-selected but we have a preselectDate, select the first disabled option
-      if (!hasPreselected && !preselectDate) {
+      
+      // If no option was pre-selected, default to the placeholder
+      if (!hasPreselected) {
           select.selectedIndex = 0;
       }
     }
