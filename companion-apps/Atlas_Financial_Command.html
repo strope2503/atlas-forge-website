@@ -1492,7 +1492,7 @@
         { id: 2, name: 'Electric & Power', amount: 328.45, day: 5 },
         { id: 3, name: 'Tachus Fiber Internet', amount: 90.00, day: 10 },
         { id: 4, name: 'Auto Insurance (Monthly)', amount: 185.00, day: 18 },
-        { id: 5, name: 'Water & Trash', amount: 65.00, day: 22 }
+        { id: 5, name: 'Water & Sewer', amount: 65.00, day: 22 }
       ],
       debts: [
         { name: 'Home Mortgage (Primary)', balance: 284500.00, payment: 1650.00, rate: 4.25, isVerified: true, source: 'Primary Mortgage Statement', date: '09/01/2026' },
@@ -2625,6 +2625,12 @@
             perCheck: b.perPaycheckSinking || (b.amount / 26),
             note: b.note
           }));
+          if (data.detectedCreditCard) {
+            detectedCreditCardResult = data.detectedCreditCard;
+          }
+          if (data.extractedTransactions && data.extractedTransactions.length > 0) {
+            extractedStatementTransactions = data.extractedTransactions;
+          }
         }
       } catch(e) {
         // Fallback default patterns
@@ -2686,6 +2692,8 @@
       { name: 'Vehicle Registration & Inspection', amount: 75.00, cadence: 'annual', perCheck: 2.88, note: 'Billed in June' },
       { name: 'Costco Wholesale Membership', amount: 65.00, cadence: 'annual', perCheck: 2.50, note: 'Billed in August' }
     ];
+    let detectedCreditCardResult = null;
+    let extractedStatementTransactions = [];
 
     async function run1YearStatementScan() {
       const text = document.getElementById('wstmtText').value.trim();
@@ -2704,7 +2712,13 @@
             perCheck: b.perPaycheckSinking || (b.amount / 26),
             note: b.note
           }));
-          alert(`⚡ Pattern Detective Complete! Found ${data.detectedBillsCount} annual & 6-month commitments totaling $${data.annualTotalDetected.toFixed(2)}/yr ($${data.perPaycheckReserveTotal}/paycheck reserve).`);
+          if (data.detectedCreditCard) {
+            detectedCreditCardResult = data.detectedCreditCard;
+          }
+          if (data.extractedTransactions && data.extractedTransactions.length > 0) {
+            extractedStatementTransactions = data.extractedTransactions;
+          }
+          alert(`⚡ Pattern Detective Complete! Found ${data.detectedBillsCount} annual commitments and ${extractedStatementTransactions.length} past purchases.`);
           goToWizardStep(4);
         }
       } catch (e) {
@@ -2716,16 +2730,32 @@
     function populateDetectedBillsUI() {
       const container = document.getElementById('wdetectedBillsList');
       container.innerHTML = '';
+      if (detectedCreditCardResult) {
+        const cc = detectedCreditCardResult;
+        const ccItem = document.createElement('div');
+        ccItem.style.cssText = 'background:#1c1026; border:1px solid var(--accent-purple); border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:10px;';
+        ccItem.innerHTML = `
+          <div>
+            <strong style="color:var(--accent-purple);">💳 Detected Card: ${cc.name}</strong>
+            <div style="font-size:10px; color:#8E9BB0;">Balance: $${cc.balance.toFixed(2)} • APR: ${cc.apr}% • Min Pay: $${cc.minPayment.toFixed(2)}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="color:var(--accent-green); font-weight:800;">Added to Snowball</div>
+          </div>
+        `;
+        container.appendChild(ccItem);
+      }
+      
       detected1YearBills.forEach(b => {
         const item = document.createElement('div');
-        item.style.cssText = 'background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; font-size:12px;';
+        item.style.cssText = 'background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:5px;';
         item.innerHTML = `
           <div>
             <strong style="color:#FFF;">${b.name}</strong>
             <div style="font-size:10px; color:#8E9BB0;">$${b.amount.toFixed(2)} (${b.cadence === 'semiannual' ? 'Every 6 Months' : 'Once a Year'}) • ${b.note || ''}</div>
           </div>
           <div style="text-align:right;">
-            <div style="color:var(--accent-purple); font-weight:800;">+$${b.perCheck.toFixed(2)} / check</div>
+            <div style="color:var(--accent-cyan); font-weight:800;">+$${b.perCheck.toFixed(2)} / check</div>
             <div style="font-size:10px; color:var(--accent-green);">🛡️ Painless Reserve</div>
           </div>
         `;
@@ -2749,6 +2779,49 @@
         appState.bankBal = checking;
         appState.savingsBal = savings;
         appState.incomes = typeof householdIncomes !== 'undefined' ? householdIncomes : [];
+
+        // Save detected bills
+        if (detected1YearBills && detected1YearBills.length > 0) {
+          appState.bills = [];
+          detected1YearBills.forEach(b => {
+            appState.bills.push({
+              id: Date.now() + Math.floor(Math.random() * 1000),
+              name: b.name,
+              amount: b.amount,
+              day: 15,
+              category: b.cadence === 'annual' ? 'Annual Subscription' : 'Recurring',
+              isPaidThisCycle: false
+            });
+          });
+        }
+
+        // Save detected credit card
+        if (detectedCreditCardResult) {
+          appState.debts.push({
+            name: detectedCreditCardResult.name,
+            balance: detectedCreditCardResult.balance,
+            payment: detectedCreditCardResult.minPayment,
+            rate: detectedCreditCardResult.apr,
+            isVerified: true,
+            source: 'Verified via Statement Scan',
+            date: new Date().toLocaleDateString()
+          });
+        }
+
+        // Save extracted transactions
+        if (extractedStatementTransactions && extractedStatementTransactions.length > 0) {
+          appState.transactions = appState.transactions || [];
+          extractedStatementTransactions.forEach(t => {
+            appState.transactions.unshift({
+              id: 'stmt-' + Math.floor(Math.random() * 100000),
+              vendor: t.vendor,
+              amount: t.amount,
+              tier: 'personal',
+              category: 'Other',
+              date: t.date
+            });
+          });
+        }
 
         // Save to localStorage immediately
         persistState();
@@ -2987,7 +3060,7 @@
         { id: 2, name: 'Electric & Gas Utility', amount: 328.45, day: 22, category: 'Utilities', isPaidThisCycle: false, note: 'AC Summer Peak Active' },
         { id: 3, name: 'Tachus Fiber Internet', amount: 90.00, day: 24, category: 'Utilities', isPaidThisCycle: false },
         { id: 4, name: 'Auto Insurance (Monthly)', amount: 185.00, day: 26, category: 'Insurance', isPaidThisCycle: false },
-        { id: 5, name: 'Water & Trash Services', amount: 65.00, day: 28, category: 'Utilities', isPaidThisCycle: false }
+        { id: 5, name: 'Water & Sewer Services', amount: 65.00, day: 28, category: 'Utilities', isPaidThisCycle: false }
       ];
     }
 
@@ -3078,8 +3151,25 @@
       }
 
       // Update Playbook Card
+      let nextIncome = null;
+      if (appState.incomes && appState.incomes.length > 0) {
+        let validIncomes = appState.incomes.filter(i => i.nextDate);
+        validIncomes.sort((a, b) => new Date(a.nextDate) - new Date(b.nextDate));
+        if (validIncomes.length > 0) nextIncome = validIncomes[0];
+      }
+      
+      let paycheckAmount = 2400.00;
+      let checkName = 'Next Paycheck';
+      if (nextIncome) {
+         paycheckAmount = (nextIncome.type === 'variable') ? (nextIncome.min || nextIncome.avg || 0) : (nextIncome.avg || nextIncome.min || 0);
+         checkName = nextIncome.name || 'Next Paycheck';
+      }
+
+      const pbBadge = document.getElementById('paydayBadge');
+      if (pbBadge) pbBadge.innerText = `${checkName}: $${paycheckAmount.toFixed(2)}`;
+
       document.getElementById('pbEscrow').innerText = '$' + unpaidTotal.toFixed(2);
-      const freeCashPayday = Math.max(0, 2400.00 - unpaidTotal - 138.46 - 200.00);
+      const freeCashPayday = Math.max(0, paycheckAmount - unpaidTotal - 138.46 - 200.00);
       document.getElementById('pbFreeCash').innerText = '$' + freeCashPayday.toFixed(2);
       const pacingPayday = (freeCashPayday / 14).toFixed(2);
       document.getElementById('pbPacingDesc').innerText = `Guilt-free spending money over next 14 days (~$${pacingPayday} / day pacing).`;

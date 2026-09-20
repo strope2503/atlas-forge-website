@@ -1,0 +1,1670 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Houston Dutch Lions Elite 2013</title>
+  
+  <!-- iOS PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lions Elite">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Papa Parse -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <link rel="manifest" href="./manifest.json">
+  <link rel="apple-touch-icon" href="https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png">
+  <meta name="theme-color" content="#0a0f1d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <style>
+    @keyframes orangeGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(234, 88, 12, 0.2); }
+      50% { box-shadow: 0 0 25px rgba(234, 88, 12, 0.5); }
+    }
+    .glow-orange { animation: orangeGlow 4s infinite; }
+    .glass-card {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(30, 58, 138, 0.35);
+    }
+    /* Scroll Animation Base Classes */
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .scroll-animate.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="bg-[#0a0f1d] text-slate-100 font-sans antialiased pb-24 selection:bg-orange-500 selection:text-white bg-cover bg-center bg-fixed bg-no-repeat" style="background-image: linear-gradient(to bottom, rgba(10, 15, 29, 0.8), rgba(10, 15, 29, 0.95)), url('https://houstondutchlionsfc.com/wp-content/uploads/2024/10/Houstondutchlions06.png');">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 glass-card border-b border-blue-900/40">
+    <div class="max-w-4xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <!-- Shield Badge -->
+        <a href="https://houstondutchlionsfc.com/" target="_blank" class="block hover:scale-105 transition-transform">
+          <img src="https://houstondutchlionsfc.com/wp-content/uploads/2024/10/HDLFC-Club-Logo.png" alt="HDL Logo" class="w-12 h-12 object-contain drop-shadow-[0_0_8px_rgba(234,88,12,0.5)]">
+        </a>
+        <div>
+          <h1 class="font-extrabold text-xs sm:text-base tracking-tight leading-tight text-white">HOUSTON DUTCH LIONS</h1>
+          <p class="text-[10px] sm:text-xs font-bold text-orange-400 tracking-wider">ELITE 2013 • U13 BOYS (11v11)</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center gap-2">
+        <!-- TEAM STORE -->
+        <a href="https://www.aretyn.store/houston-dutch-lions-fc" target="_blank" class="flex items-center space-x-1.5 bg-orange-600/90 hover:bg-orange-500 text-white border border-orange-500/50 px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-bold transition shadow">
+          <i data-lucide="shopping-cart" class="w-3.5 h-3.5 text-white"></i>
+          <span class="hidden sm:inline">Team Store</span>
+          <span class="sm:hidden">Store</span>
+        </a>
+        <!-- BILINGUAL TOGGLE -->
+        <button onclick="toggleLanguage()" class="flex items-center space-x-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 border border-blue-800/60 px-3 py-1.5 rounded-full text-xs font-bold transition shadow">
+          <i data-lucide="globe" class="w-3.5 h-3.5 text-orange-400"></i>
+          <span id="langLabel" class="hidden sm:inline">Español</span>
+          <span class="sm:hidden">ES</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+
+  <main class="max-w-4xl mx-auto px-4 py-5 space-y-8">
+
+
+
+    <!-- HERO: NEXT MATCH -->
+    <section class="scroll-animate glass-card glow-orange rounded-2xl p-5 relative border-l-4 border-l-orange-500">
+      <div class="flex justify-between items-start mb-3">
+        <span class="px-2.5 py-0.5 bg-orange-500/20 text-orange-400 border border-orange-500/40 text-[10px] font-bold rounded uppercase tracking-wider" data-i18n="next_match_badge">Next Match</span>
+        <span class="text-xs font-semibold text-slate-400">Thursday, Aug 20</span>
+      </div>
+      
+      <!-- LIVE COUNTDOWN TICKER -->
+      <div class="bg-slate-900/60 rounded-lg py-1.5 px-3 border border-slate-700/50 flex justify-center items-center gap-1.5 font-mono text-xs sm:text-sm text-slate-300 shadow-inner mb-4">
+        <span class="text-[10px] text-slate-400 uppercase tracking-widest mr-2" data-i18n="kickoff_in">KICKOFF IN:</span>
+        <span id="cd-d" class="font-bold text-orange-400">00</span>d <span class="opacity-50">:</span>
+        <span id="cd-h" class="font-bold text-orange-400">00</span>h <span class="opacity-50">:</span>
+        <span id="cd-m" class="font-bold text-orange-400">00</span>m <span class="opacity-50">:</span>
+        <span id="cd-s" class="font-bold text-orange-400">00</span>s
+      </div>
+
+      <div class="grid grid-cols-3 items-center text-center my-3">
+        <div>
+          <div class="text-sm sm:text-lg font-black text-white">HDL ELITE 2013</div>
+          <div class="text-xs text-orange-400 font-bold" data-i18n="home_label">HOME</div>
+        </div>
+        <div class="text-blue-400 font-black text-xs tracking-widest bg-blue-950/60 py-1 px-2 rounded-lg border border-blue-800/40 mx-auto">VS</div>
+        <div>
+          <div class="text-[11px] sm:text-sm font-black text-slate-300">HUNTSVILLE ECLIPSE</div>
+          <div class="text-xs text-slate-400 font-bold" data-i18n="away_label">AWAY</div>
+        </div>
+      </div>
+      <div class="bg-slate-950/70 rounded-xl p-3 grid grid-cols-2 gap-2 text-xs border border-slate-800 text-slate-300 mt-3">
+        <div><strong class="text-slate-400 block" data-i18n="kickoff_time">Kick-Off:</strong> 7:00 PM</div>
+        <div><strong class="text-orange-400 block" data-i18n="arrival_time">Arrival / Call:</strong> 6:30 PM (30 min prior)</div>
+        <div><strong class="text-slate-400 block" data-i18n="uniform_color">Uniform:</strong> Bring Both, Wear Orange</div>
+        <div><strong class="text-slate-400 block" data-i18n="field_location">Location:</strong> 14562 Interstate 45 S, Conroe, TX 77384</div>
+      </div>
+      <div class="mt-4 flex gap-2">
+        <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="w-full bg-blue-700 hover:bg-blue-600 text-white py-2 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5 transition shadow">
+          <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> <span data-i18n="btn_maps">Field Map</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- SECTION: CALENDAR & UPCOMING EVENTS -->
+    <section id="schedule-section" class="scroll-animate space-y-3">
+      <div class="flex items-center justify-between">
+        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+          <i data-lucide="calendar" class="w-4 h-4 text-orange-400"></i>
+          <span data-i18n="upcoming_events_title">Upcoming Schedule</span>
+        </h2>
+        <button onclick="downloadCalendarICS()" class="text-xs font-bold text-orange-400 hover:text-orange-300 flex items-center gap-1">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="subscribe_calendar">Subscribe (.ICS)</span>
+        </button>
+      </div>
+
+      <!-- UPCOMING BIRTHDAYS NOTIFICATION -->
+      <div id="upcoming-birthdays" class="hidden"></div>
+
+      <!-- VISUAL CALENDAR GRID -->
+      <div class="glass-card p-3 rounded-xl">
+        <div class="flex justify-between items-center mb-2 px-1">
+          <button onclick="changeMonth(-1)" class="text-slate-400 hover:text-white p-1"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+          <h3 id="month-year" class="text-white font-bold text-sm tracking-wide">August 2026</h3>
+          <button onclick="changeMonth(1)" class="text-slate-400 hover:text-white p-1"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-500 mb-1.5">
+          <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+        </div>
+        <div id="calendar-grid" class="grid grid-cols-7 gap-1 text-center text-xs">
+          <!-- Populated via JS -->
+        </div>
+        <div class="mt-3 pt-2 border-t border-slate-800/50 flex justify-center gap-3 text-[9px] font-bold tracking-wider">
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-blue-500/40 border border-blue-400/50"></span><span class="text-slate-400">PRACTICE</span></div>
+          <div class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-orange-500/40 border border-orange-400/50"></span><span class="text-slate-400">SCRIMMAGE</span></div>
+        </div>
+      </div>
+
+      <div id="selected-date-details" class="hidden glass-card p-3 rounded-xl border border-blue-500/50 text-center transition-all mt-3"></div>
+
+      <div class="grid gap-2.5" id="event-list">
+        <!-- Event 1: Practice -->
+        <div class="glass-card p-3.5 rounded-xl flex items-center justify-between hover:border-blue-500/40 transition">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="px-2 py-0.5 bg-blue-500/20 text-blue-400 border border-blue-500/30 text-[10px] font-bold rounded">PRACTICE</span>
+              <span class="text-xs font-bold text-white">Mon, Tue, Thu (Weekly)</span>
+            </div>
+            <p class="text-xs text-slate-300 flex items-center gap-1">
+              6:45 PM - 8:00 PM • 
+              <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 hover:underline transition">
+                <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
+              </a>
+            </p>
+            <p class="text-[11px] text-slate-400">Focus: 11v11 Tactical Positioning & Ball Circulation</p>
+          </div>
+        </div>
+
+        <!-- Event 2: Scrimmage -->
+        <div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-orange-500/40 transition">
+          <div class="flex items-start justify-between mb-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[10px] font-bold rounded">SCRIMMAGE</span>
+              <span class="text-xs font-bold text-white">Thursday, Aug 20</span>
+            </div>
+            <div id="weather-2026-08-20" class="text-[10px] font-bold text-slate-400 flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
+              <i data-lucide="cloud-sun" class="w-3 h-3 text-slate-400"></i> Fetching...
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 mb-0.5 flex items-center gap-1">
+            7:00 PM vs Huntsville Eclipse • 
+            <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 hover:underline transition">
+              <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
+            </a>
+          </p>
+          <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Bring Both, Wear Orange</p>
+          <div id="drink-status-Aug20" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August 20'); return false;" class="underline ml-1">Volunteer</a>
+          </div>
+        </div>
+
+        <!-- Event 3: Scrimmage -->
+        <div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-orange-500/40 transition">
+          <div class="flex items-start justify-between mb-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[10px] font-bold rounded">SCRIMMAGE</span>
+              <span class="text-xs font-bold text-white">Thursday, Aug 27</span>
+            </div>
+            <div id="weather-2026-08-27" class="text-[10px] font-bold text-slate-400 flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
+              <i data-lucide="cloud-sun" class="w-3 h-3 text-slate-400"></i> Fetching...
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 mb-0.5 flex items-center gap-1">
+            7:00 PM vs Cleveland FC • 
+            <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 hover:underline transition">
+              <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
+            </a>
+          </p>
+          <p class="text-[11px] text-orange-400 font-bold">Call Time: 6:30 PM | Bring Both, Wear Orange</p>
+          <div id="drink-status-Aug27" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August 27'); return false;" class="underline ml-1">Volunteer</a>
+          </div>
+        </div>
+
+        <!-- Event 4: Scrimmage -->
+        <div class="glass-card p-3.5 rounded-xl flex flex-col hover:border-orange-500/40 transition">
+          <div class="flex items-start justify-between mb-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-orange-500/20 text-orange-400 border border-orange-500/30 text-[10px] font-bold rounded">SCRIMMAGE</span>
+              <span class="text-xs font-bold text-white">Saturday, Aug 29</span>
+            </div>
+            <div id="weather-2026-08-29" class="text-[10px] font-bold text-slate-400 flex items-center gap-1 bg-slate-900/80 px-2 py-0.5 rounded border border-slate-800">
+              <i data-lucide="cloud-sun" class="w-3 h-3 text-slate-400"></i> Fetching...
+            </div>
+          </div>
+          <p class="text-xs text-slate-300 mb-0.5 flex items-center gap-1">
+            9:15 AM vs CMavericks FC • 
+            <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 flex items-center gap-0.5 hover:underline transition">
+              <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
+            </a>
+          </p>
+          <p class="text-[11px] text-orange-400 font-bold">Call Time: 8:45 AM | Bring Both, Wear Orange</p>
+          <div id="drink-status-Aug29" class="mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40">
+            <i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August 29'); return false;" class="underline ml-1">Volunteer</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: 11v11 POSITION SKILLS & DRILL HUB -->
+    <section id="skills-section" class="space-y-3">
+      <div>
+        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+          <i data-lucide="crosshair" class="w-4 h-4 text-orange-400"></i>
+          <span data-i18n="skills_title">11v11 Dutch System & Position Skills</span>
+        </h2>
+        <p class="text-xs text-slate-400" data-i18n="skills_subtitle">Select a position for role guidelines and home homework.</p>
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto pb-1 text-xs font-bold scrollbar-none">
+        <button onclick="selectPosition('gk')" id="pos-gk" class="pos-tab px-3.5 py-2 rounded-xl bg-orange-600 text-white whitespace-nowrap shadow">Goalkeeper (#1)</button>
+        <button onclick="selectPosition('cb')" id="pos-cb" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Center Back (#4/5)</button>
+        <button onclick="selectPosition('fb')" id="pos-fb" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Fullback (#2/3)</button>
+        <button onclick="selectPosition('mid')" id="pos-mid" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Midfield (#6/8/10)</button>
+        <button onclick="selectPosition('fwd')" id="pos-fwd" class="pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800">Attackers (#7/9/11)</button>
+      </div>
+
+      <div id="position-drill-card" class="glass-card p-4 rounded-2xl space-y-3 border border-blue-900/40">
+        <div class="flex justify-between items-start">
+          <div>
+            <h3 id="drillRoleTitle" class="text-sm sm:text-base font-extrabold text-white">Goalkeeper / Arquero (#1)</h3>
+            <p id="drillRoleSummary" class="text-xs text-orange-400 font-semibold mt-0.5">Primary Director & Shot Stopper</p>
+          </div>
+          <span class="text-[10px] px-2 py-0.5 rounded-full bg-blue-950 text-blue-300 font-bold border border-blue-800">11v11 Focus</span>
+        </div>
+        
+        <div class="space-y-2 text-xs">
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+            <strong class="text-slate-200 block mb-1 flex items-center gap-1.5">
+              <i data-lucide="target" class="w-3.5 h-3.5 text-orange-400"></i>
+              <span data-i18n="key_skills_header">Key Match Responsibilities:</span>
+            </strong>
+            <p id="drillSkills" class="text-slate-300 leading-relaxed">Box command, distribution with feet out of the back, handling crosses, vocal communication.</p>
+          </div>
+
+          <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800">
+            <strong class="text-slate-200 block mb-1 flex items-center gap-1.5">
+              <i data-lucide="home" class="w-3.5 h-3.5 text-blue-400"></i>
+              <span data-i18n="home_drill_header">10-Minute Home Practice Drill:</span>
+            </strong>
+            <p id="drillHome" class="text-slate-300 leading-relaxed">Wall volley catches (100 touches), lateral cone shuffle to diving shape on grass, accurate ground distribution passes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: 16-PLAYER ROSTER (DYNAMIC) -->
+    <section id="roster-section" class="space-y-3">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+            <i data-lucide="users" class="w-4 h-4 text-orange-400"></i>
+            <span data-i18n="roster_title">Elite 2013 Roster & Stats</span>
+          </h2>
+          <p class="text-[11px] text-slate-400" data-i18n="roster_subtitle">Houston Dutch Lions Elite 2013 Official Squad</p>
+        </div>
+        <span class="text-xs font-bold px-2 py-1 bg-slate-900 border border-blue-900/50 rounded-lg text-orange-400" id="rosterCountBadge">...</span>
+      </div>
+
+      <!-- Player Cards Container (Populated via JS) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5" id="rosterGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- SECTION: STATISTICS LEADERBOARDS -->
+    <section id="stats-section" class="space-y-3">
+      <div>
+        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+          <i data-lucide="bar-chart-2" class="w-4 h-4 text-orange-400"></i>
+          <span data-i18n="stats_title">Season Statistics</span>
+        </h2>
+        <p class="text-[11px] text-slate-400" data-i18n="stats_subtitle">Team leaders across key metrics.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <!-- Golden Boot -->
+        <div class="glass-card p-4 rounded-xl border border-yellow-900/40 relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 opacity-10">
+            <i data-lucide="award" class="w-24 h-24 text-yellow-500"></i>
+          </div>
+          <h3 class="text-xs font-bold text-yellow-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i data-lucide="goal" class="w-3.5 h-3.5"></i> Golden Boot (Goals)</h3>
+          <div id="stats-goals" class="space-y-2 relative z-10"></div>
+        </div>
+
+        <!-- Playmaker -->
+        <div class="glass-card p-4 rounded-xl border border-blue-900/40 relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 opacity-10">
+            <i data-lucide="users" class="w-24 h-24 text-blue-500"></i>
+          </div>
+          <h3 class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i data-lucide="share-2" class="w-3.5 h-3.5"></i> Playmaker (Assists)</h3>
+          <div id="stats-assists" class="space-y-2 relative z-10"></div>
+        </div>
+
+        <!-- The Wall -->
+        <div class="glass-card p-4 rounded-xl border border-emerald-900/40 relative overflow-hidden">
+          <div class="absolute -right-4 -top-4 opacity-10">
+            <i data-lucide="shield" class="w-24 h-24 text-emerald-500"></i>
+          </div>
+          <h3 class="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3 flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> The Wall (Clean Sheets)</h3>
+          <div id="stats-cleans" class="space-y-2 relative z-10"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: PARENT DIRECTORY (DYNAMIC) -->
+    <section id="directory-section" class="space-y-3">
+      <div class="flex justify-between items-start">
+        <div>
+          <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+            <i data-lucide="contact" class="w-4 h-4 text-orange-400"></i>
+            <span data-i18n="directory_title">Parent Contact Directory</span>
+          </h2>
+        </div>
+      </div>
+
+      <!-- Directory Container (Populated via JS) -->
+      <div id="directory-lock-view" class="bg-slate-900/50 p-6 rounded-xl border border-slate-800 flex flex-col items-center justify-center text-center space-y-3">
+        <i data-lucide="lock" class="w-8 h-8 text-slate-500"></i>
+        <div>
+            <h3 class="text-white font-bold text-sm" data-i18n="secured_directory">Secured Directory</h3>
+            <p class="text-xs text-slate-400 max-w-xs mt-1" data-i18n="secured_directory_desc">Please enter the team PIN to view parent contact information.</p>
+        </div>
+        <div class="flex items-center gap-2 mt-2 w-full max-w-[200px]">
+            <input type="password" id="directory-pin" onkeydown="if(event.key === 'Enter') checkDirectoryPin()" placeholder="PIN" class="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-white text-sm font-bold text-center tracking-widest focus:outline-none focus:border-orange-500">
+        </div>
+        <button onclick="checkDirectoryPin()" class="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold py-2 px-6 rounded-lg transition shadow-lg shadow-orange-900/20">Unlock</button>
+        <p id="directory-pin-error" class="text-red-400 text-xs hidden mt-1">Incorrect PIN.</p>
+      </div>
+      
+      <div id="directory-unlocked-view" class="space-y-2 hidden">
+        <div id="directoryList" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- SECTION: MEDIA & SOCIALS -->
+    <section id="media-section" class="scroll-animate space-y-3">
+      <div>
+        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+          <i data-lucide="image" class="w-4 h-4 text-orange-400"></i>
+          <span data-i18n="media_title">Media & Highlights</span>
+        </h2>
+        <p class="text-[11px] text-slate-400" data-i18n="media_subtitle">Game day photos, videos, and team social updates.</p>
+      </div>
+      
+      <!-- Socials Card -->
+      <div class="glass-card p-4 rounded-2xl border border-blue-900/40 text-center flex flex-col justify-center space-y-3 mb-6">
+        <h3 class="text-sm font-bold text-white">Follow Houston Dutch Lions</h3>
+        <div class="flex justify-center gap-4">
+          <a href="https://facebook.com/HoustonDutchLionsFC" target="_blank" class="w-10 h-10 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-full flex items-center justify-center transition border border-blue-500/30">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://instagram.com/houstondutchlionsfc" target="_blank" class="w-10 h-10 bg-pink-600/20 text-pink-400 hover:bg-pink-600 hover:text-white rounded-full flex items-center justify-center transition border border-pink-500/30">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16.11 7.5v.01"/><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Upload Portal -->
+      <div class="mb-6">
+        <a href="https://drive.google.com/open?id=1gsg9oirm_aehrZ42WnEJGuu00pBQlkG3&usp=drive_fs" target="_blank" class="w-full py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-[1.02]">
+          <i data-lucide="upload-cloud" class="w-5 h-5"></i>
+          <span data-i18n="upload_photos">Upload Game Photos & Videos</span>
+        </a>
+      </div>
+
+      <!-- VIDEO TIMELINE -->
+      <div class="relative border-l-2 border-blue-900/50 pl-4 space-y-6 mt-4 ml-1">
+        
+        <!-- SPRING 2026 -->
+        <div class="relative">
+          <div class="absolute -left-[21px] top-1 h-3 w-3 bg-emerald-500 rounded-full border border-[#0a0f1d] shadow-[0_0_8px_rgba(16,185,129,0.8)]"></div>
+          <h4 class="text-sm font-bold text-emerald-400 mb-2">Spring 2026 Season</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
+              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">Highlights of Spring 2026</p>
+              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/IX-0G-tQtH8" frameborder="0" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
+              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">South Texas Cup Spring 2026</p>
+              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/wX7jU24OncM" frameborder="0" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
+              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">04-16-26 vs Houston Dynamo</p>
+              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/OEjkdvvAYTs" frameborder="0" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
+              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">03-28-26 vs Hardin County YSC</p>
+              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/wnlTeISJXPc" frameborder="0" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- FALL 2025 -->
+        <div class="relative">
+          <div class="absolute -left-[21px] top-1 h-3 w-3 bg-orange-500 rounded-full border border-[#0a0f1d] shadow-[0_0_8px_rgba(234,88,12,0.8)]"></div>
+          <h4 class="text-sm font-bold text-orange-400 mb-2">Fall 2025 Season</h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
+              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">10-18-25 vs Klein SC</p>
+              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/AZnnlLqY48Q" frameborder="0" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
+              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">10-11-25 vs HTX Kingwood 14B Black</p>
+              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/aiLhOXNX9Jw" frameborder="0" allowfullscreen loading="lazy"></iframe>
+            </div>
+            <div class="glass-card p-2 rounded-xl border border-blue-900/40 hover:border-blue-500/50 transition">
+              <p class="text-[10px] font-bold text-slate-300 mb-1 truncate">10-05-25 vs HTX Tomball 14B Gold</p>
+              <iframe class="w-full aspect-video rounded-lg" src="https://www.youtube.com/embed/NbrZk45AUjY" frameborder="0" allowfullscreen loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TACTICS BOARD SECTION -->
+    <section id="tactics-section" class="hidden animate-fade-in p-4 sm:p-6 max-w-2xl mx-auto mb-20">
+      <div class="mb-4">
+        <h2 class="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-4 h-4 text-orange-400"></i>
+          <span data-i18n="tactics_title">Interactive Tactics Board</span>
+        </h2>
+        <p class="text-[11px] text-slate-400">Drag and drop players to visualize formations and drills.</p>
+      </div>
+
+      <div class="glass-card p-4 rounded-2xl border border-blue-900/40 relative overflow-hidden">
+        <!-- Pitch Background -->
+        <div class="relative w-full aspect-[2/3] bg-emerald-700/80 border-2 border-white/50 rounded overflow-hidden select-none" id="tactics-pitch">
+          <!-- Field Lines -->
+          <div class="absolute inset-0 border-2 border-white/30 pointer-events-none"></div>
+          <!-- Center Circle -->
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-24 sm:h-24 border-2 border-white/30 rounded-full pointer-events-none"></div>
+          <!-- Center Line -->
+          <div class="absolute top-1/2 left-0 right-0 h-0.5 bg-white/30 pointer-events-none"></div>
+          <!-- Penalty Areas -->
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[15%] border-b-2 border-x-2 border-white/30 pointer-events-none"></div>
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-[15%] border-t-2 border-x-2 border-white/30 pointer-events-none"></div>
+
+          <!-- Tokens (4-3-3 Orange) -->
+          <!-- GK -->
+          <div class="absolute top-[5%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-zinc-400 border-2 border-zinc-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-black shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-gk">GK</div>
+          <!-- Def -->
+          <div class="absolute top-[20%] left-[10%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-lb">LB</div>
+          <div class="absolute top-[18%] left-[32%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cb1">CB</div>
+          <div class="absolute top-[18%] left-[58%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cb2">CB</div>
+          <div class="absolute top-[20%] left-[80%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-rb">RB</div>
+          <!-- Mid -->
+          <div class="absolute top-[35%] left-[25%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cm1">CM</div>
+          <div class="absolute top-[40%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cdm">CDM</div>
+          <div class="absolute top-[35%] left-[65%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-cm2">CM</div>
+          <!-- Fwd -->
+          <div class="absolute top-[50%] left-[15%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-lw">LW</div>
+          <div class="absolute top-[45%] left-[45%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-st">ST</div>
+          <div class="absolute top-[50%] left-[75%] w-6 h-6 sm:w-8 sm:h-8 bg-orange-500 border-2 border-orange-200 rounded-full flex items-center justify-center text-[10px] sm:text-xs font-bold text-white shadow-lg cursor-grab active:cursor-grabbing hover:scale-110 transition-transform" draggable="true" ondragstart="dragStart(event)" id="token-rw">RW</div>
+          
+          <!-- Ball -->
+          <div class="absolute top-[60%] left-[45%] w-4 h-4 sm:w-5 sm:h-5 bg-white border border-slate-800 rounded-full shadow-lg cursor-grab active:cursor-grabbing" draggable="true" ondragstart="dragStart(event)" id="token-ball">⚽</div>
+        </div>
+        
+        <div class="mt-3 text-center">
+           <button onclick="resetTactics()" class="text-[10px] bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 px-4 rounded-full border border-slate-700 transition">Reset Positions</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MOBILE STICKY BOTTOM NAV -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 glass-card border-t border-blue-950 px-4 py-2 flex justify-around items-center text-[10px] font-bold text-slate-400 max-w-md mx-auto sm:rounded-t-2xl">
+    <a href="#schedule-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="calendar" class="w-4 h-4"></i>
+      <span data-i18n="nav_schedule">Schedule</span>
+    </a>
+    <a href="#skills-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="crosshair" class="w-4 h-4"></i>
+      <span data-i18n="nav_skills">Skills</span>
+    </a>
+    <a href="#roster-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="users" class="w-4 h-4"></i>
+      <span data-i18n="nav_roster">Roster</span>
+    </a>
+    <a href="#stats-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="bar-chart-2" class="w-4 h-4"></i>
+      <span data-i18n="nav_stats">Stats</span>
+    </a>
+    <a href="#directory-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="shield" class="w-4 h-4"></i>
+      <span data-i18n="nav_contacts">Contacts</span>
+    </a>
+    <a href="#media-section" class="flex flex-col items-center gap-1 hover:text-orange-400 transition">
+      <i data-lucide="image" class="w-4 h-4"></i>
+      <span data-i18n="nav_media">Media</span>
+    </a>
+  </nav>
+
+  <!-- JAVASCRIPT & ROSTER DATA -->
+  <script>
+    // Global dynamic roster data
+    let globalRosterData = [];
+
+    // ==========================================
+    // TRANSLATION DICTIONARY
+    // ==========================================
+    const translations = {
+      en: {
+        field_status_text: "HDL Soccer Facility: All Fields OPEN & Playable.",
+        next_match_badge: "Next Match",
+        home_label: "HOME",
+        away_label: "AWAY",
+        kickoff_time: "Kick-Off:",
+        arrival_time: "Arrival / Call:",
+        uniform_color: "Uniform:",
+        field_location: "Location:",
+        btn_maps: "Field Map",
+        upcoming_events_title: "Upcoming Schedule",
+        subscribe_calendar: "Click to subscribe and add all events to your calendar",
+        practice_badge: "PRACTICE",
+        league_game_badge: "LEAGUE GAME",
+        practice_focus: "Focus: 11v11 Tactical Positioning & Ball Circulation",
+        event_call_time: "Call Time: 8:15 AM | Orange Jersey",
+        skills_title: "11v11 Dutch System & Position Skills",
+        skills_subtitle: "Select a position for role guidelines and home homework.",
+        key_skills_header: "Key Match Responsibilities:",
+        home_drill_header: "10-Minute Home Practice Drill:",
+        roster_title: "Elite 2013 Roster & Stats",
+        roster_subtitle: "Houston Dutch Lions Elite 2013 Official Squad",
+        stat_goals: "Goals",
+        stat_assists: "Assists",
+        stat_cleans: "Clean S.",
+        directory_title: "Parent Contact Directory",
+        directory_subtitle: "Private team phone & carpool roster.",
+        pin_required: "Enter Team PIN to view parent contacts",
+        btn_submit_pin: "Enter",
+        nav_schedule: "Schedule",
+        nav_skills: "Skills",
+        nav_roster: "Roster",
+        nav_contacts: "Contacts",
+        rel_dad: "- Dad",
+        rel_mom: "- Mom",
+        media_title: "Media & Highlights",
+        media_subtitle: "Game day photos, videos, and team social updates.",
+        nav_media: "Media",
+        upload_photos: "Upload Game Photos & Videos",
+        tactics_title: "Interactive Tactics Board"
+      },
+      es: {
+        field_status_text: "Complejo HDL: Todas las Canchas ABIERTAS y en juego.",
+        next_match_badge: "Próximo Partido",
+        home_label: "LOCAL",
+        away_label: "VISITANTE",
+        kickoff_time: "Inicio de Partido:",
+        arrival_time: "Hora de Convocatoria:",
+        uniform_color: "Indumentaria:",
+        field_location: "Ubicación / Cancha:",
+        btn_maps: "Mapa de la Cancha",
+        upcoming_events_title: "Calendario de Partidos y Prácticas",
+        subscribe_calendar: "Sincronizar Calendario",
+        practice_badge: "ENTRENAMIENTO",
+        league_game_badge: "PARTIDO DE LIGA",
+        practice_focus: "Enfoque: Posicionamiento táctico y circulación del balón",
+        event_call_time: "Convocatoria: 8:15 AM | Camiseta Naranja",
+        skills_title: "Sistema de Juego y Habilidades por Posición",
+        skills_subtitle: "Selecciona una posición para ver roles tácticos y ejercicios en casa.",
+        key_skills_header: "Responsabilidades Clave en el Partido:",
+        home_drill_header: "Ejercicio en Casa (10 Minutos):",
+        roster_title: "Plantel y Estadísticas Elite 2013",
+        roster_subtitle: "Plantel Oficial Houston Dutch Lions Elite 2013",
+        stat_goals: "Goles",
+        stat_assists: "Asistencias",
+        stat_cleans: "Vallas Inv.",
+        directory_title: "Directorio Telefónico de Padres",
+        directory_subtitle: "Contactos privados y coordinación de traslados.",
+        pin_required: "Ingresa el PIN del equipo para ver los contactos",
+        btn_submit_pin: "Ingresar",
+        nav_schedule: "Calendario",
+        nav_skills: "Habilidades",
+        nav_roster: "Plantel",
+        nav_contacts: "Contactos",
+        rel_dad: "- Papá",
+        rel_mom: "- Mamá",
+        media_title: "Medios y Destacados",
+        media_subtitle: "Fotos de partidos, videos y redes sociales.",
+        nav_media: "Medios",
+        upload_photos: "Subir Fotos y Videos del Partido",
+        tactics_title: "Pizarra Táctica Interactiva"
+      }
+    };
+
+    let currentLang = 'en';
+
+    function renderStats(data) {
+      // Golden Boot
+      let topScorers = [...data].sort((a, b) => b.goals - a.goals).slice(0, 3);
+      document.getElementById('stats-goals').innerHTML = topScorers.map((p, i) => `
+        <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 w-3">${i + 1}.</span>
+            <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[9px] font-bold text-white">${p.initials}</div>
+            <span class="text-xs font-bold text-white">${p.name} <span class="text-slate-500 font-normal">#${p.number}</span></span>
+          </div>
+          <span class="text-sm font-black text-yellow-400">${p.goals}</span>
+        </div>
+      `).join('');
+
+      // Playmaker
+      let topAssists = [...data].sort((a, b) => b.assists - a.assists).slice(0, 3);
+      document.getElementById('stats-assists').innerHTML = topAssists.map((p, i) => `
+        <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 w-3">${i + 1}.</span>
+            <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[9px] font-bold text-white">${p.initials}</div>
+            <span class="text-xs font-bold text-white">${p.name} <span class="text-slate-500 font-normal">#${p.number}</span></span>
+          </div>
+          <span class="text-sm font-black text-blue-400">${p.assists}</span>
+        </div>
+      `).join('');
+
+      // The Wall
+      let topCleans = [...data].sort((a, b) => b.cleanSheets - a.cleanSheets).slice(0, 3);
+      document.getElementById('stats-cleans').innerHTML = topCleans.map((p, i) => `
+        <div class="flex justify-between items-center bg-slate-900/50 p-2 rounded-lg border border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-500 w-3">${i + 1}.</span>
+            <div class="w-6 h-6 rounded-full bg-slate-800 flex items-center justify-center text-[9px] font-bold text-white">${p.initials}</div>
+            <span class="text-xs font-bold text-white">${p.name} <span class="text-slate-500 font-normal">#${p.number}</span></span>
+          </div>
+          <span class="text-sm font-black text-emerald-400">${p.cleanSheets}</span>
+        </div>
+      `).join('');
+    }
+
+    function renderRosterGrid(data) {
+      const grid = document.getElementById('rosterGrid');
+      grid.innerHTML = '';
+
+      const badge = document.getElementById('rosterCountBadge');
+      if (badge) {
+        badge.innerText = `${data.length} ${currentLang === 'en' ? 'Players' : 'Jugadores'}`;
+      }
+
+      data.forEach(p => {
+        const posText = currentLang === 'en' ? p.posEn : p.posEs;
+        
+        const card = document.createElement('div');
+        card.className = "glass-card p-2.5 rounded-2xl border border-blue-900/30 hover:border-orange-500/50 transition flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="w-6 h-6 rounded-md bg-orange-500 text-white border border-orange-400 flex items-center justify-center font-black text-xs shadow-md">#${p.number}</span>
+              ${p.isMvp ? '<span class="px-1.5 py-0.5 bg-orange-500 text-white text-[9px] font-black rounded uppercase tracking-wider shadow">MVP</span>' : ''}
+            </div>
+            <div class="mt-1.5 text-center">
+              <div class="w-10 h-10 mx-auto rounded-full bg-slate-900 border border-orange-400/60 flex items-center justify-center font-black text-white text-[11px] mb-1 shadow">
+                ${p.initials}
+              </div>
+              <h4 class="font-bold text-xs text-white truncate">${p.name}</h4>
+              <p class="text-[9px] text-slate-400 mb-0.5">🎂 ${p.birthday || 'TBD'}</p>
+              <p class="text-[9px] text-orange-300 font-bold tracking-wide truncate">${posText}</p>
+            </div>
+          </div>
+          <div class="mt-2 pt-1.5 border-t border-slate-800 grid grid-cols-3 text-center text-[8px] text-slate-400">
+            <div><strong class="text-white block text-[10px]">${p.goals}</strong><span>${translations[currentLang].stat_goals}</span></div>
+            <div><strong class="text-white block text-[10px]">${p.assists}</strong><span>${translations[currentLang].stat_assists}</span></div>
+            <div><strong class="text-white block text-[10px]">${p.cleanSheets}</strong><span>${translations[currentLang].stat_cleans}</span></div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+
+    let signupsMap = new Map();
+
+    function fetchSignups() {
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec?_cb=" + new Date().getTime();
+      
+      fetch(scriptUrl)
+        .then(response => response.json())
+        .then(data => {
+          signupsMap.clear();
+          
+          if (Array.isArray(data)) {
+            data.forEach(row => {
+              const name = row.name ? String(row.name).trim() : '';
+              let date = row.date ? String(row.date).trim() : '';
+              const role = row.role ? String(row.role).trim() : '';
+              
+              if (!name || !date || !role) return;
+              
+              if (date.includes('T')) {
+                  const dObj = new Date(date);
+                  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                  date = monthNames[dObj.getUTCMonth()] + " " + dObj.getUTCDate();
+              }
+              
+              if (!signupsMap.has(date)) {
+                signupsMap.set(date, { drinks: [] });
+              }
+              
+              const entry = signupsMap.get(date);
+              if (role.toLowerCase().includes('drink') || role.toLowerCase().includes('snack') || role.toLowerCase().includes('water')) {
+                entry.drinks.push(name);
+              }
+            });
+          }
+          
+          // Update event list drink statuses
+          const dates = ["Aug20", "Aug27", "Aug29"];
+          dates.forEach(d => {
+              const el = document.getElementById('drink-status-' + d);
+              if(el) {
+                  const dayNum = d.replace('Aug', '');
+                  if (signupsMap.has('August ' + dayNum)) {
+                      const s = signupsMap.get('August ' + dayNum);
+                      if(s.drinks && s.drinks.length > 0) {
+                          el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40";
+                          el.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${s.drinks.join(', ')}`;
+                          if(window.lucide) lucide.createIcons();
+                      } else {
+                          el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40";
+                          el.innerHTML = `<i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August ${dayNum}'); return false;" class="underline ml-1">Volunteer</a>`;
+                          if(window.lucide) lucide.createIcons();
+                      }
+                  } else {
+                      el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-orange-400 font-bold bg-orange-900/20 px-2 py-1 rounded w-max border border-orange-800/40";
+                      el.innerHTML = `<i data-lucide="alert-circle" class="w-3 h-3"></i> Drinks Needed! <a href="#" onclick="openVolunteerModal('August ${dayNum}'); return false;" class="underline ml-1">Volunteer</a>`;
+                      if(window.lucide) lucide.createIcons();
+                  }
+              }
+          });
+        })
+        .catch(err => console.error('Error fetching signups:', err));
+    }
+
+    function checkDirectoryPin() {
+      const pin = document.getElementById('directory-pin').value;
+      if (pin === '2013') {
+          localStorage.setItem('hdl_directory_unlocked', 'true');
+          document.getElementById('directory-lock-view').classList.add('hidden');
+          document.getElementById('directory-unlocked-view').classList.remove('hidden');
+      } else {
+          document.getElementById('directory-pin-error').classList.remove('hidden');
+          document.getElementById('directory-pin').value = '';
+      }
+    }
+
+    // Auto-unlock if previously unlocked
+    document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem('hdl_directory_unlocked') === 'true') {
+            const lockView = document.getElementById('directory-lock-view');
+            const unlockedView = document.getElementById('directory-unlocked-view');
+            if (lockView && unlockedView) {
+                lockView.classList.add('hidden');
+                unlockedView.classList.remove('hidden');
+            }
+        }
+    });
+
+    window.processRosterData = function(json) {
+      const dirList = document.getElementById('directoryList');
+      dirList.innerHTML = '';
+      
+      let rosterMap = new Map();
+      
+      const cols = json.table.cols;
+      json.table.rows.forEach(r => {
+        let row = {};
+        cols.forEach((col, i) => {
+            if (col && col.label) {
+                let cell = r.c[i];
+                if (cell) {
+                   row[col.label] = cell.f ? cell.f : (cell.v !== null ? String(cell.v) : "");
+                } else {
+                   row[col.label] = "";
+                }
+            }
+        });
+        
+        const firstName = row['First Name'] ? row['First Name'].replace(/ -$/, '').trim() : '';
+        const lastNameField = row['Last name'] ? row['Last name'].trim() : '';
+        const phone = row['Phone'] ? row['Phone'].trim() : '';
+        const email = row['Email'] ? row['Email'].trim() : '';
+        const position = row['Postion'] ? row['Postion'].trim() : '';
+        
+        if (!firstName && !lastNameField) return;
+        
+        // Skip coaches
+        if (firstName.toLowerCase().includes('coach') || position.toLowerCase() === 'coach') return;
+        
+        // Extract player info
+        let playerName = 'Unknown';
+        let playerNumber = '0';
+        const match = lastNameField.match(/(.*?)\s*#(\d+)/);
+        if (match) {
+            playerName = match[1].trim();
+            playerNumber = match[2];
+        } else {
+            playerName = lastNameField.split('-')[0].replace(/\s*#\s*$/, '').trim();
+        }
+        
+        const playerKey = playerNumber + '-' + playerName;
+        if (!rosterMap.has(playerKey)) {
+            let initials = playerName.substring(0, 2).toUpperCase();
+            let names = playerName.split(' ');
+            if (names.length >= 2) {
+                initials = names[0].charAt(0).toUpperCase() + names[1].charAt(0).toUpperCase();
+            }
+            
+            let bdayRaw = row['Birthday'] ? String(row['Birthday']).trim() : "";
+            let bdayMMDD = "";
+            let bdayDisplay = "TBD";
+            if (bdayRaw) {
+                bdayDisplay = bdayRaw;
+                let bMatch = bdayRaw.match(/^(\d{1,2})[\/\-](\d{1,2})/);
+                if (bMatch) {
+                    bdayMMDD = bMatch[1].padStart(2, '0') + '-' + bMatch[2].padStart(2, '0');
+                }
+            }
+            
+            rosterMap.set(playerKey, {
+                number: playerNumber,
+                name: playerName,
+                posEn: position || 'Player',
+                posEs: position || 'Jugador',
+                initials: initials,
+                goals: row['Goals'] ? parseInt(row['Goals']) : 0,
+                assists: row['Assists'] ? parseInt(row['Assists']) : 0,
+                cleanSheets: row['Clean Sheets'] ? parseInt(row['Clean Sheets']) : 0,
+                isMvp: row['MVP'] === 'Yes',
+                birthday: bdayDisplay,
+                birthdayMMDD: bdayMMDD
+            });
+        } else {
+            // If the player exists but we found their birthday (or stats) on a second row (like Mom's row vs Dad's row)
+            let existingPlayer = rosterMap.get(playerKey);
+            if (row['Birthday'] && (existingPlayer.birthday === "TBD" || !existingPlayer.birthday)) {
+                let bdayRaw = String(row['Birthday']).trim();
+                existingPlayer.birthday = bdayRaw;
+                let bMatch = bdayRaw.match(/^(\d{1,2})[\/\-](\d{1,2})/);
+                if (bMatch) {
+                    existingPlayer.birthdayMMDD = bMatch[1].padStart(2, '0') + '-' + bMatch[2].padStart(2, '0');
+                }
+            }
+            if (row['Goals']) existingPlayer.goals = parseInt(row['Goals']);
+            if (row['Assists']) existingPlayer.assists = parseInt(row['Assists']);
+            if (row['Clean Sheets']) existingPlayer.cleanSheets = parseInt(row['Clean Sheets']);
+            if (row['MVP'] === 'Yes') existingPlayer.isMvp = true;
+        }
+        
+        // Render directory card
+        let relSuffixHTML = "";
+        let cleanLastName = lastNameField;
+        if (cleanLastName.toLowerCase().includes("- dad")) {
+            relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_dad">${translations[currentLang].rel_dad}</span>`;
+            cleanLastName = cleanLastName.replace(/\s*-\s*Dad/i, '');
+        } else if (cleanLastName.toLowerCase().includes("- mom")) {
+            relSuffixHTML = `<span class="text-slate-400 font-medium ml-1" data-i18n="rel_mom">${translations[currentLang].rel_mom}</span>`;
+            cleanLastName = cleanLastName.replace(/\s*-\s*Mom/i, '');
+        }
+        cleanLastName = cleanLastName.replace(/\s*#\d*/, '').trim();
+
+        let displayNameHTML = "";
+        let numHTML = playerNumber !== '0' ? ` <span class="text-orange-400 font-mono">#${playerNumber}</span>` : '';
+        if (firstName && cleanLastName) {
+            displayNameHTML = `${firstName} <span class="text-slate-500 mx-1">-</span> <span class="text-slate-300">(${cleanLastName}${numHTML})</span> ${relSuffixHTML}`;
+        } else if (firstName) {
+            displayNameHTML = `${firstName} ${relSuffixHTML}`;
+        } else {
+            displayNameHTML = `${cleanLastName}${numHTML} ${relSuffixHTML}`;
+        }
+        
+        const fullName = (firstName + " " + lastNameField).trim();
+            
+        const card = document.createElement('div');
+        card.className = "p-2.5 bg-slate-950/90 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-3";
+        
+        let vcardLines = [
+            "BEGIN:VCARD",
+            "VERSION:3.0",
+            `N:${lastNameField};${firstName};;;`,
+            `FN:${fullName}`
+        ];
+        if (phone) vcardLines.push(`TEL;TYPE=CELL:${phone}`);
+        if (email) vcardLines.push(`EMAIL:${email}`);
+        vcardLines.push("END:VCARD");
+        
+        const vcardData = vcardLines.join('\\r\\n');
+        const vcardBlob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8' });
+        const vcardUrl = window.URL.createObjectURL(vcardBlob);
+        
+        card.innerHTML = `
+          <div>
+            <strong class="text-white block text-xs sm:text-sm">${displayNameHTML}</strong>
+            <span class="text-slate-400 text-[10px] sm:text-xs">${email || 'No email provided'}</span>
+          </div>
+          <div class="flex gap-1.5 items-center self-end sm:self-auto">
+            ${phone ? `<a href="tel:${phone}" class="p-2 bg-orange-600/20 text-orange-400 hover:bg-orange-600 hover:text-white rounded-lg transition" title="Call"><i data-lucide="phone" class="w-4 h-4"></i></a>` : ''}
+            ${phone ? `<a href="sms:${phone}" class="p-2 bg-blue-600/20 text-blue-400 hover:bg-blue-600 hover:text-white rounded-lg transition" title="Text"><i data-lucide="message-square" class="w-4 h-4"></i></a>` : ''}
+            ${phone ? `<a href="${vcardUrl}" download="${fullName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.vcf" class="py-2 px-3 border border-slate-600 hover:border-slate-400 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg transition flex items-center gap-1.5 ml-1" title="Save Contact">
+              <i data-lucide="user-plus" class="w-4 h-4"></i>
+              <span class="text-[10px] sm:text-xs font-bold uppercase tracking-wider">Save</span>
+            </a>` : ''}
+          </div>
+        `;
+        dirList.appendChild(card);
+      });
+      
+      globalRosterData = Array.from(rosterMap.values());
+      // Sort by number
+      globalRosterData.sort((a, b) => parseInt(a.number) - parseInt(b.number));
+      renderRosterGrid(globalRosterData);
+      renderStats(globalRosterData);
+      
+      // Calculate upcoming birthdays
+      let upcomingBirthdaysHTML = '';
+      const today = new Date(currentDate);
+      today.setHours(0,0,0,0);
+      
+      globalRosterData.forEach(p => {
+          if (p.birthdayMMDD) {
+              const [bMonth, bDay] = p.birthdayMMDD.split('-');
+              let nextBday = new Date(today.getFullYear(), parseInt(bMonth)-1, parseInt(bDay));
+              
+              if (nextBday < today) {
+                  nextBday.setFullYear(today.getFullYear() + 1);
+              }
+              
+              const diffTime = nextBday.getTime() - today.getTime();
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              
+              if (diffDays <= 7) {
+                  let timeStr = diffDays === 0 ? "Today!" : (diffDays === 1 ? "Tomorrow" : `In ${diffDays} days`);
+                  upcomingBirthdaysHTML += `<div class="mb-2 p-3 bg-pink-900/30 border border-pink-500/50 rounded-xl flex items-center justify-between shadow-lg">
+                      <div class="flex items-center gap-3">
+                          <div class="w-10 h-10 rounded-full bg-pink-500/20 flex items-center justify-center text-xl shadow-inner">🎂</div>
+                          <div>
+                              <h4 class="text-pink-300 font-bold text-sm">Upcoming Birthday</h4>
+                              <p class="text-white text-xs">${p.name} turns a year older!</p>
+                          </div>
+                      </div>
+                      <span class="text-pink-400 font-bold text-xs uppercase tracking-wider bg-pink-900/50 px-2 py-1 rounded">${timeStr}</span>
+                  </div>`;
+              }
+          }
+      });
+      
+      const bdayContainer = document.getElementById('upcoming-birthdays');
+      if (bdayContainer) {
+          if (upcomingBirthdaysHTML) {
+              bdayContainer.innerHTML = upcomingBirthdaysHTML;
+              bdayContainer.classList.remove('hidden');
+          } else {
+              bdayContainer.classList.add('hidden');
+              bdayContainer.innerHTML = '';
+          }
+      }
+
+      renderCalendar();
+      lucide.createIcons();
+    };
+
+    function fetchAndRenderDirectory() {
+      const script = document.createElement('script');
+      script.src = 'https://docs.google.com/spreadsheets/d/13ZOQxIllvOSSNXn10lA5qCsZv38FCtDVLg5kqrVoAqQ/gviz/tq?tqx=out:json;responseHandler:processRosterData&headers=1&gid=313460202';
+      document.body.appendChild(script);
+    }
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'es' : 'en';
+      document.getElementById('langLabel').innerText = currentLang === 'en' ? 'Español' : 'English';
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (el.hasAttribute('data-' + currentLang)) {
+          el.innerText = el.getAttribute('data-' + currentLang);
+        } else if (translations[currentLang][key]) {
+          el.innerText = translations[currentLang][key];
+        }
+      });
+      selectPosition(activePosition);
+      if (globalRosterData.length > 0) {
+        renderRosterGrid(globalRosterData);
+      }
+    }
+
+    const positionData = {
+      gk: {
+        en: { title: "Goalkeeper (#1)", summary: "Primary Director & Shot Stopper", skills: "Box command, distribution with feet out of the back, handling crosses, vocal communication.", home: "Wall volley catches (100 touches), lateral cone shuffle to diving shape on grass, ground distribution passes." },
+        es: { title: "Arquero / Portero (#1)", summary: "Voz de Mando y Seguridad en el Arco", skills: "Dominio del área chica y grande, juego de pies en salida, anticipación a centros y comunicación constante.", home: "Rebotes contra la pared (100 toques), desplazamientos laterales en conos y pases rasantes de salida." }
+      },
+      cb: {
+        en: { title: "Center Backs (#4 & #5)", summary: "Defensive Spine & Aerial Anchors", skills: "1v1 jockeying, winning aerial headers, holding the offside line, stepping up to intercept.", home: "Parent toss & header clearances, 2-cone figure-8 backpedaling with forward acceleration." },
+        es: { title: "Defensas Centrales (#4 y #5)", summary: "Eje Defensivo y Coberturas", skills: "Duelos 1v1 con perfilación correcta, despeje aéreo, línea de fuera de juego y coberturas a la espalda.", home: "Cabezazos con un familiar devolviendo el balón a las manos, desplazamientos en 8 y pique corto." }
+      },
+      fb: {
+        en: { title: "Fullbacks / Wingbacks (#2 & #3)", summary: "Wide Defenders & Overlapping Attackers", skills: "Channel defending against fast wingers, body shape forcing attackers wide, timed overlapping runs.", home: "Side-shuffle to driven crossing reps, 1v1 sprint recovery turns." },
+        es: { title: "Laterales (#2 y #3)", summary: "Defensa por Banda y Apoyo Ofensivo", skills: "Marcación por los costados, perfilación para orientar al rival hacia afuera y desdobles por banda.", home: "Desplazamientos laterales con centros dirigidos y giros rápidos de repliegue defensivo." }
+      },
+      mid: {
+        en: { title: "Midfielders (#6, #8 & #10)", summary: "Engine Room, Scanners & Playmakers", skills: "Head-scanning before receiving, receiving on the half-turn, 1-2 passing, through balls.", home: "Shoulder-check wall passing (200 touches with both feet), Cruyff turns, sole rolls." },
+        es: { title: "Mediocampistas / Volantes (#6, #8 y #10)", summary: "Visión, Control del Ritmo y Pases Filtrados", skills: "Giro de cabeza constante antes de recibir, control orientado en medio giro, paredes cortas y pases entre líneas.", home: "Mirar por encima del hombro antes de recibir contra la pared (200 toques con ambas piernas) y giros rápidos." }
+      },
+      fwd: {
+        en: { title: "Wingers & Strikers (#7, #9 & #11)", summary: "Goal Scorers & High Pressers", skills: "Diagonal runs in behind, 1v1 take-ons along touchline, first-touch finishing across the keeper.", home: "1-touch instep finishes from edge of the box, rapid ladder footwork into sprint finishes." },
+        es: { title: "Extremos y Delanteros (#7, #9 y #11)", summary: "Definición, Velocidad y Presión Alta", skills: "Desmarques en diagonal, regates veloces por banda, remates de primera intención y presión alta.", home: "Definición al primer toque en espacios reducidos y coordinación en escalera rematando al arco." }
+      }
+    };
+
+    let activePosition = 'gk';
+
+    function selectPosition(posKey) {
+      activePosition = posKey;
+      document.querySelectorAll('.pos-tab').forEach(b => {
+        b.className = 'pos-tab px-3.5 py-2 rounded-xl bg-slate-900 text-slate-300 hover:bg-slate-800 whitespace-nowrap border border-slate-800';
+      });
+      const activeBtn = document.getElementById('pos-' + posKey);
+      if (activeBtn) activeBtn.className = 'pos-tab px-3.5 py-2 rounded-xl bg-orange-600 text-white whitespace-nowrap shadow';
+
+      const data = positionData[posKey][currentLang];
+      document.getElementById('drillRoleTitle').innerText = data.title;
+      document.getElementById('drillRoleSummary').innerText = data.summary;
+      document.getElementById('drillSkills').innerText = data.skills;
+      document.getElementById('drillHome').innerText = data.home;
+    }
+
+    function downloadCalendarICS() {
+      const icsData = "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Houston Dutch Lions FC//Elite 2013//EN\nBEGIN:VEVENT\nSUMMARY:Houston Dutch Lions Elite 2013 vs Storm SC\nLOCATION:HDL Soccer Complex Field #1\nDESCRIPTION:Call time: 8:15 AM. Orange Kit.\nDTSTART:20260822T140000Z\nDTEND:20260822T153000Z\nEND:VEVENT\nEND:VCALENDAR";
+      const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute('download', 'hdl_elite_2013_schedule.ics');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // ==========================================
+    // CALENDAR & WEATHER LOGIC
+    // ==========================================
+    let currentDate = new Date('2026-08-15T12:00:00'); // Baseline to August 2026 for simulation
+
+    const specificEvents = {
+      '2026-08-20': { type: 'scrimmage', opponent: 'Huntsville Eclipse', time: '7:00 PM - 8:30 PM', home: true, uniform: 'Orange Jersey', bring: 'Blue alternate', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'2', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } },
+      '2026-08-27': { type: 'scrimmage', opponent: 'Cleveland FC', time: '7:00 PM (Call: 6:30 PM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'15', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } },
+      '2026-08-29': { type: 'scrimmage', opponent: 'CMavericks FC', time: '9:15 AM (Call: 8:45 AM)', home: true, uniform: 'Orange Jersey', bring: 'Both jerseys', location: 'HDL Complex Field', formation: '4-3-3', starters: { gk:'1', lb:'2', cb1:'4', cb2:'5', rb:'3', cm1:'8', cdm:'6', cm2:'10', lw:'11', st:'9', rw:'7' } }
+    };
+
+    function renderCalendar() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      document.getElementById('month-year').innerText = `${monthNames[month]} ${year}`;
+      
+      const grid = document.getElementById('calendar-grid');
+      grid.innerHTML = '';
+      
+      // Blank days before 1st
+      for (let i = 0; i < firstDay.getDay(); i++) {
+        grid.innerHTML += `<div class="p-1.5 opacity-0"></div>`;
+      }
+      
+      // Days of month
+      for (let d = 1; d <= lastDay.getDate(); d++) {
+        const dateStr = `${year}-${String(month+1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const dayOfWeek = new Date(year, month, d).getDay();
+        
+        let colorClasses = "text-slate-300 hover:bg-slate-800";
+        
+        // Check recurring practice (Mon=1, Tue=2, Thu=4)
+        let isPractice = (dayOfWeek === 1 || dayOfWeek === 2 || dayOfWeek === 4);
+        
+        let evObj = specificEvents[dateStr];
+        let evType = evObj ? evObj.type : '';
+        
+        if (evType === 'scrimmage') {
+          colorClasses = "bg-orange-500/20 text-orange-400 border border-orange-500/30 font-bold";
+        } else if (isPractice) {
+          colorClasses = "bg-blue-500/20 text-blue-400 border border-blue-500/30 font-bold";
+        }
+        
+        // Highlight today
+        if (dateStr === '2026-08-15') {
+          colorClasses += " ring-2 ring-white/50";
+        }
+
+        let emojiIndicators = '';
+        const lookupDate = monthNames[month] + " " + parseInt(d, 10);
+        if (signupsMap.has(lookupDate)) {
+            const signups = signupsMap.get(lookupDate);
+            if (signups.drinks && signups.drinks.length > 0) emojiIndicators += '🧃';
+        }
+        
+        const dStr = String(d).padStart(2, '0');
+        const mStr = String(month+1).padStart(2, '0');
+        const dateMMDD = mStr + '-' + dStr;
+        let hasBday = false;
+        if (typeof globalRosterData !== 'undefined') {
+             hasBday = globalRosterData.some(p => p.birthdayMMDD === dateMMDD);
+        }
+        if (hasBday) emojiIndicators += '🎂';
+        
+        let displayHtml = d;
+        if (emojiIndicators) {
+           displayHtml = `<div class="relative">${d}<span class="absolute -top-1.5 -right-3 text-[10px] drop-shadow-md tracking-tighter">${emojiIndicators}</span></div>`;
+        }
+
+        const evData = evObj ? JSON.stringify(evObj).replace(/"/g, '&quot;') : '';
+        grid.innerHTML += `<div class="p-1.5 rounded-lg flex items-center justify-center transition-colors cursor-pointer hover:scale-105 ${colorClasses}" onclick="showEventDetails('${dateStr}', ${isPractice}, '${evData}')">${displayHtml}</div>`;
+      }
+      lucide.createIcons();
+    }
+
+    function showEventDetails(dateStr, isPractice, eventDataStr) {
+      const detailsBox = document.getElementById('selected-date-details');
+      let content = '';
+      
+      const [y, m, d] = dateStr.split('-');
+      const dateMMDD = m + '-' + d;
+      let bdayNames = [];
+      if (typeof globalRosterData !== 'undefined') {
+          globalRosterData.forEach(p => {
+              if (p.birthdayMMDD === dateMMDD) bdayNames.push(p.name);
+          });
+      }
+      
+      if (bdayNames.length > 0) {
+          content += `<div class="mb-3 text-pink-400 font-bold bg-pink-900/20 p-2.5 rounded-lg border border-pink-800/40 flex items-center justify-center gap-2 shadow-inner"><i data-lucide="cake" class="w-5 h-5 animate-bounce"></i> Happy Birthday, ${bdayNames.join(' & ')}! 🥳</div>`;
+      }
+      
+      const formattedDate = new Date(y, m - 1, d).toLocaleDateString(currentLang === 'en' ? 'en-US' : 'es-ES', { weekday: 'long', month: 'short', day: 'numeric' });
+      
+      let ev = eventDataStr ? JSON.parse(eventDataStr.replace(/&quot;/g, '"')) : null;
+      let eventType = ev ? ev.type : '';
+      
+      if (eventType === 'scrimmage') {
+        content = `<h4 class="text-orange-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'SCRIMMAGE' : 'AMISTOSO'}</h4>
+                   <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
+                   <p class="text-slate-300 text-xs mb-1">${ev.time} vs ${ev.opponent}</p>
+                   <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition mb-2.5">
+                     <i data-lucide="map-pin" class="w-3 h-3"></i> ${ev.location}
+                   </a>
+                   <div class="bg-slate-800/60 p-2.5 rounded-lg border border-slate-700/80 mb-2">
+                     <strong class="text-orange-400 text-[10px] uppercase tracking-widest block mb-1.5 flex items-center gap-1.5"><i data-lucide="list-checks" class="w-3.5 h-3.5"></i> Game Day Checklist</strong>
+                     <p class="text-[11px] text-slate-300 mb-1 leading-snug"><strong class="text-white">Uniform:</strong> ${ev.uniform}</p>
+                     <p class="text-[11px] text-slate-300 leading-snug"><strong class="text-white">Pack:</strong> ${ev.bring}</p>
+                   </div>`;
+      } else if (isPractice) {
+        content = `<h4 class="text-blue-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'PRACTICE' : 'ENTRENAMIENTO'}</h4>
+                   <p class="text-white text-xs font-semibold mb-1">${formattedDate}</p>
+                   <p class="text-slate-300 text-xs mb-1">6:45 PM - 8:00 PM</p>
+                   <a href="https://maps.google.com/?q=14562+Interstate+45+South,+Conroe,+Texas+77384" target="_blank" class="text-blue-400 hover:text-blue-300 text-xs flex items-center justify-center gap-0.5 hover:underline transition">
+                     <i data-lucide="map-pin" class="w-3 h-3"></i> HDL Complex Field
+                   </a>`;
+      } else {
+        content = `<h4 class="text-slate-400 font-bold text-sm mb-1">${currentLang === 'en' ? 'NO EVENT' : 'SIN EVENTO'}</h4>
+                   <p class="text-white text-xs font-semibold">${formattedDate}</p>`;
+      }
+      
+      // Lineup Block
+      if (ev && ev.formation && ev.starters) {
+          content += `<div class="mt-3 bg-slate-950/50 p-3 rounded-xl border border-slate-800">
+            <h5 class="text-orange-400 font-bold text-xs uppercase tracking-widest mb-2 flex items-center gap-1.5">
+              <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i> Starting Lineup (${ev.formation})
+            </h5>
+            <div class="relative w-full aspect-[4/3] bg-emerald-800/50 border border-white/20 rounded overflow-hidden mt-2">
+              <div class="absolute inset-0 border border-white/10 m-2 pointer-events-none"></div>
+              <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/3 h-1/5 border-b border-x border-white/20 pointer-events-none"></div>
+              <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/3 h-1/5 border-t border-x border-white/20 pointer-events-none"></div>
+              <div class="absolute top-1/2 left-0 right-0 h-px bg-white/20 pointer-events-none"></div>
+              <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full border border-white/20 pointer-events-none"></div>
+              
+              <!-- Mini Tokens -->
+              <div class="absolute top-[8%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-zinc-400 rounded-full text-[8px] font-bold text-black flex items-center justify-center">${ev.starters.gk}</div>
+              <div class="absolute top-[25%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lb}</div>
+              <div class="absolute top-[22%] left-[40%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb1}</div>
+              <div class="absolute top-[22%] left-[60%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cb2}</div>
+              <div class="absolute top-[25%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rb}</div>
+              <div class="absolute top-[45%] left-[30%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm1}</div>
+              <div class="absolute top-[52%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cdm}</div>
+              <div class="absolute top-[45%] left-[70%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.cm2}</div>
+              <div class="absolute top-[75%] left-[20%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.lw}</div>
+              <div class="absolute top-[68%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.st}</div>
+              <div class="absolute top-[75%] left-[80%] -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full text-[8px] font-bold text-white flex items-center justify-center">${ev.starters.rw}</div>
+            </div>
+            <button onclick="document.getElementById('modal-close-btn').click(); document.getElementById('tactics-section').scrollIntoView({behavior: 'smooth'})" class="mt-2 w-full text-[10px] bg-slate-800 hover:bg-slate-700 text-white py-1.5 rounded transition">Open Full Tactics Board</button>
+          </div>`;
+      }
+      
+      if (eventType === 'scrimmage' || isPractice) {
+        const timeHour = eventType === 'scrimmage' ? 19 : 18; // 7PM or 6PM
+        
+        // Add Advanced Weather Placeholder
+        content += `<div id="hourly-weather" class="mt-3 p-2 bg-slate-900/80 border border-slate-800 rounded-lg text-[11px] text-slate-300 flex items-center justify-center shadow-inner">
+            <i data-lucide="loader" class="w-3 h-3 animate-spin text-orange-400"></i> <span class="ml-2">Analyzing game-time weather...</span>
+        </div>`;
+        
+        // Check if anyone signed up for this date
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        const lookupDate = monthNames[parseInt(m, 10) - 1] + " " + parseInt(d, 10);
+        
+        let signupHTML = '';
+        let drinksCovered = false;
+        if (signupsMap.has(lookupDate)) {
+            const signups = signupsMap.get(lookupDate);
+            if (signups.drinks && signups.drinks.length > 0) {
+                drinksCovered = true;
+                signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-emerald-300 bg-emerald-900/30 p-2 rounded border border-emerald-800/50">
+                    <i data-lucide="check-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <span><strong>Drinks covered by:</strong> ${signups.drinks.join(', ')}</span>
+                </div>`;
+            }
+        }
+        
+        if (eventType === 'scrimmage' && !drinksCovered) {
+             signupHTML += `<div class="flex items-start gap-2 mt-2 text-[11px] text-orange-300 bg-orange-900/30 p-2 rounded border border-orange-800/50">
+                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 shrink-0 mt-0.5"></i>
+                    <span><strong>Drinks are still needed!</strong></span>
+                </div>`;
+        }
+
+        if (signupHTML) {
+            content += `<div class="mt-3 border-t border-slate-700/50 pt-2">${signupHTML}</div>`;
+        }
+
+        // Add Drinks Button (Google Form Link) ONLY for Scrimmages if NOT covered
+        if (eventType === 'scrimmage' && !drinksCovered) {
+            content += `<div class="mt-3">
+              <button onclick="openVolunteerModal('${lookupDate}')" class="w-full p-2 bg-emerald-600/20 text-emerald-400 hover:bg-emerald-600 hover:text-white rounded-lg border border-emerald-500/30 flex flex-col items-center justify-center gap-1 transition text-[10px] font-bold text-center">
+                <i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks
+              </button>
+            </div>`;
+        }
+
+        // Add Interactive Weather Radar
+        content += `<iframe width="100%" height="150" src="https://embed.windy.com/embed.html?type=map&location=coordinates&metricRain=in&metricTemp=%C2%B0F&metricWind=mph&zoom=11&overlay=radar&product=radar&crosshair=marker&lat=30.2975&lon=-95.4655" frameborder="0" class="rounded-xl mt-3 border border-slate-700/50 opacity-90 hover:opacity-100 transition-opacity shadow-lg"></iframe>`;
+        
+        // Fetch specific hourly weather
+        const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=30.2975&longitude=-95.4655&hourly=temperature_2m,precipitation_probability&temperature_unit=fahrenheit&timezone=America%2FChicago&start_date=${dateStr}&end_date=${dateStr}`;
+        fetch(weatherUrl).then(res => res.json()).then(data => {
+            if(data && data.hourly) {
+                const temp = Math.round(data.hourly.temperature_2m[timeHour]);
+                const rain = data.hourly.precipitation_probability[timeHour];
+                
+                let hotWarning = '';
+                if(temp >= 90 && eventType === 'scrimmage') {
+                    hotWarning = `<div class="w-full mt-2 text-center text-red-400 font-bold bg-red-900/30 border border-red-800 rounded py-1.5 px-2 text-[10px]">⚠️ Drinks are greatly appreciated on hot days over 90°F!</div>`;
+                }
+
+                const wBox = document.getElementById('hourly-weather');
+                if(wBox) {
+                    wBox.innerHTML = `<div class="flex justify-around w-full items-center">
+                        <div class="flex items-center gap-1"><i data-lucide="thermometer" class="w-4 h-4 text-orange-400"></i> <span>Est. Temp: <strong class="text-white">${temp}°F</strong></span></div>
+                        <div class="flex items-center gap-1"><i data-lucide="cloud-rain" class="w-4 h-4 text-blue-400"></i> <span>Rain Chance: <strong class="text-white">${rain}%</strong></span></div>
+                    </div>${hotWarning}`;
+                    lucide.createIcons();
+                }
+            }
+        }).catch(() => {
+            const wBox = document.getElementById('hourly-weather');
+            if(wBox) wBox.style.display = 'none';
+        });
+      }
+      
+      detailsBox.innerHTML = content;
+      detailsBox.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function changeMonth(delta) {
+      currentDate.setMonth(currentDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function fetchWeather() {
+      // Free Open-Meteo API for Conroe, TX
+      const url = "https://api.open-meteo.com/v1/forecast?latitude=30.2975&longitude=-95.4655&daily=temperature_2m_max,temperature_2m_min,weathercode&temperature_unit=fahrenheit&timezone=America%2FChicago";
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (!data || !data.daily) return;
+          
+          data.daily.time.forEach((dateStr, index) => {
+            const maxT = Math.round(data.daily.temperature_2m_max[index]);
+            const code = data.daily.weathercode[index];
+            
+            // Map simple weather codes to lucide icons
+            let iconName = "cloud-sun";
+            let statusTextEn = "HDL Soccer Facility: All Fields OPEN & Playable.";
+            let statusTextEs = "Centro HDL: Todos los campos ABIERTOS.";
+            let statusColor = "emerald-400";
+            let bannerBg = "bg-blue-950/80";
+            
+            if (code <= 3) {
+              iconName = "sun"; // clear
+            } else if (code >= 51 && code <= 67) {
+              iconName = "cloud-rain"; // rain
+              statusTextEn = "HDL Soccer Facility: Field Status UNDER REVIEW (Rain).";
+              statusTextEs = "Centro HDL: Estado de campos EN REVISIÓN (Lluvia).";
+              statusColor = "yellow-400";
+              bannerBg = "bg-yellow-900/60";
+            } else if (code >= 71 && code <= 77) {
+              iconName = "snowflake"; // snow
+              statusTextEn = "HDL Soccer Facility: CLOSED due to freeze.";
+              statusTextEs = "Centro HDL: CERRADO por clima frío.";
+              statusColor = "red-500";
+              bannerBg = "bg-red-950/80";
+            } else if (code >= 95) {
+              iconName = "cloud-lightning"; // storm
+              statusTextEn = "HDL Soccer Facility: CLOSED due to storms/lightning.";
+              statusTextEs = "Centro HDL: CERRADO por tormentas eléctricas.";
+              statusColor = "red-500";
+              bannerBg = "bg-red-950/80";
+            }
+            
+            if (index === 0) { // Today's weather determines banner
+              const banner = document.getElementById('field-status-banner');
+              const dot = document.getElementById('field-status-dot');
+              const textEl = document.getElementById('field-status-text');
+              if(banner && dot && textEl) {
+                banner.className = `${bannerBg} border-y border-blue-800/40 px-4 py-1.5 text-center text-xs font-semibold text-blue-200 flex items-center justify-center space-x-2 transition-colors duration-500`;
+                dot.className = `w-2 h-2 rounded-full bg-${statusColor} animate-ping`;
+                textEl.innerText = currentLang === 'en' ? statusTextEn : statusTextEs;
+                // Store translations for toggle
+                textEl.setAttribute('data-en', statusTextEn);
+                textEl.setAttribute('data-es', statusTextEs);
+              }
+            }
+            
+            const el = document.getElementById(`weather-${dateStr}`);
+            if (el) {
+              el.innerHTML = `<i data-lucide="${iconName}" class="w-3.5 h-3.5 ${iconName==='sun'?'text-yellow-400':'text-blue-300'}"></i> ${maxT}°F`;
+            }
+          });
+          lucide.createIcons();
+        })
+        .catch(err => {
+          console.error("Weather fetch failed", err);
+          document.querySelectorAll('[id^="weather-"]').forEach(el => {
+            el.innerHTML = `<i data-lucide="cloud-off" class="w-3 h-3"></i> N/A`;
+          });
+          lucide.createIcons();
+        });
+    }
+
+    // Scroll Animations Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.scroll-animate').forEach((el) => observer.observe(el));
+
+    // Live Countdown Logic (August 20, 2026 19:00:00 CDT)
+    const kickoffDate = new Date('2026-08-20T19:00:00-05:00').getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = kickoffDate - now;
+
+      if (distance < 0) {
+        document.getElementById('cd-d').innerText = "00";
+        document.getElementById('cd-h').innerText = "00";
+        document.getElementById('cd-m').innerText = "00";
+        document.getElementById('cd-s').innerText = "00";
+        return;
+      }
+
+      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById('cd-d').innerText = d.toString().padStart(2, '0');
+      document.getElementById('cd-h').innerText = h.toString().padStart(2, '0');
+      document.getElementById('cd-m').innerText = m.toString().padStart(2, '0');
+      document.getElementById('cd-s').innerText = s.toString().padStart(2, '0');
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+    
+    // PWA Service Worker Registration & iOS Banner
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(err => {
+          console.warn('Service Worker registration failed: ', err);
+        });
+      });
+    }
+    const isIos = () => {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test(userAgent);
+    };
+    const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+    if (isIos() && !isInStandaloneMode()) {
+      const banner = document.getElementById('ios-install-banner');
+      if (banner) banner.classList.remove('hidden');
+    }
+
+    // Initial render
+    fetchSignups();
+    fetchAndRenderDirectory();
+    renderCalendar();
+    fetchWeather();
+
+    // ==========================================
+    // TACTICS BOARD DRAG AND DROP (MOUSE + TOUCH)
+    // ==========================================
+    const pitch = document.getElementById('tactics-pitch');
+    let draggedToken = null;
+    let initialX, initialY, currentX, currentY, xOffset = 0, yOffset = 0;
+
+    // Save default positions for reset
+    const defaultPositions = {};
+    document.querySelectorAll('[id^="token-"]').forEach(token => {
+      defaultPositions[token.id] = { top: token.style.top, left: token.style.left };
+      
+      // Touch events
+      token.addEventListener('touchstart', dragStart, {passive: false});
+      token.addEventListener('touchend', dragEnd, {passive: false});
+      token.addEventListener('touchmove', drag, {passive: false});
+      
+      // Mouse events
+      token.addEventListener('mousedown', dragStart, false);
+    });
+
+    document.addEventListener('mouseup', dragEnd, false);
+    document.addEventListener('mousemove', drag, false);
+
+    function dragStart(e) {
+      if (e.type === "touchstart") {
+        initialX = e.touches[0].clientX;
+        initialY = e.touches[0].clientY;
+        draggedToken = e.target;
+      } else {
+        initialX = e.clientX;
+        initialY = e.clientY;
+        if(e.target.id.startsWith('token-')) {
+          draggedToken = e.target;
+        }
+      }
+      
+      if(draggedToken) {
+          // Bring to front
+          document.querySelectorAll('[id^="token-"]').forEach(t => t.style.zIndex = "10");
+          draggedToken.style.zIndex = "20";
+      }
+    }
+
+    function drag(e) {
+      if (draggedToken) {
+        e.preventDefault();
+      
+        if (e.type === "touchmove") {
+          currentX = e.touches[0].clientX - initialX;
+          currentY = e.touches[0].clientY - initialY;
+          initialX = e.touches[0].clientX;
+          initialY = e.touches[0].clientY;
+        } else {
+          currentX = e.clientX - initialX;
+          currentY = e.clientY - initialY;
+          initialX = e.clientX;
+          initialY = e.clientY;
+        }
+
+        const rect = pitch.getBoundingClientRect();
+        const tokenRect = draggedToken.getBoundingClientRect();
+        
+        let newLeft = draggedToken.offsetLeft + currentX;
+        let newTop = draggedToken.offsetTop + currentY;
+        
+        // Boundaries
+        newLeft = Math.max(0, Math.min(newLeft, rect.width - tokenRect.width));
+        newTop = Math.max(0, Math.min(newTop, rect.height - tokenRect.height));
+
+        draggedToken.style.left = (newLeft / rect.width) * 100 + "%";
+        draggedToken.style.top = (newTop / rect.height) * 100 + "%";
+      }
+    }
+
+    function dragEnd(e) {
+      draggedToken = null;
+    }
+
+    function resetTactics() {
+       document.querySelectorAll('[id^="token-"]').forEach(token => {
+          token.style.top = defaultPositions[token.id].top;
+          token.style.left = defaultPositions[token.id].left;
+       });
+    }
+  </script>
+  <!-- Volunteer Modal -->
+  <div id="volunteer-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+    <div class="bg-slate-900 border border-slate-700 w-full max-w-sm rounded-xl overflow-hidden shadow-2xl">
+      <div class="p-4 bg-slate-800 border-b border-slate-700 flex justify-between items-center">
+        <h3 class="text-orange-400 font-bold flex items-center gap-2"><i data-lucide="cup-soda" class="w-4 h-4"></i> Volunteer for Drinks</h3>
+        <button onclick="closeVolunteerModal()" class="text-slate-400 hover:text-white transition"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+      <div class="p-5">
+        <p class="text-sm text-slate-300 mb-4 leading-relaxed">Thank you for volunteering! Your drinks are greatly appreciated, especially during hot days.</p>
+        <form id="volunteer-form" onsubmit="submitVolunteerForm(event)">
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Parent/Volunteer Name</label>
+              <input type="text" id="vol-name" required class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-orange-500 transition" placeholder="e.g. Jane Doe">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Role</label>
+              <input type="text" value="Drinks" disabled class="w-full bg-slate-800/50 border border-slate-700 rounded p-2 text-sm text-slate-400 cursor-not-allowed">
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-400 mb-1">Scrimmage Date</label>
+              <select id="vol-date" required class="w-full bg-slate-800 border border-slate-700 rounded p-2 text-sm text-white focus:outline-none focus:border-orange-500 transition appearance-none">
+                <!-- Dynamically populated -->
+              </select>
+            </div>
+            <button type="submit" id="vol-submit-btn" class="w-full mt-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-2.5 rounded transition flex justify-center items-center gap-2">
+              Submit Signup
+            </button>
+            <p id="vol-status" class="text-xs text-center hidden mt-2"></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openVolunteerModal(preselectDate) {
+      document.getElementById('volunteer-modal').classList.remove('hidden');
+      const select = document.getElementById('vol-date');
+      select.innerHTML = '<option value="" disabled selected>Select a date...</option>';
+      
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      
+      // We read specificEvents which is a global variable
+      for (const [dateStr, ev] of Object.entries(window.specificEvents || specificEvents)) {
+          if (ev.type === 'scrimmage') {
+              const [y, m, d] = dateStr.split('-');
+              const friendlyDate = monthNames[parseInt(m, 10) - 1] + " " + parseInt(d, 10);
+              const option = document.createElement('option');
+              option.value = friendlyDate;
+              option.textContent = friendlyDate;
+              if (friendlyDate === preselectDate) {
+                  option.selected = true;
+              }
+              select.appendChild(option);
+          }
+      }
+    }
+
+    function closeVolunteerModal() {
+      document.getElementById('volunteer-modal').classList.add('hidden');
+      document.getElementById('volunteer-form').reset();
+      document.getElementById('vol-status').className = 'hidden';
+      const btn = document.getElementById('vol-submit-btn');
+      btn.disabled = false;
+      btn.innerHTML = 'Submit Signup';
+    }
+
+    function submitVolunteerForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('vol-name').value;
+      const date = document.getElementById('vol-date').value;
+      const role = "Drinks";
+
+      const btn = document.getElementById('vol-submit-btn');
+      const status = document.getElementById('vol-status');
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i data-lucide="loader" class="w-4 h-4 animate-spin"></i> Submitting...';
+      lucide.createIcons();
+
+      const scriptUrl = "https://script.google.com/macros/s/AKfycbwsTHjyuoLk9VSy5-T-TcG4e6osy0_prsnnEc3Y5kwQixyCbneD25OxkLuEaLRV4nZR/exec";
+      
+      fetch(scriptUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify({ name, date, role })
+      }).then(() => {
+        status.textContent = "Success! Drinks are covered.";
+        status.className = "text-xs text-center text-emerald-400 mt-2 block font-bold";
+        btn.innerHTML = '<i data-lucide="check" class="w-4 h-4"></i> Submitted!';
+        lucide.createIcons();
+        setTimeout(() => {
+          closeVolunteerModal();
+          
+          // Optimistically update UI so they don't have to refresh
+          if (!signupsMap.has(date)) {
+            signupsMap.set(date, { drinks: [] });
+          }
+          signupsMap.get(date).drinks.push(name);
+          
+          const dayNum = date.replace('August ', '');
+          const el = document.getElementById('drink-status-Aug' + dayNum);
+          if (el) {
+              el.className = "mt-1.5 flex items-center gap-1 text-[10px] text-emerald-400 font-bold bg-emerald-900/20 px-2 py-1 rounded w-max border border-emerald-800/40";
+              el.innerHTML = `<i data-lucide="check-circle" class="w-3 h-3"></i> Drinks Covered: ${signupsMap.get(date).drinks.join(', ')}`;
+              if (window.lucide) lucide.createIcons();
+          }
+        }, 2000);
+      }).catch(err => {
+        status.textContent = "Error submitting. Please try again.";
+        status.className = "text-xs text-center text-red-400 mt-2 block font-bold";
+        btn.disabled = false;
+        btn.innerHTML = 'Submit Signup';
+        console.error(err);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -8,7 +8,8 @@
   <meta name="apple-mobile-web-app-title" content="Atlas Financial">
   <meta name="theme-color" content="#0A0F1D">
   <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/192/compass.png">
-  <title>Atlas Financial — Interactive Bill To-Do List, Calendar .ICS Sync & Financed Debt OS</title>
+  <title>Atlas Financial - Multi-Tier Local</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
   <style>
     :root {
       --bg-primary: #0A0F1D;
@@ -1413,7 +1414,7 @@
               <strong style="color:#FFF; font-size:13px;">📄 All Transactions & Categorization (.CSV)</strong>
               <div style="font-size:11px; color:#8E9BB0;">Formatted spreadsheet of every purchase, split, and tier tag for Excel or Sheets.</div>
             </div>
-            <a href="http://localhost:3000/api/v1/export/transactions-csv" download="Atlas_Transactions.csv" class="btn-action" style="background:#1E293B; border:1px solid var(--accent-green); color:var(--accent-green); text-decoration:none; padding:6px 12px; font-weight:800; font-size:11px;">Export CSV</a>
+            <a href="http://192.168.1.14:3000/api/v1/export/transactions-csv" download="Atlas_Transactions.csv" class="btn-action" style="background:#1E293B; border:1px solid var(--accent-green); color:var(--accent-green); text-decoration:none; padding:6px 12px; font-weight:800; font-size:11px;">Export CSV</a>
           </div>
 
           <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
@@ -1421,7 +1422,7 @@
               <strong style="color:#FFF; font-size:13px;">💼 Employer Reimbursement Expense Report (.CSV)</strong>
               <div style="font-size:11px; color:#8E9BB0;">Turn in to your company's accounting team for 100% out-of-pocket payout.</div>
             </div>
-            <a href="http://localhost:3000/api/v1/reports/employer-reimbursement?format=csv" download="Employer_Expense_Report.csv" class="btn-action" style="background:#1E293B; border:1px solid var(--accent-orange); color:var(--accent-orange); text-decoration:none; padding:6px 12px; font-weight:800; font-size:11px;">Export CSV</a>
+            <a href="http://192.168.1.14:3000/api/v1/reports/employer-reimbursement?format=csv" download="Employer_Expense_Report.csv" class="btn-action" style="background:#1E293B; border:1px solid var(--accent-orange); color:var(--accent-orange); text-decoration:none; padding:6px 12px; font-weight:800; font-size:11px;">Export CSV</a>
           </div>
 
           <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
@@ -1429,7 +1430,7 @@
               <strong style="color:#FFF; font-size:13px;">🏢 Schedule C Own Business Tax Deductions (.CSV)</strong>
               <div style="font-size:11px; color:#8E9BB0;">Organized IRS categories for equipment, software, and supplies for your CPA.</div>
             </div>
-            <a href="http://localhost:3000/api/v1/reports/schedule-c-taxes?format=csv" download="Schedule_C_Tax_Deductions.csv" class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); text-decoration:none; padding:6px 12px; font-weight:800; font-size:11px;">Export CSV</a>
+            <a href="http://192.168.1.14:3000/api/v1/reports/schedule-c-taxes?format=csv" download="Schedule_C_Tax_Deductions.csv" class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); text-decoration:none; padding:6px 12px; font-weight:800; font-size:11px;">Export CSV</a>
           </div>
 
           <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
@@ -1732,7 +1733,7 @@
 
       // Sync with backend API if alive
       try {
-        await fetch('http://localhost:3000/api/v1/bills', {
+        await fetch('http://192.168.1.14:3000/api/v1/bills', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: idVal ? targetId : null, name, amount: amt, due_day_of_month: day, category: cat, cadence: cad })
@@ -1753,7 +1754,7 @@
       appState.bills = appState.bills.filter(x => x.id !== billId);
 
       try {
-        await fetch(`http://localhost:3000/api/v1/bills/${billId}`, { method: 'DELETE' });
+        await fetch(`http://192.168.1.14:3000/api/v1/bills/${billId}`, { method: 'DELETE' });
       } catch (e) {}
 
       persistState();
@@ -1832,7 +1833,7 @@
 
       // Sync with backend API
       try {
-        await fetch('http://localhost:3000/api/v1/debt', {
+        await fetch('http://192.168.1.14:3000/api/v1/debt', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1862,7 +1863,7 @@
       appState.debts.splice(index, 1);
 
       try {
-        await fetch(`http://localhost:3000/api/v1/debt/${encodeURIComponent(debtName)}`, { method: 'DELETE' });
+        await fetch(`http://192.168.1.14:3000/api/v1/debt/${encodeURIComponent(debtName)}`, { method: 'DELETE' });
       } catch (e) {}
 
       persistState();
@@ -2328,7 +2329,7 @@
 
         // Non-blocking sync with backend API
         try {
-          fetch('http://localhost:3000/api/v1/transactions/override-tier', {
+          fetch('http://192.168.1.14:3000/api/v1/transactions/override-tier', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: txId, expense_tier: newTier })
@@ -2593,25 +2594,45 @@
       alert(`📁 Added ${files.length} file(s)! Total queued: ${queuedStatementFiles.length} statements. You can add more or click "Done Uploading — Scan All Statements".`);
     }
 
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+
+    async function extractTextFromPDF(file) {
+      try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        let fullText = '';
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          const strings = content.items.map(item => item.str);
+          fullText += strings.join(' ') + '\n';
+        }
+        return fullText;
+      } catch (err) {
+        console.error('Error parsing PDF:', err);
+        return `\nSTATEMENT_FILE_ERROR: ${file.name}`;
+      }
+    }
+
     async function processAndScanAllStatements() {
       let combinedText = document.getElementById('wstmtText')?.value || '';
 
-      // Read text from text/CSV files if present
+      // Read text from text/CSV files and PDF files
       for (const file of queuedStatementFiles) {
         if (file.name.endsWith('.csv') || file.name.endsWith('.txt')) {
           try {
             const content = await file.text();
             combinedText += '\n' + content;
           } catch(e) {}
-        } else {
-          // Add filename as marker for PDF
-          combinedText += `\nSTATEMENT_FILE: ${file.name}`;
+        } else if (file.name.toLowerCase().endsWith('.pdf')) {
+          const pdfText = await extractTextFromPDF(file);
+          combinedText += '\n' + pdfText;
         }
       }
 
       // Run pattern detective with all accumulated data
       try {
-        const res = await fetch('http://localhost:3000/api/v1/statements/analyze-year', {
+        const res = await fetch('http://192.168.1.14:3000/api/v1/statements/analyze-year', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ rawText: combinedText })
@@ -2698,7 +2719,7 @@
     async function run1YearStatementScan() {
       const text = document.getElementById('wstmtText').value.trim();
       try {
-        const res = await fetch('http://localhost:3000/api/v1/statements/analyze-year', {
+        const res = await fetch('http://192.168.1.14:3000/api/v1/statements/analyze-year', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ rawText: text })
@@ -2828,7 +2849,7 @@
 
         // Safe non-blocking API call (won't crash or freeze if offline)
         try {
-          fetch('http://localhost:3000/api/v1/onboarding/setup', {
+          fetch('http://192.168.1.14:3000/api/v1/onboarding/setup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -2875,7 +2896,7 @@
     let lastKnownSyncVersion = 0;
     async function startLiveHouseholdSync() {
       try {
-        const res = await fetch('http://localhost:3000/api/v1/household/sync');
+        const res = await fetch('http://192.168.1.14:3000/api/v1/household/sync');
         const data = await res.json();
         if (data.success && data.syncVersion && data.syncVersion !== lastKnownSyncVersion) {
           lastKnownSyncVersion = data.syncVersion;
@@ -3184,7 +3205,7 @@
 
       // Sync with backend API if alive
       try {
-        await fetch('http://localhost:3000/api/v1/bills/mark-paid', {
+        await fetch('http://192.168.1.14:3000/api/v1/bills/mark-paid', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: billId, isPaid: isPaid, paidAmount: bill.amount })
@@ -3257,7 +3278,7 @@
       }
 
       try {
-        const res = await fetch('http://localhost:3000/api/v1/amazon/auto-match', {
+        const res = await fetch('http://192.168.1.14:3000/api/v1/amazon/auto-match', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ orderSummaryText: rawText, bankTransactionAmount: 124.99 })
