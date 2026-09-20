@@ -93,13 +93,13 @@
     .btn-split { background: #1E293B; border: 1px solid var(--accent-orange); color: var(--accent-orange); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
     /* MODALS */
-    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 10px; }
     .modal-overlay.active { display: flex; }
-    .modal-box { background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 18px; max-width: 760px; width: 100%; max-height: 88vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 50px rgba(0,240,255,0.2); }
-    .modal-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color); }
+    .modal-box { background: var(--bg-card); border: 1px solid var(--accent-cyan); border-radius: 12px; max-width: 760px; width: 100%; max-height: 90vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 0 50px rgba(0,240,255,0.2); }
+    .modal-top { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border-color); flex-shrink: 0; }
     .modal-title { font-size: 16px; font-weight: 900; color: var(--accent-cyan); }
     .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; }
-    .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: #CBD5E1; }
+    .modal-body { padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; font-size: 13px; color: #CBD5E1; flex: 1; min-height: 0; }
     .form-group { display: flex; flex-direction: column; gap: 4px; }
     .form-label { font-size: 11px; font-weight: 800; color: #8E9BB0; text-transform: uppercase; }
     .form-input { background: #0A0F1D; border: 1px solid #334155; border-radius: 6px; padding: 10px; color: #FFF; font-size: 14px; font-weight: 700; outline: none; }
@@ -1084,9 +1084,9 @@
             <!-- Populated dynamically by JS -->
           </div>
 
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; border-top:1px solid #1E293B; padding-top:12px;">
-            <button class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); font-size:11px;" onclick="addNewIncomeSource()">➕ Add Another Income</button>
-            <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:10px 20px; font-weight:900; font-size:13px;" onclick="goToWizardStep(3)">Done Adding Incomes → Next: Statement Upload</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; border-top:1px solid #1E293B; padding-top:12px; gap:8px;">
+            <button class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); font-size:11px; padding:10px;" onclick="addNewIncomeSource()">➕ Add Income</button>
+            <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:10px 16px; font-weight:900; font-size:13px;" onclick="goToWizardStep(3)">Next Step →</button>
           </div>
         </div>
 
