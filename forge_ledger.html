@@ -849,7 +849,12 @@
           <button class="btn-action" style="background:#06202A; border:1px solid #B388FF; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Entertainment')">🎬 Entertainment</button>
           <button class="btn-action" style="background:#06202A; border:1px solid #FFB800; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Work Expense')">💼 Work Reimbursable</button>
           <button class="btn-action" style="background:#06202A; border:1px solid #00FF87; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Business Tax')">🏢 Business Tax Deduct</button>
-          <button class="btn-action" style="background:#06202A; border:1px solid #64748B; color:#FFF; text-align:left; padding:8px 10px; font-size:11px; grid-column:span 2;" onclick="applyQuickCategory('Other')">📦 Other Spending</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #64748B; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Other')">📦 Other Spending</button>
+          <button class="btn-action" style="background:#1E293B; border:1px dashed #64748B; color:#CBD5E1; text-align:left; padding:8px 10px; font-size:11px; grid-column:span 2;" onclick="showCustomCategoryInput()">➕ Create Custom Category...</button>
+        </div>
+        <div id="customCategoryDiv" style="display:none; margin-top:12px; display:none; gap:8px;">
+           <input type="text" id="customCatName" class="form-input" placeholder="Enter new category name..." style="flex:1;">
+           <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:8px 16px; font-weight:bold;" onclick="applyCustomCategory()">Save</button>
         </div>
       </div>
     </div>
@@ -2434,6 +2439,10 @@
 
     function closeQuickCategoryModal() {
       document.getElementById('quickCategoryModal').classList.remove('active');
+      const div = document.getElementById('customCategoryDiv');
+      if(div) { div.style.display = 'none'; }
+      const input = document.getElementById('customCatName');
+      if(input) { input.value = ''; }
     }
 
     function applyQuickCategory(newCat) {
@@ -2445,6 +2454,18 @@
         renderTransactionsTable();
       }
       closeQuickCategoryModal();
+    }
+
+    function showCustomCategoryInput() {
+      document.getElementById('customCategoryDiv').style.display = 'flex';
+      document.getElementById('customCatName').focus();
+    }
+
+    function applyCustomCategory() {
+      const newCat = document.getElementById('customCatName').value.trim();
+      if(newCat) {
+        applyQuickCategory(newCat);
+      }
     }
 
     // --- QUICK ACCOUNT / TIER OVERRIDE ---
