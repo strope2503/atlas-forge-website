@@ -145,6 +145,27 @@
     .pin-input { background: #0A0F1D; border: 2px solid #334155; border-radius: 12px; font-size: 26px; letter-spacing: 12px; text-align: center; color: var(--accent-green); padding: 12px; width: 80%; margin: 16px auto; display: block; outline: none; }
     .pin-input:focus { border-color: var(--accent-cyan); }
 
+  
+    /* 📊 SPENDING TRACKER (MH RILEY STYLE BREAKDOWN) */
+    .st-summary-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    @media(max-width: 768px) { .st-summary-grid { grid-template-columns: 1fr; } }
+    .st-stat-card { background: #0A0F1D; border: 1px solid #1E293B; border-radius: 12px; padding: 14px; text-align: center; }
+    .st-stat-title { font-size: 11px; font-weight: 800; color: #8E9BB0; text-transform: uppercase; }
+    .st-stat-val { font-size: 22px; font-weight: 900; margin-top: 4px; }
+    
+    .cat-bar-item { background: #0A0F1D; border: 1px solid #1E293B; border-radius: 10px; padding: 10px 14px; cursor: pointer; transition: all 0.2s; position: relative; }
+    .cat-bar-item:hover { border-color: var(--accent-cyan); background: #0E1A2C; transform: translateY(-1px); }
+    .cat-bar-item.active { border-color: var(--accent-cyan); background: #06202A; box-shadow: 0 0 12px rgba(0,240,255,0.25); }
+    .cat-bar-top { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; }
+    .cat-progress-bg { background: #1E293B; border-radius: 6px; height: 7px; width: 100%; margin-top: 6px; overflow: hidden; }
+    .cat-progress-fill { height: 100%; border-radius: 6px; transition: width 0.3s ease; }
+
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 800; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; }
+    .category-badge:hover { filter: brightness(1.25); transform: scale(1.04); }
+
+    .btn-override-tier { border-radius: 20px; font-size: 11px; font-weight: 800; padding: 4px 10px; cursor: pointer; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 4px; }
+    .btn-override-tier:hover { filter: brightness(1.2); }
+
   </style>
 </head>
 <body>
@@ -568,31 +589,226 @@
       </div>
     </div>
 
-    <!-- TRANSACTIONS & 1-CLICK TIER OVERRIDE SECTION -->
-    <div class="panel" style="margin-top:10px;">
-      <div class="panel-header">
+    <!-- 📊 SPENDING TRACKER & MONTHLY BREAKDOWN (MH RILEY STYLE) -->
+    <div class="panel" style="margin-top:16px; border-color: var(--accent-cyan);">
+      <div class="panel-header" style="flex-wrap:wrap; gap:12px;">
         <div>
-          <span class="panel-title">🛒 RECENT PURCHASES — 1-CLICK TIER OVERRIDE & AMAZON SPLITTER</span>
-          <div class="panel-sub" style="margin-bottom:0;">Click any tier button to override personal vs business, or split Amazon charges into line items.</div>
+          <span class="panel-title" style="color:var(--accent-cyan); font-size:16px;">📊 SPENDING TRACKER & MONTHLY BREAKDOWN</span>
+          <div class="panel-sub" style="margin-bottom:0;">
+            Every single purchase organized by category, monthly cash flow totals, and instant 1-tap account/tier overrides.
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900; padding:8px 14px; font-size:12px;" onclick="openAddTxModal()">➕ Add Purchase / Expense</button>
+          <button class="btn-cam" style="padding:8px 12px; font-size:11px;" onclick="openMultiReceiptModal()">📷 Scan Receipt</button>
         </div>
       </div>
 
-      <table class="tx-table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Vendor / Purchase</th>
-            <th>Amount</th>
-            <th>Classification Tier</th>
-            <th>Amazon Disambiguation / Split</th>
-          </tr>
-        </thead>
-        <tbody id="allTxTableBody">
-          <!-- Populated by JS -->
-        </tbody>
-      </table>
+      <!-- MONTH NAVIGATOR (MH RILEY STYLE) -->
+      <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:12px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#FFF; font-size:13px; padding:6px 14px;" onclick="navigateMonth(-1)">◀ Prev Month</button>
+          <span style="font-size:16px; font-weight:900; color:#FFF; min-width:170px; text-align:center;" id="stCurrentMonthLabel">September 2026</span>
+          <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#FFF; font-size:13px; padding:6px 14px;" onclick="navigateMonth(1)">Next Month ▶</button>
+        </div>
+        <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+          <button class="tier-tab active" id="btnFilterThisMonth" style="padding:6px 14px; font-size:11px;" onclick="setTimeFilter('month')">📅 This Month</button>
+          <button class="tier-tab" id="btnFilterAllTime" style="padding:6px 14px; font-size:11px;" onclick="setTimeFilter('all')">♾️ All Time (All Charges)</button>
+        </div>
+      </div>
+
+      <!-- MONTHLY CASH FLOW SUMMARY BAR (MH RILEY STYLE) -->
+      <div class="st-summary-grid">
+        <div class="st-stat-card">
+          <div class="st-stat-title">💰 Total Inflow / Income</div>
+          <div class="st-stat-val" style="color:var(--accent-green);" id="stTotalIncome">$0.00</div>
+          <div style="font-size:10px; color:#8E9BB0; margin-top:2px;" id="stIncomeCount">0 deposits</div>
+        </div>
+        <div class="st-stat-card">
+          <div class="st-stat-title">💳 Total Expenses & Spending</div>
+          <div class="st-stat-val" style="color:var(--accent-orange);" id="stTotalExpenses">$0.00</div>
+          <div style="font-size:10px; color:#8E9BB0; margin-top:2px;" id="stExpenseCount">0 purchases</div>
+        </div>
+        <div class="st-stat-card">
+          <div class="st-stat-title">⚖️ Net Remaining Cash Left</div>
+          <div class="st-stat-val" style="color:var(--accent-cyan);" id="stNetCash">$0.00</div>
+          <div style="font-size:10px; color:#8E9BB0; margin-top:2px;" id="stNetStatus">Safe Runway</div>
+        </div>
+      </div>
+
+      <!-- VISUAL SPENDING CATEGORY BREAKDOWN (MH RILEY PROGRESS BARS) -->
+      <div style="margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <div>
+            <span style="font-size:13px; font-weight:800; color:#FFF;">🏷️ Spending by Category</span>
+            <span style="font-size:11px; color:#8E9BB0; margin-left:6px;">(Tap any category to filter the purchases below)</span>
+          </div>
+          <button id="btnClearCatFilter" class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); font-size:10px; padding:4px 10px; display:none;" onclick="clearCategoryFilter()">✕ Showing Filtered • Tap to Show All</button>
+        </div>
+        <div id="stCategoryBreakdownGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:10px;">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- ALL PURCHASES FILTER & SEARCH BAR -->
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px; border-top:1px solid #1E293B; padding-top:14px;">
+        <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+          <span style="font-size:11px; font-weight:800; color:#8E9BB0; text-transform:uppercase; margin-right:4px;">Account Tier:</span>
+          <button class="tier-pill personal" id="pillFilterAll" style="cursor:pointer;" onclick="setAccountTierFilter('all')">All (<span id="countAllTx">0</span>)</button>
+          <button class="tier-pill personal" id="pillFilterPersonal" style="opacity:0.5; cursor:pointer;" onclick="setAccountTierFilter('personal')">🛒 Personal (<span id="countPersonalTx">0</span>)</button>
+          <button class="tier-pill employer" id="pillFilterEmployer" style="opacity:0.5; cursor:pointer;" onclick="setAccountTierFilter('employer_reimbursable')">💼 Work Reimbursable (<span id="countEmployerTx">0</span>)</button>
+          <button class="tier-pill business" id="pillFilterBusiness" style="opacity:0.5; cursor:pointer;" onclick="setAccountTierFilter('own_business')">🏢 Business Tax (<span id="countBusinessTx">0</span>)</button>
+        </div>
+        <div style="flex:1; max-width:340px; min-width:200px;">
+          <input type="text" id="stSearchInput" class="form-input" style="padding:6px 12px; font-size:12px; width:100%;" placeholder="🔍 Search vendor, category, or $..." oninput="onSearchChanged(this.value)">
+        </div>
+      </div>
+
+      <!-- ALL PURCHASES TABLE WITH VISIBLE CATEGORY AND 1-TAP OVERRIDES -->
+      <div style="overflow-x:auto;">
+        <table class="tx-table" style="width:100%; min-width:700px;">
+          <thead>
+            <tr>
+              <th style="width:95px;">Date</th>
+              <th>Vendor / Purchase</th>
+              <th style="width:160px;">Category</th>
+              <th style="width:180px;">Account / Tier</th>
+              <th style="width:110px;">Amount</th>
+              <th style="width:120px; text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="allTxTableBody">
+            <!-- Populated dynamically by JS -->
+          </tbody>
+        </table>
+      </div>
     </div>
 
+  </div>
+
+  
+  <!-- ➕ ADD / EDIT TRANSACTION MODAL -->
+  <div class="modal-overlay" id="txEditModal">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-top">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="modal-title" style="color:var(--accent-cyan);" id="txModalTitle">➕ ADD PURCHASE / EXPENSE</span>
+          <span style="background:rgba(0,240,255,0.15); color:var(--accent-cyan); padding:2px 8px; border-radius:10px; font-size:11px; font-weight:800;">Spending Tracker</span>
+        </div>
+        <button class="modal-close" onclick="closeTxEditModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editTxId" value="">
+        <div class="form-group">
+          <label class="form-label">Vendor / Store / Merchant</label>
+          <input type="text" id="modalTxVendor" class="form-input" placeholder="e.g. HEB, Shell Gas, Home Depot, Chick-fil-A, Amazon">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Amount ($)</label>
+            <input type="number" step="0.01" inputmode="decimal" id="modalTxAmount" class="form-input" placeholder="45.50">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date of Purchase</label>
+            <input type="date" id="modalTxDate" class="form-input">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="modalTxCategory" class="form-input">
+              <option value="Groceries">🛒 Groceries & Food</option>
+              <option value="Dining Out">🍔 Dining & Restaurants</option>
+              <option value="Gas & Fuel">⛽ Gas & Transportation</option>
+              <option value="Utilities">💡 Utilities & Power</option>
+              <option value="Housing">🏠 Housing & Rent</option>
+              <option value="Shopping">🛍️ Shopping & Household</option>
+              <option value="Subscriptions">📱 Subscriptions & Internet</option>
+              <option value="Healthcare">🩺 Healthcare & Medical</option>
+              <option value="Entertainment">🎬 Entertainment & Fun</option>
+              <option value="Work Expense">💼 Work Reimbursable Expense</option>
+              <option value="Business Tax">🏢 Business Tax Deduction</option>
+              <option value="Other">📦 Other Spending</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Account / Classification Tier</label>
+            <select id="modalTxTier" class="form-input">
+              <option value="personal">🛒 Personal Family Budget</option>
+              <option value="employer_reimbursable">💼 Employer Reimbursable (100% Repaid)</option>
+              <option value="own_business">🏢 Own Business Taxes (Schedule C)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes / Project / Job # (Optional)</label>
+          <input type="text" id="modalTxNote" class="form-input" placeholder="e.g. Job #9482 Pipeline, Family road trip fuel">
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+          <button class="btn-action" style="background:#1E293B; color:#8E9BB0;" onclick="closeTxEditModal()">Cancel</button>
+          <button class="btn-save" style="padding:10px 24px;" onclick="saveManualTx()">💾 Save Purchase</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🏷️ QUICK CATEGORY PICKER MODAL -->
+  <div class="modal-overlay" id="quickCategoryModal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-top">
+        <span class="modal-title" style="color:#FFF;">🏷️ Select Category</span>
+        <button class="modal-close" onclick="closeQuickCategoryModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding:16px;">
+        <input type="hidden" id="quickCatTxId" value="">
+        <p style="color:#8E9BB0; font-size:12px; margin-bottom:10px;">
+          Tap a category to organize <strong style="color:#FFF;" id="quickCatTxVendor">this purchase</strong>:
+        </p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+          <button class="btn-action" style="background:#06202A; border:1px solid #00F0FF; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Groceries')">🛒 Groceries & Food</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #FFB800; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Dining Out')">🍔 Dining & Takeout</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #B388FF; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Gas & Fuel')">⛽ Gas & Transportation</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #00FF87; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Utilities')">💡 Utilities & Power</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #FF809B; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Shopping')">🛍️ Shopping & Home</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #00F0FF; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Subscriptions')">📱 Subscriptions / Tech</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #FF0055; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Healthcare')">🩺 Health & Pharmacy</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #B388FF; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Entertainment')">🎬 Entertainment</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #FFB800; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Work Expense')">💼 Work Reimbursable</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #00FF87; color:#FFF; text-align:left; padding:8px 10px; font-size:11px;" onclick="applyQuickCategory('Business Tax')">🏢 Business Tax Deduct</button>
+          <button class="btn-action" style="background:#06202A; border:1px solid #64748B; color:#FFF; text-align:left; padding:8px 10px; font-size:11px; grid-column:span 2;" onclick="applyQuickCategory('Other')">📦 Other Spending</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🏢 QUICK ACCOUNT TIER OVERRIDE MODAL -->
+  <div class="modal-overlay" id="quickTierModal">
+    <div class="modal-box" style="max-width: 440px;">
+      <div class="modal-top">
+        <span class="modal-title" style="color:#FFF;">🔄 Override Account / Classification Tier</span>
+        <button class="modal-close" onclick="closeQuickTierModal()">✕</button>
+      </div>
+      <div class="modal-body" style="padding:16px;">
+        <input type="hidden" id="quickTierTxId" value="">
+        <p style="color:#8E9BB0; font-size:12px; margin-bottom:12px;">
+          Choose which account bucket <strong style="color:#FFF;" id="quickTierTxVendor">this charge</strong> belongs to:
+        </p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="option-card" onclick="applyQuickTier('personal')">
+            <strong style="color:#00F0FF; font-size:13px;">🛒 Personal Family Budget</strong>
+            <div style="font-size:11px; color:#8E9BB0; margin-top:2px;">Standard household expense deducted from your checking True Free Cash.</div>
+          </div>
+          <div class="option-card" onclick="applyQuickTier('employer_reimbursable')">
+            <strong style="color:var(--accent-orange); font-size:13px;">💼 Employer Reimbursable (100% Repaid)</strong>
+            <div style="font-size:11px; color:#8E9BB0; margin-top:2px;">Out-of-pocket work expense. Moves to Tab 3 for your company expense report.</div>
+          </div>
+          <div class="option-card" onclick="applyQuickTier('own_business')">
+            <strong style="color:var(--accent-green); font-size:13px;">🏢 Own Business Taxes (Schedule C)</strong>
+            <div style="font-size:11px; color:#8E9BB0; margin-top:2px;">Business write-off. Moves to Tab 4 for 100% CPA tax deduction report.</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- MULTI-PURPOSE RECEIPT CAMERA & FILE UPLOAD MODAL -->
@@ -1284,12 +1500,18 @@
         { name: 'Home Depot Appliance (0% Promo)', balance: 1450.00, payment: 120.83, rate: 0.00, isVerified: true, source: 'Financing Portal', date: '08/25/2026', promoDays: 56 }
       ],
       transactions: [
-        { id: 'tx-1', vendor: 'Home Depot Pro Supply', amount: 148.75, tier: 'employer_reimbursable', employer: 'Apex Industrial Systems', project: 'Job #9482 Pipeline', status: 'pending', date: '09/19/2026' },
-        { id: 'tx-2', vendor: 'Shell Fuel Station', amount: 65.20, tier: 'employer_reimbursable', employer: 'Apex Industrial Systems', project: 'Client Visit Houston', status: 'submitted', date: '09/16/2026' },
-        { id: 'tx-3', vendor: 'Micro Center Hardware', amount: 149.99, tier: 'own_business', taxCat: 'Tools & Equipment', date: '09/12/2026' },
-        { id: 'tx-4', vendor: 'GoDaddy Domains & Cloud', amount: 84.99, tier: 'own_business', taxCat: 'Software & Web', date: '09/10/2026' },
-        { id: 'tx-5', vendor: 'Amazon.com Order', amount: 124.99, tier: 'personal', date: '09/15/2026', isAmazon: true },
-        { id: 'tx-6', vendor: 'HEB Supermarket', amount: 138.40, tier: 'personal', date: '09/18/2026' }
+        { id: 'tx-1', vendor: 'HEB Supermarket', amount: 138.40, category: 'Groceries', tier: 'personal', date: '2026-09-18' },
+        { id: 'tx-2', vendor: 'Home Depot Pro Supply', amount: 148.75, category: 'Work Expense', tier: 'employer_reimbursable', employer: 'Apex Industrial Systems', project: 'Job #9482 Pipeline', status: 'pending', date: '2026-09-19' },
+        { id: 'tx-3', vendor: 'Shell Fuel Station', amount: 65.20, category: 'Gas & Fuel', tier: 'employer_reimbursable', employer: 'Apex Industrial Systems', project: 'Client Visit Houston', status: 'submitted', date: '2026-09-16' },
+        { id: 'tx-4', vendor: 'Chick-fil-A Family Dinner', amount: 42.15, category: 'Dining Out', tier: 'personal', date: '2026-09-15' },
+        { id: 'tx-5', vendor: 'Amazon (Cleaning & Household)', amount: 44.99, category: 'Shopping', tier: 'personal', date: '2026-09-15' },
+        { id: 'tx-6', vendor: 'Amazon (USB-C Hub - Business)', amount: 80.00, category: 'Business Tax', tier: 'own_business', taxCat: 'Tools & Equipment', date: '2026-09-15' },
+        { id: 'tx-7', vendor: 'Micro Center Hardware', amount: 149.99, category: 'Business Tax', tier: 'own_business', taxCat: 'Tools & Equipment', date: '2026-09-12' },
+        { id: 'tx-8', vendor: 'GoDaddy Domains & Cloud', amount: 84.99, category: 'Subscriptions', tier: 'own_business', taxCat: 'Software & Web', date: '2026-09-10' },
+        { id: 'tx-9', vendor: 'Kroger Grocery Run', amount: 92.60, category: 'Groceries', tier: 'personal', date: '2026-09-08' },
+        { id: 'tx-10', vendor: 'Target Household Essentials', amount: 68.30, category: 'Shopping', tier: 'personal', date: '2026-09-05' },
+        { id: 'tx-11', vendor: 'Chevron Fuel', amount: 55.40, category: 'Gas & Fuel', tier: 'personal', date: '2026-09-03' },
+        { id: 'tx-12', vendor: 'CVS Pharmacy Prescription', amount: 24.50, category: 'Healthcare', tier: 'personal', date: '2026-09-02' }
       ]
     };
 
@@ -1769,48 +1991,448 @@
       document.getElementById('sinkingDeductLbl').innerText = '-$' + perCheckSinking.toFixed(2);
     }
 
+    
+    /* ===================================================
+       📊 SPENDING TRACKER ENGINE (MH RILEY STYLE)
+       =================================================== */
+
+    let currentNavDate = new Date(2026, 8, 1); // September 2026
+    let stTimeMode = 'month'; // 'month' or 'all'
+    let stSelectedCategory = 'all';
+    let stAccountTierFilter = 'all'; // 'all', 'personal', 'employer_reimbursable', 'own_business'
+    let stSearchTerm = '';
+
+    const categoryColors = {
+      'Groceries': '#00FF87',
+      'Dining Out': '#FFB800',
+      'Gas & Fuel': '#B388FF',
+      'Utilities': '#00F0FF',
+      'Housing': '#38BDF8',
+      'Shopping': '#F472B6',
+      'Subscriptions': '#60A5FA',
+      'Healthcare': '#FF0055',
+      'Entertainment': '#E879F9',
+      'Work Expense': '#FB923C',
+      'Business Tax': '#34D399',
+      'Other': '#94A3B8',
+      'Income': '#00FF87'
+    };
+
+    const categoryIcons = {
+      'Groceries': '🛒',
+      'Dining Out': '🍔',
+      'Gas & Fuel': '⛽',
+      'Utilities': '💡',
+      'Housing': '🏠',
+      'Shopping': '🛍️',
+      'Subscriptions': '📱',
+      'Healthcare': '🩺',
+      'Entertainment': '🎬',
+      'Work Expense': '💼',
+      'Business Tax': '🏢',
+      'Other': '📦',
+      'Income': '💰'
+    };
+
+    function navigateMonth(delta) {
+      currentNavDate.setMonth(currentNavDate.getMonth() + delta);
+      stTimeMode = 'month';
+      document.getElementById('btnFilterThisMonth').classList.add('active');
+      document.getElementById('btnFilterAllTime').classList.remove('active');
+      renderTransactionsTable();
+    }
+
+    function setTimeFilter(mode) {
+      stTimeMode = mode;
+      document.getElementById('btnFilterThisMonth').classList.toggle('active', mode === 'month');
+      document.getElementById('btnFilterAllTime').classList.toggle('active', mode === 'all');
+      renderTransactionsTable();
+    }
+
+    function setAccountTierFilter(tier) {
+      stAccountTierFilter = tier;
+      document.getElementById('pillFilterAll').style.opacity = tier === 'all' ? '1' : '0.5';
+      document.getElementById('pillFilterPersonal').style.opacity = tier === 'personal' ? '1' : '0.5';
+      document.getElementById('pillFilterEmployer').style.opacity = tier === 'employer_reimbursable' ? '1' : '0.5';
+      document.getElementById('pillFilterBusiness').style.opacity = tier === 'own_business' ? '1' : '0.5';
+      renderTransactionsTable();
+    }
+
+    function selectCategoryFilter(cat) {
+      stSelectedCategory = (stSelectedCategory === cat) ? 'all' : cat;
+      renderTransactionsTable();
+    }
+
+    function clearCategoryFilter() {
+      stSelectedCategory = 'all';
+      renderTransactionsTable();
+    }
+
+    function onSearchChanged(val) {
+      stSearchTerm = (val || '').toLowerCase().trim();
+      renderTransactionsTable();
+    }
+
     function renderTransactionsTable() {
+      const year = currentNavDate.getFullYear();
+      const monthIndex = currentNavDate.getMonth();
+      const monthStr = String(monthIndex + 1).padStart(2, '0');
+      const targetPrefix = `${year}-${monthStr}`;
+
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      document.getElementById('stCurrentMonthLabel').innerText = `${monthNames[monthIndex]} ${year}`;
+
+      // Ensure every transaction has a category
+      appState.transactions.forEach(t => {
+        if (!t.category) {
+          if (t.isIncome) t.category = 'Income';
+          else if (t.taxCat) t.category = 'Business Tax';
+          else if (t.tier === 'employer_reimbursable') t.category = 'Work Expense';
+          else if (t.vendor.toLowerCase().includes('heb') || t.vendor.toLowerCase().includes('kroger')) t.category = 'Groceries';
+          else if (t.vendor.toLowerCase().includes('shell') || t.vendor.toLowerCase().includes('chevron')) t.category = 'Gas & Fuel';
+          else if (t.vendor.toLowerCase().includes('amazon')) t.category = 'Shopping';
+          else t.category = 'Other';
+        }
+      });
+
+      // Filter by Time Period
+      let timeFiltered = appState.transactions;
+      if (stTimeMode === 'month') {
+        timeFiltered = appState.transactions.filter(t => {
+          if (!t.date) return false;
+          // Support both YYYY-MM-DD and MM/DD/YYYY formats
+          if (t.date.startsWith(targetPrefix)) return true;
+          if (t.date.startsWith(`${monthStr}/`)) return true;
+          return false;
+        });
+      }
+
+      // Calculate Cash Flow Summary (MH Riley Style)
+      let totalIncome = 0;
+      let totalExpenses = 0;
+      let incomeCount = 0;
+      let expenseCount = 0;
+
+      timeFiltered.forEach(t => {
+        if (t.isIncome) {
+          totalIncome += t.amount;
+          incomeCount++;
+        } else {
+          totalExpenses += t.amount;
+          expenseCount++;
+        }
+      });
+
+      const netCash = totalIncome - totalExpenses;
+      document.getElementById('stTotalIncome').innerText = '+$' + totalIncome.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+      document.getElementById('stTotalExpenses').innerText = '-$' + totalExpenses.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+      document.getElementById('stIncomeCount').innerText = `${incomeCount} deposits`;
+      document.getElementById('stExpenseCount').innerText = `${expenseCount} purchases`;
+
+      const netEl = document.getElementById('stNetCash');
+      netEl.innerText = (netCash >= 0 ? '+$' : '-$') + Math.abs(netCash).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+      netEl.style.color = netCash >= 0 ? 'var(--accent-green)' : 'var(--accent-red)';
+      document.getElementById('stNetStatus').innerText = netCash >= 0 ? '🟢 Positive Cash Flow' : '🔴 Deficit Outflow';
+
+      // Calculate Category Totals (MH Riley Breakdown)
+      const catTotals = {};
+      const catCounts = {};
+      timeFiltered.filter(t => !t.isIncome).forEach(t => {
+        const cat = t.category || 'Other';
+        catTotals[cat] = (catTotals[cat] || 0) + t.amount;
+        catCounts[cat] = (catCounts[cat] || 0) + 1;
+      });
+
+      // Render Category Breakdown Bars
+      const catGrid = document.getElementById('stCategoryBreakdownGrid');
+      catGrid.innerHTML = '';
+      const sortedCats = Object.keys(catTotals).sort((a, b) => catTotals[b] - catTotals[a]);
+
+      if (sortedCats.length === 0) {
+        catGrid.innerHTML = '<div style="color:#64748B; font-size:12px; padding:8px;">No spending recorded for this period.</div>';
+      } else {
+        sortedCats.forEach(cat => {
+          const amt = catTotals[cat];
+          const pct = totalExpenses > 0 ? Math.round((amt / totalExpenses) * 100) : 0;
+          const icon = categoryIcons[cat] || '📦';
+          const color = categoryColors[cat] || '#00F0FF';
+          const isSelected = stSelectedCategory === cat;
+
+          const item = document.createElement('div');
+          item.className = 'cat-bar-item' + (isSelected ? ' active' : '');
+          item.onclick = () => selectCategoryFilter(cat);
+          item.innerHTML = `
+            <div class="cat-bar-top">
+              <span>${icon} ${cat} <span style="font-size:10px; color:#8E9BB0;">(${catCounts[cat]})</span></span>
+              <span style="color:${color};">$${amt.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})} (${pct}%)</span>
+            </div>
+            <div class="cat-progress-bg">
+              <div class="cat-progress-fill" style="width:${pct}%; background:${color};"></div>
+            </div>
+          `;
+          catGrid.appendChild(item);
+        });
+      }
+
+      document.getElementById('btnClearCatFilter').style.display = stSelectedCategory !== 'all' ? 'inline-block' : 'none';
+
+      // Filter for Purchases Table
+      let tableList = timeFiltered;
+
+      // Filter by Category
+      if (stSelectedCategory !== 'all') {
+        tableList = tableList.filter(t => t.category === stSelectedCategory);
+      }
+
+      // Filter by Tier
+      if (stAccountTierFilter !== 'all') {
+        tableList = tableList.filter(t => t.tier === stAccountTierFilter);
+      }
+
+      // Filter by Search
+      if (stSearchTerm) {
+        tableList = tableList.filter(t => 
+          (t.vendor || '').toLowerCase().includes(stSearchTerm) ||
+          (t.category || '').toLowerCase().includes(stSearchTerm) ||
+          (t.employer || '').toLowerCase().includes(stSearchTerm) ||
+          (t.taxCat || '').toLowerCase().includes(stSearchTerm) ||
+          String(t.amount || '').includes(stSearchTerm)
+        );
+      }
+
+      // Update Counts
+      document.getElementById('countAllTx').innerText = timeFiltered.length;
+      document.getElementById('countPersonalTx').innerText = timeFiltered.filter(t => t.tier === 'personal').length;
+      document.getElementById('countEmployerTx').innerText = timeFiltered.filter(t => t.tier === 'employer_reimbursable').length;
+      document.getElementById('countBusinessTx').innerText = timeFiltered.filter(t => t.tier === 'own_business').length;
+
+      // Render Table Rows
       const tbody = document.getElementById('allTxTableBody');
       tbody.innerHTML = '';
-      appState.transactions.forEach(t => {
+
+      if (tableList.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align:center; padding:24px; color:#8E9BB0;">
+              🔍 No charges found matching this period or filter. Tap <strong>➕ Add Purchase</strong> to log an expense!
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tableList.forEach(t => {
         const tr = document.createElement('tr');
+        const cat = t.category || 'Other';
+        const icon = categoryIcons[cat] || '📦';
+        const catColor = categoryColors[cat] || '#00F0FF';
+
+        let tierBadgeClass = 'personal';
+        let tierLabel = '🛒 Personal';
+        if (t.tier === 'employer_reimbursable') {
+          tierBadgeClass = 'employer';
+          tierLabel = '💼 Work Reimbursable';
+        } else if (t.tier === 'own_business') {
+          tierBadgeClass = 'business';
+          tierLabel = '🏢 Business Tax';
+        }
+
         let splitBtn = '';
         if (t.isAmazon || t.vendor.toLowerCase().includes('amazon')) {
-          splitBtn = `<button class="btn-split" onclick="openAmazonModal()">✂️ Split Amazon</button>`;
+          splitBtn = `<button class="btn-split" onclick="openAmazonModal()">✂️ Split</button>`;
         }
 
         tr.innerHTML = `
-          <td>${t.date}</td>
-          <td><strong>${t.vendor}</strong></td>
-          <td style="font-weight:800;">$${t.amount.toFixed(2)}</td>
+          <td style="color:#8E9BB0; font-size:12px;">${t.date || 'Recent'}</td>
           <td>
-            <button class="tier-pill ${t.tier === 'personal' ? 'personal' : (t.tier === 'employer_reimbursable' ? 'employer' : 'business')}" onclick="cycleTier('${t.id}')">
-              ${t.tier === 'personal' ? '🛒 Personal' : (t.tier === 'employer_reimbursable' ? '💼 Employer Reimbursable' : '🏢 Own Business Tax')}
-            </button>
+            <strong style="color:#FFF; font-size:13px;">${t.vendor}</strong>
+            ${t.employer ? `<div style="font-size:10px; color:var(--accent-orange);">Apex Industrial • ${t.project || 'Field'}</div>` : ''}
+            ${t.taxCat ? `<div style="font-size:10px; color:var(--accent-green);">Schedule C: ${t.taxCat}</div>` : ''}
           </td>
-          <td>${splitBtn || '<span style="color:#64748B;">Single Item</span>'}</td>
+          <td>
+            <span class="category-badge" style="background:rgba(255,255,255,0.08); color:${catColor}; border-color:${catColor};" onclick="openQuickCategoryPicker('${t.id}')">
+              ${icon} ${cat} <span style="font-size:9px; opacity:0.7;">▼</span>
+            </span>
+          </td>
+          <td>
+            <span class="btn-override-tier ${tierBadgeClass}" onclick="openQuickTierPicker('${t.id}')">
+              ${tierLabel} <span style="font-size:9px; opacity:0.7;">▼</span>
+            </span>
+          </td>
+          <td style="font-weight:900; font-size:13px; color:${t.isIncome ? 'var(--accent-green)' : '#FFF'};">
+            ${t.isIncome ? '+' : ''}$${t.amount.toFixed(2)}
+          </td>
+          <td style="text-align:right;">
+            <div style="display:flex; gap:6px; justify-content:flex-end; align-items:center;">
+              ${splitBtn}
+              <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; font-size:11px; padding:4px 8px;" onclick="openEditTxModal('${t.id}')">✏️</button>
+              <button class="btn-action" style="background:#2A1015; border:1px solid #FF0055; color:#FF809B; font-size:11px; padding:4px 8px;" onclick="deleteTransaction('${t.id}')">🗑️</button>
+            </div>
+          </td>
         `;
         tbody.appendChild(tr);
       });
     }
 
-    function cycleTier(txId) {
+    // --- QUICK CATEGORY OVERRIDE ---
+    function openQuickCategoryPicker(txId) {
       const tx = appState.transactions.find(t => t.id === txId);
       if (!tx) return;
-      if (tx.tier === 'personal') {
-        tx.tier = 'employer_reimbursable';
-        tx.status = 'pending';
-        tx.employer = 'Apex Industrial Systems';
-        tx.project = 'Field Expense';
-      } else if (tx.tier === 'employer_reimbursable') {
-        tx.tier = 'own_business';
-        tx.taxCat = 'Tools & Equipment';
-      } else {
-        tx.tier = 'personal';
-      }
-      persistState();
-      renderAll();
+      document.getElementById('quickCatTxId').value = txId;
+      document.getElementById('quickCatTxVendor').innerText = `"${tx.vendor}" ($${tx.amount.toFixed(2)})`;
+      document.getElementById('quickCategoryModal').classList.add('active');
     }
+
+    function closeQuickCategoryModal() {
+      document.getElementById('quickCategoryModal').classList.remove('active');
+    }
+
+    function applyQuickCategory(newCat) {
+      const txId = document.getElementById('quickCatTxId').value;
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (tx) {
+        tx.category = newCat;
+        persistState();
+        renderTransactionsTable();
+      }
+      closeQuickCategoryModal();
+    }
+
+    // --- QUICK ACCOUNT / TIER OVERRIDE ---
+    function openQuickTierPicker(txId) {
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      document.getElementById('quickTierTxId').value = txId;
+      document.getElementById('quickTierTxVendor').innerText = `"${tx.vendor}" ($${tx.amount.toFixed(2)})`;
+      document.getElementById('quickTierModal').classList.add('active');
+    }
+
+    function closeQuickTierModal() {
+      document.getElementById('quickTierModal').classList.remove('active');
+    }
+
+    async function applyQuickTier(newTier) {
+      const txId = document.getElementById('quickTierTxId').value;
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (tx) {
+        tx.tier = newTier;
+        if (newTier === 'employer_reimbursable') {
+          tx.employer = 'Apex Industrial Systems';
+          tx.project = 'Field Expense';
+          tx.status = 'pending';
+        } else if (newTier === 'own_business') {
+          tx.taxCat = tx.taxCat || 'Tools & Supplies';
+        }
+        persistState();
+        renderTransactionsTable();
+
+        // Non-blocking sync with backend API
+        try {
+          fetch('http://localhost:3000/api/v1/transactions/override-tier', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: txId, expense_tier: newTier })
+          }).catch(() => {});
+        } catch(e) {}
+      }
+      closeQuickTierModal();
+    }
+
+    // --- ADD / EDIT PURCHASE MODAL ---
+    function openAddTxModal() {
+      document.getElementById('editTxId').value = '';
+      document.getElementById('txModalTitle').innerText = '➕ ADD PURCHASE / EXPENSE';
+      document.getElementById('modalTxVendor').value = '';
+      document.getElementById('modalTxAmount').value = '';
+      document.getElementById('modalTxDate').value = new Date().toISOString().split('T')[0];
+      document.getElementById('modalTxCategory').value = 'Groceries';
+      document.getElementById('modalTxTier').value = 'personal';
+      document.getElementById('modalTxNote').value = '';
+      document.getElementById('txEditModal').classList.add('active');
+    }
+
+    function openEditTxModal(txId) {
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      document.getElementById('editTxId').value = txId;
+      document.getElementById('txModalTitle').innerText = '✏️ EDIT PURCHASE / EXPENSE';
+      document.getElementById('modalTxVendor').value = tx.vendor || '';
+      document.getElementById('modalTxAmount').value = tx.amount || '';
+      document.getElementById('modalTxDate').value = tx.date || new Date().toISOString().split('T')[0];
+      document.getElementById('modalTxCategory').value = tx.category || 'Groceries';
+      document.getElementById('modalTxTier').value = tx.tier || 'personal';
+      document.getElementById('modalTxNote').value = tx.project || tx.taxCat || '';
+      document.getElementById('txEditModal').classList.add('active');
+    }
+
+    function closeTxEditModal() {
+      document.getElementById('txEditModal').classList.remove('active');
+    }
+
+    function saveManualTx() {
+      const txId = document.getElementById('editTxId').value;
+      const vendor = document.getElementById('modalTxVendor').value.trim();
+      const amt = parseFloat(document.getElementById('modalTxAmount').value);
+      const dt = document.getElementById('modalTxDate').value || new Date().toISOString().split('T')[0];
+      const cat = document.getElementById('modalTxCategory').value;
+      const tier = document.getElementById('modalTxTier').value;
+      const note = document.getElementById('modalTxNote').value.trim();
+
+      if (!vendor) { alert('Please enter a vendor or store name.'); return; }
+      if (isNaN(amt) || amt <= 0) { alert('Please enter a valid dollar amount.'); return; }
+
+      if (txId) {
+        // Edit existing
+        const existing = appState.transactions.find(t => t.id === txId);
+        if (existing) {
+          existing.vendor = vendor;
+          existing.amount = amt;
+          existing.date = dt;
+          existing.category = cat;
+          existing.tier = tier;
+          if (tier === 'employer_reimbursable') {
+            existing.employer = 'Apex Industrial Systems';
+            existing.project = note || 'Field Expense';
+          } else if (tier === 'own_business') {
+            existing.taxCat = note || 'General Business';
+          }
+        }
+      } else {
+        // Add new
+        const newTx = {
+          id: 'tx-' + Date.now(),
+          vendor,
+          amount: amt,
+          date: dt,
+          category: cat,
+          tier: tier
+        };
+        if (tier === 'employer_reimbursable') {
+          newTx.employer = 'Apex Industrial Systems';
+          newTx.project = note || 'Field Expense';
+          newTx.status = 'pending';
+        } else if (tier === 'own_business') {
+          newTx.taxCat = note || 'General Business';
+        }
+        appState.transactions.unshift(newTx);
+      }
+
+      persistState();
+      renderTransactionsTable();
+      closeTxEditModal();
+      alert(`✅ Purchase "${vendor}" ($${amt.toFixed(2)}) saved successfully!`);
+    }
+
+    function deleteTransaction(txId) {
+      const tx = appState.transactions.find(t => t.id === txId);
+      if (!tx) return;
+      if (!confirm(`Are you sure you want to delete purchase "${tx.vendor}" ($${tx.amount.toFixed(2)})?`)) return;
+
+      appState.transactions = appState.transactions.filter(t => t.id !== txId);
+      persistState();
+      renderTransactionsTable();
+    }
+
 
     
     // ==========================================
