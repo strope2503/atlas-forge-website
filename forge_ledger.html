@@ -92,6 +92,10 @@
     .tier-pill.business { background: rgba(0,255,135,0.15); color: var(--accent-green); border-color: rgba(0,255,135,0.3); }
     .btn-split { background: #1E293B; border: 1px solid var(--accent-orange); color: var(--accent-orange); padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
+    
+    .bills-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px; margin-top: 20px; }
+    @media (max-width: 900px) { .bills-grid { grid-template-columns: 1fr; } }
+
     /* MODALS */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.85); z-index: 1000; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 20px; }
     .modal-overlay.active { display: block; }
@@ -242,6 +246,51 @@
 
     <!-- 📱 TAB 1: SPENDING (MH RILEY STYLE DASHBOARD) -->
     <div id="tab-spending" class="tab-view active">
+      <!-- DUAL HERO: True Free Cash vs Bank Checking -->
+      <div class="hero-dual-grid">
+        <div class="hero-card-free">
+          <div class="hero-top">
+            <span class="badge-green">🟢 TRUE FREE CASH (SAFE-TO-SPEND)</span>
+            <span class="badge-pacing" id="dailyPacingBadge">⚡ $37.05 / day Pacing</span>
+          </div>
+          <div class="hero-val-free" id="freeCashVal">$1,111.54</div>
+          <p class="hero-desc">
+            Actual spendable cash today. Upcoming bills (<strong style="color:#FFB800" id="escrowTotalLbl">$1,850.00</strong>), big bill reserve (<strong style="color:#B388FF" id="sinkingPayLbl">$138.46</strong>), and debt targets are isolated safely.
+          </p>
+          <div class="advice-pill" id="advicePill">
+            💡 <strong>Smart Allocation:</strong> Setting aside $138.46 per paycheck into your Rainy Day & Big Bill Reserve protects you when large 6-month bills (car insurance, medical, repairs) come due!
+          </div>
+        </div>
+
+        <div class="hero-card-bank">
+          <div class="hero-top">
+            <span style="color:#8E9BB0; font-size:12px; font-weight:800;">🏦 TOTAL CHECKING ACCOUNT</span>
+            <span style="color:#8E9BB0; font-size:12px;" id="daysRemainingLbl">30 Days Left</span>
+          </div>
+          <div class="hero-val-bank" id="bankBalVal">$3,450.00</div>
+          <div class="breakdown-box">
+            <div class="breakdown-item">
+              <span>🔒 Reserved for Upcoming Bills (Escrow):</span>
+              <strong style="color:#FFB800" id="escrowDeductLbl">-$1,850.00</strong>
+            </div>
+            <div class="breakdown-item">
+              <span>🛡️ Big Bill & Emergency Reserve (Insurance/Repairs):</span>
+              <strong style="color:#B388FF" id="sinkingDeductLbl">-$138.46</strong>
+            </div>
+            <div class="breakdown-item">
+              <span>🎯 Active Debt Snowball Target #1:</span>
+              <strong style="color:#FF0055" id="snowballDeductLbl">-$350.00</strong>
+            </div>
+            <div class="breakdown-total">
+              <span>= True Free Cash:</span>
+              <strong style="color:#00FF87" id="freeCashSub">$1,111.54</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      
       <div class="mh-month-selector">
         <button class="mh-arrow" onclick="navigateMonth(-1)">‹</button>
         <span id="mhMonthLabel">September 2026</span>
@@ -363,70 +412,10 @@
     <!-- 📱 TAB 3: BILLS & DEBTS -->
     <div id="tab-bills" class="tab-view">
 <!-- MULTI-TIER NAVIGATION TABS -->
-  <div class="tier-bar">
-    <div class="tier-tab active" id="tabPersonal" onclick="switchTierView('personal')">
-      🏠 1. Personal Family Budget <span class="tier-badge">Active</span>
-    </div>
-    <div class="tier-tab" id="tabDebtChecklist" onclick="switchTierView('debtChecklist')">
-      🏡 2. Financed Debt Checklist (House, Car, Appliances) <span class="tier-badge-orange" id="debtAuditBadge">$300,150 Tracked</span>
-    </div>
-    <div class="tier-tab" id="tabEmployer" onclick="switchTierView('employer')">
-      💼 3. Employer Reimbursable <span class="tier-badge-orange" id="empPendingBadge">$279.70 Pending</span>
-    </div>
-    <div class="tier-tab" id="tabBusiness" onclick="switchTierView('business')">
-      🏢 4. Own Business Taxes <span class="tier-badge" id="bizDeductionsBadge">$428.73 Deductions</span>
-    </div>
-  </div>
-
-  
-<!-- VIEW 1: PERSONAL FAMILY CASH FLOW (DEFAULT) -->
+  <!-- VIEW 1: PERSONAL FAMILY CASH FLOW (DEFAULT) -->
     <div id="viewPersonal">
-      <!-- DUAL HERO: True Free Cash vs Bank Checking -->
-      <div class="hero-dual-grid">
-        <div class="hero-card-free">
-          <div class="hero-top">
-            <span class="badge-green">🟢 TRUE FREE CASH (SAFE-TO-SPEND)</span>
-            <span class="badge-pacing" id="dailyPacingBadge">⚡ $37.05 / day Pacing</span>
-          </div>
-          <div class="hero-val-free" id="freeCashVal">$1,111.54</div>
-          <p class="hero-desc">
-            Actual spendable cash today. Upcoming bills (<strong style="color:#FFB800" id="escrowTotalLbl">$1,850.00</strong>), big bill reserve (<strong style="color:#B388FF" id="sinkingPayLbl">$138.46</strong>), and debt targets are isolated safely.
-          </p>
-          <div class="advice-pill" id="advicePill">
-            💡 <strong>Smart Allocation:</strong> Setting aside $138.46 per paycheck into your Rainy Day & Big Bill Reserve protects you when large 6-month bills (car insurance, medical, repairs) come due!
-          </div>
-        </div>
-
-        <div class="hero-card-bank">
-          <div class="hero-top">
-            <span style="color:#8E9BB0; font-size:12px; font-weight:800;">🏦 TOTAL CHECKING ACCOUNT</span>
-            <span style="color:#8E9BB0; font-size:12px;" id="daysRemainingLbl">30 Days Left</span>
-          </div>
-          <div class="hero-val-bank" id="bankBalVal">$3,450.00</div>
-          <div class="breakdown-box">
-            <div class="breakdown-item">
-              <span>🔒 Reserved for Upcoming Bills (Escrow):</span>
-              <strong style="color:#FFB800" id="escrowDeductLbl">-$1,850.00</strong>
-            </div>
-            <div class="breakdown-item">
-              <span>🛡️ Big Bill & Emergency Reserve (Insurance/Repairs):</span>
-              <strong style="color:#B388FF" id="sinkingDeductLbl">-$138.46</strong>
-            </div>
-            <div class="breakdown-item">
-              <span>🎯 Active Debt Snowball Target #1:</span>
-              <strong style="color:#FF0055" id="snowballDeductLbl">-$350.00</strong>
-            </div>
-            <div class="breakdown-total">
-              <span>= True Free Cash:</span>
-              <strong style="color:#00FF87" id="freeCashSub">$1,111.54</strong>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      
       <!-- BILL TO-DO LIST & PAYDAY ALLOCATION PLAYBOOK GRID -->
-      <div style="display:grid; grid-template-columns: 1.35fr 1fr; gap:18px; margin-top:20px;">
+      <div class="bills-grid">
         
         <!-- INTERACTIVE MONTHLY BILL PAYMENT TO-DO LIST -->
         <div class="panel" style="border-color: var(--accent-cyan);">
@@ -589,7 +578,7 @@
     </div>
 
     <!-- VIEW 2: DEBT & FINANCED OBLIGATIONS CHECKLIST (HOUSE, CAR, APPLIANCES) -->
-    <div id="viewDebtChecklist" style="display:none;">
+    <div id="viewDebtChecklist" style="display:block; margin-top: 20px;">
       <div class="panel" style="border-color: var(--accent-orange);">
         <div class="panel-header">
           <div>
@@ -628,7 +617,7 @@
     </div>
 
     <!-- VIEW 3: EMPLOYER REIMBURSABLE EXPENSES -->
-    <div id="viewEmployer" style="display:none;">
+    <div id="viewEmployer" style="display:block; margin-top: 20px;">
       <div class="panel" style="border-color: var(--accent-orange);">
         <div class="panel-header">
           <div>
@@ -686,7 +675,7 @@
     </div>
 
     <!-- VIEW 4: OWN BUSINESS & SCHEDULE C TAXES -->
-    <div id="viewBusiness" style="display:none;">
+    <div id="viewBusiness" style="display:block; margin-top: 20px;">
       <div class="panel" style="border-color: var(--accent-green);">
         <div class="panel-header">
           <div>
@@ -2069,16 +2058,10 @@
     }
 
     function switchTierView(tier) {
-      document.getElementById('viewPersonal').style.display = tier === 'personal' ? 'block' : 'none';
-      document.getElementById('viewDebtChecklist').style.display = tier === 'debtChecklist' ? 'block' : 'none';
-      document.getElementById('viewEmployer').style.display = tier === 'employer' ? 'block' : 'none';
-      document.getElementById('viewBusiness').style.display = tier === 'business' ? 'block' : 'none';
-
-      document.querySelectorAll('.tier-tab').forEach(t => t.classList.remove('active'));
-      if (tier === 'personal') document.getElementById('tabPersonal').classList.add('active');
-      if (tier === 'debtChecklist') document.getElementById('tabDebtChecklist').classList.add('active');
-      if (tier === 'employer') document.getElementById('tabEmployer').classList.add('active');
-      if (tier === 'business') document.getElementById('tabBusiness').classList.add('active');
+      // Tier views are now stacked on Tab 3. Scroll to them instead of hiding.
+      if (tier === 'debtChecklist') document.getElementById('viewDebtChecklist')?.scrollIntoView({behavior: 'smooth'});
+      if (tier === 'employer') document.getElementById('viewEmployer')?.scrollIntoView({behavior: 'smooth'});
+      if (tier === 'business') document.getElementById('viewBusiness')?.scrollIntoView({behavior: 'smooth'});
     }
 
     function renderPersonal() {
