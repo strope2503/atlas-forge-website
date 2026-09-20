@@ -197,6 +197,7 @@
     </div>
     <div class="header-actions">
       <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; padding:9px 12px; font-size:11px; font-weight:800;" onclick="lockVaultNow()">🔒 Lock</button>
+      <button class="btn-action" style="background:#1E293B; border:1px solid var(--accent-orange); color:var(--accent-orange); padding:9px 14px; font-weight:900;" onclick="openAddDocumentsModal()">🏦 Connect Bank / Docs</button>
       <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; padding:9px 14px; font-weight:900;" onclick="openAddIncomeModal()">➕ Add Income</button>
       <button class="btn-action" style="background:linear-gradient(90deg, #FFB800, #FF0055); color:#FFF; padding:9px 14px; font-weight:900;" onclick="openOnboardingWizard()">🚀 Setup Household / Start Fresh</button>
       <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; padding:9px 14px; font-weight:900;" onclick="openSpouseShareModal()">👫 Share with Spouse <span style="background:#0A0F1D; color:#00FF87; padding:2px 6px; border-radius:10px; font-size:10px; margin-left:4px;">LIVE</span></button>
@@ -1387,6 +1388,28 @@
   </div>
 
   <!-- 📤 COMPREHENSIVE EXPORT HUB MODAL -->
+  <!-- 🏦 ADD DOCUMENTS / CONNECT BANK MODAL -->
+  <div class="modal-overlay" id="addDocumentsModal">
+    <div class="modal-content" style="max-width:500px;">
+      <div class="modal-header">
+        <h2 class="modal-title">🏦 Connect Bank / Scan Documents</h2>
+        <button class="modal-close" onclick="closeAddDocumentsModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div style="background:#06202A; border:1px dashed var(--accent-cyan); border-radius:10px; padding:20px; text-align:center; cursor:pointer;" onclick="document.getElementById('dashboardMultiStatementInput').click()">
+          <div style="font-size:32px; margin-bottom:8px;">📄</div>
+          <strong style="color:#FFF;">Tap to Upload PDFs or CSVs</strong>
+          <div style="font-size:11px; color:var(--accent-cyan); margin-top:4px;">Select 1 or multiple bank statements</div>
+        </div>
+        <input type="file" id="dashboardMultiStatementInput" multiple accept=".pdf,.csv,.txt" style="display:none;" onchange="handleDashboardStatementFiles(event)">
+        
+        <div id="dashboardQueuedFilesList" style="margin-top:12px; display:flex; flex-direction:column; gap:4px;"></div>
+        
+        <button class="btn-save" style="margin-top:14px;" onclick="processDashboardStatements()">🔍 Scan & Import Now</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="exportHubModal">
     <div class="modal-box" style="max-width: 640px;">
       <div class="modal-top">
@@ -2881,6 +2904,124 @@
     function closeSpouseShareModal() { document.getElementById('spouseShareModal').classList.remove('active'); }
 
     function openExportHubModal() { document.getElementById('exportHubModal').classList.add('active'); }
+    
+    // --- CONNECT BANK / SCAN MORE DOCUMENTS (DASHBOARD) ---
+    let dashboardQueuedFiles = [];
+
+    function openAddDocumentsModal() {
+      dashboardQueuedFiles = [];
+      document.getElementById('dashboardQueuedFilesList').innerHTML = '';
+      document.getElementById('addDocumentsModal').classList.add('active');
+    }
+    
+    function closeAddDocumentsModal() {
+      document.getElementById('addDocumentsModal').classList.remove('active');
+    }
+
+    function handleDashboardStatementFiles(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+      
+      for (let i = 0; i < files.length; i++) {
+        dashboardQueuedFiles.push(files[i]);
+      }
+      
+      const list = document.getElementById('dashboardQueuedFilesList');
+      list.innerHTML = '';
+      dashboardQueuedFiles.forEach((f) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#E2E8F0; padding:3px 0; border-bottom:1px solid #1E293B;';
+        const sizeKb = Math.round(f.size / 1024);
+        item.innerHTML = `<span>📄 <strong>${f.name}</strong> (${sizeKb} KB)</span><span style="color:var(--accent-green); font-weight:800;">✓ Ready</span>`;
+        list.appendChild(item);
+      });
+    }
+
+    async function processDashboardStatements() {
+      if (dashboardQueuedFiles.length === 0) {
+        alert("Please select at least one document first!");
+        return;
+      }
+      
+      let combinedText = '';
+      
+      for (const file of dashboardQueuedFiles) {
+        if (file.name.endsWith('.csv') || file.name.endsWith('.txt')) {
+          try {
+            const content = await file.text();
+            combinedText += '\n' + content;
+          } catch(e) {}
+        } else if (file.name.toLowerCase().endsWith('.pdf')) {
+          const pdfText = await extractTextFromPDF(file);
+          combinedText += '\n' + pdfText;
+        }
+      }
+      
+      try {
+        const res = await fetch('http://192.168.1.14:3000/api/v1/statements/analyze-year', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rawText: combinedText })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+           let newTxCount = 0;
+           if (data.extractedTransactions && data.extractedTransactions.length > 0) {
+             data.extractedTransactions.forEach(tx => {
+                appState.transactions.push({
+                   id: 'tx_' + Date.now() + Math.random(),
+                   vendor: tx.vendor,
+                   amount: tx.amount,
+                   date: tx.date,
+                   category: 'Other',
+                   tier: 'personal',
+                   note: 'From Document Upload'
+                });
+             });
+             newTxCount = data.extractedTransactions.length;
+             renderTransactions();
+           }
+           
+           if (data.detectedCreditCard) {
+              appState.debts.push({
+                  name: data.detectedCreditCard.name,
+                  balance: data.detectedCreditCard.balance,
+                  limit: data.detectedCreditCard.creditLine || 0,
+                  apr: data.detectedCreditCard.apr,
+                  minPayment: data.detectedCreditCard.minPayment,
+                  snowball: 0
+              });
+              renderDebtChecklist();
+           }
+
+           let newBillsCount = 0;
+           if (data.detectedBills && data.detectedBills.length > 0) {
+               data.detectedBills.forEach(b => {
+                  appState.bills.push({
+                      id: 'bill_' + Date.now() + Math.random(),
+                      name: b.name,
+                      amount: b.amount,
+                      dueDate: new Date().toISOString().split('T')[0],
+                      status: 'pending',
+                      paidAmount: 0
+                  });
+               });
+               newBillsCount = data.detectedBills.length;
+               renderBills();
+           }
+           
+           saveState();
+           alert(`Success! Imported ${newTxCount} transactions, ${newBillsCount} bills, and ${data.detectedCreditCard ? '1 credit card' : '0 credit cards'}.`);
+           closeAddDocumentsModal();
+        } else {
+           alert("Failed to analyze documents. Please check connection.");
+        }
+      } catch(err) {
+        console.error(err);
+        alert("Error scanning documents. Make sure the local server is running on 192.168.1.14:3000");
+      }
+    }
     function closeExportHubModal() { document.getElementById('exportHubModal').classList.remove('active'); }
 
     function copySpouseLink() {
