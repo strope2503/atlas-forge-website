@@ -1,4 +1,9 @@
 User-agent: *
+Disallow: /forge_ledger.html
+Disallow: /ledger.html
+Disallow: /vault.html
+Disallow: /private_ledger.html
+Disallow: /companion-apps/
 Disallow: /speaker.html
 Disallow: /speaker-passive.html
 Disallow: /speaker_passive.html
