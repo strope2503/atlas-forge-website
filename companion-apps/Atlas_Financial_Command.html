@@ -3,8 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Atlas Financial">
@@ -139,34 +137,9 @@
     .option-card:hover, .option-card.selected { border-color: var(--accent-cyan); background: #0E1A2C; }
     .btn-pricing-badge { background: rgba(0,255,135,0.1); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; }
 
-  
-    /* 🔒 MASTER PIN SECURITY OVERLAY */
-    .pin-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 15, 29, 0.98); backdrop-filter: blur(25px); z-index: 99999; justify-content: center; align-items: center; padding: 20px; }
-    .pin-overlay.active { display: flex; }
-    .pin-box { background: #121B2D; border: 2px solid var(--accent-cyan); border-radius: 20px; max-width: 380px; width: 100%; padding: 28px 22px; text-align: center; box-shadow: 0 0 50px rgba(0,240,255,0.25); }
-    .pin-input { background: #0A0F1D; border: 2px solid #334155; border-radius: 12px; font-size: 26px; letter-spacing: 12px; text-align: center; color: var(--accent-green); padding: 12px; width: 80%; margin: 16px auto; display: block; outline: none; }
-    .pin-input:focus { border-color: var(--accent-cyan); }
-
   </style>
 </head>
 <body>
-
-  <!-- 🔒 MASTER HOUSEHOLD PIN LOCK -->
-  <div class="pin-overlay" id="pinLockModal">
-    <div class="pin-box">
-      <div style="font-size:36px; margin-bottom:8px;">🔒</div>
-      <h2 style="color:#FFF; font-size:18px; font-weight:900;">ATLAS VAULT LOCKED</h2>
-      <p style="color:#8E9BB0; font-size:12px; margin-top:4px;">
-        Private financial information protected. Enter your 4-digit Household Passcode:
-      </p>
-      <input type="password" maxlength="4" pattern="[0-9]*" inputmode="numeric" id="vaultPinInput" class="pin-input" placeholder="••••" onkeyup="checkPinEntry(event)">
-      <button class="btn-action" style="width:80%; background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900; padding:12px; font-size:13px;" onclick="verifyPinCode()">🔓 Unlock Vault</button>
-      <div style="margin-top:12px; font-size:11px; color:#64748B;">
-        Default Passcode is <strong>1234</strong> (Change in Settings anytime)
-      </div>
-    </div>
-  </div>
-
 
   <!-- HEADER -->
   <div class="header">
@@ -176,7 +149,6 @@
       <p class="sub-title">Smart Food/Soda Health Coaching • Financed Debt Balance Checklist (House, Car, Appliances) • Amazon Splitter</p>
     </div>
     <div class="header-actions">
-      <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; padding:9px 12px; font-size:11px; font-weight:800;" onclick="lockVaultNow()">🔒 Lock</button>
       <button class="btn-action" style="background:linear-gradient(90deg, #FFB800, #FF0055); color:#FFF; padding:9px 14px; font-weight:900;" onclick="openOnboardingWizard()">🚀 Setup Household / Start Fresh</button>
       <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; padding:9px 14px; font-weight:900;" onclick="openSpouseShareModal()">👫 Share with Spouse <span style="background:#0A0F1D; color:#00FF87; padding:2px 6px; border-radius:10px; font-size:10px; margin-left:4px;">LIVE</span></button>
       <button class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); padding:9px 14px; font-weight:900;" onclick="openExportHubModal()">📤 Export Data & Reports</button>
@@ -800,153 +772,71 @@
           <div class="wizard-step-node" id="wnode5">5</div>
         </div>
 
-        <!-- STEP 1: PRIMARY EARNER -->
+        <!-- STEP 1: HOUSEHOLD INCOMES (ADD AS MANY AS YOU HAVE) -->
         <div class="wizard-section active" id="wstep1">
-          <h3 style="color:#FFF; font-size:16px; margin-bottom:4px;">👤 Step 1: Your Income & Pay Schedule</h3>
-          <p style="color:#8E9BB0; font-size:12px; margin-bottom:14px;">
-            Atlas uses your pay dates to protect upcoming bills and tell you exactly what is safe to spend every day.
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <h3 style="color:#FFF; font-size:16px; margin:0;">💰 Step 1: Household Income Sources</h3>
+            <button class="btn-action" style="background:linear-gradient(90deg,#00FF87,#00F0FF); color:#0A0F1D; font-weight:900; font-size:11px;" onclick="addNewIncomeSource()">➕ Add Another Income</button>
+          </div>
+          <p style="color:#8E9BB0; font-size:12px; margin-bottom:12px;">
+            Add every income stream in your household (Day jobs, spouse, shift work, side business, rental). Set each as Fixed or Variable with Minimum and Maximum pay.
           </p>
 
-          <!-- Pay Schedule Cadence -->
-          <div class="form-group">
-            <label class="form-label">How often do you get paid?</label>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-              <div class="option-card selected" id="optBiweekly" onclick="selectPayCadence('biweekly')">
-                <strong style="color:#FFF; font-size:13px;">Every 2 Weeks (Bi-Weekly)</strong>
-                <div style="font-size:10px; color:#8E9BB0;">26 paychecks per year</div>
-              </div>
-              <div class="option-card" id="optSemi" onclick="selectPayCadence('semimonthly')">
-                <strong style="color:#FFF; font-size:13px;">1st & 15th (Semi-Monthly)</strong>
-                <div style="font-size:10px; color:#8E9BB0;">24 paychecks per year</div>
-              </div>
-              <div class="option-card" id="optWeekly" onclick="selectPayCadence('weekly')">
-                <strong style="color:#FFF; font-size:13px;">Every Week (Weekly)</strong>
-                <div style="font-size:10px; color:#8E9BB0;">52 paychecks per year</div>
-              </div>
-              <div class="option-card" id="optMonthly" onclick="selectPayCadence('monthly')">
-                <strong style="color:#FFF; font-size:13px;">Once a Month</strong>
-                <div style="font-size:10px; color:#8E9BB0;">12 paychecks per year</div>
-              </div>
-            </div>
+          <!-- DYNAMIC INCOME SOURCES CONTAINER -->
+          <div id="incomeSourcesContainer" style="display:flex; flex-direction:column; gap:12px; max-height:340px; overflow-y:auto; padding-right:4px;">
+            <!-- Populated dynamically by JS -->
           </div>
 
-          <!-- Income Style: Fixed vs Variable -->
-          <div class="form-group" style="margin-top:12px;">
-            <label class="form-label">Is your pay Fixed or Variable?</label>
-            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-              <div class="option-card selected" id="optPrimaryVar" onclick="selectPrimaryIncomeStyle('variable')">
-                <strong style="color:var(--accent-cyan); font-size:13px;">Variable / Hourly / Shifts</strong>
-                <div style="font-size:10px; color:#8E9BB0;">Hours, overtime, or tips change each check</div>
-              </div>
-              <div class="option-card" id="optPrimaryFixed" onclick="selectPrimaryIncomeStyle('fixed')">
-                <strong style="color:#FFF; font-size:13px;">Fixed Salary</strong>
-                <div style="font-size:10px; color:#8E9BB0;">Predictable same amount every check</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Variable Min / Max vs Fixed -->
-          <div id="primaryVarBox" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:10px; background:#06202A; padding:12px; border-radius:8px; border:1px solid var(--accent-cyan);">
-            <div class="form-group">
-              <label class="form-label">🛡️ Minimum Pay (Floor)</label>
-              <input type="number" id="inpPrimaryMin" class="form-input" value="1800.00" placeholder="e.g. 1800.00">
-              <div style="font-size:9px; color:#8E9BB0; margin-top:2px;">Lowest check on low hours</div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Average Check</label>
-              <input type="number" id="inpPrimaryAmount" class="form-input" value="2400.00" placeholder="e.g. 2400.00">
-              <div style="font-size:9px; color:#00FF87; margin-top:2px;">Typical take-home</div>
-            </div>
-            <div class="form-group">
-              <label class="form-label">🔥 Maximum Pay (Peak)</label>
-              <input type="number" id="inpPrimaryMax" class="form-input" value="3000.00" placeholder="e.g. 3000.00">
-              <div style="font-size:9px; color:var(--accent-orange); margin-top:2px;">Full overtime / surge</div>
-            </div>
-          </div>
-
-          <div class="form-group" style="margin-top:10px;">
-            <label class="form-label">Next Upcoming Payday Date</label>
-            <input type="date" id="inpPrimaryNextDate" class="form-input" value="2026-10-02">
-          </div>
-
-          <div style="display:flex; justify-content:flex-end; margin-top:16px;">
-            <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:10px 20px; font-size:13px;" onclick="goToWizardStep(2)">Next: Second Earner →</button>
-          </div>
-        </div>
-
-        <!-- STEP 2: SECOND EARNER / FLUCTUATING INCOME -->
-        <div class="wizard-section" id="wstep2">
-          <h3 style="color:#FFF; font-size:16px; margin-bottom:4px;">👥 Step 2: Second Earner / Fluctuating Income</h3>
-          <p style="color:#8E9BB0; font-size:12px; margin-bottom:14px;">
-            Many households have income that varies every check (hourly, shift work, overtime, commissions, part-time). Atlas handles this seamlessly!
-          </p>
-
-          <div class="form-group">
-            <label class="form-label">Does a spouse or partner contribute income?</label>
-            <div style="display:flex; gap:12px;">
-              <button class="tier-tab active" id="btnSpouseYes" onclick="toggleSpouseIncome(true)">Yes, Second Income</button>
-              <button class="tier-tab" id="btnSpouseNo" onclick="toggleSpouseIncome(false)">No, Single Income</button>
-            </div>
-          </div>
-
-          <div id="spouseDetailsBox" style="margin-top:14px; background:#06202A; border:1px solid var(--accent-cyan); border-radius:10px; padding:14px;">
-            <div class="form-group">
-              <label class="form-label">Income Style</label>
-              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
-                <div class="option-card selected" id="optFluctuating" onclick="selectSpouseStyle('fluctuating')">
-                  <strong style="color:var(--accent-cyan); font-size:13px;">Fluctuating / Hourly / Shifts</strong>
-                  <div style="font-size:10px; color:#8E9BB0;">Hours and overtime change from check to check</div>
-                </div>
-                <div class="option-card" id="optFixed" onclick="selectSpouseStyle('fixed')">
-                  <strong style="color:#FFF; font-size:13px;">Fixed Salary</strong>
-                  <div style="font-size:10px; color:#8E9BB0;">Predictable flat dollar amount</div>
-                </div>
-              </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px; margin-top:12px;">
-              <div class="form-group">
-                <label class="form-label">🛡️ Minimum Pay (Floor)</label>
-                <input type="number" id="inpSpouseFloor" class="form-input" value="1100.00" placeholder="e.g. 1100.00">
-                <div style="font-size:9px; color:#8E9BB0; margin-top:2px;">Guaranteed low-hour floor</div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Typical Average Check</label>
-                <input type="number" id="inpSpouseAvg" class="form-input" value="1450.00" placeholder="e.g. 1450.00">
-                <div style="font-size:9px; color:var(--accent-green); margin-top:2px;">Average take-home</div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">🔥 Maximum Pay (Peak)</label>
-                <input type="number" id="inpSpouseMax" class="form-input" value="1900.00" placeholder="e.g. 1900.00">
-                <div style="font-size:9px; color:var(--accent-orange); margin-top:2px;">Peak overtime / shifts</div>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex; justify-content:space-between; margin-top:16px;">
-            <button class="btn-action" style="background:#1E293B; color:#FFF;" onclick="goToWizardStep(1)">← Back</button>
-            <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:10px 20px; font-size:13px;" onclick="goToWizardStep(3)">Next: 1-Year Statements →</button>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; border-top:1px solid #1E293B; padding-top:12px;">
+            <button class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); font-size:11px;" onclick="addNewIncomeSource()">➕ Add Another Income</button>
+            <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:10px 20px; font-weight:900; font-size:13px;" onclick="goToWizardStep(3)">Done Adding Incomes → Next: Statement Upload</button>
           </div>
         </div>
 
         <!-- STEP 3: 1-YEAR STATEMENT UPLOAD & SCAN -->
         <div class="wizard-section" id="wstep3">
-          <h3 style="color:#FFF; font-size:16px; margin-bottom:4px;">📑 Step 3: Scan 1 Year of Statements</h3>
+          <h3 style="color:#FFF; font-size:16px; margin-bottom:4px;">📑 Step 2: Upload 1 Year of Statements</h3>
           <p style="color:#8E9BB0; font-size:12px; margin-bottom:12px;">
-            Why 1 full year? <strong>To catch bills that only hit once or twice a year</strong> (Amazon Prime $139, Car Insurance every 6 months, Car Registration $75, Costco $65).
+            Upload as many statement files as you have across all accounts (12 months of checking, credit cards, PDF, CSV, or scans). Atlas scans all of them to find annual, 6-month, and recurring bills.
           </p>
 
-          <div style="background:#0A0F1D; border:2px dashed var(--accent-cyan); border-radius:10px; padding:16px; text-align:center;">
-            <div style="font-size:24px; margin-bottom:6px;">📄</div>
-            <strong style="color:#FFF; font-size:13px;">Upload 12 Months of PDF / CSV Statements</strong>
-            <p style="color:#8E9BB0; font-size:11px; margin:4px 0 10px;">Or paste statement summary lines below:</p>
-            <textarea id="wstmtText" rows="4" class="form-input" style="font-size:11px; width:100%; text-align:left;" placeholder="Paste bank or credit card transactions... e.g. 11/14 Amazon Prime $139.00, 03/01 Geico $900.00, 08/12 Costco $65.00, 06/15 Vehicle Reg $75.00"></textarea>
-            <button class="btn-action" style="margin-top:10px; width:100%; background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; padding:10px; font-weight:900;" onclick="run1YearStatementScan()">⚡ Run 1-Year Pattern Detective</button>
+          <div style="background:#0A0F1D; border:2px dashed var(--accent-cyan); border-radius:12px; padding:18px; text-align:center;">
+            <div style="font-size:32px; margin-bottom:6px;">📁</div>
+            <strong style="color:#FFF; font-size:14px;">Select Statement Files from Your Phone or Computer</strong>
+            <p style="color:#8E9BB0; font-size:11px; margin:4px 0 14px;">You can upload multiple files at once (PDF, CSV, TXT, or Photos)</p>
+
+            <!-- HIDDEN MULTI-FILE INPUT -->
+            <input type="file" id="multiStatementInput" multiple accept=".pdf,.csv,.txt,.xlsx,image/*" style="display:none;" onchange="handleStatementFilesSelected(event)">
+
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+              <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900; padding:12px 20px; font-size:13px;" onclick="document.getElementById('multiStatementInput').click()">
+                📂 Choose Statement Files
+              </button>
+              <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; padding:12px 16px; font-size:12px;" onclick="togglePasteArea()">
+                📝 Or Paste Text
+              </button>
+            </div>
+
+            <!-- OPTIONAL PASTE AREA -->
+            <div id="pasteStatementArea" style="display:none; margin-top:12px;">
+              <textarea id="wstmtText" rows="3" class="form-input" style="font-size:11px; width:100%; text-align:left;" placeholder="Paste bank transaction text here... e.g. 11/14 Amazon Prime $139.00, 03/01 Geico $900.00"></textarea>
+            </div>
           </div>
 
-          <div style="display:flex; justify-content:space-between; margin-top:16px;">
-            <button class="btn-action" style="background:#1E293B; color:#FFF;" onclick="goToWizardStep(2)">← Back</button>
-            <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:10px 20px; font-size:13px;" onclick="goToWizardStep(4)">Next: Confirm Patterns →</button>
+          <!-- QUEUED FILES LIST -->
+          <div id="queuedFilesContainer" style="margin-top:12px; display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <strong style="color:var(--accent-green); font-size:12px;">✅ Queued Files (<span id="queuedFileCount">0</span>):</strong>
+              <button class="btn-action" style="background:#1E293B; color:#00F0FF; font-size:10px; padding:4px 8px;" onclick="document.getElementById('multiStatementInput').click()">➕ Add More Files</button>
+            </div>
+            <div id="queuedFilesList" style="display:flex; flex-direction:column; gap:6px; max-height:140px; overflow-y:auto; background:#06202A; padding:8px; border-radius:8px; border:1px solid #1E293B;">
+              <!-- File tags populated by JS -->
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+            <button class="btn-action" style="background:#1E293B; color:#FFF;" onclick="goToWizardStep(1)">← Back to Incomes</button>
+            <button class="btn-save" style="padding:10px 24px; font-size:13px;" onclick="processAndScanAllStatements()">⚡ Done Uploading — Scan All Statements →</button>
           </div>
         </div>
 
@@ -1174,58 +1064,12 @@
       ]
     };
 
-    
-    // ==========================================
-    // 🔒 MASTER PIN SECURITY & PRIVACY CONTROLS
-    // ==========================================
-    let isVaultLocked = true;
-    let householdPin = localStorage.getItem('@atlas_vault_pin') || '1234';
-
-    function initPinLock() {
-      const sessionUnlocked = sessionStorage.getItem('@atlas_unlocked');
-      if (sessionUnlocked === 'true') {
-        isVaultLocked = false;
-        document.getElementById('pinLockModal').classList.remove('active');
-      } else {
-        isVaultLocked = true;
-        document.getElementById('pinLockModal').classList.add('active');
-        setTimeout(() => { document.getElementById('vaultPinInput')?.focus(); }, 300);
-      }
-    }
-
-    function checkPinEntry(e) {
-      if (e.key === 'Enter' || document.getElementById('vaultPinInput').value.length === 4) {
-        verifyPinCode();
-      }
-    }
-
-    function verifyPinCode() {
-      const entered = document.getElementById('vaultPinInput').value.trim();
-      if (entered === householdPin) {
-        isVaultLocked = false;
-        sessionStorage.setItem('@atlas_unlocked', 'true');
-        document.getElementById('pinLockModal').classList.remove('active');
-        document.getElementById('vaultPinInput').value = '';
-      } else {
-        alert('❌ Incorrect Passcode. Please try again.');
-        document.getElementById('vaultPinInput').value = '';
-      }
-    }
-
-    function lockVaultNow() {
-      sessionStorage.removeItem('@atlas_unlocked');
-      isVaultLocked = true;
-      document.getElementById('pinLockModal').classList.add('active');
-      setTimeout(() => { document.getElementById('vaultPinInput')?.focus(); }, 200);
-    }
-
     function loadState() {
       const saved = localStorage.getItem('@atlas_multi_tier_state_v4');
       if (saved) {
         try { appState = Object.assign(appState, JSON.parse(saved)); } catch (e) {}
       }
       renderAll();
-      initPinLock();
     }
 
     function renderAll() {
@@ -1305,7 +1149,6 @@
       }
       persistState();
       renderAll();
-      initPinLock();
     }
 
     
@@ -1336,9 +1179,181 @@
     let hasSpouseIncome = true;
     let spouseIncomeStyle = 'fluctuating';
 
+    
+    // ==========================================
+    // 💰 MULTI-INCOME SOURCE MANAGER & UPLOADER
+    // ==========================================
+    let householdIncomes = [
+      { id: 1, name: 'Primary Earner (Main Job)', cadence: 'biweekly', type: 'variable', min: 1800, avg: 2400, max: 3000, nextDate: '2026-10-02' },
+      { id: 2, name: 'Spouse / Partner Income', cadence: 'biweekly', type: 'variable', min: 1100, avg: 1450, max: 1900, nextDate: '2026-10-02' }
+    ];
+
+    let queuedStatementFiles = [];
+
+    function renderIncomeSourcesList() {
+      const container = document.getElementById('incomeSourcesContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      householdIncomes.forEach((inc, index) => {
+        const card = document.createElement('div');
+        card.style.cssText = 'background:#0A0F1D; border:1px solid #1E293B; border-radius:10px; padding:12px; position:relative;';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="background:var(--accent-cyan); color:#0A0F1D; border-radius:50%; width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:900;">${index + 1}</span>
+              <input type="text" class="form-input" style="font-weight:800; font-size:13px; padding:4px 8px; width:220px;" value="${inc.name}" onchange="updateIncomeField(${inc.id}, 'name', this.value)">
+            </div>
+            ${householdIncomes.length > 1 ? `<button style="background:transparent; border:none; color:#FF0055; cursor:pointer; font-size:14px;" onclick="removeIncomeSource(${inc.id})">🗑️</button>` : ''}
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+            <div class="form-group">
+              <label class="form-label" style="font-size:10px;">Pay Frequency</label>
+              <select class="form-input" style="padding:6px; font-size:12px;" onchange="updateIncomeField(${inc.id}, 'cadence', this.value)">
+                <option value="biweekly" ${inc.cadence === 'biweekly' ? 'selected' : ''}>Every 2 Weeks (Bi-Weekly)</option>
+                <option value="semimonthly" ${inc.cadence === 'semimonthly' ? 'selected' : ''}>1st & 15th (Semi-Monthly)</option>
+                <option value="weekly" ${inc.cadence === 'weekly' ? 'selected' : ''}>Weekly</option>
+                <option value="monthly" ${inc.cadence === 'monthly' ? 'selected' : ''}>Monthly</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" style="font-size:10px;">Income Style</label>
+              <select class="form-input" style="padding:6px; font-size:12px;" onchange="updateIncomeField(${inc.id}, 'type', this.value); renderIncomeSourcesList();">
+                <option value="variable" ${inc.type === 'variable' ? 'selected' : ''}>Variable (Hourly / Shifts / Overtime)</option>
+                <option value="fixed" ${inc.type === 'fixed' ? 'selected' : ''}>Fixed Salary</option>
+              </select>
+            </div>
+          </div>
+
+          ${inc.type === 'variable' ? `
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; margin-top:8px; background:#06202A; padding:8px; border-radius:6px; border:1px solid #1E293B;">
+              <div>
+                <label style="font-size:9px; color:#8E9BB0; text-transform:uppercase; font-weight:800; display:block;">🛡️ Min Floor</label>
+                <input type="number" class="form-input" style="padding:4px 6px; font-size:12px;" value="${inc.min}" onchange="updateIncomeField(${inc.id}, 'min', parseFloat(this.value)||0)">
+              </div>
+              <div>
+                <label style="font-size:9px; color:#00FF87; text-transform:uppercase; font-weight:800; display:block;">Average Pay</label>
+                <input type="number" class="form-input" style="padding:4px 6px; font-size:12px;" value="${inc.avg}" onchange="updateIncomeField(${inc.id}, 'avg', parseFloat(this.value)||0)">
+              </div>
+              <div>
+                <label style="font-size:9px; color:var(--accent-orange); text-transform:uppercase; font-weight:800; display:block;">🔥 Max Peak</label>
+                <input type="number" class="form-input" style="padding:4px 6px; font-size:12px;" value="${inc.max}" onchange="updateIncomeField(${inc.id}, 'max', parseFloat(this.value)||0)">
+              </div>
+            </div>
+          ` : `
+            <div style="margin-top:8px;">
+              <label style="font-size:10px; color:#8E9BB0; font-weight:800;">Flat Take-Home Paycheck ($)</label>
+              <input type="number" class="form-input" style="padding:6px; font-size:13px;" value="${inc.avg}" onchange="updateIncomeField(${inc.id}, 'avg', parseFloat(this.value)||0); updateIncomeField(${inc.id}, 'min', parseFloat(this.value)||0); updateIncomeField(${inc.id}, 'max', parseFloat(this.value)||0);">
+            </div>
+          `}
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function addNewIncomeSource() {
+      const nextId = Date.now();
+      const count = householdIncomes.length + 1;
+      householdIncomes.push({
+        id: nextId,
+        name: `Income Source #${count}`,
+        cadence: 'biweekly',
+        type: 'variable',
+        min: 1000,
+        avg: 1500,
+        max: 2000,
+        nextDate: '2026-10-02'
+      });
+      renderIncomeSourcesList();
+    }
+
+    function removeIncomeSource(id) {
+      householdIncomes = householdIncomes.filter(i => i.id !== id);
+      renderIncomeSourcesList();
+    }
+
+    function updateIncomeField(id, field, val) {
+      const item = householdIncomes.find(i => i.id === id);
+      if (item) item[field] = val;
+    }
+
+    function togglePasteArea() {
+      const el = document.getElementById('pasteStatementArea');
+      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function handleStatementFilesSelected(event) {
+      const files = event.target.files;
+      if (!files || files.length === 0) return;
+
+      for (let i = 0; i < files.length; i++) {
+        queuedStatementFiles.push(files[i]);
+      }
+
+      document.getElementById('queuedFilesContainer').style.display = 'block';
+      document.getElementById('queuedFileCount').innerText = queuedStatementFiles.length;
+
+      const list = document.getElementById('queuedFilesList');
+      list.innerHTML = '';
+      queuedStatementFiles.forEach((f, idx) => {
+        const item = document.createElement('div');
+        item.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#E2E8F0; padding:3px 0; border-bottom:1px solid #1E293B;';
+        const sizeKb = Math.round(f.size / 1024);
+        item.innerHTML = `
+          <span>📄 <strong>${f.name}</strong> (${sizeKb} KB)</span>
+          <span style="color:var(--accent-green); font-weight:800;">✓ Ready</span>
+        `;
+        list.appendChild(item);
+      });
+
+      alert(`📁 Added ${files.length} file(s)! Total queued: ${queuedStatementFiles.length} statements. You can add more or click "Done Uploading — Scan All Statements".`);
+    }
+
+    async function processAndScanAllStatements() {
+      let combinedText = document.getElementById('wstmtText')?.value || '';
+
+      // Read text from text/CSV files if present
+      for (const file of queuedStatementFiles) {
+        if (file.name.endsWith('.csv') || file.name.endsWith('.txt')) {
+          try {
+            const content = await file.text();
+            combinedText += '\n' + content;
+          } catch(e) {}
+        } else {
+          // Add filename as marker for PDF
+          combinedText += `\nSTATEMENT_FILE: ${file.name}`;
+        }
+      }
+
+      // Run pattern detective with all accumulated data
+      try {
+        const res = await fetch('http://localhost:3000/api/v1/statements/analyze-year', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ rawText: combinedText })
+        });
+        const data = await res.json();
+        if (data.success && data.detectedBills) {
+          detected1YearBills = data.detectedBills.map(b => ({
+            name: b.name,
+            amount: b.amount,
+            cadence: b.cadence,
+            perCheck: b.perPaycheckSinking || (b.amount / 26),
+            note: b.note
+          }));
+        }
+      } catch(e) {
+        // Fallback default patterns
+      }
+
+      goToWizardStep(4);
+    }
+
     function openOnboardingWizard() {
       document.getElementById('onboardingModal').classList.add('active');
       goToWizardStep(1);
+      renderIncomeSourcesList();
     }
     function closeOnboardingWizard() {
       document.getElementById('onboardingModal').classList.remove('active');
@@ -1633,7 +1648,6 @@
       persistState();
       closeAmazonModal();
       renderAll();
-      initPinLock();
       alert('✂️ SUCCESS: Amazon charge cleanly split into $44.99 Personal and $80.00 Business Tax Deduction!');
     }
 
@@ -1664,7 +1678,6 @@
           appState = JSON.parse(evt.target.result);
           persistState();
           renderAll();
-      initPinLock();
           toggleVaultModal(false);
           alert('🛡️ Vault Restored Successfully!');
         } catch(err) { alert('Invalid backup file'); }
