@@ -235,7 +235,10 @@
                 Bills remain active with urgency alerts until explicitly paid. Marking paid frees checking escrow into True Free Cash!
               </div>
             </div>
-            <button class="btn-action" style="background:#00F0FF; color:#0A0F1D;" onclick="exportUniversalCalendarICS()">📅 Calendar Sync (.ics)</button>
+            <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+              <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900;" onclick="openAddBillModal()">➕ Add Bill</button>
+              <button class="btn-action" style="background:#00F0FF; color:#0A0F1D; font-weight:800;" onclick="exportUniversalCalendarICS()">📅 Calendar Sync (.ics)</button>
+            </div>
           </div>
 
           <!-- Pending Bills List (To-Do) -->
@@ -391,7 +394,10 @@
             <span class="panel-title" style="color:var(--accent-orange); font-size:16px;">🏡 FINANCED OBLIGATIONS & DEBT CHECKLIST</span>
             <div class="panel-sub" style="margin-bottom:0;">Tracks real-time remaining principal balances for your Mortgage, Car Loan, and Appliance 0% Financing.</div>
           </div>
-          <button class="btn-action" onclick="openLoanStatementModal()">📄 Upload / Verify Statement</button>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <button class="btn-action" style="background:linear-gradient(90deg, #FFB800, #FF0055); color:#FFF; font-weight:900;" onclick="openAddDebtModal()">➕ Add Debt / Loan</button>
+            <button class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan);" onclick="openLoanStatementModal()">📄 Upload / Verify Statement</button>
+          </div>
         </div>
 
         <!-- DEBT SUMMARY HERO -->
@@ -414,38 +420,7 @@
 
         <!-- DEBT ITEMS LIST -->
         <div id="debtObligationsList">
-          <!-- House Mortgage -->
-          <div class="debt-item">
-            <div>
-              <div style="font-size:14px; font-weight:800; color:#FFF;">🏡 Home Mortgage (Primary Residence)</div>
-              <div style="font-size:11px; color:#8E9BB0;">Balance: <strong style="color:#FFF;">$284,500.00</strong> • Payment: $1,650.00/mo • 4.25% Fixed</div>
-              <div style="font-size:11px; color:var(--accent-green); margin-top:2px;">✅ Verified: Primary Mortgage Statement (09/01/2026)</div>
-            </div>
-            <button class="btn-action" onclick="openLoanStatementModal('Home Mortgage', 284500)">Verify Statement</button>
-          </div>
-
-          <!-- Car Loan -->
-          <div class="debt-item">
-            <div>
-              <div style="font-size:14px; font-weight:800; color:#FFF;">🚗 Family Auto Loan</div>
-              <div style="font-size:11px; color:#8E9BB0;">Balance: <strong style="color:#FFF;">$14,200.00</strong> • Payment: $385.00/mo • 5.49% APR</div>
-              <div style="font-size:11px; color:var(--accent-green); margin-top:2px;">✅ Verified: Credit Union Statement (08/18/2026)</div>
-            </div>
-            <button class="btn-action" onclick="openLoanStatementModal('Family Auto Loan', 14200)">Verify Statement</button>
-          </div>
-
-          <!-- Appliance Financing -->
-          <div class="debt-item" style="border-color:var(--accent-red);">
-            <div>
-              <div style="font-size:14px; font-weight:800; color:#FFF;">❄️ Home Depot / Appliance 0% Financing</div>
-              <div style="font-size:11px; color:#8E9BB0;">Balance: <strong style="color:#FFF;">$1,450.00</strong> • Payment: $120.83/mo • 0.00% Promo APR</div>
-              <div class="promo-banner">
-                ⚠️ 0% Financing ends in 56 days (2026-11-15)! Pay off $1,450.00 to prevent retroactive interest!
-              </div>
-              <div style="font-size:11px; color:var(--accent-green); margin-top:4px;">✅ Verified: Financing Portal Statement</div>
-            </div>
-            <button class="btn-action" onclick="openLoanStatementModal('Appliance Financing', 1450)">Verify Statement</button>
-          </div>
+          <!-- Populated dynamically by renderDebtChecklist() -->
         </div>
       </div>
     </div>
@@ -842,7 +817,10 @@
 
         <!-- STEP 4: PATTERN CONFIRMATION & AMBIGUITY CARDS -->
         <div class="wizard-section" id="wstep4">
-          <h3 style="color:#FFF; font-size:16px; margin-bottom:4px;">🔍 Step 4: AI Pattern Review & Cadence Confirmation</h3>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <h3 style="color:#FFF; font-size:16px; margin:0;">🔍 Step 4: AI Pattern Review & Cadence Confirmation</h3>
+            <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900; font-size:11px;" onclick="openAddBillModal()">➕ Add Bill Manually</button>
+          </div>
           <p style="color:#8E9BB0; font-size:12px; margin-bottom:12px;">
             Atlas discovered these annual & 6-month commitments and converted them into painless per-paycheck sinking transfers:
           </p>
@@ -890,6 +868,19 @@
             </div>
           </div>
 
+                    <div style="margin-top:14px; background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <strong style="color:var(--accent-orange); font-size:12px;">🏡 Financed Debts & Loans</strong>
+                <div style="font-size:11px; color:#8E9BB0;">Mortgage, Auto Loans, Credit Cards, 0% Appliance Financing</div>
+              </div>
+              <button class="btn-action" style="background:linear-gradient(90deg, #FFB800, #FF0055); color:#FFF; font-weight:800; font-size:11px;" onclick="openAddDebtModal()">➕ Add Debt / Loan</button>
+            </div>
+            <div style="font-size:11px; color:#CBD5E1; margin-top:6px;">
+              You can manually add debts now, or easily add and edit them anytime directly on Tab 2 post-setup!
+            </div>
+          </div>
+
           <div style="background:#06202A; border-left:3px solid var(--accent-green); padding:12px; border-radius:6px; margin-top:12px; font-size:12px; color:#E2E8F0;">
             ✅ <strong>Setup Complete:</strong> Your fluctuating income floor, 1-year annual bill reserves ($79.74/paycheck), and checking escrow are ready.
           </div>
@@ -905,6 +896,132 @@
   </div>
 
   
+  
+  <!-- ➕ ADD / EDIT RECURRING BILL MODAL -->
+  <div class="modal-overlay" id="addBillModal">
+    <div class="modal-box" style="max-width: 520px;">
+      <div class="modal-top">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="modal-title" style="color:var(--accent-cyan);" id="billModalTitle">➕ ADD RECURRING BILL</span>
+          <span style="background:#06202A; color:var(--accent-green); padding:2px 8px; border-radius:10px; font-size:11px; font-weight:800;">To-Do & Escrow Active</span>
+        </div>
+        <button class="modal-close" onclick="closeAddBillModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modalBillId" value="">
+        <div class="form-group">
+          <label class="form-label">Bill / Merchant Name</label>
+          <input type="text" id="modalBillName" class="form-input" placeholder="e.g. Electric & Power, Tachus Fiber, Geico, Gym">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Amount ($)</label>
+            <input type="number" step="0.01" inputmode="decimal" id="modalBillAmount" class="form-input" placeholder="145.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Due Day of Month (1 - 31)</label>
+            <input type="number" min="1" max="31" inputmode="numeric" id="modalBillDay" class="form-input" placeholder="15">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="modalBillCategory" class="form-input">
+              <option value="Utilities">💡 Utilities (Power, Water, Gas)</option>
+              <option value="Housing">🏠 Housing & Rent</option>
+              <option value="Insurance">🛡️ Insurance (Auto, Home, Health)</option>
+              <option value="Subscriptions">📱 Subscriptions & Internet</option>
+              <option value="Vehicle">🚗 Vehicle & Transportation</option>
+              <option value="Debt">💳 Credit Card / Loan Payment</option>
+              <option value="Healthcare">🩺 Healthcare / Medical</option>
+              <option value="Other">📦 Other Recurring</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Cadence / Frequency</label>
+            <select id="modalBillCadence" class="form-input">
+              <option value="monthly">Monthly (Every month)</option>
+              <option value="bi-monthly">Bi-Monthly (Every 2 months)</option>
+              <option value="quarterly">Quarterly (Every 3 months)</option>
+              <option value="semi-annual">Semi-Annual (Every 6 months)</option>
+              <option value="annual">Annual (Once a year)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Notes / Account # (Optional)</label>
+          <input type="text" id="modalBillNote" class="form-input" placeholder="e.g. Summer AC peak, Autopay on Card #4821">
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+          <button class="btn-action" style="background:#1E293B; color:#8E9BB0;" onclick="closeAddBillModal()">Cancel</button>
+          <button class="btn-save" style="padding:10px 24px;" onclick="saveManualBill()">💾 Save Bill</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ➕ ADD / EDIT FINANCED DEBT & LOAN MODAL -->
+  <div class="modal-overlay" id="addDebtModal">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-top">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="modal-title" style="color:var(--accent-orange);" id="debtModalTitle">➕ ADD FINANCED DEBT / LOAN</span>
+          <span style="background:rgba(255,184,0,0.15); color:var(--accent-orange); padding:2px 8px; border-radius:10px; font-size:11px; font-weight:800;">Principal & Promo Tracker</span>
+        </div>
+        <button class="modal-close" onclick="closeAddDebtModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modalDebtIndex" value="-1">
+        <div class="form-group">
+          <label class="form-label">Debt / Creditor Name</label>
+          <input type="text" id="modalDebtName" class="form-input" placeholder="e.g. Home Mortgage, Family Auto Loan, Best Buy 0% Appliance">
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Current Principal Balance ($)</label>
+            <input type="number" step="0.01" inputmode="decimal" id="modalDebtBalance" class="form-input" placeholder="14200.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Monthly Payment ($)</label>
+            <input type="number" step="0.01" inputmode="decimal" id="modalDebtPayment" class="form-input" placeholder="385.00">
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Interest Rate (APR %)</label>
+            <input type="number" step="0.01" inputmode="decimal" id="modalDebtRate" class="form-input" placeholder="5.49 (or 0 for promo)">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category / Type</label>
+            <select id="modalDebtCategory" class="form-input">
+              <option value="Mortgage">🏡 Home Mortgage</option>
+              <option value="Auto Loan">🚗 Family Auto Loan</option>
+              <option value="Appliance Financing">❄️ Appliance / Furniture 0% Promo</option>
+              <option value="Credit Card">💳 Credit Card Debt</option>
+              <option value="Student Loan">🎓 Student Loan</option>
+              <option value="Personal Loan">💵 Personal Loan</option>
+              <option value="Other">📦 Other Obligation</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">0% Promo Expiration Date (Optional)</label>
+            <input type="date" id="modalDebtPromoDate" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Verification Source</label>
+            <input type="text" id="modalDebtSource" class="form-input" placeholder="e.g. Manual Entry, Statement, Portal">
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+          <button class="btn-action" style="background:#1E293B; color:#8E9BB0;" onclick="closeAddDebtModal()">Cancel</button>
+          <button class="btn-save" style="padding:10px 24px; background:linear-gradient(90deg,#FFB800,#FF0055); color:#FFF;" onclick="saveManualDebt()">💾 Save Debt Obligation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- 👫 SPOUSE LIVE SYNC MODAL -->
   <div class="modal-overlay" id="spouseShareModal">
     <div class="modal-box" style="max-width: 580px;">
@@ -1072,9 +1189,306 @@
       renderAll();
     }
 
+    
+    /* ===================================================
+       MANUAL BILLS & DEBTS MANAGEMENT SYSTEM
+       =================================================== */
+
+    // --- BILL MODAL & CRUD ---
+    function openAddBillModal(billIdToEdit = null) {
+      document.getElementById('modalBillId').value = billIdToEdit || '';
+      if (billIdToEdit) {
+        const b = appState.bills.find(x => x.id === billIdToEdit);
+        if (b) {
+          document.getElementById('billModalTitle').innerText = '✏️ EDIT RECURRING BILL';
+          document.getElementById('modalBillName').value = b.name;
+          document.getElementById('modalBillAmount').value = b.amount;
+          document.getElementById('modalBillDay').value = b.day || 1;
+          document.getElementById('modalBillCategory').value = b.category || 'Utilities';
+          document.getElementById('modalBillCadence').value = b.cadence || 'monthly';
+          document.getElementById('modalBillNote').value = b.note || '';
+        }
+      } else {
+        document.getElementById('billModalTitle').innerText = '➕ ADD RECURRING BILL';
+        document.getElementById('modalBillName').value = '';
+        document.getElementById('modalBillAmount').value = '';
+        document.getElementById('modalBillDay').value = new Date().getDate();
+        document.getElementById('modalBillCategory').value = 'Utilities';
+        document.getElementById('modalBillCadence').value = 'monthly';
+        document.getElementById('modalBillNote').value = '';
+      }
+      document.getElementById('addBillModal').classList.add('active');
+    }
+
+    function closeAddBillModal() {
+      document.getElementById('addBillModal').classList.remove('active');
+    }
+
+    async function saveManualBill() {
+      const idVal = document.getElementById('modalBillId').value;
+      const name = document.getElementById('modalBillName').value.trim();
+      const amt = parseFloat(document.getElementById('modalBillAmount').value);
+      const day = parseInt(document.getElementById('modalBillDay').value, 10) || 1;
+      const cat = document.getElementById('modalBillCategory').value;
+      const cad = document.getElementById('modalBillCadence').value;
+      const note = document.getElementById('modalBillNote').value.trim();
+
+      if (!name) { alert('Please enter a bill name.'); return; }
+      if (isNaN(amt) || amt <= 0) { alert('Please enter a valid dollar amount.'); return; }
+
+      let targetId = idVal ? parseInt(idVal, 10) : Date.now();
+
+      if (idVal) {
+        const existing = appState.bills.find(x => x.id === targetId);
+        if (existing) {
+          existing.name = name;
+          existing.amount = amt;
+          existing.day = day;
+          existing.category = cat;
+          existing.cadence = cad;
+          existing.note = note;
+        }
+      } else {
+        appState.bills.push({
+          id: targetId,
+          name: name,
+          amount: amt,
+          day: day,
+          category: cat,
+          cadence: cad,
+          note: note,
+          isPaidThisCycle: false
+        });
+      }
+
+      // Sync with backend API if alive
+      try {
+        await fetch('http://localhost:3000/api/v1/bills', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: idVal ? targetId : null, name, amount: amt, due_day_of_month: day, category: cat, cadence: cad })
+        });
+      } catch (e) {}
+
+      persistState();
+      renderAll();
+      closeAddBillModal();
+      alert(`✅ Bill "${name}" ($${amt.toFixed(2)}) saved successfully!`);
+    }
+
+    async function deleteBill(billId) {
+      const b = appState.bills.find(x => x.id === billId);
+      if (!b) return;
+      if (!confirm(`Are you sure you want to delete "${b.name}" ($${b.amount.toFixed(2)})?`)) return;
+
+      appState.bills = appState.bills.filter(x => x.id !== billId);
+
+      try {
+        await fetch(`http://localhost:3000/api/v1/bills/${billId}`, { method: 'DELETE' });
+      } catch (e) {}
+
+      persistState();
+      renderAll();
+    }
+
+    // --- DEBT / LOAN MODAL & CRUD ---
+    function openAddDebtModal(indexToEdit = -1) {
+      document.getElementById('modalDebtIndex').value = indexToEdit;
+      if (indexToEdit >= 0 && appState.debts[indexToEdit]) {
+        const d = appState.debts[indexToEdit];
+        document.getElementById('debtModalTitle').innerText = '✏️ EDIT FINANCED DEBT / LOAN';
+        document.getElementById('modalDebtName').value = d.name;
+        document.getElementById('modalDebtBalance').value = d.balance;
+        document.getElementById('modalDebtPayment').value = d.payment;
+        document.getElementById('modalDebtRate').value = d.rate != null ? d.rate : 0;
+        document.getElementById('modalDebtCategory').value = d.category || 'Mortgage';
+        document.getElementById('modalDebtPromoDate').value = d.promoDate || '';
+        document.getElementById('modalDebtSource').value = d.source || 'Manual Entry';
+      } else {
+        document.getElementById('debtModalTitle').innerText = '➕ ADD FINANCED DEBT / LOAN';
+        document.getElementById('modalDebtName').value = '';
+        document.getElementById('modalDebtBalance').value = '';
+        document.getElementById('modalDebtPayment').value = '';
+        document.getElementById('modalDebtRate').value = '';
+        document.getElementById('modalDebtCategory').value = 'Mortgage';
+        document.getElementById('modalDebtPromoDate').value = '';
+        document.getElementById('modalDebtSource').value = 'Manual Entry';
+      }
+      document.getElementById('addDebtModal').classList.add('active');
+    }
+
+    function closeAddDebtModal() {
+      document.getElementById('addDebtModal').classList.remove('active');
+    }
+
+    async function saveManualDebt() {
+      const idx = parseInt(document.getElementById('modalDebtIndex').value, 10);
+      const name = document.getElementById('modalDebtName').value.trim();
+      const bal = parseFloat(document.getElementById('modalDebtBalance').value);
+      const pmt = parseFloat(document.getElementById('modalDebtPayment').value);
+      const rate = parseFloat(document.getElementById('modalDebtRate').value) || 0;
+      const cat = document.getElementById('modalDebtCategory').value;
+      const promoDt = document.getElementById('modalDebtPromoDate').value;
+      const src = document.getElementById('modalDebtSource').value.trim() || 'Manual Entry';
+
+      if (!name) { alert('Please enter a creditor or loan name.'); return; }
+      if (isNaN(bal) || bal < 0) { alert('Please enter a valid balance.'); return; }
+      if (isNaN(pmt) || pmt < 0) { alert('Please enter a monthly payment.'); return; }
+
+      let promoDays = null;
+      if (promoDt) {
+        const exp = new Date(promoDt);
+        promoDays = Math.ceil((exp - new Date()) / (1000 * 60 * 60 * 24));
+      }
+
+      const debtObj = {
+        name,
+        balance: bal,
+        payment: pmt,
+        rate,
+        category: cat,
+        promoDate: promoDt,
+        promoDays,
+        isVerified: src !== 'Manual Entry',
+        source: src,
+        date: new Date().toLocaleDateString()
+      };
+
+      if (idx >= 0 && appState.debts[idx]) {
+        appState.debts[idx] = debtObj;
+      } else {
+        if (!appState.debts) appState.debts = [];
+        appState.debts.push(debtObj);
+      }
+
+      // Sync with backend API
+      try {
+        await fetch('http://localhost:3000/api/v1/debt', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name,
+            balance: bal,
+            monthly_payment: pmt,
+            interest_rate: rate,
+            promo_expiration_date: promoDt,
+            category: cat,
+            is_verified: debtObj.isVerified
+          })
+        });
+      } catch(e) {}
+
+      persistState();
+      renderDebtChecklist();
+      closeAddDebtModal();
+      alert(`✅ Financed Debt "${name}" saved ($${bal.toLocaleString()} remaining)!`);
+    }
+
+    async function deleteDebt(index) {
+      if (!appState.debts || !appState.debts[index]) return;
+      const d = appState.debts[index];
+      if (!confirm(`Are you sure you want to remove "${d.name}" ($${d.balance.toLocaleString()})?`)) return;
+
+      const debtName = d.name;
+      appState.debts.splice(index, 1);
+
+      try {
+        await fetch(`http://localhost:3000/api/v1/debt/${encodeURIComponent(debtName)}`, { method: 'DELETE' });
+      } catch (e) {}
+
+      persistState();
+      renderDebtChecklist();
+    }
+
+    // --- DYNAMIC FINANCED DEBT CHECKLIST RENDERER ---
+    function renderDebtChecklist() {
+      const container = document.getElementById('debtObligationsList');
+      if (!container) return;
+
+      if (!appState.debts || appState.debts.length === 0) {
+        container.innerHTML = `
+          <div style="background:#06202A; padding:20px; border-radius:10px; text-align:center; border:1px dashed #1E293B;">
+            <div style="font-size:24px; margin-bottom:8px;">🏡</div>
+            <strong style="color:#FFF; font-size:14px;">No Financed Debts Added Yet</strong>
+            <p style="color:#8E9BB0; font-size:12px; margin:4px 0 14px;">Track your mortgage, auto loans, credit cards, or appliance financing here.</p>
+            <button class="btn-action" style="background:linear-gradient(90deg, #FFB800, #FF0055); color:#FFF; font-weight:900;" onclick="openAddDebtModal()">➕ Add Debt / Loan</button>
+          </div>
+        `;
+        document.getElementById('totalDebtBal').innerText = '$0.00';
+        document.getElementById('totalDebtMonthly').innerText = '$0.00 / mo';
+        document.getElementById('debtAuditScore').innerText = '0 Tracked';
+        document.getElementById('debtAuditBadge').innerText = '$0 Tracked';
+        return;
+      }
+
+      let totalBal = 0;
+      let totalPmt = 0;
+      let verifiedCount = 0;
+
+      container.innerHTML = '';
+
+      appState.debts.forEach((d, idx) => {
+        totalBal += (d.balance || 0);
+        totalPmt += (d.payment || 0);
+        if (d.isVerified) verifiedCount++;
+
+        let icon = '🏡';
+        if ((d.category || '').toLowerCase().includes('auto') || (d.name || '').toLowerCase().includes('auto') || (d.name || '').toLowerCase().includes('car')) icon = '🚗';
+        else if ((d.category || '').toLowerCase().includes('appliance') || (d.name || '').toLowerCase().includes('appliance') || (d.name || '').toLowerCase().includes('depot')) icon = '❄️';
+        else if ((d.category || '').toLowerCase().includes('credit') || (d.name || '').toLowerCase().includes('card')) icon = '💳';
+        else if ((d.category || '').toLowerCase().includes('student')) icon = '🎓';
+        else if ((d.category || '').toLowerCase().includes('personal')) icon = '💵';
+
+        let promoBanner = '';
+        if (d.promoDays != null && d.promoDays > 0) {
+          promoBanner = `
+            <div class="promo-banner" style="margin-top:6px; background:rgba(255,0,85,0.15); border:1px solid var(--accent-red); padding:6px 10px; border-radius:6px; font-size:11px; color:#FF809B;">
+              ⚠️ 0% Financing ends in ${d.promoDays} days (${d.promoDate || ''})! Pay off $${d.balance.toLocaleString()} to prevent retroactive interest!
+            </div>
+          `;
+        }
+
+        const card = document.createElement('div');
+        card.className = 'debt-item';
+        card.style.cssText = d.promoDays != null ? 'border-color:var(--accent-red); margin-bottom:12px; background:#121B2D; padding:14px; border-radius:10px; border:1px solid #1E293B; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;' : 'margin-bottom:12px; background:#121B2D; padding:14px; border-radius:10px; border:1px solid #1E293B; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;';
+
+        card.innerHTML = `
+          <div style="flex:1; min-width:260px;">
+            <div style="font-size:14px; font-weight:800; color:#FFF; display:flex; align-items:center; gap:8px;">
+              <span>${icon} ${d.name}</span>
+              ${d.rate === 0 ? '<span style="background:rgba(0,255,135,0.15); color:var(--accent-green); font-size:10px; padding:2px 6px; border-radius:10px; font-weight:900;">0% PROMO APR</span>' : ''}
+            </div>
+            <div style="font-size:12px; color:#8E9BB0; margin-top:3px;">
+              Balance: <strong style="color:#FFF;">$${(d.balance || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}</strong> • 
+              Payment: <strong style="color:var(--accent-orange);">$${(d.payment || 0).toFixed(2)}/mo</strong> • 
+              ${d.rate != null ? d.rate.toFixed(2) + '%' : 'Fixed'} APR
+            </div>
+            ${promoBanner}
+            <div style="font-size:11px; color:${d.isVerified ? 'var(--accent-green)' : '#8E9BB0'}; margin-top:4px;">
+              ${d.isVerified ? '✅ Verified: ' + (d.source || 'Statement') + ' (' + (d.date || 'Recent') + ')' : '📝 Manually Entered • Statement Not Verified'}
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+            <button class="btn-action" style="font-size:11px; padding:6px 12px;" onclick="openLoanStatementModal('${d.name.replace(/'/g, "\\'")}', ${d.balance})">📄 Verify Statement</button>
+            <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; font-size:11px; padding:6px 10px;" onclick="openAddDebtModal(${idx})">✏️ Edit</button>
+            <button class="btn-action" style="background:#2A1015; border:1px solid #FF0055; color:#FF809B; font-size:11px; padding:6px 10px;" onclick="deleteDebt(${idx})">🗑️</button>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      document.getElementById('totalDebtBal').innerText = '$' + totalBal.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+      document.getElementById('totalDebtMonthly').innerText = '$' + totalPmt.toFixed(2) + ' / mo';
+      const pct = Math.round((verifiedCount / appState.debts.length) * 100);
+      document.getElementById('debtAuditScore').innerText = `${verifiedCount} of ${appState.debts.length} Financed Items Verified (${pct}%)`;
+      document.getElementById('debtAuditBadge').innerText = '$' + totalBal.toLocaleString(undefined, {maximumFractionDigits:0}) + ' Tracked';
+    }
+
     function renderAll() {
       renderPersonal();
       renderBillsTodoList();
+      renderDebtChecklist();
       renderTransactionsTable();
     }
 
@@ -1492,6 +1906,7 @@
       alert('🎉 Household setup successfully initialized with your real accounts, fluctuating income floor, and 1-year annual bill reserves!');
       renderPersonal();
       renderBillsTodoList();
+      renderDebtChecklist();
     }
 
     
@@ -1532,6 +1947,7 @@
             });
             renderPersonal();
             renderBillsTodoList();
+      renderDebtChecklist();
           }
         }
       } catch(e) {
@@ -1756,9 +2172,11 @@
                 Due on the ${b.day}${b.day === 1 ? 'st' : (b.day === 2 ? 'nd' : (b.day === 3 ? 'rd' : 'th'))} of each month • ${b.category || 'Recurring'} ${b.note ? '• <span style="color:#00F0FF">' + b.note + '</span>' : ''}
               </div>
             </div>
-            <div style="display:flex; align-items:center; gap:12px;">
-              <span style="font-size:15px; font-weight:900; color:var(--accent-orange);">$${b.amount.toFixed(2)}</span>
+            <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+              <span style="font-size:15px; font-weight:900; color:var(--accent-orange); margin-right:4px;">$${b.amount.toFixed(2)}</span>
               <button class="btn-mark-paid" onclick="markBillPaidToggle(${b.id}, true)">✓ Mark Paid</button>
+              <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; font-size:11px; padding:6px 8px;" onclick="openAddBillModal(${b.id})">✏️</button>
+              <button class="btn-action" style="background:#2A1015; border:1px solid #FF0055; color:#FF809B; font-size:11px; padding:6px 8px;" onclick="deleteBill(${b.id})">🗑️</button>
             </div>
           `;
           pendingContainer.appendChild(card);
@@ -1778,9 +2196,11 @@
               <span style="color:var(--accent-green); font-weight:800;">✓ ${b.name}</span>
               <span style="color:#64748B; font-size:11px; margin-left:8px;">Paid on ${b.lastPaidDate || 'This cycle'}</span>
             </div>
-            <div style="display:flex; align-items:center; gap:10px;">
-              <strong style="color:#FFF;">$${b.amount.toFixed(2)}</strong>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <strong style="color:#FFF; margin-right:4px;">$${b.amount.toFixed(2)}</strong>
               <button class="btn-undo-paid" onclick="markBillPaidToggle(${b.id}, false)">↺ Undo</button>
+              <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; font-size:11px; padding:5px 8px;" onclick="openAddBillModal(${b.id})">✏️</button>
+              <button class="btn-action" style="background:#2A1015; border:1px solid #FF0055; color:#FF809B; font-size:11px; padding:5px 8px;" onclick="deleteBill(${b.id})">🗑️</button>
             </div>
           `;
           paidContainer.appendChild(card);
@@ -1816,6 +2236,7 @@
       persistState();
       renderPersonal();
       renderBillsTodoList();
+      renderDebtChecklist();
     }
 
     function exportUniversalCalendarICS() {
