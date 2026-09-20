@@ -137,9 +137,34 @@
     .option-card:hover, .option-card.selected { border-color: var(--accent-cyan); background: #0E1A2C; }
     .btn-pricing-badge { background: rgba(0,255,135,0.1); border: 1px solid var(--accent-green); color: var(--accent-green); padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; gap: 4px; }
 
+  
+    /* 🔒 MASTER PIN SECURITY OVERLAY */
+    .pin-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 15, 29, 0.98); backdrop-filter: blur(25px); z-index: 99999; justify-content: center; align-items: center; padding: 20px; }
+    .pin-overlay.active { display: flex; }
+    .pin-box { background: #121B2D; border: 2px solid var(--accent-cyan); border-radius: 20px; max-width: 380px; width: 100%; padding: 28px 22px; text-align: center; box-shadow: 0 0 50px rgba(0,240,255,0.25); }
+    .pin-input { background: #0A0F1D; border: 2px solid #334155; border-radius: 12px; font-size: 26px; letter-spacing: 12px; text-align: center; color: var(--accent-green); padding: 12px; width: 80%; margin: 16px auto; display: block; outline: none; }
+    .pin-input:focus { border-color: var(--accent-cyan); }
+
   </style>
 </head>
 <body>
+
+  <!-- 🔒 MASTER HOUSEHOLD PIN LOCK -->
+  <div class="pin-overlay" id="pinLockModal">
+    <div class="pin-box">
+      <div style="font-size:36px; margin-bottom:8px;">🔒</div>
+      <h2 style="color:#FFF; font-size:18px; font-weight:900;">ATLAS VAULT LOCKED</h2>
+      <p style="color:#8E9BB0; font-size:12px; margin-top:4px;">
+        Private financial information protected. Enter your 4-digit Household Passcode:
+      </p>
+      <input type="password" maxlength="4" pattern="[0-9]*" inputmode="numeric" id="vaultPinInput" class="pin-input" placeholder="••••" onkeyup="checkPinEntry(event)">
+      <button class="btn-action" style="width:80%; background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900; padding:12px; font-size:13px;" onclick="verifyPinCode()">🔓 Unlock Vault</button>
+      <div style="margin-top:12px; font-size:11px; color:#64748B;">
+        Default Passcode is <strong>1234</strong>
+      </div>
+    </div>
+  </div>
+
 
   <!-- HEADER -->
   <div class="header">
@@ -149,6 +174,8 @@
       <p class="sub-title">Smart Food/Soda Health Coaching • Financed Debt Balance Checklist (House, Car, Appliances) • Amazon Splitter</p>
     </div>
     <div class="header-actions">
+      <button class="btn-action" style="background:#1E293B; border:1px solid #64748B; color:#CBD5E1; padding:9px 12px; font-size:11px; font-weight:800;" onclick="lockVaultNow()">🔒 Lock</button>
+      <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; padding:9px 14px; font-weight:900;" onclick="openAddIncomeModal()">➕ Add Income</button>
       <button class="btn-action" style="background:linear-gradient(90deg, #FFB800, #FF0055); color:#FFF; padding:9px 14px; font-weight:900;" onclick="openOnboardingWizard()">🚀 Setup Household / Start Fresh</button>
       <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; padding:9px 14px; font-weight:900;" onclick="openSpouseShareModal()">👫 Share with Spouse <span style="background:#0A0F1D; color:#00FF87; padding:2px 6px; border-radius:10px; font-size:10px; margin-left:4px;">LIVE</span></button>
       <button class="btn-action" style="background:#1E293B; border:1px solid var(--accent-cyan); color:var(--accent-cyan); padding:9px 14px; font-weight:900;" onclick="openExportHubModal()">📤 Export Data & Reports</button>
@@ -188,10 +215,10 @@
           </div>
           <div class="hero-val-free" id="freeCashVal">$1,111.54</div>
           <p class="hero-desc">
-            Actual spendable cash today. Upcoming bills (<strong style="color:#FFB800" id="escrowTotalLbl">$1,850.00</strong>), sinking funds (<strong style="color:#B388FF" id="sinkingPayLbl">$138.46</strong>), and debt targets are isolated safely.
+            Actual spendable cash today. Upcoming bills (<strong style="color:#FFB800" id="escrowTotalLbl">$1,850.00</strong>), big bill reserve (<strong style="color:#B388FF" id="sinkingPayLbl">$138.46</strong>), and debt targets are isolated safely.
           </p>
           <div class="advice-pill" id="advicePill">
-            💡 <strong>Smart Allocation:</strong> Setting aside $138.46 into your Car Insurance/Medical Sinking Vault protects your emergency savings from being wiped out!
+            💡 <strong>Smart Allocation:</strong> Setting aside $138.46 per paycheck into your Rainy Day & Big Bill Reserve protects you when large 6-month bills (car insurance, medical, repairs) come due!
           </div>
         </div>
 
@@ -207,7 +234,7 @@
               <strong style="color:#FFB800" id="escrowDeductLbl">-$1,850.00</strong>
             </div>
             <div class="breakdown-item">
-              <span>🛡️ Sinking Fund Transfer (Insurance/Meds):</span>
+              <span>🛡️ Big Bill & Emergency Reserve (Insurance/Repairs):</span>
               <strong style="color:#B388FF" id="sinkingDeductLbl">-$138.46</strong>
             </div>
             <div class="breakdown-item">
@@ -822,7 +849,7 @@
             <button class="btn-action" style="background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900; font-size:11px;" onclick="openAddBillModal()">➕ Add Bill Manually</button>
           </div>
           <p style="color:#8E9BB0; font-size:12px; margin-bottom:12px;">
-            Atlas discovered these annual & 6-month commitments and converted them into painless per-paycheck sinking transfers:
+            Atlas discovered these annual & 6-month commitments and converted them into painless per-paycheck emergency & big bill transfers:
           </p>
 
           <div id="wdetectedBillsList" style="display:flex; flex-direction:column; gap:8px; max-height:220px; overflow-y:auto;">
@@ -863,7 +890,7 @@
               <input type="number" id="inpStartingChecking" class="form-input" value="3450.00">
             </div>
             <div class="form-group">
-              <label class="form-label">🛡️ Sinking Savings Vault Balance</label>
+              <label class="form-label">🛡️ Rainy Day & Emergency Savings Balance</label>
               <input type="number" id="inpStartingSavings" class="form-input" value="1250.00">
             </div>
           </div>
@@ -897,6 +924,91 @@
 
   
   
+  
+  <!-- ➕ ADD / EDIT HOUSEHOLD INCOME MODAL (ONE-TIME OR RECURRING) -->
+  <div class="modal-overlay" id="addIncomeModal">
+    <div class="modal-box" style="max-width: 540px;">
+      <div class="modal-top">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="modal-title" style="color:var(--accent-green);" id="incomeModalTitle">➕ ADD HOUSEHOLD INCOME</span>
+          <span style="background:rgba(0,255,135,0.15); color:var(--accent-green); padding:2px 8px; border-radius:10px; font-size:11px; font-weight:800;">One-Time or Recurring</span>
+        </div>
+        <button class="modal-close" onclick="closeAddIncomeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Income Source / Description</label>
+          <input type="text" id="modalIncomeName" class="form-input" placeholder="e.g. Primary Job, Shift Overtime, Side Hustle, Bonus, Tax Refund, Sold Furniture">
+        </div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+          <div class="form-group">
+            <label class="form-label">Amount ($)</label>
+            <input type="number" step="0.01" inputmode="decimal" id="modalIncomeAmount" class="form-input" placeholder="1450.00">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Type of Income</label>
+            <select id="modalIncomeCadenceType" class="form-input" onchange="toggleIncomeTypeFields()">
+              <option value="recurring">🔄 Recurring Paycheck</option>
+              <option value="onetime">⚡ One-Time Deposit / Payout</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- RECURRING INCOME FIELDS -->
+        <div id="recurringIncomeFields">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+            <div class="form-group">
+              <label class="form-label">Pay Frequency</label>
+              <select id="modalIncomeFrequency" class="form-input">
+                <option value="biweekly">Every 2 Weeks (Bi-Weekly)</option>
+                <option value="semimonthly">1st & 15th (Semi-Monthly)</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Income Style</label>
+              <select id="modalIncomeStyle" class="form-input" onchange="toggleIncomeVariableInputs()">
+                <option value="variable">Variable (Shifts / Hourly / Overtime)</option>
+                <option value="fixed">Fixed Salary</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- VARIABLE INCOME MIN / MAX RANGES -->
+          <div id="incomeVariableRanges" style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; background:#06202A; padding:10px; border-radius:8px; border:1px solid #1E293B; margin-top:6px;">
+            <div>
+              <label style="font-size:10px; color:#8E9BB0; font-weight:800; text-transform:uppercase; display:block;">🛡️ Guaranteed Min Floor ($)</label>
+              <input type="number" id="modalIncomeMin" class="form-input" placeholder="e.g. 1100.00">
+            </div>
+            <div>
+              <label style="font-size:10px; color:var(--accent-orange); font-weight:800; text-transform:uppercase; display:block;">🔥 Max Overtime Peak ($)</label>
+              <input type="number" id="modalIncomeMax" class="form-input" placeholder="e.g. 1900.00">
+            </div>
+          </div>
+        </div>
+
+        <!-- ONE-TIME INCOME FIELDS -->
+        <div id="onetimeIncomeFields" style="display:none; background:#06202A; padding:12px; border-radius:8px; border:1px solid #1E293B; margin-top:6px;">
+          <div style="font-size:12px; color:#00FF87; font-weight:800; margin-bottom:6px;">⚡ Direct Bank Deposit</div>
+          <p style="font-size:11px; color:#8E9BB0; margin-bottom:10px;">
+            This one-time deposit will be added directly into your Checking Balance today and immediately increase your True Free Cash!
+          </p>
+          <div class="form-group">
+            <label class="form-label">Deposit Date</label>
+            <input type="date" id="modalIncomeOnetimeDate" class="form-input">
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
+          <button class="btn-action" style="background:#1E293B; color:#8E9BB0;" onclick="closeAddIncomeModal()">Cancel</button>
+          <button class="btn-save" style="padding:10px 24px; background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900;" onclick="saveManualIncome()">💾 Save & Add Income</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ➕ ADD / EDIT RECURRING BILL MODAL -->
   <div class="modal-overlay" id="addBillModal">
     <div class="modal-box" style="max-width: 520px;">
@@ -1042,15 +1154,15 @@
           <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=http://192.168.1.14:8000/Atlas_Financial_Command.html" alt="Spouse Connect QR Code" style="display:block; width:180px; height:180px;">
         </div>
 
+        
         <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:12px; text-align:left; font-size:12px; margin-bottom:12px;">
-          <strong style="color:#FFF;">📲 How to Connect in 10 Seconds:</strong>
-          <ol style="margin-left:18px; margin-top:6px; color:#8E9BB0; line-height:1.6;">
-            <li>Have your spouse open their iPhone Camera and point it at the QR code above.</li>
-            <li>Tap the link to open in Safari: <span style="color:var(--accent-cyan);">http://192.168.1.14:8000/Atlas_Financial_Command.html</span></li>
-            <li>Tap Safari's <strong>Share</strong> button and tap <strong>"Add to Home Screen"</strong>.</li>
-            <li>Done! Whenever either person marks a bill paid or logs a purchase, both phones update in real time.</li>
-          </ol>
+          <strong style="color:var(--accent-cyan);">📲 How Phone & Computer Sync Works:</strong>
+          <ul style="margin-left:18px; margin-top:6px; color:#8E9BB0; line-height:1.6;">
+            <li><strong>On Home Wi-Fi:</strong> Open <code>http://192.168.1.14:8000/Atlas_Financial_Command.html</code> on your phone. Both devices talk directly to your central computer!</li>
+            <li><strong>Anywhere on Web:</strong> Use <code>https://atlasforgetech.com/private_ledger.html</code>. To instantly sync between devices, tap <strong>🛡️ Vault Backup</strong> to download or upload your data in 2 seconds.</li>
+          </ul>
         </div>
+
 
         <button class="btn-action" style="width:100%; background:linear-gradient(90deg, #00FF87, #00F0FF); color:#0A0F1D; font-weight:900; padding:12px;" onclick="copySpouseLink()">📋 Copy Direct Link to Clipboard</button>
       </div>
@@ -1181,7 +1293,142 @@
       ]
     };
 
+    
+    // ==========================================
+    // 🔒 MASTER PIN SECURITY & PRIVACY CONTROLS
+    // ==========================================
+    let isVaultLocked = true;
+    let householdPin = localStorage.getItem('@atlas_vault_pin') || '1234';
+
+    function initPinLock() {
+      const sessionUnlocked = sessionStorage.getItem('@atlas_unlocked');
+      if (sessionUnlocked === 'true') {
+        isVaultLocked = false;
+        document.getElementById('pinLockModal').classList.remove('active');
+      } else {
+        isVaultLocked = true;
+        document.getElementById('pinLockModal').classList.add('active');
+        setTimeout(() => { document.getElementById('vaultPinInput')?.focus(); }, 300);
+      }
+    }
+
+    function checkPinEntry(e) {
+      if (e.key === 'Enter' || document.getElementById('vaultPinInput').value.length === 4) {
+        verifyPinCode();
+      }
+    }
+
+    function verifyPinCode() {
+      const entered = document.getElementById('vaultPinInput').value.trim();
+      if (entered === householdPin) {
+        isVaultLocked = false;
+        sessionStorage.setItem('@atlas_unlocked', 'true');
+        document.getElementById('pinLockModal').classList.remove('active');
+        document.getElementById('vaultPinInput').value = '';
+      } else {
+        alert('❌ Incorrect Passcode. Default is 1234.');
+        document.getElementById('vaultPinInput').value = '';
+      }
+    }
+
+    function lockVaultNow() {
+      sessionStorage.removeItem('@atlas_unlocked');
+      isVaultLocked = true;
+      document.getElementById('pinLockModal').classList.add('active');
+      document.getElementById('vaultPinInput').value = '';
+      setTimeout(() => { document.getElementById('vaultPinInput')?.focus(); }, 200);
+    }
+
+    // ==========================================
+    // 💰 MANUAL INCOME ENTRY SYSTEM (ONE-TIME & RECURRING)
+    // ==========================================
+    function openAddIncomeModal() {
+      document.getElementById('modalIncomeName').value = '';
+      document.getElementById('modalIncomeAmount').value = '';
+      document.getElementById('modalIncomeCadenceType').value = 'recurring';
+      document.getElementById('modalIncomeFrequency').value = 'biweekly';
+      document.getElementById('modalIncomeStyle').value = 'variable';
+      document.getElementById('modalIncomeMin').value = '';
+      document.getElementById('modalIncomeMax').value = '';
+      document.getElementById('modalIncomeOnetimeDate').value = new Date().toISOString().split('T')[0];
+      toggleIncomeTypeFields();
+      document.getElementById('addIncomeModal').classList.add('active');
+    }
+
+    function closeAddIncomeModal() {
+      document.getElementById('addIncomeModal').classList.remove('active');
+    }
+
+    function toggleIncomeTypeFields() {
+      const isOnetime = document.getElementById('modalIncomeCadenceType').value === 'onetime';
+      document.getElementById('recurringIncomeFields').style.display = isOnetime ? 'none' : 'block';
+      document.getElementById('onetimeIncomeFields').style.display = isOnetime ? 'block' : 'none';
+    }
+
+    function toggleIncomeVariableInputs() {
+      const isVar = document.getElementById('modalIncomeStyle').value === 'variable';
+      document.getElementById('incomeVariableRanges').style.display = isVar ? 'grid' : 'none';
+    }
+
+    function saveManualIncome() {
+      const name = document.getElementById('modalIncomeName').value.trim();
+      const amt = parseFloat(document.getElementById('modalIncomeAmount').value);
+      const cadenceType = document.getElementById('modalIncomeCadenceType').value;
+
+      if (!name) { alert('Please enter an income source name.'); return; }
+      if (isNaN(amt) || amt <= 0) { alert('Please enter a valid amount.'); return; }
+
+      if (cadenceType === 'onetime') {
+        // ONE-TIME DEPOSIT
+        const dt = document.getElementById('modalIncomeOnetimeDate').value || new Date().toLocaleDateString();
+        appState.bankBal += amt;
+        if (!appState.transactions) appState.transactions = [];
+        appState.transactions.unshift({
+          id: 'inc-' + Date.now(),
+          vendor: '💰 Deposit: ' + name,
+          amount: amt,
+          tier: 'personal',
+          date: dt,
+          isIncome: true
+        });
+        persistState();
+        renderAll();
+        closeAddIncomeModal();
+        alert(`🎉 SUCCESS: Deposited $${amt.toFixed(2)} (${name}) directly into your Checking Account! True Free Cash updated.`);
+      } else {
+        // RECURRING PAYCHECK
+        const freq = document.getElementById('modalIncomeFrequency').value;
+        const style = document.getElementById('modalIncomeStyle').value;
+        const minVal = parseFloat(document.getElementById('modalIncomeMin').value) || (amt * 0.85);
+        const maxVal = parseFloat(document.getElementById('modalIncomeMax').value) || (amt * 1.25);
+
+        const newInc = {
+          id: Date.now(),
+          name: name,
+          cadence: freq,
+          type: style,
+          avg: amt,
+          min: style === 'variable' ? minVal : amt,
+          max: style === 'variable' ? maxVal : amt,
+          nextDate: new Date().toISOString().split('T')[0]
+        };
+
+        if (typeof householdIncomes !== 'undefined') {
+          householdIncomes.push(newInc);
+        }
+        if (!appState.incomes) appState.incomes = [];
+        appState.incomes.push(newInc);
+
+        persistState();
+        renderAll();
+        if (typeof renderIncomeSourcesList === 'function') renderIncomeSourcesList();
+        closeAddIncomeModal();
+        alert(`✅ SUCCESS: Recurring income "${name}" ($${amt.toFixed(2)}) added to your household!`);
+      }
+    }
+
     function loadState() {
+      initPinLock();
       const saved = localStorage.getItem('@atlas_multi_tier_state_v4');
       if (saved) {
         try { appState = Object.assign(appState, JSON.parse(saved)); } catch (e) {}
@@ -1865,48 +2112,49 @@
     }
 
     function resolveAmbiguity(choice) {
-      alert(`✅ Hawx Pest Control set to: ${choice}. Scheduled into recurring sinking calendar!`);
+      alert(`✅ Hawx Pest Control set to: ${choice}. Scheduled into emergency & big bill calendar!`);
       document.getElementById('wambiguityBox').style.display = 'none';
     }
 
-    async function finishOnboardingSetup() {
-      const checking = parseFloat(document.getElementById('inpStartingChecking').value) || 3450;
-      const primaryAmt = parseFloat(document.getElementById('inpPrimaryAmount').value) || 2400;
-      const primaryMin = parseFloat(document.getElementById('inpPrimaryMin')?.value) || primaryAmt;
-      const primaryMax = parseFloat(document.getElementById('inpPrimaryMax')?.value) || primaryAmt;
-
-      const spouseFloor = parseFloat(document.getElementById('inpSpouseFloor')?.value) || 1100;
-      const spouseAvg = parseFloat(document.getElementById('inpSpouseAvg')?.value) || 1450;
-      const spouseMax = parseFloat(document.getElementById('inpSpouseMax')?.value) || spouseAvg;
-
-      appState.bankBal = checking;
-      persistState();
-
+    function finishOnboardingSetup() {
       try {
-        await fetch('http://localhost:3000/api/v1/onboarding/setup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            primaryIncomeType: primaryIncomeStyle,
-            primaryCadence: selectedPayCadence,
-            primaryAmount: primaryAmt,
-            primaryMinPay: primaryMin,
-            primaryMaxPay: primaryMax,
-            hasSecondEarner: hasSpouseIncome,
-            secondIncomeType: spouseIncomeStyle,
-            secondMinPay: spouseFloor,
-            secondMaxPay: spouseMax,
-            secondAvgTakehome: spouseAvg,
-            currentCheckingBal: checking
-          })
-        });
-      } catch (e) {}
+        const checkingInp = document.getElementById('inpStartingChecking');
+        const savingsInp = document.getElementById('inpStartingSavings');
 
-      closeOnboardingWizard();
-      alert('🎉 Household setup successfully initialized with your real accounts, fluctuating income floor, and 1-year annual bill reserves!');
-      renderPersonal();
-      renderBillsTodoList();
-      renderDebtChecklist();
+        const checking = checkingInp ? (parseFloat(checkingInp.value) || 3450) : 3450;
+        const savings = savingsInp ? (parseFloat(savingsInp.value) || 1250) : 1250;
+
+        appState.bankBal = checking;
+        appState.savingsBal = savings;
+        appState.incomes = typeof householdIncomes !== 'undefined' ? householdIncomes : [];
+
+        // Save to localStorage immediately
+        persistState();
+
+        // Safe non-blocking API call (won't crash or freeze if offline)
+        try {
+          fetch('http://localhost:3000/api/v1/onboarding/setup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              incomes: appState.incomes,
+              currentCheckingBal: checking,
+              savingsBal: savings
+            })
+          }).catch(function() {});
+        } catch(apiErr) {}
+
+        // Close wizard modal and update screen
+        closeOnboardingWizard();
+        renderAll();
+
+        alert('🎉 Household Setup Complete! Your live cash flow, bills, and emergency reserve are now active on your dashboard.');
+      } catch(err) {
+        console.error('Setup finish error:', err);
+        // Ensure wizard closes regardless
+        closeOnboardingWizard();
+        renderAll();
+      }
     }
 
     
