@@ -1182,6 +1182,16 @@
             </div>
           </div>
 
+          <!-- IMPORTED TRANSACTIONS REVIEW -->
+          <div id="wTransactionReviewSection" style="display:none; margin-top:16px;">
+            <h4 style="color:#FFF; font-size:14px; margin-bottom:6px;">🧾 Review & Categorize Imported Transactions</h4>
+            <p style="color:#8E9BB0; font-size:11px; margin-bottom:12px;">We did our best to auto-categorize these based on the vendor. Please review and adjust them before importing.</p>
+            <div id="wTransactionReviewList" style="display:flex; flex-direction:column; gap:8px; max-height:280px; overflow-y:auto; background:#06202A; border:1px solid #1E293B; border-radius:8px; padding:8px;">
+               <!-- Populated by JS -->
+            </div>
+          </div>
+
+
           <div style="display:flex; justify-content:space-between; margin-top:16px;">
             <button class="btn-action" style="background:#1E293B; color:#FFF;" onclick="goToWizardStep(3)">← Back</button>
             <button class="btn-action" style="background:var(--accent-cyan); color:#0A0F1D; padding:10px 20px; font-size:13px;" onclick="goToWizardStep(5)">Next: Launch Household →</button>
@@ -2965,6 +2975,64 @@
         container.appendChild(ccItem);
       }
       
+
+      if (extractedStatementTransactions && extractedStatementTransactions.length > 0) {
+        const txSec = document.getElementById('wTransactionReviewSection');
+        const txList = document.getElementById('wTransactionReviewList');
+        if (txSec && txList) {
+          txSec.style.display = 'block';
+          txList.innerHTML = '';
+          
+          extractedStatementTransactions.forEach((tx, idx) => {
+            const item = document.createElement('div');
+            item.className = 'extracted-tx-item';
+            item.dataset.idx = idx;
+            item.style.cssText = 'background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:5px;';
+            
+            // Basic auto-categorization
+            let guessCat = 'Shopping';
+            const v = tx.vendor.toLowerCase();
+            if (v.includes('heb') || v.includes('kroger') || v.includes('whole foods') || v.includes('walmart')) guessCat = 'Groceries';
+            else if (v.includes('shell') || v.includes('chevron') || v.includes('exxon')) guessCat = 'Gas & Fuel';
+            else if (v.includes('chick-fil-a') || v.includes('mcdonald') || v.includes('starbucks') || v.includes('restaurant')) guessCat = 'Dining Out';
+            else if (v.includes('amazon') || v.includes('target')) guessCat = 'Shopping';
+            else if (v.includes('cvs') || v.includes('walgreens') || v.includes('pharmacy')) guessCat = 'Healthcare';
+            else if (v.includes('home depot') || v.includes('lowe')) guessCat = 'Home Improvement';
+            
+            // Build the category options dynamically from appState.customCategories if available, else defaults
+            let catOptionsHTML = `<option value="Groceries" ${guessCat==='Groceries'?'selected':''}>Groceries</option>
+                                  <option value="Gas & Fuel" ${guessCat==='Gas & Fuel'?'selected':''}>Gas & Fuel</option>
+                                  <option value="Dining Out" ${guessCat==='Dining Out'?'selected':''}>Dining Out</option>
+                                  <option value="Shopping" ${guessCat==='Shopping'?'selected':''}>Shopping</option>
+                                  <option value="Healthcare" ${guessCat==='Healthcare'?'selected':''}>Healthcare</option>
+                                  <option value="Home Improvement" ${guessCat==='Home Improvement'?'selected':''}>Home Improvement</option>
+                                  <option value="Work Expense" ${guessCat==='Work Expense'?'selected':''}>Work Expense</option>
+                                  <option value="Business Tax" ${guessCat==='Business Tax'?'selected':''}>Business Tax</option>
+                                  <option value="Uncategorized" ${guessCat==='Uncategorized'?'selected':''}>Uncategorized</option>`;
+            
+            if (appState.customCategories && appState.customCategories.length > 0) {
+              appState.customCategories.forEach(cat => {
+                 catOptionsHTML += `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`;
+              });
+            }
+
+            item.innerHTML = `
+              <div style="flex:1;">
+                <input type="text" class="form-input tx-vendor-input" value="${tx.vendor}" style="padding:4px 8px; font-size:12px; font-weight:bold; color:#FFF; margin-bottom:4px; width:90%;"/>
+                <div style="font-size:10px; color:#8E9BB0;">${tx.date}</div>
+              </div>
+              <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <div style="color:#FFF; font-weight:800; font-size:13px;">$${parseFloat(tx.amount).toFixed(2)}</div>
+                <select class="form-input tx-cat-select" style="padding:2px 6px; font-size:11px; width:auto;">
+                  ${catOptionsHTML}
+                </select>
+              </div>
+            `;
+            txList.appendChild(item);
+          });
+        }
+      }
+
       detected1YearBills.forEach(b => {
         const item = document.createElement('div');
         item.style.cssText = 'background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:5px;';
@@ -2999,10 +3067,94 @@
         appState.savingsBal = savings;
         appState.incomes = typeof householdIncomes !== 'undefined' ? householdIncomes : [];
 
+        // Import verified transactions
+        const txItems = document.querySelectorAll('.extracted-tx-item');
+        if (txItems.length > 0) {
+          if (!appState.transactions) appState.transactions = [];
+          txItems.forEach(item => {
+             const idx = item.dataset.idx;
+             const rawTx = extractedStatementTransactions[idx];
+             const updatedVendor = item.querySelector('.tx-vendor-input').value;
+             const updatedCat = item.querySelector('.tx-cat-select').value;
+             
+             let tier = 'personal';
+             if (updatedCat === 'Work Expense') tier = 'employer_reimbursable';
+             if (updatedCat === 'Business Tax') tier = 'own_business';
+             
+             appState.transactions.push({
+                id: 'imported-' + Date.now() + Math.floor(Math.random() * 1000),
+                vendor: updatedVendor,
+                amount: parseFloat(rawTx.amount),
+                category: updatedCat,
+                tier: tier,
+                date: rawTx.date
+             });
+          });
+        }
+
+
         // Save detected bills
         if (detected1YearBills && detected1YearBills.length > 0) {
           appState.bills = [];
-          detected1YearBills.forEach(b => {
+    
+      if (extractedStatementTransactions && extractedStatementTransactions.length > 0) {
+        const txSec = document.getElementById('wTransactionReviewSection');
+        const txList = document.getElementById('wTransactionReviewList');
+        if (txSec && txList) {
+          txSec.style.display = 'block';
+          txList.innerHTML = '';
+          
+          extractedStatementTransactions.forEach((tx, idx) => {
+            const item = document.createElement('div');
+            item.className = 'extracted-tx-item';
+            item.dataset.idx = idx;
+            item.style.cssText = 'background:#0A0F1D; border:1px solid #1E293B; border-radius:8px; padding:10px 12px; display:flex; justify-content:space-between; align-items:center; font-size:12px; margin-bottom:5px;';
+            
+            // Basic auto-categorization
+            let guessCat = 'Shopping';
+            const v = tx.vendor.toLowerCase();
+            if (v.includes('heb') || v.includes('kroger') || v.includes('whole foods') || v.includes('walmart')) guessCat = 'Groceries';
+            else if (v.includes('shell') || v.includes('chevron') || v.includes('exxon')) guessCat = 'Gas & Fuel';
+            else if (v.includes('chick-fil-a') || v.includes('mcdonald') || v.includes('starbucks') || v.includes('restaurant')) guessCat = 'Dining Out';
+            else if (v.includes('amazon') || v.includes('target')) guessCat = 'Shopping';
+            else if (v.includes('cvs') || v.includes('walgreens') || v.includes('pharmacy')) guessCat = 'Healthcare';
+            else if (v.includes('home depot') || v.includes('lowe')) guessCat = 'Home Improvement';
+            
+            // Build the category options dynamically from appState.customCategories if available, else defaults
+            let catOptionsHTML = `<option value="Groceries" ${guessCat==='Groceries'?'selected':''}>Groceries</option>
+                                  <option value="Gas & Fuel" ${guessCat==='Gas & Fuel'?'selected':''}>Gas & Fuel</option>
+                                  <option value="Dining Out" ${guessCat==='Dining Out'?'selected':''}>Dining Out</option>
+                                  <option value="Shopping" ${guessCat==='Shopping'?'selected':''}>Shopping</option>
+                                  <option value="Healthcare" ${guessCat==='Healthcare'?'selected':''}>Healthcare</option>
+                                  <option value="Home Improvement" ${guessCat==='Home Improvement'?'selected':''}>Home Improvement</option>
+                                  <option value="Work Expense" ${guessCat==='Work Expense'?'selected':''}>Work Expense</option>
+                                  <option value="Business Tax" ${guessCat==='Business Tax'?'selected':''}>Business Tax</option>
+                                  <option value="Uncategorized" ${guessCat==='Uncategorized'?'selected':''}>Uncategorized</option>`;
+            
+            if (appState.customCategories && appState.customCategories.length > 0) {
+              appState.customCategories.forEach(cat => {
+                 catOptionsHTML += `<option value="${cat.name}">${cat.icon} ${cat.name}</option>`;
+              });
+            }
+
+            item.innerHTML = `
+              <div style="flex:1;">
+                <input type="text" class="form-input tx-vendor-input" value="${tx.vendor}" style="padding:4px 8px; font-size:12px; font-weight:bold; color:#FFF; margin-bottom:4px; width:90%;"/>
+                <div style="font-size:10px; color:#8E9BB0;">${tx.date}</div>
+              </div>
+              <div style="text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:4px;">
+                <div style="color:#FFF; font-weight:800; font-size:13px;">$${parseFloat(tx.amount).toFixed(2)}</div>
+                <select class="form-input tx-cat-select" style="padding:2px 6px; font-size:11px; width:auto;">
+                  ${catOptionsHTML}
+                </select>
+              </div>
+            `;
+            txList.appendChild(item);
+          });
+        }
+      }
+
+      detected1YearBills.forEach(b => {
             appState.bills.push({
               id: Date.now() + Math.floor(Math.random() * 1000),
               name: b.name,
