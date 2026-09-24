@@ -1145,6 +1145,24 @@
     });
 
     window.processRosterData = function(json) {
+      // ──── INJECT GAGE ABERCIA ────
+      const hasGage = json.table.rows.some(r => r.c[1] && r.c[1].v && String(r.c[1].v).includes('Abercia'));
+      if (!hasGage) {
+        json.table.rows.push({
+          c: [
+            { v: null },
+            { v: 'Gage -' },
+            { v: 'Abercia #19 - Dad' },
+            { v: 'jamesabercia@gmail.com' },
+            { v: '(936) 647-6934' },
+            { v: 'Unknown' },
+            { v: '01-22-2014' },
+            { v: null }
+          ]
+        });
+      }
+      // ──── END INJECT ────
+
       const dirList = document.getElementById('directoryList');
       dirList.innerHTML = '';
       
