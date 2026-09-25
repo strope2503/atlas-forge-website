@@ -1167,20 +1167,8 @@
             <!-- Populated by JS -->
           </div>
 
-          <!-- AMBIGUOUS QUESTION CARD -->
-          <div id="wambiguityBox" style="margin-top:12px; background:#2A1810; border:1px solid var(--accent-orange); border-radius:8px; padding:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-              <strong style="color:var(--accent-orange); font-size:12px;">❓ Clarification Needed</strong>
-              <span style="font-size:10px; color:#8E9BB0;">We noticed a $125.00 charge to Hawx Pest Control</span>
-            </div>
-            <div style="font-size:11px; color:#E2E8F0; margin-top:4px;">How often are you charged for this service?</div>
-            <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
-              <button class="btn-action" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity('Quarterly')">Quarterly (Every 3 Mo)</button>
-              <button class="btn-action" style="background:#00F0FF; color:#0A0F1D; font-size:10px;" onclick="resolveAmbiguity('Bi-Monthly')">Bi-Monthly (Every 2 Mo)</button>
-              <button class="btn-action" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity('Monthly')">Monthly</button>
-              <button class="btn-action" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity('One-Time')">Just One-Time</button>
-            </div>
-          </div>
+          <!-- DYNAMIC AMBIGUITY CARDS -->
+          <div id="wambiguityContainer" style="display:flex; flex-direction:column; gap:12px; margin-top:12px;"></div>
 
           <!-- IMPORTED TRANSACTIONS REVIEW -->
           <div id="wTransactionReviewSection" style="display:none; margin-top:16px;">
@@ -2860,6 +2848,9 @@
           if (data.extractedTransactions && data.extractedTransactions.length > 0) {
             extractedStatementTransactions = data.extractedTransactions;
           }
+          if (data.ambiguousItems) {
+            detectedAmbiguousItems = data.ambiguousItems;
+          }
         }
       } catch(e) {
         // Fallback default patterns
@@ -2923,6 +2914,7 @@
     ];
     let detectedCreditCardResult = null;
     let extractedStatementTransactions = [];
+    let detectedAmbiguousItems = [];
 
     async function run1YearStatementScan() {
       const text = document.getElementById('wstmtText').value.trim();
@@ -2946,6 +2938,9 @@
           }
           if (data.extractedTransactions && data.extractedTransactions.length > 0) {
             extractedStatementTransactions = data.extractedTransactions;
+          }
+          if (data.ambiguousItems) {
+            detectedAmbiguousItems = data.ambiguousItems;
           }
           alert(`⚡ Pattern Detective Complete! Found ${data.detectedBillsCount} annual commitments and ${extractedStatementTransactions.length} past purchases.`);
           goToWizardStep(4);
@@ -2975,6 +2970,37 @@
         container.appendChild(ccItem);
       }
       
+
+      
+      const ambigContainer = document.getElementById('wambiguityContainer');
+      if (ambigContainer) {
+        ambigContainer.innerHTML = '';
+        detectedAmbiguousItems.forEach((item, idx) => {
+           item.cadence = 'Monthly'; // Default
+           const card = document.createElement('div');
+           card.id = 'ambigCard_' + idx;
+           card.style.cssText = 'background:#2A1810; border:1px solid var(--accent-orange); border-radius:8px; padding:12px;';
+           card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:var(--accent-orange); font-size:12px;">❓ Recurring Bill or Debt Found</strong>
+              <span style="font-size:10px; color:#8E9BB0;">${item.name}</span>
+            </div>
+            <div style="font-size:11px; color:#E2E8F0; margin-top:4px;">${item.question}</div>
+            <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
+              <button class="btn-action ambig-btn-${idx}" style="background:#00F0FF; color:#0A0F1D; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Monthly')">Monthly</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Every 6 Months')">Every 6 Months</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Once a Year')">Yearly</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'One-Time')">Just One-Time</button>
+            </div>
+            <div style="margin-top:12px; padding-top:8px; border-top:1px dashed #E2E8F0; display:flex; align-items:center; gap:8px;">
+               <div style="font-size:11px; color:#FFF;">Remaining Balance (If Loan/Debt):</div>
+               <input type="number" id="ambigBal_${idx}" class="form-input" style="width:100px; padding:4px;" placeholder="$0.00" />
+            </div>
+           `;
+           ambigContainer.appendChild(card);
+        });
+      }
+
 
       if (extractedStatementTransactions && extractedStatementTransactions.length > 0) {
         const txSec = document.getElementById('wTransactionReviewSection');
@@ -3050,9 +3076,21 @@
       });
     }
 
-    function resolveAmbiguity(choice) {
-      alert(`✅ Hawx Pest Control set to: ${choice}. Scheduled into emergency & big bill calendar!`);
-      document.getElementById('wambiguityBox').style.display = 'none';
+    function resolveAmbiguity(idx, choice) {
+      detectedAmbiguousItems[idx].cadence = choice;
+      const btns = document.querySelectorAll(`.ambig-btn-${idx}`);
+      btns.forEach(b => {
+         b.style.background = '#1E293B';
+         b.style.color = '#FFF';
+      });
+      event.target.style.background = '#00F0FF';
+      event.target.style.color = '#0A0F1D';
+      
+      if (choice === 'One-Time') {
+         document.getElementById('ambigBal_' + idx).parentElement.style.display = 'none';
+      } else {
+         document.getElementById('ambigBal_' + idx).parentElement.style.display = 'flex';
+      }
     }
 
     function finishOnboardingSetup() {
@@ -3066,6 +3104,52 @@
         appState.bankBal = checking;
         appState.savingsBal = savings;
         appState.incomes = typeof householdIncomes !== 'undefined' ? householdIncomes : [];
+
+        
+        // Import Dynamic Recurring Items & Debts
+        if (typeof detectedAmbiguousItems !== 'undefined') {
+          detectedAmbiguousItems.forEach((item, idx) => {
+             if (item.cadence !== 'One-Time') {
+                const balInput = document.getElementById('ambigBal_' + idx);
+                const remainingBal = balInput ? parseFloat(balInput.value) : 0;
+                
+                if (remainingBal > 0) {
+                   if (!appState.debts) appState.debts = [];
+                   appState.debts.push({
+                      name: item.name.split('(')[0].trim(),
+                      balance: remainingBal,
+                      payment: item.amount,
+                      rate: 0,
+                      isVerified: true,
+                      source: 'Bank Statement Import',
+                      date: new Date().toLocaleDateString()
+                   });
+                } else {
+                   if (!appState.bills) appState.bills = [];
+                   appState.bills.push({
+                      id: Date.now() + idx,
+                      name: item.name.split('(')[0].trim(),
+                      amount: item.amount,
+                      day: 1
+                   });
+                }
+             }
+          });
+        }
+        
+        // Import Known Detected Bills
+        if (typeof detected1YearBills !== 'undefined') {
+          detected1YearBills.forEach((b, idx) => {
+             if (!appState.bills) appState.bills = [];
+             appState.bills.push({
+                id: Date.now() + 100 + idx,
+                name: b.name,
+                amount: b.amount,
+                day: 15
+             });
+          });
+        }
+
 
         // Import verified transactions
         const txItems = document.querySelectorAll('.extracted-tx-item');
@@ -3097,6 +3181,37 @@
         if (detected1YearBills && detected1YearBills.length > 0) {
           appState.bills = [];
     
+      
+      const ambigContainer = document.getElementById('wambiguityContainer');
+      if (ambigContainer) {
+        ambigContainer.innerHTML = '';
+        detectedAmbiguousItems.forEach((item, idx) => {
+           item.cadence = 'Monthly'; // Default
+           const card = document.createElement('div');
+           card.id = 'ambigCard_' + idx;
+           card.style.cssText = 'background:#2A1810; border:1px solid var(--accent-orange); border-radius:8px; padding:12px;';
+           card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:var(--accent-orange); font-size:12px;">❓ Recurring Bill or Debt Found</strong>
+              <span style="font-size:10px; color:#8E9BB0;">${item.name}</span>
+            </div>
+            <div style="font-size:11px; color:#E2E8F0; margin-top:4px;">${item.question}</div>
+            <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
+              <button class="btn-action ambig-btn-${idx}" style="background:#00F0FF; color:#0A0F1D; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Monthly')">Monthly</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Every 6 Months')">Every 6 Months</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Once a Year')">Yearly</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'One-Time')">Just One-Time</button>
+            </div>
+            <div style="margin-top:12px; padding-top:8px; border-top:1px dashed #E2E8F0; display:flex; align-items:center; gap:8px;">
+               <div style="font-size:11px; color:#FFF;">Remaining Balance (If Loan/Debt):</div>
+               <input type="number" id="ambigBal_${idx}" class="form-input" style="width:100px; padding:4px;" placeholder="$0.00" />
+            </div>
+           `;
+           ambigContainer.appendChild(card);
+        });
+      }
+
+
       if (extractedStatementTransactions && extractedStatementTransactions.length > 0) {
         const txSec = document.getElementById('wTransactionReviewSection');
         const txList = document.getElementById('wTransactionReviewList');
@@ -3180,7 +3295,38 @@
         }
 
         // Save extracted transactions
-        if (extractedStatementTransactions && extractedStatementTransactions.length > 0) {
+        
+      const ambigContainer = document.getElementById('wambiguityContainer');
+      if (ambigContainer) {
+        ambigContainer.innerHTML = '';
+        detectedAmbiguousItems.forEach((item, idx) => {
+           item.cadence = 'Monthly'; // Default
+           const card = document.createElement('div');
+           card.id = 'ambigCard_' + idx;
+           card.style.cssText = 'background:#2A1810; border:1px solid var(--accent-orange); border-radius:8px; padding:12px;';
+           card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:var(--accent-orange); font-size:12px;">❓ Recurring Bill or Debt Found</strong>
+              <span style="font-size:10px; color:#8E9BB0;">${item.name}</span>
+            </div>
+            <div style="font-size:11px; color:#E2E8F0; margin-top:4px;">${item.question}</div>
+            <div style="display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;">
+              <button class="btn-action ambig-btn-${idx}" style="background:#00F0FF; color:#0A0F1D; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Monthly')">Monthly</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Every 6 Months')">Every 6 Months</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'Once a Year')">Yearly</button>
+              <button class="btn-action ambig-btn-${idx}" style="background:#1E293B; color:#FFF; font-size:10px;" onclick="resolveAmbiguity(${idx}, 'One-Time')">Just One-Time</button>
+            </div>
+            <div style="margin-top:12px; padding-top:8px; border-top:1px dashed #E2E8F0; display:flex; align-items:center; gap:8px;">
+               <div style="font-size:11px; color:#FFF;">Remaining Balance (If Loan/Debt):</div>
+               <input type="number" id="ambigBal_${idx}" class="form-input" style="width:100px; padding:4px;" placeholder="$0.00" />
+            </div>
+           `;
+           ambigContainer.appendChild(card);
+        });
+      }
+
+
+      if (extractedStatementTransactions && extractedStatementTransactions.length > 0) {
           appState.transactions = appState.transactions || [];
           extractedStatementTransactions.forEach(t => {
             appState.transactions.unshift({
